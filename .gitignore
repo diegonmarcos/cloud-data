@@ -1,0 +1,44 @@
+# ══════════════════════════════════════════════════════════
+# REPO: cloud-data (PUBLIC)
+# https://github.com/diegonmarcos/cloud-data
+# ══════════════════════════════════════════════════════════
+
+# ── Secrets & Credentials (reinforces global gitignore) ──
+# KEEP IN SYNC with global gitignore: ~/git/unix/ba_flakes_desktop/src/modules/programs/git.nix
+#                                      ~/git/unix/bb_flakes_termux/src/modules/programs/git.nix
+## Decrypted secrets output
+.secrets
+*.secrets
+**/.secrets
+.secrets.d/
+**/.secrets.d/
+## Environment files
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+## Private keys & certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+## Auth tokens & credentials
+*.token
+*credentials*.json
+*_token.json
+*_tokens.json
+## Cloud provider configs
+.oci/
+.gcloud/
+## GPG & age
+*.asc
+*.age
+!*.age.pub
+## Terraform secrets
+terraform.tfvars
+*.tfvars
+!*.tfvars.example
