@@ -207,21 +207,5 @@ tbody tr:hover {
   border-radius: 4px;
 }
 
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  #sidebar {
-    position: static;
-    width: 100%;
-    min-width: 100%;
-    height: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 10px;
-  }
-  #sidebar h1 { border: none; padding: 0 10px; }
-  #sidebar nav { display: flex; flex-wrap: wrap; gap: 4px; }
-  #sidebar a { padding: 6px 10px; border-left: none; border-bottom: 2px solid transparent; }
-  #sidebar a.active { border-bottom-color: var(--accent); border-left-color: transparent; }
-  #sidebar .meta { width: 100%; }
-  #main { margin-left: 0; padding: 16px; }
-}
+/* Force desktop layout on all viewports — horizontal scroll on mobile */
+html { min-width: 900px; }
