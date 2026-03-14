@@ -1,4 +1,10 @@
 [
-  {"file": "cloud-topology.json", "name": "Cloud Topology"},
-  {"file": "cloud-configs.json", "name": "Cloud Configs"}
+  {
+    "file": "cloud-configs.json",
+    "name": "cloud configs"
+  },
+  {
+    "file": "cloud-topology.json",
+    "name": "cloud topology"
+  }
 ]
