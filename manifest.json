@@ -4,6 +4,10 @@
     "name": "cloud configs"
   },
   {
+    "file": "cloud-deps.json",
+    "name": "cloud deps"
+  },
+  {
     "file": "cloud-topology.json",
     "name": "cloud topology"
   }
