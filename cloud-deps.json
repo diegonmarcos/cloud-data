@@ -2,9 +2,9 @@
   "_meta": {
     "generated_by": "c3-mcp-api/src/engines/gen-deps.ts",
     "api_route": "GET /c3-api/deps",
-    "generated_at": "2026-03-17T19:00:09.731Z",
+    "generated_at": "2026-03-17T21:14:13.362Z",
     "total_services": 4,
-    "total_packages": 22
+    "total_packages": 23
   },
   "node": {
     "merged": {
@@ -22,6 +22,7 @@
         "mailparser": "^3.7.0",
         "nodemailer": "^6.9.0",
         "nunjucks": "^3.2.4",
+        "tsx": "^4.19.0",
         "yaml": "^2.6.0",
         "zod": "^3.25.0",
         "zod-to-json-schema": "^3.24.0"
@@ -45,12 +46,12 @@
           "imapflow": "^1.0.0",
           "mailparser": "^3.7.0",
           "nodemailer": "^6.9.0",
+          "tsx": "^4.19.0",
           "zod": "^3.25.0"
         },
         "devDependencies": {
           "@types/node": "^22.0.0",
           "@types/nodemailer": "^6.4.0",
-          "tsx": "^4.19.0",
           "typescript": "^5.7.0"
         }
       },
@@ -60,12 +61,12 @@
         "category": "app",
         "dependencies": {
           "@modelcontextprotocol/sdk": "^1.12.0",
+          "tsx": "^4.19.0",
           "zod": "^3.25.0"
         },
         "devDependencies": {
           "@types/node": "^22.0.0",
-          "typescript": "^5.7.0",
-          "tsx": "^4.19.0"
+          "typescript": "^5.7.0"
         }
       },
       {
