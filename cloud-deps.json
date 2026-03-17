@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "c3-mcp-api/src/engines/gen-deps.ts",
     "api_route": "GET /c3-api/deps",
-    "generated_at": "2026-03-17T21:14:13.362Z",
+    "generated_at": "2026-03-17T22:04:47.209Z",
     "total_services": 4,
     "total_packages": 23
   },
