@@ -2,8 +2,8 @@
   "_meta": {
     "generated_by": "c3-mcp-api/src/engines/gen-deps.ts",
     "api_route": "GET /c3-api/deps",
-    "generated_at": "2026-03-17T12:37:10.741Z",
-    "total_services": 3,
+    "generated_at": "2026-03-17T19:00:09.731Z",
+    "total_services": 4,
     "total_packages": 22
   },
   "node": {
@@ -52,6 +52,20 @@
           "@types/nodemailer": "^6.4.0",
           "tsx": "^4.19.0",
           "typescript": "^5.7.0"
+        }
+      },
+      {
+        "service": "mattermost-mcp",
+        "folder": "aa-sui_mattermost-mcp",
+        "category": "app",
+        "dependencies": {
+          "@modelcontextprotocol/sdk": "^1.12.0",
+          "zod": "^3.25.0"
+        },
+        "devDependencies": {
+          "@types/node": "^22.0.0",
+          "typescript": "^5.7.0",
+          "tsx": "^4.19.0"
         }
       },
       {
