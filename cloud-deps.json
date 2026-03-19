@@ -1,0 +1,121 @@
+{
+  "_meta": {
+    "generated_by": "c3-mcp-api/src/engines/gen-deps.ts",
+    "api_route": "GET /c3-api/deps",
+    "generated_at": "2026-03-17T22:04:47.209Z",
+    "total_services": 4,
+    "total_packages": 23
+  },
+  "node": {
+    "merged": {
+      "dependencies": {
+        "@fastify/cors": "^10.0.0",
+        "@fastify/static": "^8.0.0",
+        "@fastify/swagger": "^9.4.0",
+        "@fastify/swagger-ui": "^5.2.0",
+        "@modelcontextprotocol/sdk": "^1.12.0",
+        "better-sqlite3": "^11.0.0",
+        "fast-xml-parser": "^4.5.0",
+        "fastify": "^5.2.0",
+        "fastify-plugin": "^5.0.0",
+        "imapflow": "^1.0.0",
+        "mailparser": "^3.7.0",
+        "nodemailer": "^6.9.0",
+        "nunjucks": "^3.2.4",
+        "tsx": "^4.19.0",
+        "yaml": "^2.6.0",
+        "zod": "^3.25.0",
+        "zod-to-json-schema": "^3.24.0"
+      },
+      "devDependencies": {
+        "@types/better-sqlite3": "^7.6.13",
+        "@types/node": "^22.0.0",
+        "@types/nodemailer": "^6.4.0",
+        "@types/nunjucks": "^3.2.6",
+        "tsx": "^4.19.0",
+        "typescript": "^5.7.0"
+      }
+    },
+    "per_service": [
+      {
+        "service": "mailu-mcp",
+        "folder": "aa-sui_mailu-mcp",
+        "category": "app",
+        "dependencies": {
+          "@modelcontextprotocol/sdk": "^1.12.0",
+          "imapflow": "^1.0.0",
+          "mailparser": "^3.7.0",
+          "nodemailer": "^6.9.0",
+          "tsx": "^4.19.0",
+          "zod": "^3.25.0"
+        },
+        "devDependencies": {
+          "@types/node": "^22.0.0",
+          "@types/nodemailer": "^6.4.0",
+          "typescript": "^5.7.0"
+        }
+      },
+      {
+        "service": "mattermost-mcp",
+        "folder": "aa-sui_mattermost-mcp",
+        "category": "app",
+        "dependencies": {
+          "@modelcontextprotocol/sdk": "^1.12.0",
+          "tsx": "^4.19.0",
+          "zod": "^3.25.0"
+        },
+        "devDependencies": {
+          "@types/node": "^22.0.0",
+          "typescript": "^5.7.0"
+        }
+      },
+      {
+        "service": "c3-mcp-api",
+        "folder": "bc-obs_c3-mcp-api",
+        "category": "sec",
+        "dependencies": {
+          "@fastify/cors": "^10.0.0",
+          "@fastify/static": "^8.0.0",
+          "@fastify/swagger": "^9.4.0",
+          "@fastify/swagger-ui": "^5.2.0",
+          "@modelcontextprotocol/sdk": "^1.12.0",
+          "better-sqlite3": "^11.0.0",
+          "fastify": "^5.2.0",
+          "fastify-plugin": "^5.0.0",
+          "nunjucks": "^3.2.4",
+          "yaml": "^2.6.0",
+          "zod": "^3.25.0",
+          "zod-to-json-schema": "^3.24.0"
+        },
+        "devDependencies": {
+          "@types/better-sqlite3": "^7.6.13",
+          "@types/node": "^22.0.0",
+          "@types/nunjucks": "^3.2.6",
+          "tsx": "^4.19.0",
+          "typescript": "^5.7.0"
+        }
+      },
+      {
+        "service": "c3-services-mcp-api",
+        "folder": "bc-obs_c3-services-mcp-api",
+        "category": "obs",
+        "dependencies": {
+          "@fastify/cors": "^10.0.0",
+          "@fastify/swagger": "^9.4.0",
+          "@fastify/swagger-ui": "^5.2.0",
+          "@modelcontextprotocol/sdk": "^1.12.0",
+          "fast-xml-parser": "^4.5.0",
+          "fastify": "^5.2.0",
+          "fastify-plugin": "^5.0.0",
+          "zod": "^3.25.0",
+          "zod-to-json-schema": "^3.24.0"
+        },
+        "devDependencies": {
+          "@types/node": "^22.0.0",
+          "tsx": "^4.19.0",
+          "typescript": "^5.7.0"
+        }
+      }
+    ]
+  }
+}
