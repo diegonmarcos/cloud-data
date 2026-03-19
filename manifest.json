@@ -10,5 +10,9 @@
   {
     "file": "cloud-topology.json",
     "name": "cloud topology"
+  },
+  {
+    "file": "dns-services.json",
+    "name": "dns services"
   }
 ]
