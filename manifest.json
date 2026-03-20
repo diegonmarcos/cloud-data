@@ -1,5 +1,17 @@
 [
   {
+    "file": "authelia-acl.json",
+    "name": "authelia acl"
+  },
+  {
+    "file": "backup-targets.json",
+    "name": "backup targets"
+  },
+  {
+    "file": "caddy-routes.json",
+    "name": "caddy routes"
+  },
+  {
     "file": "cloud-configs.json",
     "name": "cloud configs"
   },
@@ -14,5 +26,13 @@
   {
     "file": "dns-services.json",
     "name": "dns services"
+  },
+  {
+    "file": "firewall-rules.json",
+    "name": "firewall rules"
+  },
+  {
+    "file": "monitoring-targets.json",
+    "name": "monitoring targets"
   }
 ]
