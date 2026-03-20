@@ -24,6 +24,14 @@
     "name": "cloud topology"
   },
   {
+    "file": "cloudflare-dns.json",
+    "name": "cloudflare dns"
+  },
+  {
+    "file": "container-resources.json",
+    "name": "container resources"
+  },
+  {
     "file": "dns-services.json",
     "name": "dns services"
   },
@@ -32,7 +40,23 @@
     "name": "firewall rules"
   },
   {
+    "file": "log-routing.json",
+    "name": "log routing"
+  },
+  {
+    "file": "matomo-sites.json",
+    "name": "matomo sites"
+  },
+  {
     "file": "monitoring-targets.json",
     "name": "monitoring targets"
+  },
+  {
+    "file": "ntfy-acl.json",
+    "name": "ntfy acl"
+  },
+  {
+    "file": "wireguard-peers.json",
+    "name": "wireguard peers"
   }
 ]
