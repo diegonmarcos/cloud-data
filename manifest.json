@@ -12,16 +12,20 @@
     "name": "caddy routes"
   },
   {
-    "file": "cloud-configs.json",
-    "name": "cloud configs"
+    "file": "cloud-data-configs.json",
+    "name": "cloud data configs"
   },
   {
-    "file": "cloud-deps.json",
-    "name": "cloud deps"
+    "file": "cloud-data-deps.json",
+    "name": "cloud data deps"
   },
   {
-    "file": "cloud-topology.json",
-    "name": "cloud topology"
+    "file": "cloud-data-dns-services.json",
+    "name": "cloud data dns services"
+  },
+  {
+    "file": "cloud-data-topology.json",
+    "name": "cloud data topology"
   },
   {
     "file": "cloudflare-dns.json",
@@ -30,10 +34,6 @@
   {
     "file": "container-resources.json",
     "name": "container resources"
-  },
-  {
-    "file": "dns-services.json",
-    "name": "dns services"
   },
   {
     "file": "firewall-rules.json",

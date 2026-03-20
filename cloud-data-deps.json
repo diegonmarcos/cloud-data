@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "generated_by": "c3-mcp-api/src/engines/gen-deps.ts",
+    "generated_by": "c3-infra-mcp-api/src/engines/gen-deps.ts",
     "api_route": "GET /c3-api/deps",
-    "generated_at": "2026-03-19T16:05:34.187Z",
+    "generated_at": "2026-03-19T11:36:00.646Z",
     "total_services": 6,
     "total_packages": 23
   },
