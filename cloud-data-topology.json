@@ -727,20 +727,52 @@
   },
   "deps": {
     "system": {
-      "node":  { "nix": "nodejs_22", "apt": "nodejs" },
-      "git":   { "nix": "git",       "apt": "git" },
-      "ssh":   { "nix": "openssh",   "apt": "openssh-client" },
-      "jq":    { "nix": "jq",        "apt": "jq" },
-      "sops":  { "nix": "sops",      "apt": null },
-      "rsync": { "nix": "rsync",     "apt": "rsync" }
+      "node": {
+        "nix": "nodejs_22",
+        "apt": "nodejs"
+      },
+      "git": {
+        "nix": "git",
+        "apt": "git"
+      },
+      "ssh": {
+        "nix": "openssh",
+        "apt": "openssh-client"
+      },
+      "jq": {
+        "nix": "jq",
+        "apt": "jq"
+      },
+      "sops": {
+        "nix": "sops",
+        "apt": null
+      },
+      "rsync": {
+        "nix": "rsync",
+        "apt": "rsync"
+      }
     },
     "optional": {
-      "rclone":   { "nix": "rclone",   "apt": "rclone" },
-      "yq":       { "nix": "yq-go",    "apt": null },
-      "wrangler": { "nix": null,        "apt": null, "npm": "wrangler" }
+      "rclone": {
+        "nix": "rclone",
+        "apt": "rclone"
+      },
+      "yq": {
+        "nix": "yq-go",
+        "apt": null
+      },
+      "wrangler": {
+        "nix": null,
+        "apt": null,
+        "npm": "wrangler"
+      }
     },
     "node": {
-      "required": ["tsx", "yaml", "nunjucks"]
+      "required": [
+        "tsx",
+        "yaml",
+        "nunjucks"
+      ]
     },
     "install": {
       "nix_method": "shell",
