@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-21T03:20:13.609Z",
+  "_generated": "2026-03-21T03:25:11.739Z",
   "_source": "cloud-data-topology.json via /cloud-data/log-routing",
   "vms": {
     "oci-apps": [
