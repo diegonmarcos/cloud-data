@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-22T10:00:37.115Z",
+  "_generated": "2026-03-22T13:46:48.699Z",
   "suffix": "app",
   "services": {
     "affine": {
@@ -17,6 +17,14 @@
     "filebrowser": {
       "ip": "10.0.0.6",
       "desc": "FileBrowser web file manager (NEW - not deployed yet)"
+    },
+    "google-workspace-mcp": {
+      "ip": "10.0.0.6",
+      "desc": "Google Workspace MCP server — Gmail, Calendar, Drive, Docs, Sheets via HTTP transport"
+    },
+    "g-workspace-mcp": {
+      "ip": "10.0.0.6",
+      "desc": "Google Workspace MCP server — Gmail, Calendar, Drive, Docs, Sheets via HTTP transport"
     },
     "grist": {
       "ip": "10.0.0.6",
@@ -40,7 +48,7 @@
     },
     "mattermost-mcp": {
       "ip": "10.0.0.6",
-      "desc": "Mattermost MCP server"
+      "desc": "Mattermost MCP server — chat tools via HTTP transport"
     },
     "photoprism": {
       "ip": "10.0.0.6",
@@ -58,17 +66,17 @@
       "ip": "10.0.0.6",
       "desc": "Reveal.js markdown presentations (NEW - not deployed yet)"
     },
+    "smtp-proxy": {
+      "ip": "10.0.0.3",
+      "desc": "smtp-proxy"
+    },
     "stalwart": {
       "ip": "10.0.0.3",
       "desc": "Stalwart Mail Server (mail.diegonmarcos.com)"
     },
-    "smtp-proxy": {
-      "ip": "10.0.0.3",
-      "desc": "SMTP Relay"
-    },
     "syncthing": {
       "ip": "10.0.0.3",
-      "desc": "File Sync"
+      "desc": "syncthing"
     },
     "vaultwarden": {
       "ip": "10.0.0.1",
@@ -104,7 +112,7 @@
     },
     "hickory-dns": {
       "ip": "10.0.0.1",
-      "desc": "Internal DNS server for WireGuard mesh (.internal zone)"
+      "desc": "Internal DNS server for WireGuard mesh (per-service .app zones)"
     },
     "authelia": {
       "ip": "10.0.0.1",
@@ -112,34 +120,54 @@
     },
     "caddy": {
       "ip": "10.0.0.1",
-      "desc": "Caddy reverse proxy (replaces NPM on gcp-proxy + oci-mail)"
+      "desc": "Caddy reverse proxy + security dashboard (gcp-proxy)"
     },
     "orchestrator": {
       "ip": "10.0.0.6",
       "desc": "Container orchestrator — resource budget management for on-demand services"
     },
-    "rust-api": {
-      "ip": "10.0.0.6",
-      "desc": "Cloud Rust API (api.diegonmarcos.com — default)"
-    },
     "sauron-central": {
-      "ip": "10.0.0.1",
+      "ip": "10.0.0.4",
       "desc": "Central Syslog Collector + SIEM API"
     },
     "alerts-api": {
-      "ip": "10.0.0.1",
+      "ip": "10.0.0.4",
       "desc": "Security Alert Aggregation API"
+    },
+    "c3-infra-mcp-api": {
+      "ip": "10.0.0.6",
+      "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
+    },
+    "c3-api": {
+      "ip": "10.0.0.6",
+      "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
+    },
+    "c3-services-mcp-api": {
+      "ip": "10.0.0.6",
+      "desc": "C3 Services — Unified service API gateway: MCP server + Fastify API (api.diegonmarcos.com/services)"
+    },
+    "c3-services": {
+      "ip": "10.0.0.6",
+      "desc": "C3 Services — Unified service API gateway: MCP server + Fastify API (api.diegonmarcos.com/services)"
+    },
+    "cloud-spec": {
+      "ip": "10.0.0.6",
+      "desc": "Unified Cloud Documentation Portal"
+    },
+    "c3-spec": {
+      "ip": "10.0.0.6",
+      "desc": "Unified Cloud Documentation Portal"
     },
     "dagu": {
       "ip": "10.0.0.3",
       "desc": "Dagu - Lightweight DAG-based workflow scheduler"
     },
     "dozzle": {
-      "ip": "10.0.0.1",
+      "ip": "10.0.0.4",
       "desc": "Dozzle - Real-time Docker log viewer"
     },
     "fluent-bit": {
-      "ip": "10.0.0.1",
+      "ip": "10.0.0.4",
       "desc": "Log processor and forwarder"
     },
     "lgtm": {
@@ -170,12 +198,16 @@
       "ip": "10.0.0.3",
       "desc": "syslog-forwarder"
     },
-    "windmill": {
+    "umami": {
       "ip": "10.0.0.4",
+      "desc": "Umami Analytics - lightweight privacy-focused web analytics"
+    },
+    "windmill": {
+      "ip": "10.0.0.6",
       "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
     },
     "windmill-app": {
-      "ip": "10.0.0.4",
+      "ip": "10.0.0.6",
       "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
     },
     "backup-borg": {
@@ -205,50 +237,6 @@
     "redis": {
       "ip": "10.0.0.1",
       "desc": "In-memory data store"
-    },
-    "c3-infra-mcp-api": {
-      "ip": "10.0.0.6",
-      "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
-    },
-    "c3-api": {
-      "ip": "10.0.0.6",
-      "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
-    },
-    "sauron-lite-micro1": {
-      "ip": "10.0.0.3",
-      "desc": "File Integrity Scanner"
-    },
-    "sauron-lite-micro2": {
-      "ip": "10.0.0.4",
-      "desc": "File Integrity Scanner"
-    },
-    "sauron-lite-gcp": {
-      "ip": "10.0.0.1",
-      "desc": "File Integrity Scanner"
-    },
-    "sauron-lite-flex": {
-      "ip": "10.0.0.6",
-      "desc": "File Integrity Scanner"
-    },
-    "syslog-forwarder-micro1": {
-      "ip": "10.0.0.3",
-      "desc": "Syslog Forwarder"
-    },
-    "db-agent-gcp": {
-      "ip": "10.0.0.1",
-      "desc": "Central DB Backup Agent"
-    },
-    "db-agent-micro2": {
-      "ip": "10.0.0.4",
-      "desc": "Central DB Backup Agent"
-    },
-    "db-agent-flex": {
-      "ip": "10.0.0.6",
-      "desc": "Central DB Backup Agent"
-    },
-    "rig": {
-      "ip": "10.0.0.6",
-      "desc": "Rig Intelligence Framework — Self-healing orchestrator + GraphRAG"
     }
   },
   "vms": {
