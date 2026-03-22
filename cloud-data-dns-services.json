@@ -1,471 +1,263 @@
 {
-  "_generated": "2026-03-21T19:08:05.591Z",
-  "_source": "cloud-data-topology.json via /cloud-data/dns-services",
-  "suffix": "app",
   "services": {
-    "hedgedoc_app": {
-      "ip": "10.0.0.6",
-      "desc": "Collaborative markdown editor"
-    },
-    "hedgedoc_postgres": {
-      "ip": "10.0.0.6",
-      "desc": "Collaborative markdown editor"
-    },
     "affine": {
       "ip": "10.0.0.6",
-      "desc": "AFFiNE Collaborative Workspace (drive-notes-affine.diegonmarcos.com) — deployed via hedgedoc flake"
+      "vm": "oci-A1-f_0"
     },
     "code-server": {
       "ip": "10.0.0.6",
-      "desc": "VS Code IDE (ide.diegonmarcos.com)"
-    },
-    "etherpad_app": {
-      "ip": "10.0.0.6",
-      "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
-    },
-    "etherpad_postgres": {
-      "ip": "10.0.0.6",
-      "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
+      "vm": "oci-A1-f_0"
     },
     "etherpad": {
       "ip": "10.0.0.6",
-      "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
-    },
-    "filebrowser_app": {
-      "ip": "10.0.0.6",
-      "desc": "FileBrowser web file manager (NEW - not deployed yet)"
+      "vm": "oci-A1-f_0"
     },
     "filebrowser": {
       "ip": "10.0.0.6",
-      "desc": "FileBrowser web file manager (NEW - not deployed yet)"
-    },
-    "grist_app": {
-      "ip": "10.0.0.6",
-      "desc": "Grist spreadsheet/database (sheets.diegonmarcos.com)"
+      "vm": "oci-A1-f_0"
     },
     "grist": {
       "ip": "10.0.0.6",
-      "desc": "Grist spreadsheet/database (sheets.diegonmarcos.com)"
+      "vm": "oci-A1-f_0"
     },
     "hedgedoc": {
       "ip": "10.0.0.6",
-      "desc": "Collaborative markdown editor"
+      "vm": "oci-A1-f_0"
     },
-    "mailu-mcp": {
-      "ip": "10.0.0.3",
-      "desc": "Mailu mail MCP server — IMAP/SMTP/Admin via MCP protocol"
-    },
-    "mattermost": {
+    "mail-mcp": {
       "ip": "10.0.0.6",
-      "desc": "Mattermost team chat with ntfy bridge and C3 command bot"
+      "vm": "oci-A1-f_0"
     },
     "mattermost-bots": {
       "ip": "10.0.0.6",
-      "desc": "Mattermost team chat with ntfy bridge and C3 command bot"
-    },
-    "mattermost-postgres": {
-      "ip": "10.0.0.6",
-      "desc": "Mattermost team chat with ntfy bridge and C3 command bot"
+      "vm": "oci-A1-f_0"
     },
     "mattermost-mcp": {
       "ip": "10.0.0.6",
-      "desc": "Mattermost MCP server"
-    },
-    "photoprism_app": {
-      "ip": "10.0.0.6",
-      "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
-    },
-    "photoprism_mariadb": {
-      "ip": "10.0.0.6",
-      "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
-    },
-    "photoprism_rclone": {
-      "ip": "10.0.0.6",
-      "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
+      "vm": "oci-A1-f_0"
     },
     "photoprism": {
       "ip": "10.0.0.6",
-      "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
-    },
-    "photos-db": {
-      "ip": "10.0.0.6",
-      "desc": "PhotoPrism Webhook + S3 Processor"
+      "vm": "oci-A1-f_0"
     },
     "photos-webhook": {
       "ip": "10.0.0.6",
-      "desc": "PhotoPrism Webhook + S3 Processor"
+      "vm": "oci-A1-f_0"
     },
     "radicale": {
       "ip": "10.0.0.6",
-      "desc": "Radicale CalDAV/CardDAV server (cal.diegonmarcos.com)"
-    },
-    "revealmd_app": {
-      "ip": "10.0.0.6",
-      "desc": "Reveal.js markdown presentations (NEW - not deployed yet)"
+      "vm": "oci-A1-f_0"
     },
     "revealmd": {
       "ip": "10.0.0.6",
-      "desc": "Reveal.js markdown presentations (NEW - not deployed yet)"
+      "vm": "oci-A1-f_0"
     },
-    "admin": {
+    "stalwart": {
       "ip": "10.0.0.3",
-      "desc": "Mailu mail server stack (mail.diegonmarcos.com)"
-    },
-    "antispam": {
-      "ip": "10.0.0.3",
-      "desc": "Mailu mail server stack (mail.diegonmarcos.com)"
-    },
-    "front": {
-      "ip": "10.0.0.3",
-      "desc": "Mailu mail server stack (mail.diegonmarcos.com)"
-    },
-    "imap": {
-      "ip": "10.0.0.3",
-      "desc": "Mailu mail server stack (mail.diegonmarcos.com)"
-    },
-    "redis": {
-      "ip": "10.0.0.1",
-      "desc": "In-memory data store"
-    },
-    "resolver": {
-      "ip": "10.0.0.3",
-      "desc": "Mailu mail server stack (mail.diegonmarcos.com)"
-    },
-    "smtp": {
-      "ip": "10.0.0.3",
-      "desc": "Mailu mail server stack (mail.diegonmarcos.com)"
-    },
-    "webmail": {
-      "ip": "10.0.0.3",
-      "desc": "Mailu mail server stack (mail.diegonmarcos.com)"
-    },
-    "mailu": {
-      "ip": "10.0.0.3",
-      "desc": "Mailu mail server stack (mail.diegonmarcos.com)"
+      "vm": "oci-E2-f_0"
     },
     "smtp-proxy": {
       "ip": "10.0.0.3",
-      "desc": "SMTP Relay"
+      "vm": "oci-E2-f_0"
     },
     "syncthing": {
       "ip": "10.0.0.3",
-      "desc": "File Sync"
+      "vm": "oci-E2-f_0"
     },
     "vaultwarden": {
       "ip": "10.0.0.1",
-      "desc": "Bitwarden password manager"
-    },
-    "crawlee_api": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee_dashboard": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee_db": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee_minio": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee_minio_init": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee_redis": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee_runner": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee_scheduler": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
+      "vm": "gcp-E2-f_0"
     },
     "crawlee-cloud": {
       "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
+      "vm": "oci-A1-f_0"
     },
     "quant-lab-full": {
       "ip": "10.0.0.6",
-      "desc": "Full quant stack: Jupyter + Analytics + ML + Risk + NautilusTrader + Postgres"
+      "vm": "oci-A1-f_0"
     },
     "quant-lab-light": {
       "ip": "10.0.0.6",
-      "desc": "Lightweight quant research: Jupyter + NautilusTrader + Postgres"
+      "vm": "oci-A1-f_0"
     },
     "ollama": {
       "ip": "10.0.0.8",
-      "desc": "Ollama LLM Server — DeepSeek/Qwen 14B on GCP Spot T4 + Vast.ai fallback"
+      "vm": "gcp-T4-p_0"
     },
     "ollama-arm": {
       "ip": "10.0.0.7",
-      "desc": "Ollama LLM server (ARM CPU, 7b models)"
-    },
-    "rig": {
-      "ip": "10.0.0.6",
-      "desc": "Rig Intelligence Framework — Self-healing orchestrator + GraphRAG"
+      "vm": "oci-A1-p_0"
     },
     "rig-agentic": {
       "ip": "10.0.0.6",
-      "desc": "Rig Agentic AI - Infrastructure agent with DeepSeek + tool calling via C3 API"
+      "vm": "oci-A1-f_0"
     },
     "hickory-dns": {
       "ip": "10.0.0.1",
-      "desc": "Internal DNS server for WireGuard mesh (.internal zone)"
+      "vm": "gcp-E2-f_0"
     },
     "authelia": {
       "ip": "10.0.0.1",
-      "desc": "SSO and 2FA authentication portal"
-    },
-    "authelia-redis": {
-      "ip": "10.0.0.1",
-      "desc": "SSO and 2FA authentication portal"
+      "vm": "gcp-E2-f_0"
     },
     "caddy": {
       "ip": "10.0.0.1",
-      "desc": "Caddy reverse proxy (replaces NPM on gcp-proxy + oci-mail)"
-    },
-    "introspect-proxy": {
-      "ip": "10.0.0.1",
-      "desc": "Caddy reverse proxy (replaces NPM on gcp-proxy + oci-mail)"
+      "vm": "gcp-E2-f_0"
     },
     "orchestrator": {
       "ip": "10.0.0.6",
-      "desc": "Container orchestrator — resource budget management for on-demand services"
+      "vm": "oci-A1-f_0"
     },
     "rust-api": {
       "ip": "10.0.0.6",
-      "desc": "Cloud Rust API (api.diegonmarcos.com — default)"
-    },
-    "siem-api": {
-      "ip": "10.0.0.1",
-      "desc": "Central Syslog Collector + SIEM API"
-    },
-    "syslog-central": {
-      "ip": "10.0.0.1",
-      "desc": "Central Syslog Collector + SIEM API"
+      "vm": "oci-A1-f_0"
     },
     "sauron-central": {
       "ip": "10.0.0.1",
-      "desc": "Central Syslog Collector + SIEM API"
+      "vm": "gcp-E2-f_0"
     },
     "alerts-api": {
       "ip": "10.0.0.1",
-      "desc": "Security Alert Aggregation API"
+      "vm": "gcp-E2-f_0"
     },
     "dagu": {
       "ip": "10.0.0.3",
-      "desc": "Dagu - Lightweight DAG-based workflow scheduler"
+      "vm": "oci-E2-f_0"
     },
     "dozzle": {
       "ip": "10.0.0.1",
-      "desc": "Dozzle - Real-time Docker log viewer"
+      "vm": "gcp-E2-f_0"
     },
     "fluent-bit": {
       "ip": "10.0.0.1",
-      "desc": "Log processor and forwarder"
-    },
-    "lgtm_grafana": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    "lgtm_loki": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    "lgtm_mimir": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    "lgtm_tempo": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
+      "vm": "gcp-E2-f_0"
     },
     "lgtm": {
       "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    "matomo-hybrid": {
-      "ip": "10.0.0.4",
-      "desc": "Matomo hybrid analytics (oci-analytics)"
+      "vm": "oci-A1-f_0"
     },
     "matomo": {
       "ip": "10.0.0.4",
-      "desc": "Matomo hybrid analytics (oci-analytics)"
+      "vm": "oci-E2-f_1"
     },
     "nocodb": {
       "ip": "10.0.0.6",
-      "desc": "NocoDB database spreadsheet (nocodb.diegonmarcos.com)"
-    },
-    "nocodb-db": {
-      "ip": "10.0.0.6",
-      "desc": "NocoDB database spreadsheet (nocodb.diegonmarcos.com)"
-    },
-    "github-rss": {
-      "ip": "10.0.0.1",
-      "desc": "Push notification server"
+      "vm": "oci-A1-f_0"
     },
     "ntfy": {
       "ip": "10.0.0.1",
-      "desc": "Push notification server"
-    },
-    "ntfy-topic-scanner": {
-      "ip": "10.0.0.1",
-      "desc": "Push notification server"
-    },
-    "syslog-bridge": {
-      "ip": "10.0.0.1",
-      "desc": "Push notification server"
+      "vm": "gcp-E2-f_0"
     },
     "sauron-forwarder": {
       "ip": "10.0.0.4",
-      "desc": "Alert forwarding to central sauron"
+      "vm": "oci-E2-f_1"
     },
     "syslog-forwarder": {
       "ip": "10.0.0.3",
-      "desc": "Syslog Forwarder"
-    },
-    "windmill-db": {
-      "ip": "10.0.0.4",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
-    },
-    "windmill-server": {
-      "ip": "10.0.0.4",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
-    },
-    "windmill-worker": {
-      "ip": "10.0.0.4",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
+      "vm": "oci-E2-f_0"
     },
     "windmill": {
       "ip": "10.0.0.4",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
-    },
-    "borg-server": {
-      "ip": "10.0.0.6",
-      "desc": "Media Backups SSH Server (Borg deduplication)"
+      "vm": "oci-E2-f_1"
     },
     "backup-borg": {
       "ip": "10.0.0.6",
-      "desc": "Media Backups SSH Server (Borg deduplication)"
-    },
-    "bup-server": {
-      "ip": "10.0.0.6",
-      "desc": "Database Backups SSH Server (bup)"
+      "vm": "oci-A1-f_0"
     },
     "backup-bup": {
       "ip": "10.0.0.6",
-      "desc": "Database Backups SSH Server (bup)"
-    },
-    "gitea": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Git service"
+      "vm": "oci-A1-f_0"
     },
     "backup-gitea": {
       "ip": "10.0.0.6",
-      "desc": "Self-hosted Gitea for git backups and mirroring"
+      "vm": "oci-A1-f_0"
     },
-    "surrealdb": {
+    "gitea": {
       "ip": "10.0.0.6",
-      "desc": "SurrealDB Hybrid Knowledge Graph - Infrastructure topology + vector search"
+      "vm": "oci-A1-f_0"
     },
     "kg-graph": {
       "ip": "10.0.0.6",
-      "desc": "SurrealDB Hybrid Knowledge Graph - Infrastructure topology + vector search"
-    },
-    "postlite-authelia": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "postlite-npm": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "postlite-ntfy": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "postlite-vaultwarden": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "sqlite-authelia": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "sqlite-npm": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "sqlite-ntfy": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "sqlite-vaultwarden": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
+      "vm": "oci-A1-f_0"
     },
     "postlite": {
       "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
+      "vm": "gcp-E2-f_0"
+    },
+    "redis": {
+      "ip": "10.0.0.1",
+      "vm": "gcp-E2-f_0"
     },
     "c3-infra-mcp-api": {
       "ip": "10.0.0.6",
-      "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
-    },
-    "sauron": {
-      "ip": "10.0.0.6",
-      "desc": "File Integrity Scanner"
+      "vm": "oci-A1-f_0"
     },
     "sauron-lite-micro1": {
       "ip": "10.0.0.3",
-      "desc": "File Integrity Scanner"
+      "vm": "oci-E2-f_0"
     },
     "sauron-lite-micro2": {
       "ip": "10.0.0.4",
-      "desc": "File Integrity Scanner"
+      "vm": "oci-E2-f_1"
     },
     "sauron-lite-gcp": {
       "ip": "10.0.0.1",
-      "desc": "File Integrity Scanner"
+      "vm": "gcp-E2-f_0"
     },
     "sauron-lite-flex": {
       "ip": "10.0.0.6",
-      "desc": "File Integrity Scanner"
+      "vm": "oci-A1-f_0"
     },
     "syslog-forwarder-micro1": {
       "ip": "10.0.0.3",
-      "desc": "Syslog Forwarder"
-    },
-    "db-agent": {
-      "ip": "10.0.0.6",
-      "desc": "Central DB Backup Agent"
+      "vm": "oci-E2-f_0"
     },
     "db-agent-gcp": {
       "ip": "10.0.0.1",
-      "desc": "Central DB Backup Agent"
+      "vm": "gcp-E2-f_0"
     },
     "db-agent-micro2": {
       "ip": "10.0.0.4",
-      "desc": "Central DB Backup Agent"
+      "vm": "oci-E2-f_1"
     },
     "db-agent-flex": {
       "ip": "10.0.0.6",
-      "desc": "Central DB Backup Agent"
+      "vm": "oci-A1-f_0"
+    },
+    "rig": {
+      "ip": "10.0.0.6",
+      "vm": "oci-A1-f_0"
     }
   },
   "vms": {
-    "1": "gcp-proxy",
-    "3": "oci-mail",
-    "4": "oci-analytics",
-    "6": "oci-apps",
-    "7": "oci-apps-2",
-    "8": "gcp-t4"
-  }
+    "oci-E2-f_0": {
+      "ip": "10.0.0.3",
+      "alias": ""
+    },
+    "oci-E2-f_1": {
+      "ip": "10.0.0.4",
+      "alias": ""
+    },
+    "oci-A1-f_0": {
+      "ip": "10.0.0.6",
+      "alias": ""
+    },
+    "oci-A1-p_0": {
+      "ip": "10.0.0.7",
+      "alias": ""
+    },
+    "gcp-T4-p_0": {
+      "ip": "10.0.0.8",
+      "alias": ""
+    },
+    "gcp-E2-f_0": {
+      "ip": "10.0.0.1",
+      "alias": ""
+    },
+    "vast-RTX-p_0": {
+      "ip": null,
+      "alias": ""
+    }
+  },
+  "suffix": "app"
 }
