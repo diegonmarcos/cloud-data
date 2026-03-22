@@ -1,15 +1,7 @@
 {
-  "_generated": "2026-03-22T09:19:30.021Z",
+  "_generated": "2026-03-22T10:00:37.115Z",
   "suffix": "app",
   "services": {
-    "hedgedoc-app": {
-      "ip": "10.0.0.6",
-      "desc": "Collaborative markdown editor"
-    },
-    "hedgedoc-postgres": {
-      "ip": "10.0.0.6",
-      "desc": "Collaborative markdown editor"
-    },
     "affine": {
       "ip": "10.0.0.6",
       "desc": "AFFiNE Collaborative Workspace (drive-notes-affine.diegonmarcos.com) — deployed via hedgedoc flake"
@@ -18,29 +10,13 @@
       "ip": "10.0.0.6",
       "desc": "VS Code IDE (ide.diegonmarcos.com)"
     },
-    "etherpad-app": {
-      "ip": "10.0.0.6",
-      "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
-    },
-    "etherpad-postgres": {
-      "ip": "10.0.0.6",
-      "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
-    },
     "etherpad": {
       "ip": "10.0.0.6",
       "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
     },
-    "filebrowser-app": {
-      "ip": "10.0.0.6",
-      "desc": "FileBrowser web file manager (NEW - not deployed yet)"
-    },
     "filebrowser": {
       "ip": "10.0.0.6",
       "desc": "FileBrowser web file manager (NEW - not deployed yet)"
-    },
-    "grist-app": {
-      "ip": "10.0.0.6",
-      "desc": "Grist spreadsheet/database (sheets.diegonmarcos.com)"
     },
     "grist": {
       "ip": "10.0.0.6",
@@ -54,15 +30,11 @@
       "ip": "10.0.0.6",
       "desc": "Mail MCP server — IMAP/SMTP/Admin via Stalwart REST API"
     },
-    "mattermost": {
-      "ip": "10.0.0.6",
-      "desc": "Mattermost team chat with ntfy bridge and C3 command bot"
-    },
     "mattermost-bots": {
       "ip": "10.0.0.6",
       "desc": "Mattermost team chat with ntfy bridge and C3 command bot"
     },
-    "mattermost-postgres": {
+    "mattermost": {
       "ip": "10.0.0.6",
       "desc": "Mattermost team chat with ntfy bridge and C3 command bot"
     },
@@ -70,25 +42,9 @@
       "ip": "10.0.0.6",
       "desc": "Mattermost MCP server"
     },
-    "photoprism-app": {
-      "ip": "10.0.0.6",
-      "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
-    },
-    "photoprism-mariadb": {
-      "ip": "10.0.0.6",
-      "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
-    },
-    "photoprism-rclone": {
-      "ip": "10.0.0.6",
-      "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
-    },
     "photoprism": {
       "ip": "10.0.0.6",
       "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
-    },
-    "photos-db": {
-      "ip": "10.0.0.6",
-      "desc": "PhotoPrism Webhook + S3 Processor"
     },
     "photos-webhook": {
       "ip": "10.0.0.6",
@@ -97,10 +53,6 @@
     "radicale": {
       "ip": "10.0.0.6",
       "desc": "Radicale CalDAV/CardDAV server (cal.diegonmarcos.com)"
-    },
-    "revealmd-app": {
-      "ip": "10.0.0.6",
-      "desc": "Reveal.js markdown presentations (NEW - not deployed yet)"
     },
     "revealmd": {
       "ip": "10.0.0.6",
@@ -122,39 +74,11 @@
       "ip": "10.0.0.1",
       "desc": "Bitwarden password manager"
     },
-    "crawlee-api": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee-dashboard": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee-db": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee-minio": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee-minio-init": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee-redis": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee-runner": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee-scheduler": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
     "crawlee-cloud": {
+      "ip": "10.0.0.6",
+      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
+    },
+    "crawlee": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
@@ -174,10 +98,6 @@
       "ip": "10.0.0.7",
       "desc": "Ollama LLM server (ARM CPU, 7b models)"
     },
-    "rig": {
-      "ip": "10.0.0.6",
-      "desc": "Rig Intelligence Framework — Self-healing orchestrator + GraphRAG"
-    },
     "rig-agentic": {
       "ip": "10.0.0.6",
       "desc": "Rig Agentic AI - Infrastructure agent with DeepSeek + tool calling via C3 API"
@@ -190,15 +110,7 @@
       "ip": "10.0.0.1",
       "desc": "SSO and 2FA authentication portal"
     },
-    "authelia-redis": {
-      "ip": "10.0.0.1",
-      "desc": "SSO and 2FA authentication portal"
-    },
     "caddy": {
-      "ip": "10.0.0.1",
-      "desc": "Caddy reverse proxy (replaces NPM on gcp-proxy + oci-mail)"
-    },
-    "introspect-proxy": {
       "ip": "10.0.0.1",
       "desc": "Caddy reverse proxy (replaces NPM on gcp-proxy + oci-mail)"
     },
@@ -209,14 +121,6 @@
     "rust-api": {
       "ip": "10.0.0.6",
       "desc": "Cloud Rust API (api.diegonmarcos.com — default)"
-    },
-    "siem-api": {
-      "ip": "10.0.0.1",
-      "desc": "Central Syslog Collector + SIEM API"
-    },
-    "syslog-central": {
-      "ip": "10.0.0.1",
-      "desc": "Central Syslog Collector + SIEM API"
     },
     "sauron-central": {
       "ip": "10.0.0.1",
@@ -238,29 +142,13 @@
       "ip": "10.0.0.1",
       "desc": "Log processor and forwarder"
     },
-    "lgtm-grafana": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    "lgtm-loki": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    "lgtm-mimir": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    "lgtm-tempo": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
     "lgtm": {
       "ip": "10.0.0.6",
       "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
-    "matomo-hybrid": {
-      "ip": "10.0.0.4",
-      "desc": "Matomo hybrid analytics (oci-analytics)"
+    "grafana": {
+      "ip": "10.0.0.6",
+      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
     "matomo": {
       "ip": "10.0.0.4",
@@ -270,23 +158,7 @@
       "ip": "10.0.0.6",
       "desc": "NocoDB database spreadsheet (nocodb.diegonmarcos.com)"
     },
-    "nocodb-db": {
-      "ip": "10.0.0.6",
-      "desc": "NocoDB database spreadsheet (nocodb.diegonmarcos.com)"
-    },
-    "github-rss": {
-      "ip": "10.0.0.1",
-      "desc": "Push notification server"
-    },
     "ntfy": {
-      "ip": "10.0.0.1",
-      "desc": "Push notification server"
-    },
-    "ntfy-topic-scanner": {
-      "ip": "10.0.0.1",
-      "desc": "Push notification server"
-    },
-    "syslog-bridge": {
       "ip": "10.0.0.1",
       "desc": "Push notification server"
     },
@@ -296,87 +168,35 @@
     },
     "syslog-forwarder": {
       "ip": "10.0.0.3",
-      "desc": "Syslog Forwarder"
-    },
-    "windmill-db": {
-      "ip": "10.0.0.4",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
-    },
-    "windmill-server": {
-      "ip": "10.0.0.4",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
-    },
-    "windmill-worker": {
-      "ip": "10.0.0.4",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
+      "desc": "syslog-forwarder"
     },
     "windmill": {
       "ip": "10.0.0.4",
       "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
     },
-    "borg-server": {
-      "ip": "10.0.0.6",
-      "desc": "Media Backups SSH Server (Borg deduplication)"
+    "windmill-app": {
+      "ip": "10.0.0.4",
+      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
     },
     "backup-borg": {
       "ip": "10.0.0.6",
       "desc": "Media Backups SSH Server (Borg deduplication)"
     },
-    "bup-server": {
-      "ip": "10.0.0.6",
-      "desc": "Database Backups SSH Server (bup)"
-    },
     "backup-bup": {
       "ip": "10.0.0.6",
       "desc": "Database Backups SSH Server (bup)"
-    },
-    "gitea": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Git service"
     },
     "backup-gitea": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Gitea for git backups and mirroring"
     },
-    "surrealdb": {
+    "gitea": {
       "ip": "10.0.0.6",
-      "desc": "SurrealDB Hybrid Knowledge Graph - Infrastructure topology + vector search"
+      "desc": "Self-hosted Git service"
     },
     "kg-graph": {
       "ip": "10.0.0.6",
       "desc": "SurrealDB Hybrid Knowledge Graph - Infrastructure topology + vector search"
-    },
-    "postlite-authelia": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "postlite-npm": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "postlite-ntfy": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "postlite-vaultwarden": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "sqlite-authelia": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "sqlite-npm": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "sqlite-ntfy": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
-    "sqlite-vaultwarden": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
     },
     "postlite": {
       "ip": "10.0.0.1",
@@ -390,9 +210,9 @@
       "ip": "10.0.0.6",
       "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
     },
-    "sauron": {
+    "c3-api": {
       "ip": "10.0.0.6",
-      "desc": "File Integrity Scanner"
+      "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
     },
     "sauron-lite-micro1": {
       "ip": "10.0.0.3",
@@ -414,10 +234,6 @@
       "ip": "10.0.0.3",
       "desc": "Syslog Forwarder"
     },
-    "db-agent": {
-      "ip": "10.0.0.6",
-      "desc": "Central DB Backup Agent"
-    },
     "db-agent-gcp": {
       "ip": "10.0.0.1",
       "desc": "Central DB Backup Agent"
@@ -429,6 +245,10 @@
     "db-agent-flex": {
       "ip": "10.0.0.6",
       "desc": "Central DB Backup Agent"
+    },
+    "rig": {
+      "ip": "10.0.0.6",
+      "desc": "Rig Intelligence Framework — Self-healing orchestrator + GraphRAG"
     }
   },
   "vms": {
