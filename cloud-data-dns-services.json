@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-22T13:46:48.699Z",
+  "_generated": "2026-03-22T19:40:25.653Z",
   "suffix": "app",
   "services": {
     "affine": {
@@ -12,7 +12,7 @@
     },
     "etherpad": {
       "ip": "10.0.0.6",
-      "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
+      "desc": "Etherpad collaborative editor"
     },
     "filebrowser": {
       "ip": "10.0.0.6",
@@ -121,6 +121,10 @@
     "caddy": {
       "ip": "10.0.0.1",
       "desc": "Caddy reverse proxy + security dashboard (gcp-proxy)"
+    },
+    "introspect-proxy": {
+      "ip": "10.0.0.1",
+      "desc": "OIDC token introspection sidecar for Caddy Bearer auth"
     },
     "orchestrator": {
       "ip": "10.0.0.6",
