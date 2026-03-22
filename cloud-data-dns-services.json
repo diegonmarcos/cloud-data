@@ -1,13 +1,12 @@
 {
-  "_generated": "2026-03-22T09:14:37.868Z",
-  "_source": "local c3 api logic",
+  "_generated": "2026-03-22T09:19:30.021Z",
   "suffix": "app",
   "services": {
-    "hedgedoc_app": {
+    "hedgedoc-app": {
       "ip": "10.0.0.6",
       "desc": "Collaborative markdown editor"
     },
-    "hedgedoc_postgres": {
+    "hedgedoc-postgres": {
       "ip": "10.0.0.6",
       "desc": "Collaborative markdown editor"
     },
@@ -19,11 +18,11 @@
       "ip": "10.0.0.6",
       "desc": "VS Code IDE (ide.diegonmarcos.com)"
     },
-    "etherpad_app": {
+    "etherpad-app": {
       "ip": "10.0.0.6",
       "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
     },
-    "etherpad_postgres": {
+    "etherpad-postgres": {
       "ip": "10.0.0.6",
       "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
     },
@@ -31,7 +30,7 @@
       "ip": "10.0.0.6",
       "desc": "Etherpad collaborative editor (NEW - not deployed yet)"
     },
-    "filebrowser_app": {
+    "filebrowser-app": {
       "ip": "10.0.0.6",
       "desc": "FileBrowser web file manager (NEW - not deployed yet)"
     },
@@ -39,7 +38,7 @@
       "ip": "10.0.0.6",
       "desc": "FileBrowser web file manager (NEW - not deployed yet)"
     },
-    "grist_app": {
+    "grist-app": {
       "ip": "10.0.0.6",
       "desc": "Grist spreadsheet/database (sheets.diegonmarcos.com)"
     },
@@ -71,15 +70,15 @@
       "ip": "10.0.0.6",
       "desc": "Mattermost MCP server"
     },
-    "photoprism_app": {
+    "photoprism-app": {
       "ip": "10.0.0.6",
       "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
     },
-    "photoprism_mariadb": {
+    "photoprism-mariadb": {
       "ip": "10.0.0.6",
       "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
     },
-    "photoprism_rclone": {
+    "photoprism-rclone": {
       "ip": "10.0.0.6",
       "desc": "PhotoPrism AI-powered photo management (oci-flex-1)"
     },
@@ -99,7 +98,7 @@
       "ip": "10.0.0.6",
       "desc": "Radicale CalDAV/CardDAV server (cal.diegonmarcos.com)"
     },
-    "revealmd_app": {
+    "revealmd-app": {
       "ip": "10.0.0.6",
       "desc": "Reveal.js markdown presentations (NEW - not deployed yet)"
     },
@@ -123,35 +122,35 @@
       "ip": "10.0.0.1",
       "desc": "Bitwarden password manager"
     },
-    "crawlee_api": {
+    "crawlee-api": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
-    "crawlee_dashboard": {
+    "crawlee-dashboard": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
-    "crawlee_db": {
+    "crawlee-db": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
-    "crawlee_minio": {
+    "crawlee-minio": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
-    "crawlee_minio_init": {
+    "crawlee-minio-init": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
-    "crawlee_redis": {
+    "crawlee-redis": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
-    "crawlee_runner": {
+    "crawlee-runner": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
-    "crawlee_scheduler": {
+    "crawlee-scheduler": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
@@ -239,19 +238,19 @@
       "ip": "10.0.0.1",
       "desc": "Log processor and forwarder"
     },
-    "lgtm_grafana": {
+    "lgtm-grafana": {
       "ip": "10.0.0.6",
       "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
-    "lgtm_loki": {
+    "lgtm-loki": {
       "ip": "10.0.0.6",
       "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
-    "lgtm_mimir": {
+    "lgtm-mimir": {
       "ip": "10.0.0.6",
       "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
-    "lgtm_tempo": {
+    "lgtm-tempo": {
       "ip": "10.0.0.6",
       "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
