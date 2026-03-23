@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-23T22:37:47.984Z",
+  "_generated": "2026-03-23T22:40:13.443Z",
   "_source": "cloud-data-topology.json via /cloud-data/firewall-rules",
   "vms": {
     "oci-apps": {
