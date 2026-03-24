@@ -3,7 +3,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 1
   },
-  "_generated": "2026-03-24T07:55:04.271Z",
+  "_generated": "2026-03-24T08:00:04.619Z",
   "_source": "build.json proxy fields via /cloud-data/caddy-routes",
   "l4_routes": [],
   "routes": [
@@ -113,6 +113,13 @@
     {
       "domain": "mcp.diegonmarcos.com/c3-infra-mcp",
       "comment": "C3 MCP Server — Cloud Control Center MCP transport (stdio + HTTP)"
+    },
+    {
+      "domain": "api.diegonmarcos.com/services",
+      "comment": "C3 Services REST API — service API gateway Fastify API"
+    },
+    {
+      "comment": "C3 Services MCP Server — service API gateway MCP transport (stdio + HTTP)"
     }
   ],
   "path_routes": [
@@ -125,22 +132,6 @@
           "github_path": "mcp-api-swagger",
           "redirect_bare": true,
           "comment": "C3 Dashboard from GitHub Pages"
-        },
-        {
-          "base_path": "/c3-api",
-          "upstream": "c3-api.app:8081",
-          "public_paths": [
-            "/c3-api/docs/json"
-          ],
-          "comment": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
-        },
-        {
-          "base_path": "/services",
-          "upstream": "c3-services.app:8082",
-          "public_paths": [
-            "/services/docs/json"
-          ],
-          "comment": "C3 Services — Unified service API gateway: MCP server + Fastify API (api.diegonmarcos.com/services)"
         }
       ],
       "comment": "API hub -- path-based routing to backend APIs",
@@ -183,23 +174,7 @@
       "github_path": "mymaps"
     }
   ],
-  "mcp_routes": [
-    {
-      "parent_domain": "mcp.diegonmarcos.com",
-      "endpoints": [
-        {
-          "base_path": "/c3-infra-mcp",
-          "upstream": "c3-infra-mcp-api.app:3100"
-        },
-        {
-          "base_path": "/c3-services-mcp",
-          "upstream": "c3-services-mcp-api.app:3101"
-        }
-      ],
-      "comment": "MCP -- Streamable HTTP endpoints for Claude Code MCP clients",
-      "fallback_message": "MCP Hub -- use /c3-infra-mcp/mcp, /c3-services-mcp/mcp, /mattermost-mcp/mcp, /mail-mcp/mcp, /g-workspace/mcp"
-    }
-  ],
+  "mcp_routes": [],
   "special": {
     "analytics": {
       "domain": "analytics.diegonmarcos.com",

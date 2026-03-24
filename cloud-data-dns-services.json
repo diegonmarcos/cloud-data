@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-24T07:55:03.798Z",
+  "_generated": "2026-03-24T08:00:04.144Z",
   "_source": "cloud-data-topology.json via /cloud-data/dns-services",
   "suffix": "app",
   "services": {
@@ -199,10 +199,6 @@
       "ip": "10.0.0.6",
       "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
     },
-    "c3-api": {
-      "ip": "10.0.0.6",
-      "desc": "C3 REST API — Cloud Control Center Fastify API"
-    },
     "sauron-lite-micro1": {
       "ip": "10.0.0.3",
       "desc": "File Integrity Scanner"
@@ -259,17 +255,21 @@
       "ip": "10.0.0.1",
       "desc": "OIDC token introspection sidecar for Caddy Bearer auth"
     },
+    "c3-api": {
+      "ip": "10.0.0.6",
+      "desc": "C3 REST API — Cloud Control Center Fastify API"
+    },
     "c3-mcp": {
       "ip": "10.0.0.6",
       "desc": "C3 MCP Server — Cloud Control Center MCP transport (stdio + HTTP)"
     },
-    "c3-services-mcp-api": {
+    "c3-services-api": {
       "ip": "10.0.0.6",
-      "desc": "C3 Services — Unified service API gateway: MCP server + Fastify API (api.diegonmarcos.com/services)"
+      "desc": "C3 Services REST API — service API gateway Fastify API"
     },
-    "c3-services": {
+    "c3-services-mcp": {
       "ip": "10.0.0.6",
-      "desc": "C3 Services — Unified service API gateway: MCP server + Fastify API (api.diegonmarcos.com/services)"
+      "desc": "C3 Services MCP Server — service API gateway MCP transport (stdio + HTTP)"
     },
     "umami": {
       "ip": "10.0.0.4",
