@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-24T01:05:03.944Z",
+  "_generated": "2026-03-24T01:10:03.843Z",
   "_source": "cloud-data-topology.json via /cloud-data/dns-services",
   "suffix": "app",
   "services": {
@@ -32,10 +32,6 @@
       "desc": "Mailu mail MCP server — IMAP/SMTP/Admin via MCP protocol"
     },
     "mattermost-bots": {
-      "ip": "10.0.0.6",
-      "desc": "Mattermost team chat with ntfy bridge and C3 command bot"
-    },
-    "mattermost": {
       "ip": "10.0.0.6",
       "desc": "Mattermost team chat with ntfy bridge and C3 command bot"
     },
@@ -76,10 +72,6 @@
       "desc": "Bitwarden password manager"
     },
     "crawlee-cloud": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
-    },
-    "crawlee": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
@@ -147,10 +139,6 @@
       "ip": "10.0.0.6",
       "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
-    "grafana": {
-      "ip": "10.0.0.6",
-      "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
     "matomo": {
       "ip": "10.0.0.4",
       "desc": "Matomo hybrid analytics (oci-analytics)"
@@ -172,10 +160,6 @@
       "desc": ""
     },
     "windmill": {
-      "ip": "10.0.0.6",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
-    },
-    "windmill-app": {
       "ip": "10.0.0.6",
       "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
     },
@@ -211,17 +195,13 @@
       "ip": "10.0.0.6",
       "desc": "Unified Cloud Documentation Portal"
     },
-    "c3-spec": {
-      "ip": "10.0.0.6",
-      "desc": "Unified Cloud Documentation Portal"
-    },
     "c3-infra-mcp-api": {
       "ip": "10.0.0.6",
       "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
     },
     "c3-api": {
       "ip": "10.0.0.6",
-      "desc": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)"
+      "desc": "C3 REST API — Cloud Control Center Fastify API"
     },
     "sauron-lite-micro1": {
       "ip": "10.0.0.3",
@@ -263,10 +243,6 @@
       "ip": "10.0.0.6",
       "desc": "Google Workspace MCP server — Gmail, Calendar, Drive, Docs, Sheets via HTTP transport"
     },
-    "g-workspace-mcp": {
-      "ip": "10.0.0.6",
-      "desc": "Google Workspace MCP server — Gmail, Calendar, Drive, Docs, Sheets via HTTP transport"
-    },
     "mail-mcp": {
       "ip": "10.0.0.6",
       "desc": "Mail MCP server — IMAP/SMTP/Admin via Stalwart REST API"
@@ -282,6 +258,10 @@
     "introspect-proxy": {
       "ip": "10.0.0.1",
       "desc": "OIDC token introspection sidecar for Caddy Bearer auth"
+    },
+    "c3-mcp": {
+      "ip": "10.0.0.6",
+      "desc": "C3 MCP Server — Cloud Control Center MCP transport (stdio + HTTP)"
     },
     "c3-services-mcp-api": {
       "ip": "10.0.0.6",
