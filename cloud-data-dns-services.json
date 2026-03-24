@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-24T08:00:04.144Z",
+  "_generated": "2026-03-24T08:05:08.605Z",
   "_source": "cloud-data-topology.json via /cloud-data/dns-services",
   "suffix": "app",
   "services": {
@@ -255,11 +255,11 @@
       "ip": "10.0.0.1",
       "desc": "OIDC token introspection sidecar for Caddy Bearer auth"
     },
-    "c3-api": {
+    "c3-infra-api": {
       "ip": "10.0.0.6",
       "desc": "C3 REST API — Cloud Control Center Fastify API"
     },
-    "c3-mcp": {
+    "c3-infra-mcp": {
       "ip": "10.0.0.6",
       "desc": "C3 MCP Server — Cloud Control Center MCP transport (stdio + HTTP)"
     },
