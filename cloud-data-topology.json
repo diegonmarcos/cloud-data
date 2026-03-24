@@ -1,7 +1,7 @@
 {
-  "ssh_key": "/home/diego/Mounts/Git/vault/A0_keys/ssh/id_rsa",
+  "ssh_key": "/home/diego/git/vault/A0_keys/ssh/id_rsa",
   "remote_base": "/opt/containers",
-  "engine_folder": "bc-obs_c3-infra-mcp-api",
+  "engine_folder": "bc-obs_c3-infra-mcp",
   "vms": {
     "oci-E2-f_0": {
       "ip": "130.110.251.193",
@@ -9,7 +9,11 @@
       "user": "ubuntu",
       "method": "key",
       "ssh_alias": "oci-mail",
-      "description": "Oracle Free - E2 Micro 0 - Mail Server"
+      "description": "Oracle Free - E2 Micro 0 - Mail Server",
+      "gha": {
+        "ssh_secret": "OCI_SSH_KEY",
+        "host_literal": true
+      }
     },
     "oci-E2-f_1": {
       "ip": "129.151.228.66",
@@ -17,7 +21,11 @@
       "user": "ubuntu",
       "method": "key",
       "ssh_alias": "oci-analytics",
-      "description": "Oracle Free - E2 Micro 1 - Analytics + Workflows"
+      "description": "Oracle Free - E2 Micro 1 - Analytics + Workflows",
+      "gha": {
+        "ssh_secret": "OCI_SSH_KEY",
+        "host_literal": true
+      }
     },
     "oci-A1-f_0": {
       "ip": "82.70.229.129",
@@ -25,15 +33,11 @@
       "user": "ubuntu",
       "method": "key",
       "ssh_alias": "oci-apps",
-      "description": "Oracle Free - A1 Flex 0 (4 OCPUs / 24GB / 100GB) — Consolidated"
-    },
-    "oci-A1-p_0": {
-      "ip": "79.72.28.10",
-      "wg_ip": "10.0.0.7",
-      "user": "ubuntu",
-      "method": "key",
-      "ssh_alias": "oci-apps-2",
-      "description": "Oracle Paid - A1 Flex 0 (8 OCPUs / 32GB)"
+      "description": "Oracle Free - A1 Flex 0 (4 OCPUs / 24GB / 100GB) — Consolidated",
+      "gha": {
+        "ssh_secret": "OCI_SSH_KEY",
+        "host_literal": true
+      }
     },
     "gcp-T4-p_0": {
       "ip": "34.173.227.250",
@@ -49,7 +53,12 @@
       "vram": "16GB",
       "cost_per_hour": "$0.18",
       "provisioning": "spot",
-      "notes": "Spot VM — may be preempted. Dynamic IP, update after creation."
+      "notes": "Spot VM — may be preempted. Dynamic IP, update after creation.",
+      "gha": {
+        "ssh_secret": "GCP_T4_SSH_KEY",
+        "host_secret": "GCP_T4_HOST",
+        "user_secret": "GCP_T4_USER"
+      }
     },
     "gcp-E2-f_0": {
       "ip": "35.226.147.64",
@@ -59,7 +68,12 @@
       "ssh_alias": "gcp-proxy",
       "gcloud_instance": "arch-1",
       "gcloud_zone": "us-central1-a",
-      "description": "GCloud Free - E2 Micro 0 - Central Proxy + Control"
+      "description": "GCloud Free - E2 Micro 0 - Central Proxy + Control",
+      "gha": {
+        "ssh_secret": "GCP_PROXY_SSH_KEY",
+        "host_secret": "GCP_PROXY_HOST",
+        "user_secret": "GCP_PROXY_USER"
+      }
     },
     "vast-RTX-p_0": {
       "ip": "TBD",
@@ -135,16 +149,6 @@
     }
   },
   "services": {
-    "affine": {
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "containers": [
-        "hedgedoc_app",
-        "hedgedoc_postgres"
-      ],
-      "domain": "drive-notes-affine.diegonmarcos.com",
-      "description": "AFFiNE Collaborative Workspace (drive-notes-affine.diegonmarcos.com) — deployed via hedgedoc flake"
-    },
     "code-server": {
       "category": "app",
       "vm": "oci-A1-f_0",
@@ -192,14 +196,14 @@
       "domain": "doc.diegonmarcos.com",
       "description": "Collaborative markdown editor"
     },
-    "mailu-mcp": {
+    "mail-mcp": {
       "category": "app",
-      "vm": "oci-E2-f_0",
+      "vm": "oci-A1-f_0",
       "containers": [
-        "mailu-mcp"
+        "mail-mcp"
       ],
-      "description": "Mailu mail MCP server — IMAP/SMTP/Admin via MCP protocol",
-      "flake": "mailu-mcp"
+      "description": "Mail MCP server — IMAP/SMTP/Admin via Stalwart REST API",
+      "flake": "mail-mcp"
     },
     "mattermost-bots": {
       "category": "app",
@@ -258,22 +262,25 @@
       "domain": "slides.diegonmarcos.com",
       "description": "Reveal.js markdown presentations (NEW - not deployed yet)"
     },
-    "mailu": {
+    "stalwart": {
       "category": "app",
       "vm": "oci-E2-f_0",
       "containers": [
-        "admin",
-        "antispam",
-        "front",
-        "imap",
-        "redis",
-        "resolver",
-        "smtp",
-        "webmail"
+        "stalwart"
       ],
       "domain": "mail.diegonmarcos.com",
-      "description": "Mailu mail server stack (mail.diegonmarcos.com)",
-      "flake": "tools-mailu"
+      "description": "Stalwart Mail Server (mail.diegonmarcos.com)",
+      "flake": "tools-stalwart"
+    },
+    "snappymail": {
+      "category": "app",
+      "vm": "oci-E2-f_0",
+      "containers": [
+        "snappymail"
+      ],
+      "domain": "webmail.diegonmarcos.com",
+      "description": "SnappyMail webmail UI for Stalwart",
+      "flake": "snappymail"
     },
     "smtp-proxy": {
       "category": "app",
@@ -378,7 +385,7 @@
     "cloudflare-worker": {
       "category": "cloud",
       "vm": "local",
-      "description": "Cloudflare Email Worker - routes inbound email (me@diegonmarcos.com) to Mailu via SMTP proxy"
+      "description": "Cloudflare Email Worker - routes inbound email (me@diegonmarcos.com) to Stalwart via SMTP proxy"
     },
     "gcloud": {
       "category": "cloud",
@@ -633,16 +640,6 @@
       "description": "Unified Cloud Documentation Portal",
       "flake": "cloud-spec"
     },
-    "c3-infra-mcp-api": {
-      "category": "sec",
-      "vm": "oci-A1-f_0",
-      "containers": [
-        "c3-infra-mcp-api"
-      ],
-      "domain": "api.diegonmarcos.com/c3-api",
-      "description": "C3 — Cloud Control Center: MCP infrastructure server + Fastify API (api.diegonmarcos.com)",
-      "flake": "c3-infra-mcp-api"
-    },
     "sauron-lite-micro1": {
       "category": "tools",
       "vm": "oci-E2-f_0",
@@ -723,6 +720,46 @@
       ],
       "description": "Rig Intelligence Framework — Self-healing orchestrator + GraphRAG",
       "flake": "rig-agentic"
+    },
+    "c3-infra-mcp": {
+      "category": "sec",
+      "vm": "oci-A1-f_0",
+      "containers": [
+        "c3-infra-mcp"
+      ],
+      "domain": "mcp.diegonmarcos.com/c3-infra-mcp",
+      "description": "C3 Infrastructure MCP server (tools + resources)",
+      "flake": "c3-infra-mcp"
+    },
+    "c3-infra-api": {
+      "category": "sec",
+      "vm": "oci-A1-f_0",
+      "containers": [
+        "c3-infra-api"
+      ],
+      "domain": "api.diegonmarcos.com/c3-api",
+      "description": "C3 Infrastructure REST API (health, inventory, control)",
+      "flake": "c3-infra-api"
+    },
+    "c3-services-mcp": {
+      "category": "sec",
+      "vm": "oci-A1-f_0",
+      "containers": [
+        "c3-services-mcp"
+      ],
+      "domain": "mcp.diegonmarcos.com/c3-services-mcp",
+      "description": "C3 Services MCP server (service-specific tools)",
+      "flake": "c3-services-mcp"
+    },
+    "c3-services-api": {
+      "category": "sec",
+      "vm": "oci-A1-f_0",
+      "containers": [
+        "c3-services-api"
+      ],
+      "domain": "api.diegonmarcos.com/services-api",
+      "description": "C3 Services REST API (Matomo, ntfy, Radicale, etc.)",
+      "flake": "c3-services-api"
     }
   },
   "deps": {
