@@ -3,7 +3,11 @@
     "generated_by": "a_solutions/c3-infra-mcp-api/src/engines/gen-configs.ts",
     "api_route": "GET /c3-api/cloud-data/configs",
     "source": "cloud-data-topology.json + Caddy/Authelia/DNS flakes",
+<<<<<<< Updated upstream
     "generated_at": "2026-03-25T04:07:59.203Z"
+=======
+    "generated_at": "2026-03-25T04:15:46.772Z"
+>>>>>>> Stashed changes
   },
   "services": [
     {

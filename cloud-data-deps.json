@@ -2,7 +2,11 @@
   "_meta": {
     "generated_by": "c3-infra-mcp-api/src/engines/gen-deps.ts",
     "api_route": "GET /c3-api/cloud-data/deps",
+<<<<<<< Updated upstream
     "generated_at": "2026-03-25T04:07:59.474Z",
+=======
+    "generated_at": "2026-03-25T04:15:47.042Z",
+>>>>>>> Stashed changes
     "total_services": 8,
     "total_packages": 23
   },
