@@ -581,51 +581,34 @@
   "wireguard": {
     "peers": [
       {
-        "name": "gcp-proxy",
-        "wg_ip": "10.0.0.1",
-        "endpoint": "35.226.147.64:51820",
-        "role": "hub",
-        "port": 51820
-      },
-      {
-        "name": "oci-apps",
-        "wg_ip": "10.0.0.6",
-        "endpoint": "82.70.229.129:51820",
-        "role": "spoke",
-        "port": 51820
-      },
-      {
         "name": "oci-mail",
         "wg_ip": "10.0.0.3",
         "endpoint": "130.110.251.193:51820",
-        "role": "spoke",
-        "port": 51820
+        "role": "spoke"
       },
       {
         "name": "oci-analytics",
         "wg_ip": "10.0.0.4",
         "endpoint": "129.151.228.66:51820",
-        "role": "spoke",
-        "port": 51820
+        "role": "spoke"
+      },
+      {
+        "name": "oci-apps",
+        "wg_ip": "10.0.0.6",
+        "endpoint": "82.70.229.129:51820",
+        "role": "spoke"
+      },
+      {
+        "name": "gcp-proxy",
+        "wg_ip": "10.0.0.1",
+        "endpoint": "35.226.147.64:51820",
+        "role": "hub"
       },
       {
         "name": "gcp-t4",
         "wg_ip": "10.0.0.8",
-        "endpoint": "34.57.36.41:51820",
-        "role": "spoke",
-        "port": 51820
-      },
-      {
-        "name": "surface",
-        "wg_ip": "10.0.0.5",
-        "endpoint": "dynamic",
-        "role": "client"
-      },
-      {
-        "name": "termux",
-        "wg_ip": "10.0.0.9",
-        "endpoint": "dynamic",
-        "role": "client"
+        "endpoint": "34.173.227.250:51820",
+        "role": "spoke"
       }
     ]
   },

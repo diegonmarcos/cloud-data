@@ -156,13 +156,11 @@
 
 | Peer | WG IP | Endpoint | Role |
 |------|-------|----------|------|
-| gcp-proxy | 10.0.0.1 | 35.226.147.64:51820 | hub |
-| oci-apps | 10.0.0.6 | 82.70.229.129:51820 | spoke |
 | oci-mail | 10.0.0.3 | 130.110.251.193:51820 | spoke |
 | oci-analytics | 10.0.0.4 | 129.151.228.66:51820 | spoke |
-| gcp-t4 | 10.0.0.8 | 34.57.36.41:51820 | spoke |
-| surface | 10.0.0.5 | dynamic | client |
-| termux | 10.0.0.9 | dynamic | client |
+| oci-apps | 10.0.0.6 | 82.70.229.129:51820 | spoke |
+| gcp-proxy | 10.0.0.1 | 35.226.147.64:51820 | hub |
+| gcp-t4 | 10.0.0.8 | 34.173.227.250:51820 | spoke |
 
 
 ## Services by VM
