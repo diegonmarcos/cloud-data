@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "c3-infra-mcp-api/src/engines/gen-deps.ts",
     "api_route": "GET /c3-api/cloud-data/deps",
-    "generated_at": "2026-03-25T21:56:41.317Z",
+    "generated_at": "2026-03-25T23:22:08.535Z",
     "total_services": 8,
     "total_packages": 23
   },
