@@ -228,6 +228,12 @@ tbody tr:nth-child(even) {
 
 tbody tr:hover {
   background: rgba(0,214,143,0.05);
+  cursor: pointer;
+}
+
+tbody tr.row-copied {
+  background: rgba(0,214,143,0.2);
+  transition: background 0.3s;
 }
 
 /* ── Value rendering ── */

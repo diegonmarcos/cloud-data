@@ -252,6 +252,24 @@ function copyToClipboard(btn, text) {
   });
 }
 
+// Double-click any table row to copy its value (second cell)
+document.addEventListener('dblclick', (e) => {
+  const tr = e.target.closest('tbody tr');
+  if (!tr) return;
+  const cells = tr.querySelectorAll('td');
+  if (cells.length < 2) return;
+  // Get raw text from value cell (skip copy button text)
+  const valCell = cells[1];
+  const text = Array.from(valCell.childNodes)
+    .filter(n => !n.classList || !n.classList.contains('copy-btn'))
+    .map(n => n.textContent).join('').trim();
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    tr.classList.add('row-copied');
+    setTimeout(() => tr.classList.remove('row-copied'), 800);
+  });
+});
+
 function renderValue(val) {
   const span = document.createElement('span');
   if (val === null || val === undefined) {
