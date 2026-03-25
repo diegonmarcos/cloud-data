@@ -56,7 +56,10 @@
         "matomo-hybrid",
         "sauron-forwarder",
         "sauron",
-        "db-agent"
+        "db-agent",
+        "umami",
+        "umami-db",
+        "umami-setup"
       ],
       "ports": [
         "5514:5514/tcp",
@@ -148,7 +151,8 @@
         "surrealdb",
         "rust-api",
         "sauron",
-        "db-agent"
+        "db-agent",
+        "mattermost-mcp"
       ],
       "ports": [
         "10.0.0.6:8443:8443",
@@ -181,7 +185,8 @@
         "crawlee_network",
         "proxy",
         "gitea_backup_network",
-        "kg-net"
+        "kg-net",
+        "etherpad_net"
       ],
       "specs": {
         "cpu": 4,
@@ -771,7 +776,7 @@
         "10.0.0.6:3012:9001"
       ],
       "networks": [
-        "dev_network"
+        "etherpad_net"
       ],
       "dns": "etherpad.app",
       "proxy": {
@@ -989,7 +994,9 @@
     "mattermost-mcp": {
       "category": "app",
       "vm": "oci-A1-f_0",
-      "containers": [],
+      "containers": [
+        "mattermost-mcp"
+      ],
       "description": "Mattermost MCP server — chat tools via HTTP transport",
       "flake": "mattermost-mcp",
       "dns": "mattermost-mcp.app",
@@ -1551,7 +1558,9 @@
     "introspect-proxy": {
       "category": "sec",
       "vm": "gcp-E2-f_0",
-      "containers": [],
+      "containers": [
+        "introspect-proxy"
+      ],
       "description": "OIDC token introspection sidecar for Caddy Bearer auth",
       "dns": "introspect-proxy.app",
       "proxy": {
@@ -2033,7 +2042,11 @@
     "umami": {
       "category": "tools",
       "vm": "oci-E2-f_1",
-      "containers": [],
+      "containers": [
+        "umami",
+        "umami-db",
+        "umami-setup"
+      ],
       "description": "Umami Analytics - lightweight privacy-focused web analytics",
       "domain": "analytics.diegonmarcos.com/umami",
       "dns": "umami.app",

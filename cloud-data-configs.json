@@ -3,7 +3,7 @@
     "generated_by": "a_solutions/c3-infra-mcp-api/src/engines/gen-configs.ts",
     "api_route": "GET /c3-api/cloud-data/configs",
     "source": "cloud-data-topology.json + Caddy/Authelia/DNS flakes",
-    "generated_at": "2026-03-25T14:19:08.631Z"
+    "generated_at": "2026-03-25T14:55:38.734Z"
   },
   "services": [
     {
@@ -95,7 +95,9 @@
       "domain": "—",
       "ports": [],
       "networks": [],
-      "containers": []
+      "containers": [
+        "introspect-proxy"
+      ]
     },
     {
       "name": "ntfy",
@@ -417,7 +419,7 @@
         "10.0.0.6:3012:9001"
       ],
       "networks": [
-        "dev_network"
+        "etherpad_net"
       ],
       "containers": [
         "etherpad_app",
@@ -562,7 +564,9 @@
       "domain": "—",
       "ports": [],
       "networks": [],
-      "containers": []
+      "containers": [
+        "mattermost-mcp"
+      ]
     },
     {
       "name": "nocodb",
@@ -1020,7 +1024,11 @@
       "domain": "analytics.diegonmarcos.com/umami",
       "ports": [],
       "networks": [],
-      "containers": []
+      "containers": [
+        "umami",
+        "umami-db",
+        "umami-setup"
+      ]
     }
   ],
   "infra": {
@@ -1251,28 +1259,6 @@
       "acl": [
         {
           "domain": "auth.diegonmarcos.com",
-          "policy": "bypass"
-        },
-        {
-          "domain": "vault.diegonmarcos.com",
-          "policy": "bypass",
-          "resources": [
-            "^/api.*",
-            "^/identity.*",
-            "^/icons.*",
-            "^/notifications.*",
-            "^/attachments.*"
-          ]
-        },
-        {
-          "domain": "vault.diegonmarcos.com",
-          "policy": "two_factor",
-          "resources": [
-            "^/admin.*"
-          ]
-        },
-        {
-          "domain": "vault.diegonmarcos.com",
           "policy": "bypass"
         },
         {
