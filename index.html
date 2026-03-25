@@ -10,70 +10,97 @@
 
 <div id="sidebar">
   <h1>C3 Cloud Data</h1>
-  <nav id="nav"></nav>
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Search..." autocomplete="off">
+    <div class="search-toggles">
+      <label><input type="radio" name="search-mode" value="filename" checked> Filename</label>
+      <label><input type="radio" name="search-mode" value="content"> Content</label>
+    </div>
+  </div>
+  <div class="nav-section-label">Cloud Data</div>
+  <nav id="nav-data"></nav>
+  <div class="nav-section-label secrets-label">Secrets (Decrypted)</div>
+  <nav id="nav-secrets"></nav>
   <div class="meta" id="meta">Loading...</div>
 </div>
 
 <div id="main">
-  <div class="loading">Loading manifest...</div>
+  <div class="loading">Loading manifests...</div>
 </div>
 
 <script>
-const REFRESH_MS = 300000; // 5 min
-let manifest = [];
+const REFRESH_MS = 300000;
+let dataManifest = [];
+let secretsManifest = [];
 let currentPage = null;
 
-// ── Boot ──
 async function init() {
+  // ── Discover cloud data JSONs ──
   try {
     const res = await fetch('manifest.json?t=' + Date.now());
-    manifest = await res.json();
-  } catch (e) {
-    document.getElementById('main').innerHTML = '<div class="error">Failed to load manifest.json</div>';
+    dataManifest = await res.json();
+  } catch { dataManifest = []; }
+
+  // ── Discover secrets JSONs (auto-wildcard via secrets/manifest.json) ──
+  try {
+    const res = await fetch('secrets/manifest.json?t=' + Date.now());
+    secretsManifest = await res.json();
+  } catch { secretsManifest = []; }
+
+  if (!dataManifest.length && !secretsManifest.length) {
+    document.getElementById('main').innerHTML = '<div class="error">No data found (manifest.json + secrets/manifest.json)</div>';
     return;
   }
 
   buildSidebar();
+  setupSearch();
   window.addEventListener('hashchange', onHashChange);
   onHashChange();
   setInterval(() => loadPage(currentPage, true), REFRESH_MS);
 }
 
-// ── Sidebar ──
 function buildSidebar() {
-  const nav = document.getElementById('nav');
-  nav.innerHTML = manifest.map(p =>
+  const navData = document.getElementById('nav-data');
+  navData.innerHTML = dataManifest.map(p =>
     '<a href="#' + slug(p.file) + '">' + p.name + '</a>'
+  ).join('');
+
+  const navSecrets = document.getElementById('nav-secrets');
+  navSecrets.innerHTML = secretsManifest.map(p =>
+    '<a href="#' + slug(p.file) + '" class="secret-link">' + p.name + '</a>'
   ).join('');
 }
 
 function slug(file) {
-  return file.replace('.json', '');
+  return file.replace(/\//g, '_').replace('.json', '').replace('.secrets', '');
 }
 
 function setActive(file) {
-  document.querySelectorAll('#nav a').forEach(a => {
+  document.querySelectorAll('#nav-data a, #nav-secrets a').forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === '#' + slug(file));
   });
 }
 
-// ── Routing ──
+function allPages() {
+  return [...dataManifest, ...secretsManifest];
+}
+
 function onHashChange() {
   const hash = location.hash.slice(1);
-  const page = manifest.find(p => slug(p.file) === hash);
+  const page = allPages().find(p => slug(p.file) === hash);
   if (page) {
     loadPage(page);
-  } else if (manifest.length) {
-    location.hash = '#' + slug(manifest[0].file);
+  } else if (allPages().length) {
+    location.hash = '#' + slug(allPages()[0].file);
   }
 }
 
-// ── Load + Render ──
 async function loadPage(page, silent) {
   if (!page) return;
   currentPage = page;
   setActive(page.file);
   const main = document.getElementById('main');
+  const isSecret = page.file.startsWith('secrets/');
 
   if (!silent) main.innerHTML = '<div class="loading">Loading ' + page.name + '...</div>';
 
@@ -84,6 +111,13 @@ async function loadPage(page, silent) {
 
     const h2 = document.createElement('h2');
     h2.textContent = page.name;
+    if (isSecret) {
+      const badge = document.createElement('span');
+      badge.className = 'secret-badge';
+      badge.textContent = 'DECRYPTED';
+      h2.appendChild(document.createTextNode(' '));
+      h2.appendChild(badge);
+    }
     main.appendChild(h2);
 
     renderData(main, data);
@@ -93,7 +127,6 @@ async function loadPage(page, silent) {
   }
 }
 
-// ── Smart Renderer ──
 function renderData(container, data) {
   if (Array.isArray(data)) {
     container.appendChild(renderArrayTable(data));
@@ -104,11 +137,8 @@ function renderData(container, data) {
   }
 }
 
-// ── Array of objects → table ──
 function renderArrayTable(arr) {
   if (!arr.length) return document.createTextNode('(empty)');
-
-  // If array of primitives
   if (typeof arr[0] !== 'object') {
     const ul = document.createElement('div');
     ul.className = 'val-array';
@@ -117,9 +147,7 @@ function renderArrayTable(arr) {
   }
 
   const keys = [...new Set(arr.flatMap(obj => Object.keys(obj)))];
-  // Skip _meta keys
   const cols = keys.filter(k => k !== '_meta');
-
   const table = document.createElement('table');
 
   const thead = document.createElement('thead');
@@ -143,21 +171,15 @@ function renderArrayTable(arr) {
     tbody.appendChild(tr);
   });
   table.appendChild(tbody);
-
   return table;
 }
 
-// ── Object → sections by top-level key ──
 function renderObjectSections(container, obj) {
   for (const [key, val] of Object.entries(obj)) {
-    if (key === '_meta') {
-      renderMeta(container, val);
-      continue;
-    }
+    if (key === '_meta') { renderMeta(container, val); continue; }
 
     const section = document.createElement('div');
     section.className = 'section';
-
     const h3 = document.createElement('h3');
     h3.textContent = prettyKey(key);
     section.appendChild(h3);
@@ -165,7 +187,6 @@ function renderObjectSections(container, obj) {
     if (Array.isArray(val)) {
       section.appendChild(renderArrayTable(val));
     } else if (typeof val === 'object' && val !== null) {
-      // Object of objects → cards (like VMs)
       const subKeys = Object.keys(val);
       if (subKeys.length && typeof val[subKeys[0]] === 'object' && !Array.isArray(val[subKeys[0]])) {
         subKeys.forEach(sk => {
@@ -185,16 +206,13 @@ function renderObjectSections(container, obj) {
       p.appendChild(renderValue(val));
       section.appendChild(p);
     }
-
     container.appendChild(section);
   }
 }
 
-// ── Key-value table (single object) ──
 function renderKVTable(obj) {
   const table = document.createElement('table');
   const tbody = document.createElement('tbody');
-
   for (const [k, v] of Object.entries(obj)) {
     const tr = document.createElement('tr');
     const th = document.createElement('td');
@@ -205,15 +223,12 @@ function renderKVTable(obj) {
     tr.appendChild(td);
     tbody.appendChild(tr);
   }
-
   table.appendChild(tbody);
   return table;
 }
 
-// ── Render a single value ──
 function renderValue(val) {
   const span = document.createElement('span');
-
   if (val === null || val === undefined) {
     span.className = 'val-null';
     span.textContent = '—';
@@ -224,26 +239,18 @@ function renderValue(val) {
     span.className = 'val-number';
     span.textContent = String(val);
   } else if (Array.isArray(val)) {
-    if (!val.length) {
-      span.className = 'val-null';
-      span.textContent = '—';
-    } else if (typeof val[0] === 'object') {
-      return renderArrayTable(val);
-    } else {
-      span.className = 'val-array';
-      span.textContent = val.join(', ');
-    }
+    if (!val.length) { span.className = 'val-null'; span.textContent = '—'; }
+    else if (typeof val[0] === 'object') return renderArrayTable(val);
+    else { span.className = 'val-array'; span.textContent = val.join(', '); }
   } else if (typeof val === 'object') {
     span.className = 'val-object';
     span.textContent = JSON.stringify(val);
   } else {
     span.textContent = String(val);
   }
-
   return span;
 }
 
-// ── _meta block ──
 function renderMeta(container, meta) {
   const div = document.createElement('div');
   div.className = 'section';
@@ -254,7 +261,67 @@ function renderMeta(container, meta) {
   container.appendChild(div);
 }
 
-// ── Helpers ──
+// ── Search ──
+let contentCache = {};
+
+function setupSearch() {
+  const input = document.getElementById('search');
+  let debounce;
+  input.addEventListener('input', () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => runSearch(input.value.trim()), 200);
+  });
+}
+
+function getSearchMode() {
+  return document.querySelector('input[name="search-mode"]:checked').value;
+}
+
+async function runSearch(query) {
+  const navData = document.getElementById('nav-data');
+  const navSecrets = document.getElementById('nav-secrets');
+
+  if (!query) {
+    buildSidebar();
+    return;
+  }
+
+  const q = query.toLowerCase();
+  const mode = getSearchMode();
+
+  if (mode === 'filename') {
+    navData.innerHTML = dataManifest
+      .filter(p => p.name.toLowerCase().includes(q) || p.file.toLowerCase().includes(q))
+      .map(p => '<a href="#' + slug(p.file) + '">' + p.name + '</a>').join('');
+    navSecrets.innerHTML = secretsManifest
+      .filter(p => p.name.toLowerCase().includes(q) || p.file.toLowerCase().includes(q))
+      .map(p => '<a href="#' + slug(p.file) + '" class="secret-link">' + p.name + '</a>').join('');
+  } else {
+    // Content search: fetch and cache all files, then filter
+    const results = [];
+    for (const p of allPages()) {
+      if (!contentCache[p.file]) {
+        try {
+          const res = await fetch(p.file + '?t=' + Date.now());
+          contentCache[p.file] = await res.text();
+        } catch { contentCache[p.file] = ''; }
+      }
+      if (contentCache[p.file].toLowerCase().includes(q)) {
+        results.push(p);
+      }
+    }
+    const dataResults = results.filter(p => !p.file.startsWith('secrets/'));
+    const secretResults = results.filter(p => p.file.startsWith('secrets/'));
+    navData.innerHTML = dataResults
+      .map(p => '<a href="#' + slug(p.file) + '">' + p.name + '</a>').join('');
+    navSecrets.innerHTML = secretResults
+      .map(p => '<a href="#' + slug(p.file) + '" class="secret-link">' + p.name + '</a>').join('');
+  }
+
+  // Re-apply active state
+  if (currentPage) setActive(currentPage.file);
+}
+
 function prettyKey(k) {
   return k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
