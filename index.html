@@ -33,6 +33,7 @@ const REFRESH_MS = 300000;
 let dataManifest = [];
 let secretsManifest = [];
 let currentPage = null;
+let isSecretPage = false;
 
 async function init() {
   // ── Discover cloud data JSONs ──
@@ -100,7 +101,7 @@ async function loadPage(page, silent) {
   currentPage = page;
   setActive(page.file);
   const main = document.getElementById('main');
-  const isSecret = page.file.startsWith('secrets/');
+  isSecretPage = page.file.startsWith('secrets/');
 
   if (!silent) main.innerHTML = '<div class="loading">Loading ' + page.name + '...</div>';
 
@@ -111,7 +112,7 @@ async function loadPage(page, silent) {
 
     const h2 = document.createElement('h2');
     h2.textContent = page.name;
-    if (isSecret) {
+    if (isSecretPage) {
       const badge = document.createElement('span');
       badge.className = 'secret-badge';
       badge.textContent = 'DECRYPTED';
@@ -131,7 +132,14 @@ function renderData(container, data) {
   if (Array.isArray(data)) {
     container.appendChild(renderArrayTable(data));
   } else if (typeof data === 'object' && data !== null) {
-    renderObjectSections(container, data);
+    // Secrets are flat {KEY: "value"} — render as KV table directly
+    const vals = Object.values(data);
+    const isFlat = vals.length && vals.every(v => typeof v !== 'object' || v === null);
+    if (isFlat && isSecretPage) {
+      container.appendChild(renderKVTable(data));
+    } else {
+      renderObjectSections(container, data);
+    }
   } else {
     container.appendChild(document.createTextNode(String(data)));
   }
@@ -220,11 +228,28 @@ function renderKVTable(obj) {
     tr.appendChild(th);
     const td = document.createElement('td');
     td.appendChild(renderValue(v));
+    if (isSecretPage) {
+      const btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.innerHTML = '&#x2398;';
+      btn.title = 'Copy value';
+      const raw = typeof v === 'object' ? JSON.stringify(v) : String(v ?? '');
+      btn.addEventListener('click', () => copyToClipboard(btn, raw));
+      td.appendChild(btn);
+    }
     tr.appendChild(td);
     tbody.appendChild(tr);
   }
   table.appendChild(tbody);
   return table;
+}
+
+function copyToClipboard(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = '&#x2713;';
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '&#x2398;'; }, 1500);
+  });
 }
 
 function renderValue(val) {

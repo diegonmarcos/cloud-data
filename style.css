@@ -292,5 +292,31 @@ tbody tr:hover {
   border-radius: 4px;
 }
 
+/* ── Copy button (secrets) ── */
+.copy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+  transition: all 0.15s;
+  font-family: var(--mono);
+}
+
+.copy-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(0,214,143,0.1);
+}
+
+.copy-btn.copied {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 /* Force desktop layout on all viewports — horizontal scroll on mobile */
 html { min-width: 900px; }
