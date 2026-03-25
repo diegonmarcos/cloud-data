@@ -55,11 +55,11 @@
         "fluent-bit",
         "matomo-hybrid",
         "sauron-forwarder",
-        "sauron",
-        "db-agent",
         "umami",
         "umami-db",
-        "umami-setup"
+        "umami-setup",
+        "sauron",
+        "db-agent"
       ],
       "ports": [
         "5514:5514/tcp",
@@ -103,6 +103,7 @@
         "mattermost",
         "mattermost-bots",
         "mattermost-postgres",
+        "mattermost-mcp",
         "photoprism_app",
         "photoprism_mariadb",
         "photoprism_rclone",
@@ -151,8 +152,7 @@
         "surrealdb",
         "rust-api",
         "sauron",
-        "db-agent",
-        "mattermost-mcp"
+        "db-agent"
       ],
       "ports": [
         "10.0.0.6:8443:8443",
@@ -179,14 +179,14 @@
       ],
       "networks": [
         "dev_network",
+        "etherpad_net",
         "c3-api_default",
         "photos_net",
         "default",
         "crawlee_network",
         "proxy",
         "gitea_backup_network",
-        "kg-net",
-        "etherpad_net"
+        "kg-net"
       ],
       "specs": {
         "cpu": 4,
@@ -2369,43 +2369,82 @@
   "deps": {
     "system": {
       "node": {
-        "nix": "nodejs_22",
-        "apt": "nodejs"
+        "nix": "nodejs_20",
+        "apt": "nodejs",
+        "desc": "Node.js runtime (tsx, MCP servers)"
       },
       "git": {
         "nix": "git",
-        "apt": "git"
+        "apt": "git",
+        "desc": "Version control"
       },
       "ssh": {
         "nix": "openssh",
-        "apt": "openssh-client"
+        "apt": "openssh-client",
+        "desc": "SSH for VM deploy"
       },
       "jq": {
         "nix": "jq",
-        "apt": "jq"
+        "apt": "jq",
+        "desc": "JSON processing"
       },
       "sops": {
         "nix": "sops",
-        "apt": null
+        "apt": null,
+        "desc": "Secrets decryption (age backend)"
       },
       "rsync": {
         "nix": "rsync",
-        "apt": "rsync"
+        "apt": "rsync",
+        "desc": "File sync to VMs"
+      },
+      "age": {
+        "nix": "age",
+        "apt": null,
+        "desc": "Age encryption (sops backend)"
+      },
+      "mdbook": {
+        "nix": "mdbook",
+        "apt": null,
+        "desc": "Documentation generator"
+      },
+      "file": {
+        "nix": "file",
+        "apt": "file",
+        "desc": "MIME type detection (docs build)"
+      },
+      "curl": {
+        "nix": "curl",
+        "apt": "curl",
+        "desc": "HTTP client (health checks)"
+      },
+      "typescript": {
+        "nix": "nodePackages.typescript",
+        "apt": null,
+        "desc": "TypeScript compiler"
       }
     },
     "optional": {
       "rclone": {
         "nix": "rclone",
-        "apt": "rclone"
+        "apt": "rclone",
+        "desc": "Cloud storage sync"
       },
       "yq": {
         "nix": "yq-go",
-        "apt": null
+        "apt": null,
+        "desc": "YAML processing"
       },
       "wrangler": {
         "nix": null,
         "apt": null,
-        "npm": "wrangler"
+        "npm": "wrangler",
+        "desc": "Cloudflare Workers CLI"
+      },
+      "wireguard": {
+        "nix": "wireguard-tools",
+        "apt": "wireguard-tools",
+        "desc": "WireGuard mesh status"
       }
     },
     "node": {

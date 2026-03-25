@@ -2,9 +2,91 @@
   "_meta": {
     "generated_by": "c3-infra-mcp-api/src/engines/gen-deps.ts",
     "api_route": "GET /c3-api/cloud-data/deps",
-    "generated_at": "2026-03-25T14:55:39.032Z",
+    "generated_at": "2026-03-25T19:03:44.961Z",
     "total_services": 8,
     "total_packages": 23
+  },
+  "system": {
+    "required": {
+      "node": {
+        "nix": "nodejs_20",
+        "apt": "nodejs",
+        "desc": "Node.js runtime (tsx, MCP servers)"
+      },
+      "git": {
+        "nix": "git",
+        "apt": "git",
+        "desc": "Version control"
+      },
+      "ssh": {
+        "nix": "openssh",
+        "apt": "openssh-client",
+        "desc": "SSH for VM deploy"
+      },
+      "jq": {
+        "nix": "jq",
+        "apt": "jq",
+        "desc": "JSON processing"
+      },
+      "sops": {
+        "nix": "sops",
+        "apt": null,
+        "desc": "Secrets decryption (age backend)"
+      },
+      "rsync": {
+        "nix": "rsync",
+        "apt": "rsync",
+        "desc": "File sync to VMs"
+      },
+      "age": {
+        "nix": "age",
+        "apt": null,
+        "desc": "Age encryption (sops backend)"
+      },
+      "mdbook": {
+        "nix": "mdbook",
+        "apt": null,
+        "desc": "Documentation generator"
+      },
+      "file": {
+        "nix": "file",
+        "apt": "file",
+        "desc": "MIME type detection (docs build)"
+      },
+      "curl": {
+        "nix": "curl",
+        "apt": "curl",
+        "desc": "HTTP client (health checks)"
+      },
+      "typescript": {
+        "nix": "nodePackages.typescript",
+        "apt": null,
+        "desc": "TypeScript compiler"
+      }
+    },
+    "optional": {
+      "rclone": {
+        "nix": "rclone",
+        "apt": "rclone",
+        "desc": "Cloud storage sync"
+      },
+      "yq": {
+        "nix": "yq-go",
+        "apt": null,
+        "desc": "YAML processing"
+      },
+      "wrangler": {
+        "nix": null,
+        "apt": null,
+        "npm": "wrangler",
+        "desc": "Cloudflare Workers CLI"
+      },
+      "wireguard": {
+        "nix": "wireguard-tools",
+        "apt": "wireguard-tools",
+        "desc": "WireGuard mesh status"
+      }
+    }
   },
   "node": {
     "merged": {

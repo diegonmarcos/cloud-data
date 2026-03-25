@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-25T11:31:19.372Z",
+  "_generated": "2026-03-25T18:51:07.991Z",
   "_source": "local tsx via getConfig()",
   "vms": {
     "oci-mail": {
@@ -17,15 +17,15 @@
       "host": "82.70.229.129",
       "user": "ubuntu"
     },
-    "gcp-t4": {
-      "ssh_secret": "GCP_T4_SSH_KEY",
-      "host_secret": "GCP_T4_HOST",
-      "user_secret": "GCP_T4_USER"
-    },
     "gcp-proxy": {
       "ssh_secret": "GCP_PROXY_SSH_KEY",
       "host_secret": "GCP_PROXY_HOST",
       "user_secret": "GCP_PROXY_USER"
+    },
+    "gcp-t4": {
+      "ssh_secret": "GCP_T4_SSH_KEY",
+      "host_secret": "GCP_T4_HOST",
+      "user_secret": "GCP_T4_USER"
     }
   },
   "services": {
