@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "c3-infra-mcp-api/src/engines/gen-deps.ts",
     "api_route": "GET /c3-api/cloud-data/deps",
-    "generated_at": "2026-03-25T19:03:44.961Z",
+    "generated_at": "2026-03-25T19:10:21.623Z",
     "total_services": 8,
     "total_packages": 23
   },
@@ -43,25 +43,24 @@
         "apt": null,
         "desc": "Age encryption (sops backend)"
       },
-      "mdbook": {
-        "nix": "mdbook",
-        "apt": null,
-        "desc": "Documentation generator"
-      },
-      "file": {
-        "nix": "file",
-        "apt": "file",
-        "desc": "MIME type detection (docs build)"
-      },
       "curl": {
         "nix": "curl",
         "apt": "curl",
         "desc": "HTTP client (health checks)"
+      }
+    },
+    "build": {
+      "mdbook": {
+        "nix": "mdbook",
+        "desc": "Documentation generator (nix build only)"
+      },
+      "file": {
+        "nix": "file",
+        "desc": "MIME type detection (nix build only)"
       },
       "typescript": {
         "nix": "nodePackages.typescript",
-        "apt": null,
-        "desc": "TypeScript compiler"
+        "desc": "TypeScript compiler (nix build only)"
       }
     },
     "optional": {

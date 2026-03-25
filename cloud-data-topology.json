@@ -2403,25 +2403,24 @@
         "apt": null,
         "desc": "Age encryption (sops backend)"
       },
-      "mdbook": {
-        "nix": "mdbook",
-        "apt": null,
-        "desc": "Documentation generator"
-      },
-      "file": {
-        "nix": "file",
-        "apt": "file",
-        "desc": "MIME type detection (docs build)"
-      },
       "curl": {
         "nix": "curl",
         "apt": "curl",
         "desc": "HTTP client (health checks)"
+      }
+    },
+    "build": {
+      "mdbook": {
+        "nix": "mdbook",
+        "desc": "Documentation generator (nix build only)"
+      },
+      "file": {
+        "nix": "file",
+        "desc": "MIME type detection (nix build only)"
       },
       "typescript": {
         "nix": "nodePackages.typescript",
-        "apt": null,
-        "desc": "TypeScript compiler"
+        "desc": "TypeScript compiler (nix build only)"
       }
     },
     "optional": {
