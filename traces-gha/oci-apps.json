@@ -20,5 +20,27 @@
         "duration_s": 38
       }
     ]
+  },
+  {
+    "vm": "oci-apps",
+    "run_id": "23611220289",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23611220289",
+    "sha": "488d4701905111c53b7b4e58cc0c2afa6981dfcb",
+    "trigger": "push",
+    "ts": "2026-03-26T18:27:31Z",
+    "duration_s": 35,
+    "total": 33,
+    "ok": 1,
+    "fail": 0,
+    "skip": 0,
+    "status": "success",
+    "services": [
+      {
+        "name": "code-server",
+        "dir": "aa-sui_code-server",
+        "status": "ok",
+        "duration_s": 35
+      }
+    ]
   }
 ]
