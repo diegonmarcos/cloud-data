@@ -26,5 +26,33 @@
         "duration_s": 271
       }
     ]
+  },
+  {
+    "vm": "gcp-proxy",
+    "run_id": "23615422548",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23615422548",
+    "sha": "8a1ee2f468dcccf4fd2a04b075aa2b4215bdd086",
+    "trigger": "push",
+    "ts": "2026-03-26T22:35:55Z",
+    "duration_s": 8509,
+    "total": 8,
+    "ok": 0,
+    "fail": 2,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "vaultwarden",
+        "dir": "ab-mic_vaultwarden",
+        "status": "fail",
+        "duration_s": 8424
+      },
+      {
+        "name": "hickory-dns",
+        "dir": "ba-clo_hickory-dns",
+        "status": "fail",
+        "duration_s": 84
+      }
+    ]
   }
 ]
