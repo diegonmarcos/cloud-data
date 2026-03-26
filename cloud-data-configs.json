@@ -3,7 +3,7 @@
     "generated_by": "derive-cloud-data.ts",
     "api_route": "GET /c3-api/cloud-data/configs",
     "source": "_cloud-data-consolidated.json",
-    "generated_at": "2026-03-26T16:44:49.855Z"
+    "generated_at": "2026-03-26T19:44:27.461Z"
   },
   "services": [
     {
@@ -691,7 +691,7 @@
     {
       "name": "sauron-central",
       "category": "sec",
-      "vm": "oci-E2-f_1",
+      "vm": "oci-A1-f_0",
       "description": "Central Syslog Collector + SIEM API",
       "domain": "—",
       "ports": [],
@@ -1175,7 +1175,7 @@
     {
       "name": "sauron-central",
       "category": "sec",
-      "vm": "oci-E2-f_1",
+      "vm": "oci-A1-f_0",
       "description": "Central Syslog Collector + SIEM API",
       "domain": "—",
       "ports": [],

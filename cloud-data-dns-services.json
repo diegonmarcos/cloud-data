@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-26T16:44:49.845Z",
+  "_generated": "2026-03-26T19:44:27.431Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/dns-services",
   "suffix": "app",
   "services": {
@@ -102,6 +102,10 @@
     "ollama": {
       "ip": "10.0.0.8",
       "desc": "Ollama LLM Server — DeepSeek/Qwen 14B on GCP Spot T4 + Vast.ai fallback"
+    },
+    "ollama-hai": {
+      "ip": "10.0.0.6",
+      "desc": "Ollama LLM server (ARM CPU) — qwen2.5:1.5b + nomic-embed-text for hai agent and octocode"
     },
     "hickory-dns": {
       "ip": "10.0.0.1",

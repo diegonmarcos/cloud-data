@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-26T16:44:49.846Z",
+  "_generated": "2026-03-26T19:44:27.434Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/gha-config",
   "vms": {
     "oci-mail": {
@@ -171,7 +171,7 @@
     },
     "sauron-central": {
       "dir": "bb-sec_sauron-central",
-      "vm": "oci-analytics",
+      "vm": "oci-apps",
       "has_docker": false
     },
     "alerts-api": {

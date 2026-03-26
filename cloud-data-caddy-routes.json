@@ -3,7 +3,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 1
   },
-  "_generated": "2026-03-26T16:44:49.846Z",
+  "_generated": "2026-03-26T19:44:27.433Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/caddy-routes",
   "l4_routes": [
     {
@@ -25,7 +25,7 @@
   "routes": [
     {
       "domain": "ide.diegonmarcos.com",
-      "upstream": "code-server.app:8443",
+      "upstream": "code-server.app:8444",
       "comment": "VS Code IDE (ide.diegonmarcos.com)"
     },
     {
@@ -104,7 +104,7 @@
     },
     {
       "domain": "analytics.diegonmarcos.com",
-      "upstream": "umami.app:3000",
+      "upstream": "umami.app:3006",
       "comment": "Umami Analytics - lightweight privacy-focused web analytics"
     },
     {
@@ -266,7 +266,7 @@
       "domain": "analytics.diegonmarcos.com",
       "comment": "Matomo (public tracking + protected admin) + Umami (path-based)",
       "matomo_upstream": "matomo.app:8080",
-      "umami_upstream": "umami.app:3000",
+      "umami_upstream": "umami.app:3006",
       "public_tracking_paths": [
         "/matomo.js",
         "/matomo.php",

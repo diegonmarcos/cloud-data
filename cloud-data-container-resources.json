@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-26T16:44:49.848Z",
+  "_generated": "2026-03-26T19:44:27.437Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/container-resources",
   "services": {
     "code-server": {
@@ -244,7 +244,11 @@
       "containers": [
         "ollama-hai"
       ],
-      "resources": null
+      "resources": {
+        "limits": {
+          "memory": "6G"
+        }
+      }
     },
     "rig-agentic-hai-1.5bq4": {
       "vm": "oci-apps",
@@ -353,9 +357,9 @@
       "resources": null
     },
     "sauron-central": {
-      "vm": "oci-analytics",
-      "vm_ram_gb": 1,
-      "vm_cpu": 1,
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
       "containers": [
         "sauron-central"
       ],

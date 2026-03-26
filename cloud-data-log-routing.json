@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-26T16:44:49.848Z",
+  "_generated": "2026-03-26T19:44:27.438Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/log-routing",
   "vms": {
     "oci-apps": [
@@ -196,6 +196,11 @@
       {
         "container": "orchestrator",
         "service": "orchestrator",
+        "log_level": "info"
+      },
+      {
+        "container": "sauron-central",
+        "service": "sauron-central",
         "log_level": "info"
       },
       {
@@ -430,11 +435,6 @@
       }
     ],
     "oci-analytics": [
-      {
-        "container": "sauron-central",
-        "service": "sauron-central",
-        "log_level": "info"
-      },
       {
         "container": "alerts-api",
         "service": "alerts-api",

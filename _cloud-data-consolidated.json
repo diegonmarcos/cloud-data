@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-03-26T09:33:24.547Z",
+    "generated_at": "2026-03-26T19:44:09.025Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -121,7 +121,6 @@
         "host_literal": true
       },
       "services": [
-        "sauron-central",
         "alerts-api",
         "dozzle",
         "fluent-bit",
@@ -129,7 +128,7 @@
         "sauron-forwarder",
         "umami"
       ],
-      "container_count": 9
+      "container_count": 8
     },
     "oci-A1-f_0": {
       "ip": "82.70.229.129",
@@ -217,6 +216,7 @@
         "rig-agentic-hai-1.5bq4",
         "rig-agentic-sonn-14bq8",
         "orchestrator",
+        "sauron-central",
         "c3-infra-api",
         "c3-infra-mcp",
         "c3-services-api",
@@ -232,7 +232,7 @@
         "gitea",
         "kg-graph"
       ],
-      "container_count": 59
+      "container_count": 60
     },
     "gcp-T4-p_0": {
       "ip": "34.173.227.250",
@@ -787,14 +787,14 @@
       "folder": "aa-sui_code-server",
       "description": "VS Code IDE (ide.diegonmarcos.com)",
       "domain": "ide.diegonmarcos.com",
-      "port": 8443,
+      "port": 8444,
       "dns": "code-server.app",
-      "upstream": "code-server.app:8443",
+      "upstream": "code-server.app:8444",
       "containers": {
         "app": {
           "container_name": "code-server",
           "image": "linuxserver/code-server:latest",
-          "port": 8443,
+          "port": 8444,
           "port_env": null,
           "dns": "code-server.app",
           "public": true,
@@ -822,7 +822,7 @@
         "code-server"
       ],
       "all_ports": [
-        "8443"
+        "8444"
       ],
       "all_dns": [
         "code-server.app"
@@ -841,7 +841,7 @@
         }
       },
       "declared_ports": {
-        "app": 8443
+        "app": 8444
       },
       "health": {
         "path": "/"
@@ -907,7 +907,9 @@
           "env_file": false,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "etherpad",
+          "db_name": "etherpad"
         }
       },
       "container_names": [
@@ -950,6 +952,9 @@
         "tls_check": true,
         "dns_check": true,
         "endpoint_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "filebrowser": {
@@ -1128,7 +1133,8 @@
           "env_file": false,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/persist/grist-sessions.db"
         }
       },
       "container_names": [
@@ -1226,7 +1232,9 @@
           "env_file": false,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "hedgedoc",
+          "db_name": "hedgedoc"
         }
       },
       "container_names": [
@@ -1267,6 +1275,9 @@
         "tls_check": true,
         "dns_check": true,
         "endpoint_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "mail-mcp": {
@@ -1380,7 +1391,9 @@
           ],
           "env_file": true,
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "mattermost",
+          "db_name": "mattermost"
         },
         "bots": {
           "container_name": "mattermost-bots",
@@ -1564,7 +1577,9 @@
           "env_file": true,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "root",
+          "db_name": "photoprism"
         },
         "rclone": {
           "container_name": "photoprism_rclone",
@@ -1938,7 +1953,8 @@
               "memory": "64M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "dump_cmd": "sh -c 'stalwart-mail --export /tmp/stalwart-export && tar cf - -C /tmp stalwart-export && rm -rf /tmp/stalwart-export'"
         }
       },
       "container_names": [
@@ -1965,7 +1981,9 @@
         }
       },
       "declared_ports": {
-        "app": 8443
+        "app": 8443,
+        "smtp": 465,
+        "imap": 993
       },
       "health": {
         "path": "/"
@@ -2013,7 +2031,8 @@
           "env_file": true,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/data/db.sqlite3"
         }
       },
       "container_names": [
@@ -2156,16 +2175,18 @@
           ],
           "env_file": true,
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "crawlee",
+          "db_name": "crawlee"
         },
         "redis": {
           "container_name": "crawlee_redis",
           "image": "redis:7-alpine",
-          "port": 6380,
+          "port": 6381,
           "port_env": null,
           "dns": "crawlee-redis.app",
           "public": false,
-          "healthcheck": "redis-cli -p 6380 ping",
+          "healthcheck": "redis-cli -p 6381 ping",
           "volumes": [
             "crawlee_redis:/data"
           ],
@@ -2202,7 +2223,7 @@
         "3000",
         "3001",
         "5433",
-        "6380",
+        "6381",
         "9000",
         "3000:3000",
         "3001:3001",
@@ -2254,7 +2275,7 @@
         "app": 3000,
         "dashboard": 3001,
         "db": 5433,
-        "redis": 6380,
+        "redis": 6381,
         "minio": 9000
       },
       "health": {
@@ -2262,6 +2283,9 @@
       },
       "monitoring": {
         "tls_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "quant-lab-full": {
@@ -2273,12 +2297,12 @@
         "research": {
           "container_name": "quant_full_research",
           "image": "quay.io/jupyter/scipy-notebook:latest",
-          "port": 8888,
+          "port": 8890,
           "port_env": null,
           "dns": null,
           "public": false,
           "proxy": null,
-          "healthcheck": "curl -sf http://localhost:8888/api || exit 1",
+          "healthcheck": "curl -sf http://localhost:8890/api || exit 1",
           "volumes": [
             "./notebooks:/home/jovyan/work",
             "quant_full_shared_data:/home/jovyan/data"
@@ -2387,7 +2411,7 @@
         "quant_full_db"
       ],
       "all_ports": [
-        "8888",
+        "8890",
         "5437"
       ],
       "all_dns": [],
@@ -2404,7 +2428,7 @@
         "networks": []
       },
       "declared_ports": {
-        "app": 8888,
+        "app": 8890,
         "db": 5437
       }
     },
@@ -2467,7 +2491,9 @@
           "env_file": true,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "quant_user",
+          "db_name": "quantlab"
         }
       },
       "container_names": [
@@ -2494,6 +2520,9 @@
         "app": 8889,
         "engine": 5001,
         "db": 5434
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "ollama": {
@@ -2551,6 +2580,9 @@
         ],
         "networks": []
       },
+      "declared_ports": {
+        "app": 11434
+      },
       "fallback_vm": "vast-RTX-p_0",
       "models": [
         "deepseek-r1:14b",
@@ -2586,24 +2618,50 @@
       "vm": "oci-A1-f_0",
       "folder": "ad-agi_ollama-hai",
       "description": "Ollama LLM server (ARM CPU) — qwen2.5:1.5b + nomic-embed-text for hai agent and octocode",
+      "port": 11435,
+      "dns": "ollama-hai.app",
+      "upstream": "ollama-hai.app:11435",
       "containers": {
         "app": {
           "container_name": "ollama-hai",
-          "image": "",
-          "public": false
+          "image": "ollama/ollama:latest",
+          "port": 11435,
+          "port_env": null,
+          "dns": "ollama-hai.app",
+          "public": false,
+          "proxy": null,
+          "healthcheck": null,
+          "volumes": [
+            "ollama_hai_data:/root/.ollama"
+          ],
+          "env_file": false,
+          "depends_on": [],
+          "resources": {
+            "limits": {
+              "memory": "6G"
+            }
+          },
+          "read_only": false
         }
       },
       "container_names": [
         "ollama-hai"
       ],
-      "all_ports": [],
-      "all_dns": [],
+      "all_ports": [
+        "11435"
+      ],
+      "all_dns": [
+        "ollama-hai.app"
+      ],
       "compose": {
         "containers": [
           "ollama-hai"
         ],
         "ports": [],
         "networks": []
+      },
+      "declared_ports": {
+        "app": 11435
       }
     },
     "rig-agentic-hai-1.5bq4": {
@@ -2810,7 +2868,8 @@
             "redis"
           ],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/config/db.sqlite3"
         },
         "redis": {
           "container_name": "authelia-redis",
@@ -2865,6 +2924,9 @@
       },
       "monitoring": {
         "tls_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "caddy": {
@@ -3058,7 +3120,7 @@
     },
     "sauron-central": {
       "category": "sec",
-      "vm": "oci-E2-f_1",
+      "vm": "oci-A1-f_0",
       "folder": "bb-sec_sauron-central",
       "description": "Central Syslog Collector + SIEM API",
       "containers": {
@@ -3434,7 +3496,9 @@
         "cloud-cgc-mcp.app"
       ],
       "compose": {
-        "containers": [],
+        "containers": [
+          "cloud-cgc-mcp"
+        ],
         "ports": [],
         "networks": []
       },
@@ -3865,7 +3929,8 @@
               "memory": "64M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "dump_cmd": "mysqldump -u matomo matomo"
         }
       },
       "container_names": [
@@ -3891,7 +3956,8 @@
         }
       },
       "declared_ports": {
-        "app": 8080
+        "app": 8080,
+        "db": 3306
       },
       "health": {
         "path": "/"
@@ -3960,7 +4026,9 @@
           "env_file": false,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "nocodb",
+          "db_name": "nocodb"
         }
       },
       "container_names": [
@@ -4041,7 +4109,8 @@
           "env_file": true,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/var/cache/ntfy/cache.db"
         },
         "syslog-bridge": {
           "container_name": "syslog-bridge",
@@ -4123,6 +4192,9 @@
         "tls_check": true,
         "dns_check": true,
         "endpoint_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "sauron-forwarder": {
@@ -4207,14 +4279,14 @@
       "folder": "bc-obs_umami",
       "description": "Umami Analytics - lightweight privacy-focused web analytics",
       "domain": "analytics.diegonmarcos.com",
-      "port": 3000,
+      "port": 3006,
       "dns": "umami.app",
-      "upstream": "umami.app:3000",
+      "upstream": "umami.app:3006",
       "containers": {
         "app": {
           "container_name": "umami",
           "image": "ghcr.io/umami-software/umami:latest",
-          "port": 3000,
+          "port": 3006,
           "port_env": null,
           "dns": "umami.app",
           "public": true,
@@ -4245,7 +4317,7 @@
         "db": {
           "container_name": "umami-db",
           "image": "postgres:16-alpine",
-          "port": 5432,
+          "port": 5442,
           "port_env": null,
           "dns": "umami-db.app",
           "public": false,
@@ -4262,7 +4334,9 @@
               "memory": "32M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "db_user": "umami",
+          "db_name": "umami"
         },
         "setup": {
           "container_name": "umami-setup",
@@ -4290,8 +4364,8 @@
         "umami-setup"
       ],
       "all_ports": [
-        "3000",
-        "5432"
+        "3006",
+        "5442"
       ],
       "all_dns": [
         "umami.app",
@@ -4315,13 +4389,17 @@
         }
       },
       "declared_ports": {
-        "app": 3000
+        "app": 3006,
+        "db": 5442
       },
       "health": {
         "path": "curl -sf http://localhost:3000/api/heartbeat || exit 1"
       },
       "monitoring": {
         "tls_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "windmill": {
@@ -4388,7 +4466,9 @@
               "memory": "64M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "db_user": "windmill",
+          "db_name": "windmill"
         },
         "worker": {
           "container_name": "windmill-worker",
@@ -4654,7 +4734,8 @@
           ],
           "env_file": false,
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/data/gitea/gitea.db"
         }
       },
       "container_names": [
@@ -4693,6 +4774,35 @@
         "volumes": [
           "gitea_data"
         ]
+      },
+      "ssh_port": 2222,
+      "gitea": {
+        "org": "diego",
+        "mirrors": {
+          "unix": {
+            "upstream": "https://github.com/diegonmarcos/unix.git"
+          },
+          "cloud": {
+            "upstream": "https://github.com/diegonmarcos/cloud.git"
+          },
+          "cloud-data": {
+            "upstream": "https://github.com/diegonmarcos/cloud-data.git"
+          },
+          "front": {
+            "upstream": "https://github.com/diegonmarcos/front.git"
+          },
+          "front-data": {
+            "upstream": "https://github.com/diegonmarcos/front-data.git"
+          },
+          "tools": {
+            "upstream": "https://github.com/diegonmarcos/tools.git"
+          },
+          "vault": {
+            "upstream": "https://github.com/diegonmarcos/vault.git",
+            "private": true
+          }
+        },
+        "mirror_interval": "1h"
       }
     },
     "kg-graph": {
@@ -4750,6 +4860,16 @@
         ],
         "ports": [],
         "networks": []
+      },
+      "declared_ports": {
+        "npm_rest": 8880,
+        "vaultwarden_rest": 8881,
+        "ntfy_rest": 8882,
+        "authelia_rest": 8883,
+        "npm_pg": 5433,
+        "vaultwarden_pg": 5434,
+        "ntfy_pg": 5435,
+        "authelia_pg": 5436
       }
     },
     "redis": {
@@ -5110,6 +5230,12 @@
         "type": "A",
         "value": "10.0.0.8",
         "service": "ollama"
+      },
+      {
+        "name": "ollama-hai.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "ollama-hai"
       },
       {
         "name": "hickory-dns.app",
@@ -5644,7 +5770,6 @@
         "public_ports": [],
         "idle_shutdown": null,
         "containers": [
-          "sauron-central",
           "alerts-api",
           "dozzle",
           "fluent-bit",
@@ -5739,6 +5864,7 @@
           "rig-agentic-hai-1.5bq4",
           "rig-agentic-sonn-14bq8",
           "orchestrator",
+          "sauron-central",
           "c3-infra-api",
           "c3-infra-mcp",
           "c3-services-api",
@@ -6105,7 +6231,7 @@
       },
       "sauron-central": {
         "dir": "bb-sec_sauron-central",
-        "vm": "oci-analytics",
+        "vm": "oci-apps",
         "has_docker": false
       },
       "alerts-api": {
