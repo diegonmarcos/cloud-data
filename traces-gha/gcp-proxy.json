@@ -54,5 +54,27 @@
         "duration_s": 84
       }
     ]
+  },
+  {
+    "vm": "gcp-proxy",
+    "run_id": "23623768156",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23623768156",
+    "sha": "05c2a2696ac2fac83aa65b5eb0bffc6396096916",
+    "trigger": "workflow_dispatch",
+    "ts": "2026-03-26T23:52:02Z",
+    "duration_s": 84,
+    "total": 8,
+    "ok": 1,
+    "fail": 0,
+    "skip": 0,
+    "status": "success",
+    "services": [
+      {
+        "name": "vaultwarden",
+        "dir": "ab-mic_vaultwarden",
+        "status": "ok",
+        "duration_s": 84
+      }
+    ]
   }
 ]
