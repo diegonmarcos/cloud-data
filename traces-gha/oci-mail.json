@@ -1,0 +1,24 @@
+[
+  {
+    "vm": "oci-mail",
+    "run_id": "23611220197",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23611220197",
+    "sha": "488d4701905111c53b7b4e58cc0c2afa6981dfcb",
+    "trigger": "push",
+    "ts": "2026-03-26T18:27:44Z",
+    "duration_s": 51,
+    "total": 5,
+    "ok": 0,
+    "fail": 1,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "snappymail",
+        "dir": "aa-sui_snappymail",
+        "status": "fail",
+        "duration_s": 51
+      }
+    ]
+  }
+]
