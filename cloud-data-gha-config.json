@@ -1,6 +1,6 @@
 {
-  "_generated": "2026-03-25T21:48:19.421Z",
-  "_source": "local tsx via getConfig()",
+  "_generated": "2026-03-26T02:58:57.484Z",
+  "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/gha-config",
   "vms": {
     "oci-mail": {
       "ssh_secret": "OCI_SSH_KEY",
@@ -17,15 +17,15 @@
       "host": "82.70.229.129",
       "user": "ubuntu"
     },
-    "gcp-proxy": {
-      "ssh_secret": "GCP_PROXY_SSH_KEY",
-      "host_secret": "GCP_PROXY_HOST",
-      "user_secret": "GCP_PROXY_USER"
-    },
     "gcp-t4": {
       "ssh_secret": "GCP_T4_SSH_KEY",
       "host_secret": "GCP_T4_HOST",
       "user_secret": "GCP_T4_USER"
+    },
+    "gcp-proxy": {
+      "ssh_secret": "GCP_PROXY_SSH_KEY",
+      "host_secret": "GCP_PROXY_HOST",
+      "user_secret": "GCP_PROXY_USER"
     }
   },
   "services": {

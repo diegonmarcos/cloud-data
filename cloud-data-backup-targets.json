@@ -1,5 +1,64 @@
 {
-  "_generated": "2026-03-25T03:05:06.000Z",
-  "_source": "cloud-data-topology.json via /cloud-data/backup-targets",
-  "targets": []
+  "_generated": "2026-03-26T02:58:57.485Z",
+  "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/backup-targets",
+  "targets": [
+    {
+      "service": "grist",
+      "vm": "oci-A1-f_0",
+      "volumes": [
+        "grist_data"
+      ]
+    },
+    {
+      "service": "mattermost-bots",
+      "vm": "oci-A1-f_0",
+      "volumes": [
+        "mattermost_data",
+        "mattermost_postgres"
+      ]
+    },
+    {
+      "service": "photoprism",
+      "vm": "oci-A1-f_0",
+      "volumes": [
+        "photoprism_originals",
+        "photoprism_storage"
+      ]
+    },
+    {
+      "service": "stalwart",
+      "vm": "oci-E2-f_0",
+      "volumes": [
+        "stalwart_data"
+      ]
+    },
+    {
+      "service": "vaultwarden",
+      "vm": "gcp-E2-f_0",
+      "volumes": [
+        "vaultwarden_data"
+      ]
+    },
+    {
+      "service": "matomo",
+      "vm": "oci-E2-f_1",
+      "volumes": [
+        "matomo_data"
+      ]
+    },
+    {
+      "service": "nocodb",
+      "vm": "oci-A1-f_0",
+      "volumes": [
+        "nocodb_data"
+      ]
+    },
+    {
+      "service": "gitea",
+      "vm": "oci-A1-f_0",
+      "volumes": [
+        "gitea_data"
+      ]
+    }
+  ]
 }
