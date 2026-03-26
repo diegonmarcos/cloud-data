@@ -1096,7 +1096,9 @@
           "env_file": false,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "etherpad",
+          "db_name": "etherpad"
         }
       },
       "container_names": [
@@ -1139,6 +1141,9 @@
         "tls_check": true,
         "dns_check": true,
         "endpoint_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "filebrowser": {
@@ -1317,7 +1322,8 @@
           "env_file": false,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/persist/grist-sessions.db"
         }
       },
       "container_names": [
@@ -1415,7 +1421,9 @@
           "env_file": false,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "hedgedoc",
+          "db_name": "hedgedoc"
         }
       },
       "container_names": [
@@ -1456,6 +1464,9 @@
         "tls_check": true,
         "dns_check": true,
         "endpoint_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "mail-mcp": {
@@ -1569,7 +1580,9 @@
           ],
           "env_file": true,
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "mattermost",
+          "db_name": "mattermost"
         },
         "bots": {
           "container_name": "mattermost-bots",
@@ -1753,7 +1766,9 @@
           "env_file": true,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "root",
+          "db_name": "photoprism"
         },
         "rclone": {
           "container_name": "photoprism_rclone",
@@ -2126,7 +2141,8 @@
               "memory": "64M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "dump_cmd": "sh -c 'stalwart-mail --export /tmp/stalwart-export && tar cf - -C /tmp stalwart-export && rm -rf /tmp/stalwart-export'"
         }
       },
       "container_names": [
@@ -2202,7 +2218,8 @@
           "env_file": true,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/data/db.sqlite3"
         }
       },
       "container_names": [
@@ -2345,7 +2362,9 @@
           ],
           "env_file": true,
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "crawlee",
+          "db_name": "crawlee"
         },
         "redis": {
           "container_name": "crawlee_redis",
@@ -2451,6 +2470,9 @@
       },
       "monitoring": {
         "tls_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "quant-lab-full": {
@@ -2656,7 +2678,9 @@
           "env_file": true,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "quant_user",
+          "db_name": "quantlab"
         }
       },
       "container_names": [
@@ -2683,6 +2707,9 @@
         "app": 8889,
         "engine": 5001,
         "db": 5434
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "ollama": {
@@ -2994,7 +3021,8 @@
             "redis"
           ],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/config/db.sqlite3"
         },
         "redis": {
           "container_name": "authelia-redis",
@@ -3049,6 +3077,9 @@
       },
       "monitoring": {
         "tls_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "caddy": {
@@ -3617,7 +3648,9 @@
         "cloud-cgc-mcp.app"
       ],
       "compose": {
-        "containers": [],
+        "containers": [
+          "cloud-cgc-mcp"
+        ],
         "ports": [],
         "networks": []
       },
@@ -4049,7 +4082,8 @@
               "memory": "64M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "dump_cmd": "mysqldump -u matomo matomo"
         }
       },
       "container_names": [
@@ -4144,7 +4178,9 @@
           "env_file": false,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_user": "nocodb",
+          "db_name": "nocodb"
         }
       },
       "container_names": [
@@ -4225,7 +4261,8 @@
           "env_file": true,
           "depends_on": [],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/var/cache/ntfy/cache.db"
         },
         "syslog-bridge": {
           "container_name": "syslog-bridge",
@@ -4307,6 +4344,9 @@
         "tls_check": true,
         "dns_check": true,
         "endpoint_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "sauron-forwarder": {
@@ -4446,7 +4486,9 @@
               "memory": "32M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "db_user": "umami",
+          "db_name": "umami"
         },
         "setup": {
           "container_name": "umami-setup",
@@ -4506,6 +4548,9 @@
       },
       "monitoring": {
         "tls_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "windmill": {
@@ -4572,7 +4617,9 @@
               "memory": "64M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "db_user": "windmill",
+          "db_name": "windmill"
         },
         "worker": {
           "container_name": "windmill-worker",
@@ -4838,7 +4885,8 @@
           ],
           "env_file": false,
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "db_path": "/data/gitea/gitea.db"
         }
       },
       "container_names": [
