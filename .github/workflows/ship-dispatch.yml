@@ -1,0 +1,40 @@
+name: "Ship → dispatch to cloud"
+
+on:
+  workflow_dispatch:
+    inputs:
+      workflow:
+        description: "Workflow to trigger on diegonmarcos/cloud"
+        required: true
+        type: choice
+        options:
+          - "Ship → gcp-proxy"
+          - "Ship → oci-mail"
+          - "Ship → oci-analytics"
+          - "Ship → oci-apps"
+          - "Ship → gcp-t4"
+          - "Ship → cloudflare-worker"
+          - "Ship → gen-configs (cloud-data)"
+          - "Ship → GHCR images"
+          - "Ship → home-manager"
+          - "Ship → terraform"
+          - "Ship → CI image"
+          - "ALL VMs"
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger cloud repo workflow
+        env:
+          GH_TOKEN: ${{ secrets.CLOUD_DISPATCH_TOKEN }}
+        run: |
+          if [ "${{ inputs.workflow }}" = "ALL VMs" ]; then
+            for wf in "Ship → gcp-proxy" "Ship → oci-mail" "Ship → oci-analytics" "Ship → oci-apps"; do
+              echo "Triggering: $wf"
+              gh workflow run "$wf" --repo diegonmarcos/cloud
+            done
+          else
+            echo "Triggering: ${{ inputs.workflow }}"
+            gh workflow run "${{ inputs.workflow }}" --repo diegonmarcos/cloud
+          fi
