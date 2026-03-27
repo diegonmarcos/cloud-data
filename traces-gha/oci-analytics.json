@@ -1,0 +1,30 @@
+[
+  {
+    "vm": "oci-analytics",
+    "run_id": "23647600396",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23647600396",
+    "sha": "afe858fb01ca215cc4d478c5222998fb5b7ffcfd",
+    "trigger": "workflow_dispatch",
+    "ts": "2026-03-27T17:38:12Z",
+    "duration_s": 16249,
+    "total": 6,
+    "ok": 0,
+    "fail": 2,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "alerts-api",
+        "dir": "bc-obs_alerts-api",
+        "status": "fail",
+        "duration_s": 16082
+      },
+      {
+        "name": "dozzle",
+        "dir": "bc-obs_dozzle",
+        "status": "fail",
+        "duration_s": 167
+      }
+    ]
+  }
+]
