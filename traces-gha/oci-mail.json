@@ -42,5 +42,33 @@
         "duration_s": 11
       }
     ]
+  },
+  {
+    "vm": "oci-mail",
+    "run_id": "23626050299",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23626050299",
+    "sha": "a906a245545bb55fec8c7fd6ae42ba26a03f5851",
+    "trigger": "push",
+    "ts": "2026-03-27T01:12:29Z",
+    "duration_s": 154,
+    "total": 5,
+    "ok": 0,
+    "fail": 2,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "snappymail",
+        "dir": "aa-sui_snappymail",
+        "status": "fail",
+        "duration_s": 3
+      },
+      {
+        "name": "smtp-proxy",
+        "dir": "aa-sui_tools-smtp-proxy",
+        "status": "fail",
+        "duration_s": 151
+      }
+    ]
   }
 ]
