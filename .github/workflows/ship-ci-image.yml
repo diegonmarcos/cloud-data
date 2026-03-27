@@ -11,11 +11,6 @@
 name: "Ship → CI image"
 
 on:
-  push:
-    paths:
-      - "workflows/src/cloud-builder/**"
-      - "config.json"
-    branches: [main]
   workflow_dispatch:
 
 concurrency:

@@ -11,11 +11,6 @@
 name: "Ship → cloudflare-worker"
 
 on:
-  push:
-    paths:
-      - "a_solutions/ba-clo_cloudflare-worker/src/**"
-      - ".github/workflows/ship-cloudflare-worker.yml"
-    branches: [main]
   workflow_dispatch:
 
 concurrency:

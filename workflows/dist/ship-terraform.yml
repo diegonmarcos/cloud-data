@@ -11,15 +11,6 @@
 name: "Ship → terraform"
 
 on:
-  push:
-    paths:
-      - "a_solutions/ba-clo_cloudflare/src/**"
-      - "b_infra/vps_gcloud/src/**"
-      - "b_infra/vps_oci/src/**"
-      - "b_infra/vps_aws/src/**"
-      - "b_infra/vps_hetzner/src/**"
-      - ".github/workflows/ship-terraform.yml"
-    branches: [main]
   workflow_dispatch:
     inputs:
       project:

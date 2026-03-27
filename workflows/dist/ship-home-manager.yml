@@ -11,10 +11,6 @@
 name: "Ship → home-manager"
 
 on:
-  push:
-    paths:
-      - "b_infra/home-manager/**"
-    branches: [main]
   workflow_dispatch:
     inputs:
       vm:
