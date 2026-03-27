@@ -108,5 +108,45 @@
         "duration_s": 34
       }
     ]
+  },
+  {
+    "vm": "oci-apps",
+    "run_id": "23626050009",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23626050009",
+    "sha": "a906a245545bb55fec8c7fd6ae42ba26a03f5851",
+    "trigger": "push",
+    "ts": "2026-03-27T01:10:01Z",
+    "duration_s": 12,
+    "total": 34,
+    "ok": 0,
+    "fail": 4,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "code-server",
+        "dir": "aa-sui_code-server",
+        "status": "fail",
+        "duration_s": 2
+      },
+      {
+        "name": "etherpad",
+        "dir": "aa-sui_etherpad",
+        "status": "fail",
+        "duration_s": 2
+      },
+      {
+        "name": "filebrowser",
+        "dir": "aa-sui_filebrowser",
+        "status": "fail",
+        "duration_s": 3
+      },
+      {
+        "name": "google-workspace-mcp",
+        "dir": "aa-sui_google-workspace-mcp",
+        "status": "fail",
+        "duration_s": 5
+      }
+    ]
   }
 ]
