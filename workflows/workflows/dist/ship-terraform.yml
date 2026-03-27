@@ -1,0 +1,114 @@
+# ┌──────────────────────────────────────────────────────────────┐
+# │  DO NOT EDIT — this file is generated/deployed by the engine  │
+# │                                                                │
+# │  Source: cloud/workflows/src/  (templates + static)            │
+# │  Build:  ./build.sh workflow   (generates → workflows/dist/)   │
+# │  Deploy: copies dist/ → .github/workflows/                    │
+# │                                                                │
+# │  Edit the source, run build.sh workflow, then commit.          │
+# └──────────────────────────────────────────────────────────────┘
+
+name: "Ship → terraform"
+
+on:
+  push:
+    paths:
+      - "a_solutions/ba-clo_cloudflare/src/**"
+      - "b_infra/vps_gcloud/src/**"
+      - "b_infra/vps_oci/src/**"
+      - "b_infra/vps_aws/src/**"
+      - "b_infra/vps_hetzner/src/**"
+      - ".github/workflows/ship-terraform.yml"
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Target project (cloudflare, gcloud, oci, aws, or empty for all changed)"
+        required: false
+        type: string
+
+concurrency:
+  group: terraform
+  cancel-in-progress: false
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 2
+
+      - name: Update submodules
+        run: git submodule update --remote
+
+      - name: Detect changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        if: github.event_name == 'push'
+        with:
+          filters: |
+            cloudflare:
+              - 'a_solutions/ba-clo_cloudflare/src/**'
+            gcloud:
+              - 'b_infra/vps_gcloud/src/**'
+            oci:
+              - 'b_infra/vps_oci/src/**'
+            aws:
+              - 'b_infra/vps_aws/src/**'
+            hetzner:
+              - 'b_infra/vps_hetzner/src/**'
+
+      - name: Force project override
+        id: force
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          proj="${{ inputs.project }}"
+          for name in cloudflare gcloud oci aws hetzner; do
+            if [ -z "$proj" ] || [ "$proj" = "$name" ]; then
+              echo "$name=true" >> "$GITHUB_OUTPUT"
+            fi
+          done
+
+      - uses: ./.github/actions/setup-deps
+        with:
+          sops_age_key: ${{ secrets.SOPS_AGE_KEY }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9"
+
+      - name: Authenticate GCP
+        if: steps.changes.outputs.gcloud == 'true' || steps.force.outputs.gcloud == 'true'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Run
+        shell: bash {0}
+        env:
+          INPUT_PROJECT: ${{ inputs.project }}
+          EVENT_NAME: ${{ github.event_name }}
+          CHANGES_CLOUDFLARE: ${{ steps.changes.outputs.cloudflare }}
+          CHANGES_GCLOUD: ${{ steps.changes.outputs.gcloud }}
+          CHANGES_OCI: ${{ steps.changes.outputs.oci }}
+          CHANGES_AWS: ${{ steps.changes.outputs.aws }}
+          CHANGES_HETZNER: ${{ steps.changes.outputs.hetzner }}
+          TF_VAR_cloudflare_api_key: ${{ secrets.CLOUDFLARE_API_KEY }}
+          TF_VAR_ssh_public_key: ${{ secrets.GCP_SSH_PUBLIC_KEY }}
+          TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}
+          TF_VAR_compartment_ocid: ${{ secrets.OCI_COMPARTMENT_OCID }}
+          TF_VAR_region: ${{ secrets.OCI_REGION }}
+          OCI_CLI_USER: ${{ secrets.OCI_USER_OCID }}
+          OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_CLI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+          OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_PRIVATE_KEY }}
+          OCI_CLI_REGION: ${{ secrets.OCI_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+          TF_VAR_hcloud_token: ${{ secrets.HETZNER_API_TOKEN }}
+        run: bash .github/workflows/scripts/ship-terraform.sh
