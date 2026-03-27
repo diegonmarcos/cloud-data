@@ -76,5 +76,51 @@
         "duration_s": 84
       }
     ]
+  },
+  {
+    "vm": "gcp-proxy",
+    "run_id": "23626050011",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23626050011",
+    "sha": "a906a245545bb55fec8c7fd6ae42ba26a03f5851",
+    "trigger": "push",
+    "ts": "2026-03-27T01:14:08Z",
+    "duration_s": 256,
+    "total": 8,
+    "ok": 0,
+    "fail": 5,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "vaultwarden",
+        "dir": "ab-mic_vaultwarden",
+        "status": "fail",
+        "duration_s": 5
+      },
+      {
+        "name": "hickory-dns",
+        "dir": "ba-clo_hickory-dns",
+        "status": "fail",
+        "duration_s": 3
+      },
+      {
+        "name": "authelia",
+        "dir": "bb-sec_authelia",
+        "status": "fail",
+        "duration_s": 4
+      },
+      {
+        "name": "caddy",
+        "dir": "bb-sec_caddy",
+        "status": "fail",
+        "duration_s": 4
+      },
+      {
+        "name": "introspect-proxy",
+        "dir": "bb-sec_introspect-proxy",
+        "status": "fail",
+        "duration_s": 240
+      }
+    ]
   }
 ]
