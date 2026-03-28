@@ -1,36 +1,36 @@
 {
-  "generated": "2026-03-28T23:18:08.286Z",
+  "generated": "2026-03-28T23:23:21.480Z",
   "wg_peers": [
-    {
-      "name": "10.0.0.9",
-      "pubIp": "88.30.43.183",
-      "privIp": "10.0.0.9",
-      "handshake": "29 seconds ago",
-      "transfer": "9.48 KiB received, 8.30 KiB sent",
-      "alive": true
-    },
-    {
-      "name": "oci-mail",
-      "pubIp": "130.110.251.193",
-      "privIp": "10.0.0.3",
-      "handshake": "58 seconds ago",
-      "transfer": "131.35 KiB received, 172.70 KiB sent",
-      "alive": true
-    },
     {
       "name": "10.0.0.5",
       "pubIp": "88.30.43.183",
       "privIp": "10.0.0.5",
-      "handshake": "1 minute, 9 seconds ago",
-      "transfer": "52.01 KiB received, 38.96 KiB sent",
+      "handshake": "38 seconds ago",
+      "transfer": "59.13 KiB received, 46.73 KiB sent",
       "alive": true
     },
     {
       "name": "oci-analytics",
       "pubIp": "129.151.228.66",
       "privIp": "10.0.0.4",
-      "handshake": "1 minute, 25 seconds ago",
-      "transfer": "20.25 KiB received, 24.14 KiB sent",
+      "handshake": "1 minute, 17 seconds ago",
+      "transfer": "23.08 KiB received, 28.08 KiB sent",
+      "alive": true
+    },
+    {
+      "name": "oci-mail",
+      "pubIp": "130.110.251.193",
+      "privIp": "10.0.0.3",
+      "handshake": "1 minute, 23 seconds ago",
+      "transfer": "143.68 KiB received, 187.74 KiB sent",
+      "alive": true
+    },
+    {
+      "name": "10.0.0.9",
+      "pubIp": "88.30.43.183",
+      "privIp": "10.0.0.9",
+      "handshake": "1 minute, 28 seconds ago",
+      "transfer": "10.08 KiB received, 8.80 KiB sent",
       "alive": true
     },
     {
@@ -38,7 +38,7 @@
       "pubIp": "34.173.227.250",
       "privIp": "10.0.0.8",
       "handshake": "never",
-      "transfer": "0 B received, 111.00 KiB sent",
+      "transfer": "0 B received, 118.23 KiB sent",
       "alive": false
     },
     {
@@ -46,7 +46,7 @@
       "pubIp": "82.70.229.129",
       "privIp": "10.0.0.6",
       "handshake": "never",
-      "transfer": "0 B received, 113.75 KiB sent",
+      "transfer": "0 B received, 120.97 KiB sent",
       "alive": false
     }
   ],
@@ -175,103 +175,103 @@
     {
       "url": "logs.diegonmarcos.com",
       "upstream": "dozzle.app:9999",
-      "http_code": "200",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "grafana.diegonmarcos.com",
       "upstream": "grafana.app:3200",
-      "http_code": "200",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "analytics.diegonmarcos.com",
       "upstream": "matomo.app:8080",
-      "http_code": "302",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "db.diegonmarcos.com",
       "upstream": "nocodb.app:8085",
-      "http_code": "302",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "rss.diegonmarcos.com",
       "upstream": "ntfy.app:8090",
-      "http_code": "302",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "windmill.diegonmarcos.com",
       "upstream": "windmill-app.app:8000",
-      "http_code": "200",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "git.diegonmarcos.com",
       "upstream": "backup-gitea.app:3002",
-      "http_code": "200",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "api.diegonmarcos.com/dash",
       "upstream": "diegonmarcos.github.io",
-      "http_code": "301",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "api.diegonmarcos.com/crawlee",
       "upstream": "crawlee.app:3000",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/windmill",
       "upstream": "windmill-app.app:8000",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/etherpad",
       "upstream": "etherpad.app:3012",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/filebrowser",
       "upstream": "filebrowser.app:3015",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/hedgedoc",
       "upstream": "hedgedoc.app:3018",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/revealmd",
       "upstream": "revealmd.app:3014",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/dozzle",
       "upstream": "dozzle.app:9999",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/grafana",
       "upstream": "grafana.app:3016",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/gitea",
       "upstream": "gitea.app:3017",
-      "http_code": "404",
+      "http_code": "429",
       "up": true
     },
     {
@@ -669,21 +669,21 @@
       "os": "oci-mail",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "653M",
+      "mem_used": "652M",
       "mem_total": "954M",
       "mem_pct": 68,
       "swap": "220M/2559M",
       "disk_used": "28G",
       "disk_total": "45G",
       "disk_pct": "67%",
-      "load": "0.33 0.28 0.35",
-      "uptime": "up 19 hours, 51 minutes",
+      "load": "0.31 0.46 0.42",
+      "uptime": "up 19 hours, 56 minutes",
       "containers_running": 7,
       "containers_total": 7,
       "containers": [
         {
           "name": "stalwart",
-          "status": "Up 16 hours",
+          "status": "Up 17 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -731,15 +731,15 @@
       "os": "oci-analytics",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "721M",
+      "mem_used": "725M",
       "mem_total": "954M",
       "mem_pct": 75,
-      "swap": "269M/2559M",
+      "swap": "268M/2559M",
       "disk_used": "25G",
       "disk_total": "48G",
       "disk_pct": "56%",
-      "load": "2.07 2.16 2.16",
-      "uptime": "up 19 hours, 16 minutes",
+      "load": "2.06 2.14 2.16",
+      "uptime": "up 19 hours, 21 minutes",
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
@@ -799,15 +799,15 @@
       "os": "oci-apps",
       "cpus": 4,
       "ram": "24G",
-      "mem_used": "4701M",
+      "mem_used": "4591M",
       "mem_total": "23975M",
       "mem_pct": 19,
       "swap": "0M/0M",
       "disk_used": "64.9G",
       "disk_total": "95.8G",
       "disk_pct": "71%",
-      "load": "0.71 0.58 0.54",
-      "uptime": "up 1d 4h",
+      "load": "0.71 0.57 0.54",
+      "uptime": "up 1d 5h",
       "containers_running": 49,
       "containers_total": 54,
       "containers": [
@@ -825,19 +825,19 @@
         },
         {
           "name": "surrealdb",
-          "status": "Exited (2) 22 minutes ago",
+          "status": "Exited (2) 26 minutes ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "crawlee_minio_init",
-          "status": "Exited (0) 22 minutes ago",
+          "status": "Exited (0) 27 minutes ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "crawlee_dashboard",
-          "status": "Exited (0) 22 minutes ago",
+          "status": "Exited (0) 27 minutes ago",
           "health": "exited",
           "icon": "❌"
         },
@@ -849,25 +849,25 @@
         },
         {
           "name": "crawlee_db",
-          "status": "Up 9 seconds (health: starting)",
+          "status": "Up 20 seconds (health: starting)",
           "health": "starting",
           "icon": "⚠️"
         },
         {
           "name": "windmill-worker",
-          "status": "Up 17 minutes",
+          "status": "Up 22 minutes",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "mattermost-bots",
-          "status": "Up 20 minutes",
+          "status": "Up 25 minutes",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_scheduler",
-          "status": "Up 22 minutes",
+          "status": "Up 27 minutes",
           "health": "none",
           "icon": "✅"
         },
@@ -939,67 +939,67 @@
         },
         {
           "name": "windmill-server",
-          "status": "Up 17 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "windmill-db",
-          "status": "Up 17 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "quant_light_db",
-          "status": "Up 19 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photoprism_rclone",
-          "status": "Up 19 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photoprism_mariadb",
-          "status": "Up 19 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "nocodb",
-          "status": "Up 20 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "nocodb-db",
-          "status": "Up 20 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "crawlee_minio",
           "status": "Up 22 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
+          "name": "windmill-db",
+          "status": "Up 22 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "quant_light_db",
+          "status": "Up 24 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_rclone",
+          "status": "Up 24 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_mariadb",
+          "status": "Up 24 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "nocodb",
+          "status": "Up 24 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "nocodb-db",
+          "status": "Up 24 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_minio",
+          "status": "Up 27 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
           "name": "cloud-cgc-mcp",
-          "status": "Up 23 minutes (healthy)",
+          "status": "Up 27 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-mcp",
-          "status": "Up 26 minutes (healthy)",
+          "status": "Up 31 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-api",
-          "status": "Up 26 minutes (healthy)",
+          "status": "Up 31 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -1162,15 +1162,15 @@
       "os": "gcp-proxy",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "910M",
+      "mem_used": "949M",
       "mem_total": "1952M",
-      "mem_pct": 46,
-      "swap": "130M/3999M",
+      "mem_pct": 48,
+      "swap": "129M/3999M",
       "disk_used": "16G",
       "disk_total": "31G",
       "disk_pct": "52%",
-      "load": "1.09 1.85 1.68",
-      "uptime": "up 1 hour, 24 minutes",
+      "load": "0.51 0.97 1.34",
+      "uptime": "up 1 hour, 29 minutes",
       "containers_running": 19,
       "containers_total": 19,
       "containers": [

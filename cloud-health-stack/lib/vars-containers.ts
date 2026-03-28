@@ -26,13 +26,18 @@ export async function checkPrivateHealth(
     return privateDns.map(d => ({ ...d, tcp: false, http: false, code: "---", wg_down: true }));
   }
 
-  log(`  Checking ${privateDns.length} private endpoints (TCP+HTTP, parallel)...`);
-  const results = await Promise.all(
-    privateDns.map(async (d) => {
-      const check = await privateEndpointCheck(d.dns, d.port);
-      return { ...d, ...check, wg_down: false };
-    })
-  );
+  log(`  Checking ${privateDns.length} private endpoints (TCP+HTTP, batched 10)...`);
+  const results: PrivateHealthResult[] = [];
+  for (let i = 0; i < privateDns.length; i += 10) {
+    const batch = privateDns.slice(i, i + 10);
+    const batchResults = await Promise.all(
+      batch.map(async (d) => {
+        const check = await privateEndpointCheck(d.dns, d.port);
+        return { ...d, ...check, wg_down: false } as PrivateHealthResult;
+      })
+    );
+    results.push(...batchResults);
+  }
   const tcpUp = results.filter(r => r.tcp).length;
   const httpUp = results.filter(r => r.http).length;
   log(`  Private health: ${tcpUp}/${results.length} TCP, ${httpUp}/${results.length} HTTP`);
