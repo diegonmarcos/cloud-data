@@ -503,7 +503,10 @@ const vars: Record<string, string> = {
         const code = c.status.match(/Exited \((\d+)\)/)?.[1] || "?";
         tag = `EXITED(${code})`;
       } else if (c.status.startsWith("Up")) tag = "UP";
-      lines.push(`  ${c.icon} ${c.name.padEnd(25)} ${tag.padEnd(14)} ${c.status.substring(0, 30)}`);
+      // Look up port from private DNS data
+      const dnsEntry = PRIVATE_DNS.find(p => p.container === c.name);
+      const portStr = dnsEntry ? String(dnsEntry.port).padEnd(7) : "       ";
+      lines.push(`  ${c.icon} ${c.name.padEnd(25)} ${portStr} ${tag.padEnd(14)} ${c.status.substring(0, 30)}`);
     }
     lines.push("");
     return lines.join("\n");
