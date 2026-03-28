@@ -115,17 +115,36 @@ export function parseConsolidated(c: any): ParsedData {
   mailPorts.push({ host: "mails.diegonmarcos.com", port: 25, proto: "MX (Resend/SES)" });
   mailPorts.push({ host: "send.mails.diegonmarcos.com", port: 25, proto: "SPF (Resend/SES)" });
 
-  // ── Databases from backup targets ─────────────────────
-  const backup = c.configs?.backup ?? {};
+  // ── Databases from containers with db_user/db_name + image detection ──
   const databases: { service: string; type: string; container: string; db: string; vm: string; dns: string }[] = [];
-  for (const t of backup.targets ?? []) {
-    for (const d of t.databases ?? []) {
-      const dnsEntry = privateDns.find(p => p.container === d.container || p.dns.startsWith(d.container));
-      databases.push({
-        service: d.service || t.service, type: d.type, container: d.container,
-        db: d.db || d.path || "custom", vm: t.vm_alias || t.vm,
-        dns: dnsEntry ? `${dnsEntry.dns}:${dnsEntry.port}` : d.path || "embedded",
-      });
+  const backupByVm: Record<string, { volumes: string[] }> = {};
+  for (const [svcName, svc] of Object.entries(c.services ?? {}) as [string, any][]) {
+    const vmAlias = vmIdToAlias[svc.vm] || svc.vm || "?";
+    // Extract DB containers
+    for (const [, ct] of Object.entries(svc.containers ?? {}) as [string, any][]) {
+      if (ct.db_user || ct.db_name || ct.db_path) {
+        // Detect type from image name
+        const img = (ct.image || "").toLowerCase();
+        let type = "?";
+        if (img.includes("postgres")) type = "postgres";
+        else if (img.includes("mariadb") || img.includes("mysql")) type = "mariadb";
+        else if (img.includes("redis")) type = "redis";
+        else if (img.includes("surrealdb")) type = "surrealdb";
+        else if (ct.db_path?.includes("sqlite")) type = "sqlite";
+        else if (img.includes("sqlite")) type = "sqlite";
+        const dnsEntry = privateDns.find(p => p.container === ct.container_name);
+        databases.push({
+          service: svcName, type, container: ct.container_name || "?",
+          db: ct.db_name || ct.db_path || "custom", vm: vmAlias,
+          dns: dnsEntry ? `${dnsEntry.dns}:${dnsEntry.port}` : ct.db_path || "embedded",
+        });
+      }
+    }
+    // Extract backup volumes
+    const bk = svc.backup;
+    if (bk?.volumes?.length) {
+      if (!backupByVm[vmAlias]) backupByVm[vmAlias] = { volumes: [] };
+      for (const vol of bk.volumes) backupByVm[vmAlias].volumes.push(vol);
     }
   }
   databases.sort((a, b) => a.vm.localeCompare(b.vm) || a.service.localeCompare(b.service));
@@ -143,7 +162,7 @@ export function parseConsolidated(c: any): ParsedData {
 
   return {
     vms, publicUrls, mcpEndpoints, mailPorts, privateDns, databases, wgPeers,
-    backupTargets: backup,
+    backupTargets: { by_vm: backupByVm },
     caddyRoutes: caddy,
     hmData: { vms: c.vms, owner: c.owner, home_manager: c.home_manager },
     topology: { services: c.services, providers: c.providers, storage: c.storage, firewalls: c.firewalls },

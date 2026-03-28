@@ -1,68 +1,92 @@
 {
-  "generated": "2026-03-28T19:04:22.377Z",
-  "wg_peers": [],
-  "api_mcp": [
+  "generated": "2026-03-28T20:34:56.000Z",
+  "wg_peers": [
     {
-      "url": "mcp.diegonmarcos.com/g-workspace/mcp",
-      "upstream": "g-workspace-mcp.app:3104",
-      "name": "g-workspace",
-      "http_code": "502",
-      "up": false
+      "name": "oci-analytics",
+      "pubIp": "129.151.228.66",
+      "privIp": "10.0.0.4",
+      "handshake": "1 minute, 13 seconds ago",
+      "transfer": "14.04 KiB received, 12.90 KiB sent",
+      "alive": true
     },
     {
-      "url": "mcp.diegonmarcos.com/mail-mcp/mcp",
-      "upstream": "mail-mcp.app:3103",
-      "name": "mail-mcp",
-      "http_code": "502",
-      "up": false
+      "name": "oci-mail",
+      "pubIp": "130.110.251.193",
+      "privIp": "10.0.0.3",
+      "handshake": "1 minute, 38 seconds ago",
+      "transfer": "91.16 KiB received, 92.06 KiB sent",
+      "alive": true
     },
     {
-      "url": "mcp.diegonmarcos.com/mattermost-mcp/mcp",
-      "upstream": "mattermost-mcp.app:3102",
-      "name": "mattermost-mcp",
-      "http_code": "502",
-      "up": false
+      "name": "10.0.0.9",
+      "pubIp": "88.30.43.183",
+      "privIp": "10.0.0.9",
+      "handshake": "1 minute, 46 seconds ago",
+      "transfer": "18.07 KiB received, 7.60 KiB sent",
+      "alive": true
     },
     {
-      "url": "mcp.diegonmarcos.com/c3-infra-mcp/mcp",
-      "upstream": "c3-infra-mcp.app:3100",
-      "name": "c3-infra-mcp",
-      "http_code": "502",
-      "up": false
+      "name": "10.0.0.5",
+      "pubIp": "88.30.43.183",
+      "privIp": "10.0.0.5",
+      "handshake": "1 minute, 58 seconds ago",
+      "transfer": "45.35 KiB received, 50.01 KiB sent",
+      "alive": true
     },
     {
-      "url": "mcp.diegonmarcos.com/c3-services-mcp/mcp",
-      "upstream": "c3-services-mcp.app:3101",
-      "name": "c3-services-mcp",
-      "http_code": "502",
-      "up": false
+      "name": "gcp-t4",
+      "pubIp": "34.173.227.250",
+      "privIp": "10.0.0.8",
+      "handshake": "never",
+      "transfer": "0 B received, 157.68 KiB sent",
+      "alive": false
     },
     {
-      "url": "mcp.diegonmarcos.com/cloud-cgc-mcp/mcp",
-      "upstream": "cloud-cgc-mcp.app:3105",
-      "name": "cloud-cgc-mcp",
-      "http_code": "200",
-      "up": true
+      "name": "oci-apps",
+      "pubIp": "82.70.229.129",
+      "privIp": "10.0.0.6",
+      "handshake": "never",
+      "transfer": "0 B received, 158.55 KiB sent",
+      "alive": false
     }
   ],
+  "api_mcp": [],
   "public_urls": [
     {
       "url": "ide.diegonmarcos.com",
       "upstream": "code-server.app:8443",
-      "http_code": "502",
-      "up": false
+      "http_code": "302",
+      "up": true
+    },
+    {
+      "url": "pad.diegonmarcos.com",
+      "upstream": "etherpad.app:3012",
+      "http_code": "200",
+      "up": true
+    },
+    {
+      "url": "files.diegonmarcos.com",
+      "upstream": "filebrowser.app:3015",
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "sheets.diegonmarcos.com",
       "upstream": "grist.app:3011",
-      "http_code": "502",
-      "up": false
+      "http_code": "302",
+      "up": true
+    },
+    {
+      "url": "doc.diegonmarcos.com",
+      "upstream": "hedgedoc.app:3018",
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "chat.diegonmarcos.com",
       "upstream": "mattermost.app:8065",
-      "http_code": "502",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "photos.diegonmarcos.com",
@@ -73,8 +97,14 @@
     {
       "url": "cal.diegonmarcos.com",
       "upstream": "radicale.app:5232",
-      "http_code": "502",
-      "up": false
+      "http_code": "302",
+      "up": true
+    },
+    {
+      "url": "slides.diegonmarcos.com",
+      "upstream": "revealmd.app:3014",
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "webmail.diegonmarcos.com",
@@ -91,8 +121,8 @@
     {
       "url": "vault.diegonmarcos.com",
       "upstream": "vaultwarden.app:8880",
-      "http_code": "502",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "api.diegonmarcos.com",
@@ -101,16 +131,52 @@
       "up": true
     },
     {
+      "url": "dns.internal",
+      "upstream": "hickory-dns.app:53",
+      "http_code": "",
+      "up": false
+    },
+    {
       "url": "auth.diegonmarcos.com",
       "upstream": "authelia.app:9091",
-      "http_code": "502",
-      "up": false
+      "http_code": "200",
+      "up": true
+    },
+    {
+      "url": "proxy.diegonmarcos.com",
+      "upstream": "caddy.app:443",
+      "http_code": "302",
+      "up": true
+    },
+    {
+      "url": "api.diegonmarcos.com/c3-api",
+      "upstream": "c3-infra-api.app:8081",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "mcp.diegonmarcos.com/c3-infra-mcp",
+      "upstream": "c3-infra-mcp.app:3100",
+      "http_code": "200",
+      "up": true
+    },
+    {
+      "url": "api.diegonmarcos.com/services",
+      "upstream": "c3-services-api.app:8082",
+      "http_code": "404",
+      "up": true
     },
     {
       "url": "workflows.diegonmarcos.com",
       "upstream": "dagu.app:8070",
-      "http_code": "502",
-      "up": false
+      "http_code": "302",
+      "up": true
+    },
+    {
+      "url": "logs.diegonmarcos.com",
+      "upstream": "dozzle.app:9999",
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "grafana.diegonmarcos.com",
@@ -121,20 +187,20 @@
     {
       "url": "analytics.diegonmarcos.com",
       "upstream": "matomo.app:8080",
-      "http_code": "502",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "db.diegonmarcos.com",
       "upstream": "nocodb.app:8085",
-      "http_code": "502",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "rss.diegonmarcos.com",
       "upstream": "ntfy.app:8090",
-      "http_code": "502",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "windmill.diegonmarcos.com",
@@ -149,62 +215,80 @@
       "up": true
     },
     {
-      "url": "app.diegonmarcos.com",
-      "upstream": "path-based",
+      "url": "api.diegonmarcos.com/dash",
+      "upstream": "diegonmarcos.github.io",
+      "http_code": "301",
+      "up": true
+    },
+    {
+      "url": "api.diegonmarcos.com/crawlee",
+      "upstream": "crawlee.app:3000",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/windmill",
+      "upstream": "windmill-app.app:8000",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/etherpad",
+      "upstream": "etherpad.app:3012",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/filebrowser",
+      "upstream": "filebrowser.app:3015",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/hedgedoc",
+      "upstream": "hedgedoc.app:3018",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/revealmd",
+      "upstream": "revealmd.app:3014",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/dozzle",
+      "upstream": "dozzle.app:9999",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/grafana",
+      "upstream": "grafana.app:3016",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/gitea",
+      "upstream": "gitea.app:3017",
+      "http_code": "404",
+      "up": true
+    },
+    {
+      "url": "app.diegonmarcos.com/crawlee",
+      "upstream": "crawlee.app:3001",
       "http_code": "404",
       "up": true
     },
     {
       "url": "cloud.diegonmarcos.com",
-      "upstream": "path-based",
+      "upstream": "c3-spec.app:3080",
       "http_code": "200",
       "up": true
     },
     {
       "url": "mcp.diegonmarcos.com",
-      "upstream": "MCP hub",
-      "http_code": "200",
-      "up": true
-    },
-    {
-      "url": "proxy.diegonmarcos.com",
-      "upstream": "Infrastructure dashboard (static HTML)",
-      "http_code": "502",
-      "up": false
-    },
-    {
-      "url": "diegonmarcos.com",
-      "upstream": "github-pages:landpage",
-      "http_code": "200",
-      "up": true
-    },
-    {
-      "url": "www.diegonmarcos.com",
-      "upstream": "github-pages:landpage",
-      "http_code": "200",
-      "up": true
-    },
-    {
-      "url": "linktree.diegonmarcos.com",
-      "upstream": "github-pages:linktree",
-      "http_code": "200",
-      "up": true
-    },
-    {
-      "url": "nexus.diegonmarcos.com",
-      "upstream": "github-pages:nexus",
-      "http_code": "200",
-      "up": true
-    },
-    {
-      "url": "suite.diegonmarcos.com",
-      "upstream": "github-pages:suite",
-      "http_code": "200",
-      "up": true
-    },
-    {
-      "url": "maps.diegonmarcos.com",
-      "upstream": "github-pages:mymaps",
+      "upstream": "c3-infra-mcp.app:3100",
       "http_code": "200",
       "up": true
     }
@@ -212,38 +296,56 @@
   "mail_ports": [
     {
       "host": "mail.diegonmarcos.com",
+      "port": 25,
+      "proto": "SMTP",
+      "open": false
+    },
+    {
+      "host": "mail.diegonmarcos.com",
+      "port": 465,
+      "proto": "SMTPS",
+      "open": true
+    },
+    {
+      "host": "mail.diegonmarcos.com",
+      "port": 587,
+      "proto": "Submission",
+      "open": true
+    },
+    {
+      "host": "mail.diegonmarcos.com",
       "port": 993,
       "proto": "IMAPS",
+      "open": true
+    },
+    {
+      "host": "mail.diegonmarcos.com",
+      "port": 4190,
+      "proto": "ManageSieve",
+      "open": false
+    },
+    {
+      "host": "smtp.diegonmarcos.com",
+      "port": 25,
+      "proto": "SMTP",
+      "open": false
+    },
+    {
+      "host": "smtp.diegonmarcos.com",
+      "port": 465,
+      "proto": "SMTPS",
+      "open": true
+    },
+    {
+      "host": "smtp.diegonmarcos.com",
+      "port": 587,
+      "proto": "Submission",
       "open": true
     },
     {
       "host": "imap.diegonmarcos.com",
       "port": 993,
       "proto": "IMAPS",
-      "open": true
-    },
-    {
-      "host": "mail.diegonmarcos.com",
-      "port": 465,
-      "proto": "SMTPS",
-      "open": true
-    },
-    {
-      "host": "smtp.diegonmarcos.com",
-      "port": 465,
-      "proto": "SMTPS",
-      "open": true
-    },
-    {
-      "host": "mail.diegonmarcos.com",
-      "port": 587,
-      "proto": "Submission",
-      "open": true
-    },
-    {
-      "host": "smtp.diegonmarcos.com",
-      "port": 587,
-      "proto": "Submission",
       "open": true
     },
     {
@@ -264,301 +366,301 @@
       "dns": "authelia-redis.app",
       "container": "authelia-redis",
       "port": 6380,
-      "vm": "gcp-E2-f_0"
+      "vm": "gcp-proxy"
     },
     {
       "dns": "authelia.app",
       "container": "authelia",
       "port": 9091,
-      "vm": "gcp-E2-f_0"
+      "vm": "gcp-proxy"
     },
     {
       "dns": "caddy.app",
       "container": "caddy",
       "port": 443,
-      "vm": "gcp-E2-f_0"
+      "vm": "gcp-proxy"
     },
     {
       "dns": "hickory-dns.app",
       "container": "hickory-dns",
       "port": 53,
-      "vm": "gcp-E2-f_0"
+      "vm": "gcp-proxy"
     },
     {
       "dns": "introspect-proxy.app",
       "container": "introspect-proxy",
       "port": 4182,
-      "vm": "gcp-E2-f_0"
+      "vm": "gcp-proxy"
     },
     {
       "dns": "ntfy.app",
       "container": "ntfy",
       "port": 8090,
-      "vm": "gcp-E2-f_0"
+      "vm": "gcp-proxy"
     },
     {
       "dns": "redis.app",
       "container": "redis",
       "port": 6379,
-      "vm": "gcp-E2-f_0"
+      "vm": "gcp-proxy"
     },
     {
       "dns": "vaultwarden.app",
       "container": "vaultwarden",
       "port": 8880,
-      "vm": "gcp-E2-f_0"
+      "vm": "gcp-proxy"
     },
     {
       "dns": "ollama.app",
       "container": "ollama",
       "port": 11434,
-      "vm": "gcp-T4-p_0"
-    },
-    {
-      "dns": "backup-gitea.app",
-      "container": "gitea",
-      "port": 3002,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "c3-infra-api.app",
-      "container": "c3-infra-api",
-      "port": 8081,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "c3-infra-mcp.app",
-      "container": "c3-infra-mcp",
-      "port": 3100,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "c3-services-api.app",
-      "container": "c3-services-api",
-      "port": 8082,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "c3-services-mcp.app",
-      "container": "c3-services-mcp",
-      "port": 3101,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "c3-spec.app",
-      "container": "cloud-spec",
-      "port": 3080,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "cloud-cgc-mcp.app",
-      "container": "cloud-cgc-mcp",
-      "port": 3105,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "code-server.app",
-      "container": "code-server",
-      "port": 8443,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "crawlee-dashboard.app",
-      "container": "crawlee_dashboard",
-      "port": 3001,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "crawlee-db.app",
-      "container": "crawlee_db",
-      "port": 5433,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "crawlee-minio.app",
-      "container": "crawlee_minio",
-      "port": 9000,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "crawlee-redis.app",
-      "container": "crawlee_redis",
-      "port": 6381,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "crawlee.app",
-      "container": "crawlee_api",
-      "port": 3000,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "etherpad.app",
-      "container": "etherpad_app",
-      "port": 3012,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "filebrowser.app",
-      "container": "filebrowser_app",
-      "port": 3015,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "g-workspace-mcp.app",
-      "container": "google-workspace-mcp",
-      "port": 3104,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "gitea.app",
-      "container": "gitea",
-      "port": 3017,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "grafana.app",
-      "container": "lgtm_grafana",
-      "port": 3200,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "grist.app",
-      "container": "grist_app",
-      "port": 3011,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "hedgedoc.app",
-      "container": "hedgedoc_app",
-      "port": 3018,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "lgtm-loki.app",
-      "container": "lgtm_loki",
-      "port": 3110,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "lgtm-mimir.app",
-      "container": "lgtm_mimir",
-      "port": 9009,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "lgtm-tempo.app",
-      "container": "lgtm_tempo",
-      "port": 3210,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "mail-mcp.app",
-      "container": "mail-mcp",
-      "port": 3103,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "mattermost-mcp.app",
-      "container": "mattermost-mcp",
-      "port": 3102,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "mattermost-postgres.app",
-      "container": "mattermost-postgres",
-      "port": 5435,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "mattermost.app",
-      "container": "mattermost",
-      "port": 8065,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "nocodb.app",
-      "container": "nocodb",
-      "port": 8085,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "ollama-hai.app",
-      "container": "ollama-hai",
-      "port": 11435,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "photoprism.app",
-      "container": "photoprism_app",
-      "port": 3013,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "radicale.app",
-      "container": "radicale",
-      "port": 5232,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "revealmd.app",
-      "container": "revealmd_app",
-      "port": 3014,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "windmill-app.app",
-      "container": "windmill-server",
-      "port": 8000,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "windmill-db.app",
-      "container": "windmill-db",
-      "port": 5440,
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "dns": "dagu.app",
-      "container": "dagu",
-      "port": 8070,
-      "vm": "oci-E2-f_0"
-    },
-    {
-      "dns": "snappymail.app",
-      "container": "snappymail",
-      "port": 8888,
-      "vm": "oci-E2-f_0"
-    },
-    {
-      "dns": "stalwart.app",
-      "container": "stalwart",
-      "port": 443,
-      "vm": "oci-E2-f_0"
+      "vm": "gcp-t4"
     },
     {
       "dns": "dozzle.app",
       "container": "dozzle",
       "port": 9999,
-      "vm": "oci-E2-f_1"
+      "vm": "oci-analytics"
     },
     {
       "dns": "matomo.app",
       "container": "matomo-hybrid",
       "port": 8080,
-      "vm": "oci-E2-f_1"
+      "vm": "oci-analytics"
     },
     {
       "dns": "umami-db.app",
       "container": "umami-db",
       "port": 5442,
-      "vm": "oci-E2-f_1"
+      "vm": "oci-analytics"
     },
     {
       "dns": "umami.app",
       "container": "umami",
       "port": 3006,
-      "vm": "oci-E2-f_1"
+      "vm": "oci-analytics"
+    },
+    {
+      "dns": "backup-gitea.app",
+      "container": "gitea",
+      "port": 3002,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "c3-infra-api.app",
+      "container": "c3-infra-api",
+      "port": 8081,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "c3-infra-mcp.app",
+      "container": "c3-infra-mcp",
+      "port": 3100,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "c3-services-api.app",
+      "container": "c3-services-api",
+      "port": 8082,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "c3-services-mcp.app",
+      "container": "c3-services-mcp",
+      "port": 3101,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "c3-spec.app",
+      "container": "cloud-spec",
+      "port": 3080,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "cloud-cgc-mcp.app",
+      "container": "cloud-cgc-mcp",
+      "port": 3105,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "code-server.app",
+      "container": "code-server",
+      "port": 8443,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "crawlee-dashboard.app",
+      "container": "crawlee_dashboard",
+      "port": 3001,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "crawlee-db.app",
+      "container": "crawlee_db",
+      "port": 5433,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "crawlee-minio.app",
+      "container": "crawlee_minio",
+      "port": 9000,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "crawlee-redis.app",
+      "container": "crawlee_redis",
+      "port": 6381,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "crawlee.app",
+      "container": "crawlee_api",
+      "port": 3000,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "etherpad.app",
+      "container": "etherpad_app",
+      "port": 3012,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "filebrowser.app",
+      "container": "filebrowser_app",
+      "port": 3015,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "g-workspace-mcp.app",
+      "container": "google-workspace-mcp",
+      "port": 3104,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "gitea.app",
+      "container": "gitea",
+      "port": 3017,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "grafana.app",
+      "container": "lgtm_grafana",
+      "port": 3200,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "grist.app",
+      "container": "grist_app",
+      "port": 3011,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "hedgedoc.app",
+      "container": "hedgedoc_app",
+      "port": 3018,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "lgtm-loki.app",
+      "container": "lgtm_loki",
+      "port": 3110,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "lgtm-mimir.app",
+      "container": "lgtm_mimir",
+      "port": 9009,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "lgtm-tempo.app",
+      "container": "lgtm_tempo",
+      "port": 3210,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "mail-mcp.app",
+      "container": "mail-mcp",
+      "port": 3103,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "mattermost-mcp.app",
+      "container": "mattermost-mcp",
+      "port": 3102,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "mattermost-postgres.app",
+      "container": "mattermost-postgres",
+      "port": 5435,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "mattermost.app",
+      "container": "mattermost",
+      "port": 8065,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "nocodb.app",
+      "container": "nocodb",
+      "port": 8085,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "ollama-hai.app",
+      "container": "ollama-hai",
+      "port": 11435,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "photoprism.app",
+      "container": "photoprism_app",
+      "port": 3013,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "radicale.app",
+      "container": "radicale",
+      "port": 5232,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "revealmd.app",
+      "container": "revealmd_app",
+      "port": 3014,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "windmill-app.app",
+      "container": "windmill-server",
+      "port": 8000,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "windmill-db.app",
+      "container": "windmill-db",
+      "port": 5440,
+      "vm": "oci-apps"
+    },
+    {
+      "dns": "dagu.app",
+      "container": "dagu",
+      "port": 8070,
+      "vm": "oci-mail"
+    },
+    {
+      "dns": "snappymail.app",
+      "container": "snappymail",
+      "port": 8888,
+      "vm": "oci-mail"
+    },
+    {
+      "dns": "stalwart.app",
+      "container": "stalwart",
+      "port": 443,
+      "vm": "oci-mail"
     }
   ],
   "vms": [
@@ -567,57 +669,57 @@
       "os": "oci-mail",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "637M",
+      "mem_used": "645M",
       "mem_total": "954M",
-      "mem_pct": 66,
-      "swap": "226M/2559M",
+      "mem_pct": 67,
+      "swap": "224M/2559M",
       "disk_used": "28G",
       "disk_total": "45G",
       "disk_pct": "67%",
-      "load": "0.43 0.49 0.48",
-      "uptime": "up 15 hours, 37 minutes",
+      "load": "0.55 0.60 0.54",
+      "uptime": "up 17 hours, 7 minutes",
       "containers_running": 7,
       "containers_total": 7,
       "containers": [
         {
           "name": "stalwart",
-          "status": "Up 12 hours",
+          "status": "Up 14 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "smtp-proxy",
-          "status": "Up 15 hours",
+          "status": "Up 17 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "dagu",
-          "status": "Up 15 hours",
+          "status": "Up 17 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "fluent-bit",
-          "status": "Up 16 hours",
+          "status": "Up 17 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "snappymail",
-          "status": "Up 14 hours (healthy)",
+          "status": "Up 16 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "introspect-proxy",
-          "status": "Up 15 hours (healthy)",
+          "status": "Up 17 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "syslog-forwarder",
-          "status": "Up 15 hours (healthy)",
+          "status": "Up 17 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         }
@@ -629,63 +731,63 @@
       "os": "oci-analytics",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "720M",
+      "mem_used": "724M",
       "mem_total": "954M",
       "mem_pct": 75,
-      "swap": "268M/2559M",
+      "swap": "269M/2559M",
       "disk_used": "25G",
       "disk_total": "48G",
       "disk_pct": "56%",
-      "load": "2.54 2.28 2.15",
-      "uptime": "up 15 hours, 2 minutes",
+      "load": "2.09 2.12 2.09",
+      "uptime": "up 16 hours, 33 minutes",
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
         {
           "name": "umami-setup",
-          "status": "Exited (1) 13 hours ago",
+          "status": "Exited (1) 15 hours ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "sauron-forwarder",
-          "status": "Up 15 hours",
+          "status": "Up 16 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "matomo-hybrid",
-          "status": "Up 15 hours",
+          "status": "Up 16 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "fluent-bit",
-          "status": "Up 15 hours",
+          "status": "Up 16 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "dozzle",
-          "status": "Up 15 hours",
+          "status": "Up 16 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "alerts-api",
-          "status": "Up 13 hours (healthy)",
+          "status": "Up 15 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "umami",
-          "status": "Up 13 hours (healthy)",
+          "status": "Up 15 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "umami-db",
-          "status": "Up 13 hours (healthy)",
+          "status": "Up 15 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         }
@@ -697,333 +799,333 @@
       "os": "oci-apps",
       "cpus": 4,
       "ram": "24G",
-      "mem_used": "4843M",
+      "mem_used": "4756M",
       "mem_total": "23975M",
-      "mem_pct": 20,
+      "mem_pct": 19,
       "swap": "0M/0M",
-      "disk_used": "59.7G",
+      "disk_used": "62.6G",
       "disk_total": "95.8G",
-      "disk_pct": "66%",
-      "load": "0.40 0.57 0.47",
-      "uptime": "up 1d 0h",
+      "disk_pct": "69%",
+      "load": "0.40 0.37 0.36",
+      "uptime": "up 1d 2h",
       "containers_running": 52,
       "containers_total": 53,
       "containers": [
         {
           "name": "crawlee_minio_init",
-          "status": "Exited (0) 5 hours ago",
+          "status": "Exited (0) About an hour ago",
           "health": "exited",
           "icon": "❌"
         },
         {
-          "name": "mattermost-bots",
-          "status": "Up 2 minutes",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "mattermost-mcp",
-          "status": "Up 3 minutes",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "mail-mcp",
-          "status": "Up 4 minutes",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "code-server",
-          "status": "Up 7 minutes",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "windmill-worker",
-          "status": "Up 4 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
           "name": "gitea",
-          "status": "Up 5 hours",
+          "status": "Up About an hour",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "bup-server",
-          "status": "Up 5 hours",
+          "status": "Up About an hour",
           "health": "none",
           "icon": "✅"
         },
         {
-          "name": "borg-server",
-          "status": "Up 5 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "lgtm_mimir",
-          "status": "Up 5 hours",
+          "name": "windmill-worker",
+          "status": "Up About an hour",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "lgtm_tempo",
-          "status": "Up 5 hours",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "lgtm_mimir",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "borg-server",
+          "status": "Up About an hour",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "cloud-spec",
-          "status": "Up 5 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "crawlee_runner",
-          "status": "Up 5 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "crawlee_dashboard",
-          "status": "Up 5 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "crawlee_scheduler",
-          "status": "Up 5 hours",
+          "status": "Up About an hour",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "siem-api",
-          "status": "Up 5 hours",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_dashboard",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_runner",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_scheduler",
+          "status": "Up About an hour",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "quant_light_engine",
-          "status": "Up 5 hours",
+          "status": "Up About an hour",
           "health": "none",
           "icon": "✅"
         },
         {
-          "name": "radicale",
-          "status": "Up About a minute (healthy)",
-          "health": "healthy",
+          "name": "mattermost-bots",
+          "status": "Up 2 hours",
+          "health": "none",
           "icon": "✅"
         },
         {
-          "name": "mattermost",
-          "status": "Up 2 minutes (healthy)",
-          "health": "healthy",
+          "name": "mattermost-mcp",
+          "status": "Up 2 hours",
+          "health": "none",
           "icon": "✅"
         },
         {
-          "name": "mattermost-postgres",
-          "status": "Up 3 minutes (healthy)",
-          "health": "healthy",
+          "name": "mail-mcp",
+          "status": "Up 2 hours",
+          "health": "none",
           "icon": "✅"
         },
         {
-          "name": "hedgedoc_app",
-          "status": "Up 3 minutes (healthy)",
-          "health": "healthy",
+          "name": "code-server",
+          "status": "Up 2 hours",
+          "health": "none",
           "icon": "✅"
         },
         {
-          "name": "hedgedoc_postgres",
-          "status": "Up 3 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "grist_app",
-          "status": "Up 6 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "google-workspace-mcp",
-          "status": "Up 6 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "etherpad_app",
-          "status": "Up 6 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "etherpad_postgres",
-          "status": "Up 6 minutes (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "filebrowser_app",
-          "status": "Up 7 minutes (healthy)",
+          "name": "surrealdb",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "windmill-server",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "windmill-db",
-          "status": "Up 4 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photoprism_app",
-          "status": "Up 4 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photoprism_mariadb",
-          "status": "Up 4 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photoprism_rclone",
-          "status": "Up 4 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "surrealdb",
-          "status": "Up 5 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photos-webhook",
-          "status": "Up 5 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photos-db",
-          "status": "Up 5 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "nocodb",
-          "status": "Up 5 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "nocodb-db",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "lgtm_grafana",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "lgtm_loki",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
-          "name": "crawlee_api",
-          "status": "Up 5 hours (healthy)",
+          "name": "nocodb",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
-          "name": "crawlee_minio",
-          "status": "Up 5 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "crawlee_db",
-          "status": "Up 5 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "crawlee_redis",
-          "status": "Up 5 hours (healthy)",
+          "name": "nocodb-db",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-services-mcp",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-mcp",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-api",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "syslog-central",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_api",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_db",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_minio",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_redis",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "rig-agentic-sonn-14bq8",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "rig-agentic-hai",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photos-webhook",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photos-db",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "ollama-hai",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "quant_light_research",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "quant_light_db",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_app",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "revealmd_app",
-          "status": "Up 5 hours (healthy)",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_rclone",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_mariadb",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "radicale",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "mattermost",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "mattermost-postgres",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "hedgedoc_app",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "hedgedoc_postgres",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "grist_app",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "google-workspace-mcp",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "etherpad_app",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "etherpad_postgres",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "filebrowser_app",
+          "status": "Up 2 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         }
@@ -1054,19 +1156,134 @@
       "os": "gcp-proxy",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "?",
-      "mem_total": "?",
-      "mem_pct": 0,
-      "swap": "?",
-      "disk_used": "?",
-      "disk_total": "?",
-      "disk_pct": "?",
-      "load": "?",
-      "uptime": "?",
-      "containers_running": 0,
-      "containers_total": 0,
-      "containers": [],
-      "reachable": false
+      "mem_used": "959M",
+      "mem_total": "1952M",
+      "mem_pct": 49,
+      "swap": "114M/3999M",
+      "disk_used": "16G",
+      "disk_total": "31G",
+      "disk_pct": "51%",
+      "load": "0.64 1.62 1.93",
+      "uptime": "up 1 hour, 58 minutes",
+      "containers_running": 19,
+      "containers_total": 19,
+      "containers": [
+        {
+          "name": "caddy",
+          "status": "Up 6 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "hickory-dns",
+          "status": "Up 18 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-ntfy",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-authelia",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-npm",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-vaultwarden",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "syslog-bridge",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "github-rss",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "ntfy",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-authelia",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-npm",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-vaultwarden",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-ntfy",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "fluent-bit",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "authelia-redis",
+          "status": "Up 2 hours",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "vaultwarden",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "redis",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "introspect-proxy",
+          "status": "Up 12 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "authelia",
+          "status": "Up 2 hours (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        }
+      ],
+      "reachable": true
     }
   ],
   "databases": [
@@ -1076,11 +1293,11 @@
       "container": "authelia",
       "db": "/config/db.sqlite3",
       "vm": "gcp-proxy",
-      "dns": "authelia-redis.app:6380"
+      "dns": "authelia.app:9091"
     },
     {
       "service": "ntfy",
-      "type": "sqlite",
+      "type": "?",
       "container": "ntfy",
       "db": "/var/cache/ntfy/cache.db",
       "vm": "gcp-proxy",
@@ -1093,14 +1310,6 @@
       "db": "/data/db.sqlite3",
       "vm": "gcp-proxy",
       "dns": "vaultwarden.app:8880"
-    },
-    {
-      "service": "matomo",
-      "type": "custom",
-      "container": "matomo-hybrid",
-      "db": "custom",
-      "vm": "oci-analytics",
-      "dns": "matomo.app:8080"
     },
     {
       "service": "umami",
@@ -1128,7 +1337,7 @@
     },
     {
       "service": "gitea",
-      "type": "sqlite",
+      "type": "?",
       "container": "gitea",
       "db": "/data/gitea/gitea.db",
       "vm": "oci-apps",
@@ -1136,7 +1345,7 @@
     },
     {
       "service": "grist",
-      "type": "sqlite",
+      "type": "?",
       "container": "grist_app",
       "db": "/persist/grist-sessions.db",
       "vm": "oci-apps",
@@ -1183,12 +1392,12 @@
       "dns": "embedded"
     },
     {
-      "service": "stalwart",
-      "type": "custom",
-      "container": "stalwart",
-      "db": "custom",
-      "vm": "oci-mail",
-      "dns": "stalwart.app:443"
+      "service": "windmill",
+      "type": "postgres",
+      "container": "windmill-db",
+      "db": "windmill",
+      "vm": "oci-apps",
+      "dns": "windmill-db.app:5440"
     }
   ]
 }
