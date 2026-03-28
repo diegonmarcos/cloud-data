@@ -142,6 +142,15 @@ function parsePrivateDns(): { dns: string; container: string; port: number; vm: 
 const PRIVATE_DNS = parsePrivateDns();
 
 // ── Helpers ─────────────────────────────────────────────────────
+
+// Clear stale SSH mux sockets at startup
+try {
+  const socketDir = join(HOME, ".ssh", "sockets");
+  if (existsSync(socketDir)) {
+    execSync(`find ${socketDir} -type s -mmin +5 -delete 2>/dev/null || true`, { timeout: 3000 });
+  }
+} catch {}
+
 function run(cmd: string, timeout = 10000): string {
   try { return execSync(cmd, { timeout, encoding: "utf-8" }).trim(); }
   catch { return ""; }
@@ -149,7 +158,7 @@ function run(cmd: string, timeout = 10000): string {
 
 function sshCmd(vm: string, cmd: string): string {
   const b64 = Buffer.from(cmd).toString("base64");
-  return run(`ssh -o ConnectTimeout=5 -o ControlPath=none ${vm} "echo ${b64} | base64 -d | sh"`, 15000);
+  return run(`ssh -o ConnectTimeout=8 -o ControlPath=none -o BatchMode=yes ${vm} "echo ${b64} | base64 -d | sh"`, 20000);
 }
 
 function tcpCheck(host: string, port: number): boolean {
