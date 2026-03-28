@@ -15,6 +15,31 @@ export function varsContainers(ctx: VarContext): Record<string, string> {
         portCount.get(d.port)!.push(d.dns);
       }
       const conflictPorts = new Set([...portCount.entries()].filter(([, names]) => names.length > 1).map(([p]) => p));
+      const wgDown = data.private_dns[0]?.wg_down === true;
+      if (wgDown) {
+        const lines: string[] = [];
+        lines.push("⚠️  WireGuard DOWN — Hickory DNS (10.0.0.1) unreachable, cannot check .app names");
+        lines.push("");
+        // Still show the table but with ⏸️ instead of ❌
+        for (const d of data.private_dns) {
+          const conflict = conflictPorts.has(d.port);
+          const portTag = conflict ? `⚠️${String(d.port).padEnd(5)}` : `  ${String(d.port).padEnd(5)}`;
+          lines.push(`⏸️ ${d.dns.padEnd(28)} ${(d.container + ":" + d.port).padEnd(25)} ${portTag} ${d.vm}`);
+        }
+        // Still append port conflicts + DNS config check
+        if (conflictPorts.size > 0) {
+          lines.push("");
+          lines.push(`  ⚠️  PORT CONFLICTS (${conflictPorts.size} duplicate ports globally):`);
+          for (const [port, names] of [...portCount.entries()].filter(([, n]) => n.length > 1).sort((a, b) => a[0] - b[0])) {
+            lines.push(`     :${String(port).padEnd(6)} used by: ${names.join(", ")}`);
+          }
+        }
+        lines.push("");
+        lines.push("  ─── DNS CONFIG CHECK ───");
+        lines.push("  ❌ WireGuard tunnel is DOWN — bring up with: sudo wg-quick up wg0");
+        lines.push("  ⏸️ All .app DNS checks skipped (not service failures)");
+        return lines.join("\n");
+      }
       const lines = data.private_dns.map((d: any) => {
         const conflict = conflictPorts.has(d.port);
         const icon = d.open ? "✅" : "❌";

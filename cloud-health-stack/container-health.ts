@@ -73,10 +73,17 @@ const data = {
     return { ...u, http_code: code, up: code !== "" && code !== "000" && code !== "502" };
   })),
   mail_ports: timed("mail_ports", () => MAIL_PORTS.map(m => ({ ...m, open: tcpCheck(m.host, m.port) }))),
-  private_dns: timed("private_dns", () => PRIVATE_DNS.map(d => {
-    const resolved = run(`dig +short ${d.dns} 2>/dev/null`);
-    return { ...d, open: !!resolved && resolved.length > 0, resolved: resolved || "" };
-  })),
+  private_dns: timed("private_dns", () => {
+    // Check if Hickory is reachable first (avoids 50× timeouts when WG is down)
+    const hickoryUp = run(`dig @10.0.0.1 +short +time=2 +tries=1 authelia.app 2>/dev/null`);
+    const wgDown = !hickoryUp;
+    if (wgDown) log("  ⚠️ Hickory DNS (10.0.0.1) unreachable — WG likely down, skipping per-name checks");
+    return PRIVATE_DNS.map(d => {
+      if (wgDown) return { ...d, open: false, resolved: "", wg_down: true };
+      const resolved = run(`dig @10.0.0.1 +short +time=2 ${d.dns} 2>/dev/null`);
+      return { ...d, open: !!resolved && resolved.length > 0, resolved: resolved || "", wg_down: false };
+    });
+  }),
   vms: VMS.map(vm => timed(`vm_${vm.alias}`, () => { log(`  Collecting VM: ${vm.alias} (${vm.pubIp || vm.ip})...`); return collectVm(vm); })),
   databases: DATABASES,
 };
@@ -127,9 +134,11 @@ const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData, back
   // Issues summary (must be last — scans all collected data)
   vars.ISSUES_SUMMARY = buildIssuesSummary(ctx);
 
-  // Replace all $VARS in template
+  // Replace all $VARS in template (longest key first to avoid partial matches)
   log("Replacing template variables...");
-  for (const [key, value] of Object.entries(vars)) {
+  const sortedKeys = Object.keys(vars).sort((a, b) => b.length - a.length);
+  for (const key of sortedKeys) {
+    const value = vars[key];
     if (template.includes(`$${key}`)) {
       template = template.replace(`$${key}`, value);
       log(`  $${key} → ${value.split("\n").length} lines`);
