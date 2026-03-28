@@ -393,15 +393,35 @@ const vars: Record<string, string> = {
         const wgIp = peer.wg_ip || "?";
         const isHub = name === "gcp-proxy";
         const isVm = VMS.some(v => v.alias === name);
+        const isClient = !isVm && !isHub;
         const peerType = isHub ? "HUB" : isVm ? "VM" : "CLIENT";
         const live = data.wg_peers.find((p: any) => p.privIp === wgIp || p.name === name);
         const handshake = live?.handshake || "no data";
         const alive = live?.alive ?? false;
-        lines.push(`${alive ? "✅" : "❌"} ${name.padEnd(18)} ${pubIp.padEnd(18)} ${wgIp.padEnd(14)} ${peerType.padEnd(8)} ${handshake}`);
+
+        // 3 health checks: VPS API, Public IP, WG IP
+        let vpsOk = false, pubOk = false, wgOk = false;
+        if (isClient) {
+          // Clients (surface, termux): no VPS/pub check, only WG handshake
+          vpsOk = true; pubOk = true; wgOk = alive;
+        } else {
+          // VMs: check SSH reachability as VPS proxy, ping public IP, check WG handshake
+          const vmData = data.vms.find((v: VmData) => v.alias === name);
+          vpsOk = vmData?.reachable ?? false;
+          pubOk = pubIp !== "?" && pubIp !== "dynamic" && run(`nc -zw3 ${pubIp} 22 2>&1 && echo OK`).includes("OK");
+          wgOk = alive;
+        }
+        const allOk = vpsOk && pubOk && wgOk;
+        const vpsIcon = vpsOk ? "✅" : "❌";
+        const pubIcon = pubOk ? "✅" : "❌";
+        const wgIcon = wgOk ? "✅" : "❌";
+        const overallIcon = allOk ? "✅" : (vpsOk || pubOk || wgOk) ? "⚠️" : "❌";
+
+        lines.push(`${overallIcon} ${name.padEnd(18)} ${vpsIcon}  ${pubIcon}  ${wgIcon}  ${pubIp.padEnd(18)} ${wgIp.padEnd(14)} ${peerType.padEnd(8)} ${handshake}`);
       }
     } else if (data.wg_peers.length) {
       for (const p of data.wg_peers) {
-        lines.push(`${p.alive ? "✅" : "❌"} ${p.name.padEnd(18)} ${p.pubIp.padEnd(18)} ${p.privIp.padEnd(14)} ${"?".padEnd(8)} ${p.handshake}`);
+        lines.push(`${p.alive ? "✅" : "❌"} ${p.name.padEnd(18)} ?    ?    ${p.alive ? "✅" : "❌"}  ${p.pubIp.padEnd(18)} ${p.privIp.padEnd(14)} ${"?".padEnd(8)} ${p.handshake}`);
       }
     } else {
       lines.push("❌ No WG peer data available");
