@@ -5,102 +5,135 @@
  * Usage: npx tsx container-health.ts
  */
 import { execSync } from "child_process";
-import { writeFileSync } from "fs";
+import { writeFileSync, readFileSync, existsSync } from "fs";
+import { join } from "path";
 
 const HOME = process.env.HOME || "/home/diego";
 const SCRIPT_DIR = __dirname;
+const CD = join(SCRIPT_DIR, ".."); // cloud-data/ root
 
-// ── Config ──────────────────────────────────────────────────────
-const VMS = [
-  { alias: "gcp-proxy", ip: "10.0.0.1", user: "diego", cpus: 2, ram: "2G", os: "Fedora 42" },
-  { alias: "oci-apps", ip: "10.0.0.6", user: "ubuntu", cpus: 4, ram: "24G", os: "Ubuntu ARM" },
-  { alias: "oci-mail", ip: "10.0.0.3", user: "ubuntu", cpus: 2, ram: "1G", os: "Ubuntu x86" },
-  { alias: "oci-analytics", ip: "10.0.0.4", user: "ubuntu", cpus: 2, ram: "1G", os: "Ubuntu x86" },
-];
+// ── Load cloud-data JSONs ───────────────────────────────────────
+function loadJson(name: string): any {
+  const p = join(CD, name);
+  try { return JSON.parse(readFileSync(p, "utf-8")); } catch { return {}; }
+}
 
-const MCP_ENDPOINTS = [
-  { url: "mcp.diegonmarcos.com/g-workspace/mcp", upstream: "g-workspace-mcp.app:3104", name: "Google Workspace MCP" },
-  { url: "mcp.diegonmarcos.com/mail-mcp/mcp", upstream: "mail-mcp.app:3103", name: "Mail MCP" },
-  { url: "mcp.diegonmarcos.com/mattermost-mcp/mcp", upstream: "mattermost-mcp.app:3102", name: "Mattermost MCP" },
-  { url: "mcp.diegonmarcos.com/c3-infra-mcp/mcp", upstream: "c3-infra-mcp.app:3100", name: "C3 Infra MCP" },
-  { url: "mcp.diegonmarcos.com/c3-services-mcp/mcp", upstream: "c3-services-mcp.app:3101", name: "C3 Services MCP" },
-  { url: "mcp.diegonmarcos.com/cloud-cgc-mcp/mcp", upstream: "cloud-cgc-mcp.app:3105", name: "Cloud CGC MCP" },
-];
+const topology = loadJson("cloud-data-topology.json");
+const caddyRoutes = loadJson("cloud-data-caddy-routes.json");
+const ghaConfig = loadJson("cloud-data-gha-config.json");
+const hmData = loadJson("cloud-data-home-manager.json");
+const wgPeersData = loadJson("cloud-data-wireguard-peers.json");
 
-const API_ENDPOINTS = [
-  { url: "api.diegonmarcos.com/c3-api", upstream: "c3-infra-api.app:8081", name: "C3 Infra API" },
-  { url: "api.diegonmarcos.com/services", upstream: "c3-services-api.app:8082", name: "C3 Services API" },
-  { url: "api.diegonmarcos.com/crawlee", upstream: "crawlee.app:3000", name: "Crawlee API" },
-];
+// ── Parse VMs from home-manager data ────────────────────────────
+const VMS = Object.entries(hmData.vms ?? {}).map(([id, vm]: [string, any]) => ({
+  alias: vm.ssh_alias || id,
+  ip: vm.wg_ip || "",
+  user: vm.user || "ubuntu",
+  cpus: vm.specs?.cpu || 0,
+  ram: `${vm.specs?.ram_gb || "?"}G`,
+  os: vm.os || id,
+  pubIp: vm.ip || "",
+  diskGb: vm.specs?.disk_gb || 0,
+  provider: vm.provider || "?",
+  shape: vm.specs?.shape || vm.specs?.machine_type || "?",
+})).filter(v => v.ip); // only VMs with WG IPs
 
-const PUBLIC_URLS = [
-  // Parent domains (path-based routes)
-  { url: "app.diegonmarcos.com", upstream: "path-based routes", vm: "oci-apps" },
-  { url: "cloud.diegonmarcos.com", upstream: "cloud portal", vm: "oci-apps" },
-  { url: "proxy.diegonmarcos.com", upstream: "infra dashboard", vm: "gcp-proxy" },
-  { url: "slides.diegonmarcos.com", upstream: "revealmd:3014", vm: "oci-apps" },
-  { url: "pad.diegonmarcos.com", upstream: "etherpad:3012", vm: "oci-apps" },
-  { url: "doc.diegonmarcos.com", upstream: "hedgedoc:3018", vm: "oci-apps" },
-  { url: "files.diegonmarcos.com", upstream: "filebrowser:3015", vm: "oci-apps" },
-  { url: "logs.diegonmarcos.com", upstream: "dozzle:9999", vm: "oci-analytics" },
-  { url: "mcp.diegonmarcos.com", upstream: "MCP hub", vm: "oci-apps" },
-  // Direct domain routes
-  { url: "auth.diegonmarcos.com", upstream: "authelia:9091", vm: "gcp-proxy" },
-  { url: "vault.diegonmarcos.com", upstream: "vaultwarden:8880", vm: "gcp-proxy" },
-  { url: "rss.diegonmarcos.com", upstream: "ntfy:8090", vm: "gcp-proxy" },
-  { url: "ide.diegonmarcos.com", upstream: "code-server:8444", vm: "oci-apps" },
-  { url: "sheets.diegonmarcos.com", upstream: "grist:3011", vm: "oci-apps" },
-  { url: "chat.diegonmarcos.com", upstream: "mattermost:8065", vm: "oci-apps" },
-  { url: "photos.diegonmarcos.com", upstream: "photoprism:3013", vm: "oci-apps" },
-  { url: "cal.diegonmarcos.com", upstream: "radicale:5232", vm: "oci-apps" },
-  { url: "api.diegonmarcos.com", upstream: "crawlee:3000", vm: "oci-apps" },
-  { url: "grafana.diegonmarcos.com", upstream: "grafana:3200", vm: "oci-apps" },
-  { url: "db.diegonmarcos.com", upstream: "nocodb:8085", vm: "oci-apps" },
-  { url: "windmill.diegonmarcos.com", upstream: "windmill:8000", vm: "oci-apps" },
-  { url: "git.diegonmarcos.com", upstream: "gitea:3017", vm: "oci-apps" },
-  { url: "webmail.diegonmarcos.com", upstream: "snappymail:8888", vm: "oci-mail" },
-  { url: "mail.diegonmarcos.com", upstream: "stalwart:8443", vm: "oci-mail" },
-  { url: "workflows.diegonmarcos.com", upstream: "dagu:8070", vm: "oci-mail" },
-  { url: "analytics.diegonmarcos.com", upstream: "matomo:8080", vm: "oci-analytics" },
-];
+// ── Parse Public URLs from caddy routes ─────────────────────────
+function parsePublicUrls(): { url: string; upstream: string }[] {
+  const urls: { url: string; upstream: string }[] = [];
+  const seen = new Set<string>();
+  const add = (url: string, upstream: string) => { if (!seen.has(url)) { seen.add(url); urls.push({ url, upstream }); } };
 
-const MAIL_PORTS = [
-  // mail.diegonmarcos.com — all 4 ports
-  { host: "mail.diegonmarcos.com", port: 25, proto: "SMTP" },
-  { host: "mail.diegonmarcos.com", port: 465, proto: "SMTPS" },
-  { host: "mail.diegonmarcos.com", port: 587, proto: "Submission" },
-  { host: "mail.diegonmarcos.com", port: 993, proto: "IMAPS" },
-  { host: "mail.diegonmarcos.com", port: 4190, proto: "ManageSieve" },
-  // smtp.diegonmarcos.com — SMTP ports
-  { host: "smtp.diegonmarcos.com", port: 25, proto: "SMTP" },
-  { host: "smtp.diegonmarcos.com", port: 465, proto: "SMTPS" },
-  { host: "smtp.diegonmarcos.com", port: 587, proto: "Submission" },
-  // imap.diegonmarcos.com — IMAP port
-  { host: "imap.diegonmarcos.com", port: 993, proto: "IMAPS" },
-];
+  for (const r of caddyRoutes.routes ?? []) {
+    if (r.domain) add(r.domain, r.upstream || "?");
+  }
+  for (const pr of caddyRoutes.path_routes ?? []) {
+    if (pr.parent_domain) add(pr.parent_domain, "path-based");
+  }
+  for (const mr of caddyRoutes.mcp_routes ?? []) {
+    if (mr.parent_domain) add(mr.parent_domain, "MCP hub");
+  }
+  const special = caddyRoutes.special;
+  if (Array.isArray(special)) {
+    for (const s of special) { if (s.domain) add(s.domain, s.upstream || s.comment || "special"); }
+  } else if (special && typeof special === "object") {
+    for (const s of Object.values(special) as any[]) { if (s?.domain) add(s.domain, s.upstream || s.comment || "special"); }
+  }
+  return urls;
+}
+const PUBLIC_URLS = parsePublicUrls();
 
-const PRIVATE_DNS: { dns: string; container: string; port: number; vm: string }[] = [
-  { dns: "authelia.app", container: "authelia", port: 9091, vm: "gcp-proxy" },
-  { dns: "caddy.app", container: "caddy", port: 443, vm: "gcp-proxy" },
-  { dns: "hickory-dns.app", container: "hickory-dns", port: 53, vm: "gcp-proxy" },
-  { dns: "introspect-proxy.app", container: "introspect-proxy", port: 4182, vm: "gcp-proxy" },
-  { dns: "ntfy.app", container: "ntfy", port: 8090, vm: "gcp-proxy" },
-  { dns: "redis.app", container: "redis", port: 6379, vm: "gcp-proxy" },
-  { dns: "vaultwarden.app", container: "vaultwarden", port: 8880, vm: "gcp-proxy" },
-  { dns: "c3-infra-api.app", container: "c3-infra-api", port: 8081, vm: "oci-apps" },
-  { dns: "c3-infra-mcp.app", container: "c3-infra-mcp", port: 3100, vm: "oci-apps" },
-  { dns: "code-server.app", container: "code-server", port: 8444, vm: "oci-apps" },
-  { dns: "crawlee.app", container: "crawlee_api", port: 3000, vm: "oci-apps" },
-  { dns: "grafana.app", container: "lgtm_grafana", port: 3200, vm: "oci-apps" },
-  { dns: "grist.app", container: "grist_app", port: 3011, vm: "oci-apps" },
-  { dns: "mattermost.app", container: "mattermost", port: 8065, vm: "oci-apps" },
-  { dns: "nocodb.app", container: "nocodb", port: 8085, vm: "oci-apps" },
-  { dns: "dagu.app", container: "dagu", port: 8070, vm: "oci-mail" },
-  { dns: "stalwart.app", container: "stalwart", port: 8443, vm: "oci-mail" },
-  { dns: "dozzle.app", container: "dozzle", port: 9999, vm: "oci-analytics" },
-  { dns: "matomo.app", container: "matomo-hybrid", port: 8080, vm: "oci-analytics" },
-  { dns: "umami.app", container: "umami", port: 3006, vm: "oci-analytics" },
-];
+// ── Parse MCP + API endpoints from caddy routes ─────────────────
+function parseMcpApiEndpoints(): { url: string; upstream: string; name: string }[] {
+  const eps: { url: string; upstream: string; name: string }[] = [];
+  for (const mr of caddyRoutes.mcp_routes ?? []) {
+    for (const ep of mr.endpoints ?? []) {
+      eps.push({
+        url: `${mr.parent_domain}${ep.base_path}/mcp`,
+        upstream: ep.upstream,
+        name: ep.base_path.replace(/^\//, ""),
+      });
+    }
+  }
+  // API path routes (from path_routes with parent_domain = api.*)
+  for (const pr of caddyRoutes.path_routes ?? []) {
+    for (const r of pr.routes ?? []) {
+      if (r.path && r.upstream) {
+        eps.push({ url: `${pr.parent_domain}${r.path}`, upstream: r.upstream, name: r.path.replace(/^\//, "") });
+      }
+    }
+  }
+  return eps;
+}
+const MCP_API_ENDPOINTS = parseMcpApiEndpoints();
+
+// ── Parse Mail ports from L4 routes ─────────────────────────────
+function parseMailPorts(): { host: string; port: number; proto: string }[] {
+  const ports: { host: string; port: number; proto: string }[] = [];
+  const MAIL_HOSTS = ["mail.diegonmarcos.com", "smtp.diegonmarcos.com", "imap.diegonmarcos.com"];
+  const PROTO_MAP: Record<number, string> = { 25: "SMTP", 465: "SMTPS", 587: "Submission", 993: "IMAPS", 4190: "ManageSieve" };
+  // From L4 routes
+  for (const l4 of caddyRoutes.l4_routes ?? []) {
+    const port = l4.listen_port || (l4.upstream ? parseInt(l4.upstream.split(":").pop()) : 0);
+    if (port && PROTO_MAP[port]) {
+      for (const h of MAIL_HOSTS) {
+        // mail.* gets all, smtp.* gets 25/465/587, imap.* gets 993
+        if (h.startsWith("smtp") && ![25, 465, 587].includes(port)) continue;
+        if (h.startsWith("imap") && port !== 993) continue;
+        ports.push({ host: h, port, proto: PROTO_MAP[port] });
+      }
+    }
+  }
+  // Fallback if L4 routes are sparse — add standard mail ports
+  if (ports.length === 0) {
+    for (const h of MAIL_HOSTS) {
+      if (h.startsWith("mail")) for (const p of [25, 465, 587, 993, 4190]) ports.push({ host: h, port: p, proto: PROTO_MAP[p] });
+      if (h.startsWith("smtp")) for (const p of [25, 465, 587]) ports.push({ host: h, port: p, proto: PROTO_MAP[p] });
+      if (h.startsWith("imap")) ports.push({ host: h, port: 993, proto: "IMAPS" });
+    }
+  }
+  return ports;
+}
+const MAIL_PORTS = parseMailPorts();
+
+// ── Parse Private DNS from topology ─────────────────────────────
+function parsePrivateDns(): { dns: string; container: string; port: number; vm: string }[] {
+  const vmIdToAlias: Record<string, string> = {};
+  for (const [id, vm] of Object.entries(hmData.vms ?? {}) as [string, any][]) {
+    if (vm.ssh_alias) vmIdToAlias[id] = vm.ssh_alias;
+  }
+  const entries: { dns: string; container: string; port: number; vm: string }[] = [];
+  for (const [, svc] of Object.entries(topology.services ?? {}) as [string, any][]) {
+    const alias = vmIdToAlias[svc.vm] || svc.vm || "?";
+    for (const [, ct] of Object.entries(svc.containers ?? {}) as [string, any][]) {
+      if (ct.dns && ct.port) {
+        entries.push({ dns: ct.dns, container: ct.container_name || "?", port: ct.port, vm: alias });
+      }
+    }
+  }
+  return entries.sort((a, b) => a.vm.localeCompare(b.vm) || a.dns.localeCompare(b.dns));
+}
+const PRIVATE_DNS = parsePrivateDns();
 
 // ── Helpers ─────────────────────────────────────────────────────
 function run(cmd: string, timeout = 10000): string {
@@ -203,7 +236,7 @@ if (wgRaw) {
 const data = {
   generated: new Date().toISOString(),
   wg_peers: wgPeers,
-  api_mcp: timed("api_mcp", () => [...API_ENDPOINTS, ...MCP_ENDPOINTS].map(e => {
+  api_mcp: timed("api_mcp", () => [...MCP_API_ENDPOINTS].map(e => {
     const code = run(`curl -sko /dev/null -w '%{http_code}' https://${e.url} 2>/dev/null`);
     return { ...e, http_code: code, up: code !== "" && code !== "000" && code !== "502" };
   })),
