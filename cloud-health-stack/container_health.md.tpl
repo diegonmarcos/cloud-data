@@ -16,6 +16,12 @@
 
 ── A1) URLs & Endpoints ──────────────────────────────────────
 
+WIREGUARD MESH (hub: gcp-proxy $HUB_WG_IP — front door)
+────────────────────────────────────────────────────────────
+    Name               Public IP          WG IP          Type     Handshake
+────────────────────────────────────────────────────────────
+$WG_PEERS
+
 PUBLIC URLs
 ────────────────────────────────────────────────────────────
 $PUBLIC_URLS
@@ -29,12 +35,6 @@ REPOS & REGISTRIES
 $REPOS_REGISTRIES
 
 ── A2) Containers & VMs ──────────────────────────────────────
-
-WIREGUARD MESH (hub: gcp-proxy $HUB_WG_IP — front door)
-────────────────────────────────────────────────────────────
-    Name               Public IP          WG IP          Type     Handshake
-────────────────────────────────────────────────────────────
-$WG_PEERS
 
 PRIVATE DNS (WireGuard mesh)
 ────────────────────────────────────────────────────────────
