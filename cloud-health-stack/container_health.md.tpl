@@ -32,7 +32,7 @@ $WG_PEERS
 
 PUBLIC URLs (Caddy routes)
 ────────────────────────────────────────────────────────────
-    URL                              📡TCP 🌐HTTP 🔒HTTPS Upstream                  Code
+    URL                              📡TCP 🌐HTTP 🔒HTTPS 🔐AUTH Upstream                  Code
 ────────────────────────────────────────────────────────────
 $PUBLIC_URLS
 

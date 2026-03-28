@@ -2,13 +2,25 @@
  * vars-health.ts — A0: WG_PEERS, A1: PUBLIC_URLS, API_MCP_ENDPOINTS, REPOS_REGISTRIES
  * A1 uses multi-protocol checks (TCP + HTTP + HTTPS) per URL
  */
-import { run, tcpCheck, publicUrlMultiCheck, type VmData } from "./collectors.js";
-import { log } from "./config.js";
+import { run, tcpCheck, publicUrlMultiCheck, runAsync, type VmData } from "./collectors.js";
+import { log, HOME } from "./config.js";
 import type { VarContext } from "./types.js";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 export interface PublicUrlResult {
-  url: string; upstream: string; tcp: boolean; http: boolean; https: boolean; code: string;
+  url: string; upstream: string; tcp: boolean; http: boolean; https: boolean; auth: boolean; authCode: string; code: string;
 }
+
+// Load bearer token for authenticated checks
+function loadBearerToken(): string {
+  try {
+    const tokenPath = join(HOME, "Mounts/Git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json");
+    const data = JSON.parse(readFileSync(tokenPath, "utf-8"));
+    return data.access_token || "";
+  } catch { return ""; }
+}
+const BEARER_TOKEN = loadBearerToken();
 
 /**
  * Async: parallel multi-protocol check on all public URLs
@@ -17,20 +29,33 @@ export async function checkPublicUrls(
   urls: { url: string; upstream: string }[],
   maxConcurrency = 10
 ): Promise<PublicUrlResult[]> {
-  log(`  Checking ${urls.length} public URLs (TCP+HTTP+HTTPS, ${maxConcurrency} concurrent)...`);
+  const hasToken = !!BEARER_TOKEN;
+  log(`  Checking ${urls.length} public URLs (TCP+HTTP+HTTPS${hasToken ? "+AUTH" : ""}, ${maxConcurrency} concurrent)...`);
+  if (!hasToken) log("  ⚠️ No bearer token — skipping 🔐AUTH checks");
   const results: PublicUrlResult[] = [];
   for (let i = 0; i < urls.length; i += maxConcurrency) {
     const batch = urls.slice(i, i + maxConcurrency);
     const batchResults = await Promise.all(
       batch.map(async (u) => {
         const check = await publicUrlMultiCheck(u.url);
-        return { ...u, ...check };
+        // Auth check: curl with bearer token → follows redirects through Authelia
+        let auth = false;
+        let authCode = "---";
+        if (hasToken && check.https) {
+          authCode = await runAsync(
+            `curl -sko /dev/null -w '%{http_code}' -L -H 'Authorization: Bearer ${BEARER_TOKEN}' https://${u.url} 2>/dev/null`,
+            8000
+          );
+          auth = authCode !== "" && authCode !== "000" && authCode !== "401" && authCode !== "403" && authCode !== "502";
+        }
+        return { ...u, ...check, auth, authCode };
       })
     );
     results.push(...batchResults);
   }
   const up = results.filter(r => r.https).length;
-  log(`  Public URLs: ${up}/${results.length} HTTPS OK`);
+  const authed = results.filter(r => r.auth).length;
+  log(`  Public URLs: ${up}/${results.length} HTTPS, ${authed}/${results.length} AUTH OK`);
   return results;
 }
 
@@ -81,13 +106,15 @@ export function varsHealth(ctx: VarContext, publicUrlResults?: PublicUrlResult[]
       const results = publicUrlResults || [];
       if (results.length === 0) {
         return data.public_urls.map((u: any) =>
-          `${u.up ? "✅" : "❌"} ${u.url.padEnd(32)} ${u.up ? "✅" : "❌"}  ${u.up ? "✅" : "❌"}  ${u.up ? "✅" : "❌"}  ${u.upstream.padEnd(22)} [${u.http_code || "---"}]`
+          `${u.up ? "✅" : "❌"} ${u.url.padEnd(32)} ${u.up ? "✅" : "❌"}  ${u.up ? "✅" : "❌"}  ${u.up ? "✅" : "❌"}  —   ${u.upstream.padEnd(22)} [${u.http_code || "---"}]`
         ).join("\n");
       }
       return results.map(u => {
-        const allOk = u.tcp && u.https;
-        const icon = allOk ? "✅" : (u.tcp || u.http || u.https) ? "⚠️" : "❌";
-        return `${icon} ${u.url.padEnd(32)} ${u.tcp ? "✅" : "❌"}  ${u.http ? "✅" : "❌"}  ${u.https ? "✅" : "❌"}  ${u.upstream.padEnd(22)} [${u.code}]`;
+        const allOk = u.tcp && u.https && u.auth;
+        const partial = u.tcp || u.http || u.https;
+        const icon = allOk ? "✅" : partial ? "⚠️" : "❌";
+        const authIcon = u.auth ? "✅" : u.authCode === "---" ? "—" : "❌";
+        return `${icon} ${u.url.padEnd(32)} ${u.tcp ? "✅" : "❌"}  ${u.http ? "✅" : "❌"}  ${u.https ? "✅" : "❌"}  ${authIcon}  ${u.upstream.padEnd(22)} [${u.code}] ${u.auth ? "" : u.authCode !== "---" ? `auth:[${u.authCode}]` : ""}`;
       }).join("\n");
     })(),
 
