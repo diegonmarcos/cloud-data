@@ -12,7 +12,7 @@ import { join } from "path";
 
 import { SCRIPT_DIR, CD, log, logErr, ERRORS, loadJson } from "./lib/config.js";
 import { run, sshCmd, tcpCheck, timed, timedAsync, collectVm, type VmData } from "./lib/collectors.js";
-import { parseVms, parsePublicUrls, parseMcpApiEndpoints, parseMailPorts, parsePrivateDns, parseDatabases } from "./lib/parsers.js";
+import { parseConsolidated } from "./lib/parsers.js";
 import type { VarContext } from "./lib/types.js";
 import { varsHealth, checkPublicUrls } from "./lib/vars-health.js";
 import { varsContainers, checkPrivateHealth } from "./lib/vars-containers.js";
@@ -22,21 +22,11 @@ import { varsSecurity, scanOpenPorts } from "./lib/vars-security.js";
 import { varsStack } from "./lib/vars-stack.js";
 import { varsAppendix, buildIssuesSummary } from "./lib/vars-appendix.js";
 
-// ── Load cloud-data ──────────────────────────────────────────
-const topology = loadJson("cloud-data-topology.json");
-const caddyRoutes = loadJson("cloud-data-caddy-routes.json");
-const ghaConfig = loadJson("cloud-data-gha-config.json");
-const hmData = loadJson("cloud-data-home-manager.json");
-const wgPeersData = loadJson("cloud-data-wireguard-peers.json");
-const backupTargets = loadJson("cloud-data-backup-targets.json");
-
-// ── Parse ────────────────────────────────────────────────────
-const VMS = parseVms(hmData);
-const PUBLIC_URLS = parsePublicUrls(caddyRoutes);
-const MCP_API_ENDPOINTS = parseMcpApiEndpoints(caddyRoutes);
-const MAIL_PORTS = parseMailPorts(caddyRoutes);
-const PRIVATE_DNS = parsePrivateDns(topology, hmData);
-const DATABASES = parseDatabases(backupTargets, PRIVATE_DNS);
+// ── Single source of truth ───────────────────────────────────
+const consolidated = loadJson("_cloud-data-consolidated.json");
+const parsed = parseConsolidated(consolidated);
+const { vms: VMS, publicUrls: PUBLIC_URLS, mcpEndpoints: MCP_API_ENDPOINTS, mailPorts: MAIL_PORTS, privateDns: PRIVATE_DNS, databases: DATABASES, wgPeers: wgPeersData } = parsed;
+const { caddyRoutes, hmData, topology, backupTargets } = parsed;
 
 // ── Collect live data ────────────────────────────────────────
 const TOTAL_START = Date.now();
@@ -97,7 +87,7 @@ try { template = readFileSync(tplPath, "utf-8"); log(`Template loaded (${templat
 catch (e: any) { logErr(`Failed to read template: ${e.message}`); process.exit(1); }
 
 const hubVm = VMS.find(v => v.alias === "gcp-proxy");
-const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData, backupTargets, VMS, PRIVATE_DNS, DATABASES };
+const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData: { mesh_peers: wgPeersData }, backupTargets, VMS, PRIVATE_DNS, DATABASES };
 
 // Build vars — parallel async tasks first, then sync vars
 (async () => {
@@ -105,9 +95,7 @@ const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData, back
   log("Launching parallel checks (public URLs + private health + port scan)...");
   const portScanPromise = timedAsync("open_ports", () => scanOpenPorts(VMS));
   const privateHealthPromise = timedAsync("private_health", () => checkPrivateHealth(PRIVATE_DNS));
-  const publicUrlPromise = timedAsync("public_urls_multi", () => checkPublicUrls(
-    data.public_urls.map((u: any) => ({ url: u.url, upstream: u.upstream }))
-  ));
+  const publicUrlPromise = timedAsync("public_urls_multi", () => checkPublicUrls(PUBLIC_URLS));
 
   // Build sync vars while parallel tasks run
   const vars: Record<string, string> = {
