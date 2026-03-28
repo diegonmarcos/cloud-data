@@ -1,36 +1,36 @@
 {
-  "generated": "2026-03-28T23:23:21.480Z",
+  "generated": "2026-03-28T23:34:22.708Z",
   "wg_peers": [
+    {
+      "name": "10.0.0.9",
+      "pubIp": "88.30.43.183",
+      "privIp": "10.0.0.9",
+      "handshake": "5 seconds ago",
+      "transfer": "11.27 KiB received, 10.43 KiB sent",
+      "alive": true
+    },
     {
       "name": "10.0.0.5",
       "pubIp": "88.30.43.183",
       "privIp": "10.0.0.5",
-      "handshake": "38 seconds ago",
-      "transfer": "59.13 KiB received, 46.73 KiB sent",
-      "alive": true
-    },
-    {
-      "name": "oci-analytics",
-      "pubIp": "129.151.228.66",
-      "privIp": "10.0.0.4",
-      "handshake": "1 minute, 17 seconds ago",
-      "transfer": "23.08 KiB received, 28.08 KiB sent",
+      "handshake": "1 minute, 18 seconds ago",
+      "transfer": "69.29 KiB received, 56.61 KiB sent",
       "alive": true
     },
     {
       "name": "oci-mail",
       "pubIp": "130.110.251.193",
       "privIp": "10.0.0.3",
-      "handshake": "1 minute, 23 seconds ago",
-      "transfer": "143.68 KiB received, 187.74 KiB sent",
+      "handshake": "1 minute, 19 seconds ago",
+      "transfer": "163.63 KiB received, 218.09 KiB sent",
       "alive": true
     },
     {
-      "name": "10.0.0.9",
-      "pubIp": "88.30.43.183",
-      "privIp": "10.0.0.9",
-      "handshake": "1 minute, 28 seconds ago",
-      "transfer": "10.08 KiB received, 8.80 KiB sent",
+      "name": "oci-analytics",
+      "pubIp": "129.151.228.66",
+      "privIp": "10.0.0.4",
+      "handshake": "2 minutes, 34 seconds ago",
+      "transfer": "25.84 KiB received, 31.45 KiB sent",
       "alive": true
     },
     {
@@ -38,7 +38,7 @@
       "pubIp": "34.173.227.250",
       "privIp": "10.0.0.8",
       "handshake": "never",
-      "transfer": "0 B received, 118.23 KiB sent",
+      "transfer": "0 B received, 132.97 KiB sent",
       "alive": false
     },
     {
@@ -46,7 +46,7 @@
       "pubIp": "82.70.229.129",
       "privIp": "10.0.0.6",
       "handshake": "never",
-      "transfer": "0 B received, 120.97 KiB sent",
+      "transfer": "0 B received, 136.73 KiB sent",
       "alive": false
     }
   ],
@@ -175,103 +175,103 @@
     {
       "url": "logs.diegonmarcos.com",
       "upstream": "dozzle.app:9999",
-      "http_code": "429",
+      "http_code": "200",
       "up": true
     },
     {
       "url": "grafana.diegonmarcos.com",
       "upstream": "grafana.app:3200",
-      "http_code": "429",
+      "http_code": "200",
       "up": true
     },
     {
       "url": "analytics.diegonmarcos.com",
       "upstream": "matomo.app:8080",
-      "http_code": "429",
+      "http_code": "302",
       "up": true
     },
     {
       "url": "db.diegonmarcos.com",
       "upstream": "nocodb.app:8085",
-      "http_code": "429",
+      "http_code": "302",
       "up": true
     },
     {
       "url": "rss.diegonmarcos.com",
       "upstream": "ntfy.app:8090",
-      "http_code": "429",
+      "http_code": "302",
       "up": true
     },
     {
       "url": "windmill.diegonmarcos.com",
       "upstream": "windmill-app.app:8000",
-      "http_code": "429",
+      "http_code": "200",
       "up": true
     },
     {
       "url": "git.diegonmarcos.com",
       "upstream": "backup-gitea.app:3002",
-      "http_code": "429",
+      "http_code": "200",
       "up": true
     },
     {
       "url": "api.diegonmarcos.com/dash",
       "upstream": "diegonmarcos.github.io",
-      "http_code": "429",
+      "http_code": "301",
       "up": true
     },
     {
       "url": "api.diegonmarcos.com/crawlee",
       "upstream": "crawlee.app:3000",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/windmill",
       "upstream": "windmill-app.app:8000",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/etherpad",
       "upstream": "etherpad.app:3012",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/filebrowser",
       "upstream": "filebrowser.app:3015",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/hedgedoc",
       "upstream": "hedgedoc.app:3018",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/revealmd",
       "upstream": "revealmd.app:3014",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/dozzle",
       "upstream": "dozzle.app:9999",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/grafana",
       "upstream": "grafana.app:3016",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
       "url": "app.diegonmarcos.com/gitea",
       "upstream": "gitea.app:3017",
-      "http_code": "429",
+      "http_code": "404",
       "up": true
     },
     {
@@ -669,15 +669,15 @@
       "os": "oci-mail",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "652M",
+      "mem_used": "647M",
       "mem_total": "954M",
-      "mem_pct": 68,
-      "swap": "220M/2559M",
+      "mem_pct": 67,
+      "swap": "219M/2559M",
       "disk_used": "28G",
       "disk_total": "45G",
       "disk_pct": "67%",
-      "load": "0.31 0.46 0.42",
-      "uptime": "up 19 hours, 56 minutes",
+      "load": "0.19 0.35 0.39",
+      "uptime": "up 20 hours, 7 minutes",
       "containers_running": 7,
       "containers_total": 7,
       "containers": [
@@ -689,7 +689,7 @@
         },
         {
           "name": "smtp-proxy",
-          "status": "Up 19 hours",
+          "status": "Up 20 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -707,19 +707,19 @@
         },
         {
           "name": "snappymail",
-          "status": "Up 18 hours (healthy)",
+          "status": "Up 19 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "introspect-proxy",
-          "status": "Up 19 hours (healthy)",
+          "status": "Up 20 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "syslog-forwarder",
-          "status": "Up 19 hours (healthy)",
+          "status": "Up 20 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         }
@@ -731,15 +731,15 @@
       "os": "oci-analytics",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "725M",
+      "mem_used": "717M",
       "mem_total": "954M",
       "mem_pct": 75,
       "swap": "268M/2559M",
       "disk_used": "25G",
       "disk_total": "48G",
       "disk_pct": "56%",
-      "load": "2.06 2.14 2.16",
-      "uptime": "up 19 hours, 21 minutes",
+      "load": "2.27 2.20 2.18",
+      "uptime": "up 19 hours, 32 minutes",
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
@@ -775,7 +775,7 @@
         },
         {
           "name": "alerts-api",
-          "status": "Up 17 hours (healthy)",
+          "status": "Up 18 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -799,14 +799,14 @@
       "os": "oci-apps",
       "cpus": 4,
       "ram": "24G",
-      "mem_used": "4591M",
+      "mem_used": "4622M",
       "mem_total": "23975M",
       "mem_pct": 19,
       "swap": "0M/0M",
       "disk_used": "64.9G",
       "disk_total": "95.8G",
       "disk_pct": "71%",
-      "load": "0.71 0.57 0.54",
+      "load": "0.54 0.58 0.55",
       "uptime": "up 1d 5h",
       "containers_running": 49,
       "containers_total": 54,
@@ -825,20 +825,26 @@
         },
         {
           "name": "surrealdb",
-          "status": "Exited (2) 26 minutes ago",
+          "status": "Exited (2) 37 minutes ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "crawlee_minio_init",
-          "status": "Exited (0) 27 minutes ago",
+          "status": "Exited (0) 38 minutes ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "crawlee_dashboard",
-          "status": "Exited (0) 27 minutes ago",
+          "status": "Exited (0) 38 minutes ago",
           "health": "exited",
+          "icon": "❌"
+        },
+        {
+          "name": "crawlee_db",
+          "status": "Up 56 seconds (unhealthy)",
+          "health": "unhealthy",
           "icon": "❌"
         },
         {
@@ -848,26 +854,20 @@
           "icon": "⚠️"
         },
         {
-          "name": "crawlee_db",
-          "status": "Up 20 seconds (health: starting)",
-          "health": "starting",
-          "icon": "⚠️"
-        },
-        {
           "name": "windmill-worker",
-          "status": "Up 22 minutes",
+          "status": "Up 33 minutes",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "mattermost-bots",
-          "status": "Up 25 minutes",
+          "status": "Up 36 minutes",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_scheduler",
-          "status": "Up 27 minutes",
+          "status": "Up 38 minutes",
           "health": "none",
           "icon": "✅"
         },
@@ -921,85 +921,85 @@
         },
         {
           "name": "mattermost-mcp",
-          "status": "Up 4 hours",
+          "status": "Up 5 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "mail-mcp",
-          "status": "Up 4 hours",
+          "status": "Up 5 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "code-server",
-          "status": "Up 4 hours",
+          "status": "Up 5 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "windmill-server",
-          "status": "Up 22 minutes (healthy)",
+          "status": "Up 33 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "windmill-db",
-          "status": "Up 22 minutes (healthy)",
+          "status": "Up 33 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "quant_light_db",
-          "status": "Up 24 minutes (healthy)",
+          "status": "Up 35 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "photoprism_rclone",
-          "status": "Up 24 minutes (healthy)",
+          "status": "Up 35 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "photoprism_mariadb",
-          "status": "Up 24 minutes (healthy)",
+          "status": "Up 35 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "nocodb",
-          "status": "Up 24 minutes (healthy)",
+          "status": "Up 35 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "nocodb-db",
-          "status": "Up 24 minutes (healthy)",
+          "status": "Up 35 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "crawlee_minio",
-          "status": "Up 27 minutes (healthy)",
+          "status": "Up 38 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "cloud-cgc-mcp",
-          "status": "Up 27 minutes (healthy)",
+          "status": "Up 39 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-mcp",
-          "status": "Up 31 minutes (healthy)",
+          "status": "Up 42 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-api",
-          "status": "Up 31 minutes (healthy)",
+          "status": "Up 42 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -1077,61 +1077,61 @@
         },
         {
           "name": "radicale",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "mattermost",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "mattermost-postgres",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "hedgedoc_app",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "hedgedoc_postgres",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "grist_app",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "google-workspace-mcp",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "etherpad_app",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "etherpad_postgres",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "filebrowser_app",
-          "status": "Up 4 hours (healthy)",
+          "status": "Up 5 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         }
@@ -1162,105 +1162,105 @@
       "os": "gcp-proxy",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "949M",
+      "mem_used": "927M",
       "mem_total": "1952M",
-      "mem_pct": 48,
-      "swap": "129M/3999M",
+      "mem_pct": 47,
+      "swap": "132M/3999M",
       "disk_used": "16G",
       "disk_total": "31G",
       "disk_pct": "52%",
-      "load": "0.51 0.97 1.34",
-      "uptime": "up 1 hour, 29 minutes",
+      "load": "0.33 0.89 1.24",
+      "uptime": "up 1 hour, 40 minutes",
       "containers_running": 19,
       "containers_total": 19,
       "containers": [
         {
           "name": "hickory-dns",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "caddy",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "postlite-ntfy",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "postlite-authelia",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "postlite-npm",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "postlite-vaultwarden",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "syslog-bridge",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "github-rss",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "ntfy",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "sqlite-authelia",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "sqlite-npm",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "sqlite-vaultwarden",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "sqlite-ntfy",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "fluent-bit",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "authelia-redis",
-          "status": "Up About an hour",
+          "status": "Up 2 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -1272,19 +1272,19 @@
         },
         {
           "name": "vaultwarden",
-          "status": "Up About an hour (healthy)",
+          "status": "Up 2 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "introspect-proxy",
-          "status": "Up About an hour (healthy)",
+          "status": "Up 2 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "authelia",
-          "status": "Up About an hour (healthy)",
+          "status": "Up 2 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         }

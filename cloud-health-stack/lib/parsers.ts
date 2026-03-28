@@ -47,9 +47,19 @@ export function parseConsolidated(c: any): ParsedData {
     };
   }).filter(v => v.ip);
 
+  // ── Host-exposed ports per VM (from public_ports) ──────
+  const hostPortsByVm: Record<string, Set<number>> = {};
+  for (const [id, vm] of Object.entries(c.vms ?? {}) as [string, any][]) {
+    const alias = vmIdToAlias[id] || id;
+    hostPortsByVm[alias] = new Set<number>();
+    for (const pp of vm.public_ports ?? []) {
+      if (pp.port) hostPortsByVm[alias].add(pp.port);
+    }
+  }
+
   // ── Services → URLs, DNS, MCP ──────────────────────────
   const publicUrls: { url: string; upstream: string }[] = [];
-  const privateDns: { dns: string; container: string; port: number; vm: string }[] = [];
+  const privateDns: { dns: string; container: string; port: number; vm: string; hostPort: boolean }[] = [];
   const mcpEndpoints: { url: string; upstream: string; name: string }[] = [];
   const seenUrls = new Set<string>();
   const addUrl = (url: string, upstream: string) => { if (!seenUrls.has(url)) { seenUrls.add(url); publicUrls.push({ url, upstream }); } };
@@ -58,7 +68,10 @@ export function parseConsolidated(c: any): ParsedData {
     const vmAlias = vmIdToAlias[svc.vm] || svc.vm || "?";
     if (svc.domain) addUrl(svc.domain, svc.upstream || `${svc.dns}:${svc.port}` || "?");
     for (const [, ct] of Object.entries(svc.containers ?? {}) as [string, any][]) {
-      if (ct.dns && ct.port) privateDns.push({ dns: ct.dns, container: ct.container_name || "?", port: ct.port, vm: vmAlias });
+      if (ct.dns && ct.port) {
+        const isHostPort = hostPortsByVm[vmAlias]?.has(ct.port) ?? false;
+        privateDns.push({ dns: ct.dns, container: ct.container_name || "?", port: ct.port, vm: vmAlias, hostPort: isHostPort });
+      }
     }
   }
 

@@ -152,8 +152,9 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: PrivateHe
           icon = "⚠️";
         }
         const dnsEntry = PRIVATE_DNS.find(p => p.container === c.name);
-        const portStr = dnsEntry ? String(dnsEntry.port).padEnd(7) : "       ";
-        lines.push(`  ${icon} ${c.name.padEnd(25)} ${portStr} ${state.padEnd(14)} ${c.status.substring(0, 30)}`);
+        const dockerPort = dnsEntry ? String(dnsEntry.port) : "—";
+        const hostPort = dnsEntry?.hostPort ? String(dnsEntry.port) : "—";
+        lines.push(`  ${icon} ${c.name.padEnd(25)} ${hostPort.padEnd(6)} ${dockerPort.padEnd(6)} ${state.padEnd(14)} ${c.status.substring(0, 30)}`);
       }
       lines.push("");
       return lines.join("\n");

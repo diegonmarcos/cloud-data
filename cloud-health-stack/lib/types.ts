@@ -22,6 +22,6 @@ export interface VarContext {
   wgPeersData: any;
   backupTargets: any;
   VMS: { alias: string; vmId: string; ip: string; user: string; cpus: number; ram: string; os: string; pubIp: string; diskGb: number; shape: string }[];
-  PRIVATE_DNS: { dns: string; container: string; port: number; vm: string }[];
+  PRIVATE_DNS: { dns: string; container: string; port: number; vm: string; hostPort: boolean }[];
   DATABASES: { service: string; type: string; container: string; db: string; vm: string; dns: string }[];
 }
