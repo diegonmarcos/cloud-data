@@ -6,8 +6,31 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-03-28  14:30:00
+         CONTAINER HEALTH — 2026-03-28  14:36:31
 ════════════════════════════════════════════════════════════
+
+
+══════════════════════════════════════════════════════════════
+  ⚠️  ISSUES FOUND
+══════════════════════════════════════════════════════════════
+12 critical, 2 warnings — 14 total
+
+        Section  Issue
+    ──────────────────────────────────────────────────────────────────────
+    ❌ A2       VM gcp-t4 — UNREACHABLE
+    ❌ A2       VM gcp-proxy — UNREACHABLE
+    ❌ A2       oci-mail/caddy — exited(0)
+    ❌ A2       oci-analytics/umami-setup — exited(1)
+    ❌ A2       oci-apps/crawlee_minio_init — exited(0)
+    ❌ A2       oci-apps/photoprism_rclone — exited(1)
+    ❌ A1       MCP g-workspace — [502]
+    ❌ A3       Stalwart SPF FAIL — VM IP 130.110.251.193 not in SPF (outbound emails rejected)
+    ❌ SYS      SSH unreachable: gcp-t4
+    ❌ SYS      SSH unreachable: gcp-proxy
+    ❌ SYS        ❌ gcp-t4: UNREACHABLE
+    ❌ SYS        ❌ gcp-proxy: UNREACHABLE
+    ⚠️ A3       mails.diegonmarcos.com:25 MX (Resend/SES) — down
+    ⚠️ A3       send.mails.diegonmarcos.com:25 SPF (Resend/SES) — down
 
 
 ══════════════════════════════════════════════════════════════
@@ -156,7 +179,7 @@ PRIVATE DNS (WireGuard mesh)
   ⚠️  System DNS can't resolve .app names — add 10.0.0.1 to resolv.conf or WG DNS
      All ❌ above are due to missing local DNS config, NOT service failures
 
-oci-mail ✅ — oci-mail — 1C/1G — mem 681M/954M (71%) — disk 67% — swap 211M/2559M — load 0.58 0.58 0.41 — 7/8 ctrs — up 11 hours, 3 minutes
+oci-mail ✅ — oci-mail — 1C/1G — mem 615M/954M (64%) — disk 67% — swap 234M/2559M — load 2.06 1.68 0.99 — 7/8 ctrs — up 11 hours, 9 minutes
 ────────────────────────────────────────────────────────────
   ❌ caddy                     443     EXITED(0)      Exited (0) 8 hours ago
   ✅ stalwart                  443     UP             Up 8 hours
@@ -164,10 +187,10 @@ oci-mail ✅ — oci-mail — 1C/1G — mem 681M/954M (71%) — disk 67% — swa
   ✅ dagu                      8070    UP             Up 11 hours
   ✅ fluent-bit                        UP             Up 11 hours
   ✅ snappymail                8888    HEALTHY        Up 10 hours (healthy)
-  ✅ introspect-proxy          4182    HEALTHY        Up 10 hours (healthy)
+  ✅ introspect-proxy          4182    HEALTHY        Up 11 hours (healthy)
   ✅ syslog-forwarder                  HEALTHY        Up 11 hours (healthy)
 
-oci-analytics ✅ — oci-analytics — 1C/1G — mem 695M/954M (72%) — disk 56% — swap 250M/2559M — load 0.32 0.35 0.43 — 7/8 ctrs — up 10 hours, 28 minutes
+oci-analytics ✅ — oci-analytics — 1C/1G — mem 722M/954M (75%) — disk 56% — swap 250M/2559M — load 0.15 0.24 0.34 — 7/8 ctrs — up 10 hours, 35 minutes
 ────────────────────────────────────────────────────────────
   ❌ umami-setup                       EXITED(1)      Exited (1) 9 hours ago
   ✅ sauron-forwarder                  UP             Up 10 hours
@@ -178,61 +201,61 @@ oci-analytics ✅ — oci-analytics — 1C/1G — mem 695M/954M (72%) — disk 5
   ✅ umami                     3006    HEALTHY        Up 9 hours (healthy)
   ✅ umami-db                  5442    HEALTHY        Up 9 hours (healthy)
 
-oci-apps ✅ — oci-apps — 4C/24G — mem 4709M/23975M (19%) — disk 66% — swap 0M/0M — load 0.21 0.38 0.50 — 49/53 ctrs — up 0d 20h
+oci-apps ✅ — oci-apps — 4C/24G — mem 4606M/23975M (19%) — disk 66% — swap 0M/0M — load 0.41 0.44 0.47 — 50/53 ctrs — up 0d 20h
 ────────────────────────────────────────────────────────────
   ❌ photoprism_app            3013    CREATED        Created
-  ❌ crawlee_minio_init                EXITED(0)      Exited (0) 34 minutes ago
-  ❌ photoprism_rclone                 EXITED(1)      Exited (1) 40 minutes ago
-  ❌ mattermost-bots                   EXITED(1)      Exited (1) 41 minutes ago
-  ✅ windmill-worker                   UP             Up 31 minutes
-  ✅ gitea                     3002    UP             Up 31 minutes
-  ✅ bup-server                        UP             Up 32 minutes
-  ✅ borg-server                       UP             Up 33 minutes
-  ✅ lgtm_mimir                9009    UP             Up 33 minutes
-  ✅ lgtm_tempo                3210    UP             Up 33 minutes
-  ✅ cloud-spec                3080    UP             Up 34 minutes
-  ✅ crawlee_runner                    UP             Up 34 minutes
-  ✅ crawlee_dashboard         3001    UP             Up 34 minutes
-  ✅ crawlee_scheduler                 UP             Up 34 minutes
-  ✅ siem-api                          UP             Up 36 minutes
-  ✅ quant_light_engine                UP             Up 39 minutes
-  ✅ mattermost-mcp            3102    UP             Up 41 minutes
-  ✅ mail-mcp                  3103    UP             Up 41 minutes
-  ✅ code-server               8443    UP             Up 42 minutes
-  ✅ surrealdb                         HEALTHY        Up 31 minutes (healthy)
-  ✅ windmill-server           8000    HEALTHY        Up 31 minutes (healthy)
-  ✅ photos-webhook                    HEALTHY        Up 31 minutes (healthy)
-  ✅ windmill-db               5440    HEALTHY        Up 31 minutes (healthy)
-  ✅ photos-db                         HEALTHY        Up 31 minutes (healthy)
-  ✅ nocodb                    8085    HEALTHY        Up 33 minutes (healthy)
-  ✅ nocodb-db                         HEALTHY        Up 33 minutes (healthy)
-  ✅ lgtm_grafana              3200    HEALTHY        Up 33 minutes (healthy)
-  ✅ lgtm_loki                 3110    HEALTHY        Up 33 minutes (healthy)
-  ✅ crawlee_api               3000    HEALTHY        Up 34 minutes (healthy)
-  ✅ crawlee_minio             9000    HEALTHY        Up 34 minutes (healthy)
-  ✅ crawlee_db                5433    HEALTHY        Up 34 minutes (healthy)
-  ✅ crawlee_redis             6381    HEALTHY        Up 34 minutes (healthy)
-  ✅ c3-services-mcp           3101    HEALTHY        Up 34 minutes (healthy)
-  ✅ c3-infra-mcp              3100    HEALTHY        Up 35 minutes (healthy)
-  ✅ c3-infra-api              8081    HEALTHY        Up 36 minutes (healthy)
-  ✅ syslog-central                    HEALTHY        Up 36 minutes (healthy)
-  ✅ rig-agentic-sonn-14bq8            HEALTHY        Up 37 minutes (healthy)
-  ✅ rig-agentic-hai                   HEALTHY        Up 37 minutes (healthy)
-  ✅ ollama-hai                11435   HEALTHY        Up 38 minutes (healthy)
-  ✅ quant_light_research              HEALTHY        Up 39 minutes (healthy)
-  ✅ quant_light_db                    HEALTHY        Up 39 minutes (healthy)
-  ✅ revealmd_app              3014    HEALTHY        Up 39 minutes (healthy)
-  ✅ photoprism_mariadb                HEALTHY        Up 40 minutes (healthy)
-  ✅ radicale                  5232    HEALTHY        Up 40 minutes (healthy)
-  ✅ mattermost                8065    HEALTHY        Up 41 minutes (healthy)
-  ✅ mattermost-postgres       5435    HEALTHY        Up 41 minutes (healthy)
-  ✅ hedgedoc_app              3018    HEALTHY        Up 41 minutes (healthy)
-  ✅ hedgedoc_postgres                 HEALTHY        Up 41 minutes (healthy)
-  ✅ grist_app                 3011    HEALTHY        Up 41 minutes (healthy)
-  ✅ google-workspace-mcp      3104    HEALTHY        Up 42 minutes (healthy)
-  ✅ etherpad_app              3012    HEALTHY        Up 42 minutes (healthy)
-  ✅ etherpad_postgres                 HEALTHY        Up 42 minutes (healthy)
-  ✅ filebrowser_app           3015    HEALTHY        Up 42 minutes (healthy)
+  ❌ crawlee_minio_init                EXITED(0)      Exited (0) 40 minutes ago
+  ❌ photoprism_rclone                 EXITED(1)      Exited (1) 46 minutes ago
+  ✅ mattermost-bots                   UP             Up 2 minutes
+  ✅ windmill-worker                   UP             Up 37 minutes
+  ✅ gitea                     3002    UP             Up 38 minutes
+  ✅ bup-server                        UP             Up 38 minutes
+  ✅ borg-server                       UP             Up 39 minutes
+  ✅ lgtm_mimir                9009    UP             Up 40 minutes
+  ✅ lgtm_tempo                3210    UP             Up 40 minutes
+  ✅ cloud-spec                3080    UP             Up 40 minutes
+  ✅ crawlee_runner                    UP             Up 40 minutes
+  ✅ crawlee_dashboard         3001    UP             Up 40 minutes
+  ✅ crawlee_scheduler                 UP             Up 40 minutes
+  ✅ siem-api                          UP             Up 42 minutes
+  ✅ quant_light_engine                UP             Up 45 minutes
+  ✅ mattermost-mcp            3102    UP             Up 47 minutes
+  ✅ mail-mcp                  3103    UP             Up 48 minutes
+  ✅ code-server               8443    UP             Up 48 minutes
+  ✅ mattermost                8065    HEALTHY        Up 2 minutes (healthy)
+  ✅ mattermost-postgres       5435    HEALTHY        Up 2 minutes (healthy)
+  ✅ surrealdb                         HEALTHY        Up 37 minutes (healthy)
+  ✅ windmill-server           8000    HEALTHY        Up 37 minutes (healthy)
+  ✅ photos-webhook                    HEALTHY        Up 37 minutes (healthy)
+  ✅ windmill-db               5440    HEALTHY        Up 38 minutes (healthy)
+  ✅ photos-db                         HEALTHY        Up 38 minutes (healthy)
+  ✅ nocodb                    8085    HEALTHY        Up 40 minutes (healthy)
+  ✅ nocodb-db                         HEALTHY        Up 40 minutes (healthy)
+  ✅ lgtm_grafana              3200    HEALTHY        Up 40 minutes (healthy)
+  ✅ lgtm_loki                 3110    HEALTHY        Up 40 minutes (healthy)
+  ✅ crawlee_api               3000    HEALTHY        Up 40 minutes (healthy)
+  ✅ crawlee_minio             9000    HEALTHY        Up 40 minutes (healthy)
+  ✅ crawlee_db                5433    HEALTHY        Up 40 minutes (healthy)
+  ✅ crawlee_redis             6381    HEALTHY        Up 40 minutes (healthy)
+  ✅ c3-services-mcp           3101    HEALTHY        Up 41 minutes (healthy)
+  ✅ c3-infra-mcp              3100    HEALTHY        Up 41 minutes (healthy)
+  ✅ c3-infra-api              8081    HEALTHY        Up 42 minutes (healthy)
+  ✅ syslog-central                    HEALTHY        Up 42 minutes (healthy)
+  ✅ rig-agentic-sonn-14bq8            HEALTHY        Up 43 minutes (healthy)
+  ✅ rig-agentic-hai                   HEALTHY        Up 44 minutes (healthy)
+  ✅ ollama-hai                11435   HEALTHY        Up 45 minutes (healthy)
+  ✅ quant_light_research              HEALTHY        Up 45 minutes (healthy)
+  ✅ quant_light_db                    HEALTHY        Up 45 minutes (healthy)
+  ✅ revealmd_app              3014    HEALTHY        Up 46 minutes (healthy)
+  ✅ photoprism_mariadb                HEALTHY        Up 46 minutes (healthy)
+  ✅ radicale                  5232    HEALTHY        Up 47 minutes (healthy)
+  ✅ hedgedoc_app              3018    HEALTHY        Up 47 minutes (healthy)
+  ✅ hedgedoc_postgres                 HEALTHY        Up 48 minutes (healthy)
+  ✅ grist_app                 3011    HEALTHY        Up 48 minutes (healthy)
+  ✅ google-workspace-mcp      3104    HEALTHY        Up 48 minutes (healthy)
+  ✅ etherpad_app              3012    HEALTHY        Up 48 minutes (healthy)
+  ✅ etherpad_postgres                 HEALTHY        Up 48 minutes (healthy)
+  ✅ filebrowser_app           3015    HEALTHY        Up 49 minutes (healthy)
 
 gcp-t4 ❌ — gcp-t4 — 4C/15G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
 ────────────────────────────────────────────────────────────
@@ -258,10 +281,10 @@ MX — Inbound Routing (dig MX)
 ────────────────────────────────────────────────────────────
     Domain                       Pri   Server                                     IP
 ────────────────────────────────────────────────────────────
-✅ diegonmarcos.com             22    route1.mx.cloudflare.net.                  162.159.205.12
-✅ diegonmarcos.com             85    route2.mx.cloudflare.net.                  162.159.205.19
-✅ diegonmarcos.com             97    route3.mx.cloudflare.net.                  162.159.205.23
-✅ send.mails.diegonmarcos.com  10    feedback-smtp.us-east-1.amazonses.com.     34.192.233.193
+✅ diegonmarcos.com             22    route1.mx.cloudflare.net.                  162.159.205.13
+✅ diegonmarcos.com             85    route2.mx.cloudflare.net.                  162.159.205.18
+✅ diegonmarcos.com             97    route3.mx.cloudflare.net.                  162.159.205.25
+✅ send.mails.diegonmarcos.com  10    feedback-smtp.us-east-1.amazonses.com.     3.218.134.115
 ❌ mails.diegonmarcos.com       —     no MX record
   ─── checks ───
   ✅ Cloudflare Email Routing active (3 MX routes for diegonmarcos.com)
@@ -334,20 +357,30 @@ MAIL AUTH — Authorized Senders
 MAIL FLOW — Pipeline Status
 ────────────────────────────────────────────────────────────
 
-  📨 INBOUND: someone@gmail.com → me@diegonmarcos.com
-     Gmail → MX → Cloudflare Email Routing → CF Worker → smtp-proxy:8080 → Stalwart
+  📨 INBOUND EMAIL: someone@gmail.com → me@diegonmarcos.com
+     Gmail → MX → Cloudflare Email Routing → CF Worker → oci-mail:8080 → smtp-proxy → Stalwart
      ─────────────────────────────────────────────
      ✅ smtp-proxy           Up 11 hours (oci-mail:8080)
      ✅ oci-mail:8080        reachable (CF Worker ingress)
      ✅ oci-mail:25          SMTP open (Stalwart local delivery)
+     ✅ stalwart             Up 8 hours (oci-mail MTA)
+
+  📱 CLIENT ACCESS: phone/Thunderbird → read/send mail via Caddy L4
+     Client → gcp-proxy (35.226.147.64) → Caddy L4 TLS passthrough → oci-mail (130.110.251.193) → Stalwart
+     ─────────────────────────────────────────────
+     ✅ :993   → 130.110.251.193:993          open (IMAPS -- TLS passthrough to stalwart)
+     ✅ :465   → 130.110.251.193:465          open (SMTPS -- TLS passthrough to stalwart)
+     ✅ :587   → 130.110.251.193:587          open (SMTP Submission -- TLS passthrough to stalwart)
+     ✅ webmail.diegonmarcos.com     [200] (Snappymail via HTTPS)
+     ✅ mail.diegonmarcos.com        [200] (Stalwart admin via HTTPS)
 
   📤 OUTBOUND PERSONAL: me@diegonmarcos.com → someone@gmail.com
      Stalwart → ⚠️ direct from 130.110.251.193 (NOT IN SPF!) → recipient MX
      ─────────────────────────────────────────────
      ✅ stalwart             Up 8 hours (oci-mail MTA)
-     ✅ smtp:465 (SMTPS)     open (via gcp-proxy L4)
-     ✅ smtp:587 (Submission) open (via gcp-proxy L4)
-     ❌ SPF WILL FAIL        VM IP not in SPF — needs OCI relay or ip4: in SPF
+     ✅ smtp:465 (SMTPS)     open (client → gcp-proxy L4 → stalwart)
+     ✅ smtp:587 (Submission) open (client → gcp-proxy L4 → stalwart)
+     ❌ SPF WILL FAIL        VM IP 130.110.251.193 not in SPF — needs OCI relay or ip4: in SPF
      ✅ DKIM OK              dkim._domainkey key present
      ❌ DMARC RESULT         p=reject + SPF fail = email REJECTED by receiver
 
@@ -387,14 +420,14 @@ RESOURCES (live)
 ────────────────────────────────────────────────────────────
 OS                 oci-mail       oci-analytics  oci-apps       gcp-t4         gcp-proxy     
 CPU                1 cores        1 cores        4 cores        4 cores        1 cores       
-RAM                681M/954M      695M/954M      4709M/23975M   ?/?            ?/?           
-RAM %              71%            72%            19%            0%             0%            
-Swap               211M/2559M     250M/2559M     0M/0M          ?              ?             
+RAM                615M/954M      722M/954M      4606M/23975M   ?/?            ?/?           
+RAM %              64%            75%            19%            0%             0%            
+Swap               234M/2559M     250M/2559M     0M/0M          ?              ?             
 Disk               28G/45G        25G/48G        59.7G/95.8G    ?/?            ?/?           
 Disk %             67%            56%            66%            ?              ?             
-Load               0.58 0.58 0.41 0.32 0.35 0.43 0.21 0.38 0.50 ?              ?             
-Containers         7/8            7/8            49/53          0/0            0/0           
-Uptime             11 hours, 3 minutes 10 hours, 28 minutes 0d 20h         ?              ?             
+Load               2.06 1.68 0.99 0.15 0.24 0.34 0.41 0.44 0.47 ?              ?             
+Containers         7/8            7/8            50/53          0/0            0/0           
+Uptime             11 hours, 9 minutes 10 hours, 35 minutes 0d 20h         ?              ?             
 
 STORAGE
 ────────────────────────────────────────────────────────────
@@ -458,7 +491,7 @@ OPEN PORTS by Public IP
 🔓 oci-mail           130.110.251.193    ports: 22, 25, 465, 587, 993, 8080
 🔓 oci-analytics      129.151.228.66     ports: 22
 🔓 oci-apps           82.70.229.129      ports: 22
-🔓 gcp-t4             34.173.227.250     ports: 443
+🔒 gcp-t4             34.173.227.250     ports: none reachable
 🔓 gcp-proxy          35.226.147.64      ports: 22, 80, 443, 465, 587, 993, 2200
 
 BACKUPS / DATABASES
@@ -560,16 +593,16 @@ FRAMEWORK — Key Paths
 
 PERFORMANCE
 ────────────────────────────────────────────────────────────
-  public_urls          32.3s ███
-  vm_oci-mail          14.1s █
-  api_mcp               9.5s █
-  vm_gcp-proxy          8.3s █
+  public_urls          31.5s ███
+  vm_gcp-proxy          8.2s █
   vm_gcp-t4             8.0s █
-  private_dns           7.0s █
-  mail_ports            4.7s 
-  vm_oci-apps           4.4s 
-  vm_oci-analytics      3.8s 
-  TOTAL               282.0s
+  private_dns           6.8s █
+  api_mcp               6.7s █
+  vm_oci-mail           5.5s █
+  mail_ports            5.3s █
+  vm_oci-apps           4.8s 
+  vm_oci-analytics      4.5s 
+  TOTAL               291.7s
 
 SCRIPT INFO
 ────────────────────────────────────────────────────────────
@@ -590,10 +623,10 @@ SCRIPT INFO
     ✅ gh         /home/diego/.nix-profile/bin/gh
 
   Errors:    4
-    [14:31:24] ERROR: SSH unreachable: gcp-t4
-    [14:31:33] ERROR: SSH unreachable: gcp-proxy
-    [14:31:33] ERROR:   ❌ gcp-t4: UNREACHABLE
-    [14:31:33] ERROR:   ❌ gcp-proxy: UNREACHABLE
+    [14:37:44] ERROR: SSH unreachable: gcp-t4
+    [14:37:52] ERROR: SSH unreachable: gcp-proxy
+    [14:37:52] ERROR:   ❌ gcp-t4: UNREACHABLE
+    [14:37:52] ERROR:   ❌ gcp-proxy: UNREACHABLE
 
 ────────────────────────────────────────────────────────────
 Generated by: cloud-data/cloud-health-stack/container-health.ts
