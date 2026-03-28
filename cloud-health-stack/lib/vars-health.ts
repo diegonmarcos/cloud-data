@@ -1,10 +1,40 @@
 /**
- * vars-health.ts — A1: WG_PEERS, PUBLIC_URLS, API_MCP_ENDPOINTS, REPOS_REGISTRIES
+ * vars-health.ts — A0: WG_PEERS, A1: PUBLIC_URLS, API_MCP_ENDPOINTS, REPOS_REGISTRIES
+ * A1 uses multi-protocol checks (TCP + HTTP + HTTPS) per URL
  */
-import { run, tcpCheck, type VmData } from "./collectors.js";
+import { run, tcpCheck, publicUrlMultiCheck, type VmData } from "./collectors.js";
+import { log } from "./config.js";
 import type { VarContext } from "./types.js";
 
-export function varsHealth(ctx: VarContext): Record<string, string> {
+export interface PublicUrlResult {
+  url: string; upstream: string; tcp: boolean; http: boolean; https: boolean; code: string;
+}
+
+/**
+ * Async: parallel multi-protocol check on all public URLs
+ */
+export async function checkPublicUrls(
+  urls: { url: string; upstream: string }[],
+  maxConcurrency = 10
+): Promise<PublicUrlResult[]> {
+  log(`  Checking ${urls.length} public URLs (TCP+HTTP+HTTPS, ${maxConcurrency} concurrent)...`);
+  const results: PublicUrlResult[] = [];
+  for (let i = 0; i < urls.length; i += maxConcurrency) {
+    const batch = urls.slice(i, i + maxConcurrency);
+    const batchResults = await Promise.all(
+      batch.map(async (u) => {
+        const check = await publicUrlMultiCheck(u.url);
+        return { ...u, ...check };
+      })
+    );
+    results.push(...batchResults);
+  }
+  const up = results.filter(r => r.https).length;
+  log(`  Public URLs: ${up}/${results.length} HTTPS OK`);
+  return results;
+}
+
+export function varsHealth(ctx: VarContext, publicUrlResults?: PublicUrlResult[]): Record<string, string> {
   const { data, wgPeersData, VMS } = ctx;
 
   return {
@@ -47,9 +77,19 @@ export function varsHealth(ctx: VarContext): Record<string, string> {
       return lines.join("\n");
     })(),
 
-    PUBLIC_URLS: data.public_urls.map((u: any) =>
-      `${u.up ? "✅" : "❌"} ${u.url.padEnd(35)} → ${u.upstream.padEnd(22)} [${u.http_code || "---"}]`
-    ).join("\n"),
+    PUBLIC_URLS: (() => {
+      const results = publicUrlResults || [];
+      if (results.length === 0) {
+        return data.public_urls.map((u: any) =>
+          `${u.up ? "✅" : "❌"} ${u.url.padEnd(32)} ${u.up ? "✅" : "❌"}  ${u.up ? "✅" : "❌"}  ${u.up ? "✅" : "❌"}  ${u.upstream.padEnd(22)} [${u.http_code || "---"}]`
+        ).join("\n");
+      }
+      return results.map(u => {
+        const allOk = u.tcp && u.https;
+        const icon = allOk ? "✅" : (u.tcp || u.http || u.https) ? "⚠️" : "❌";
+        return `${icon} ${u.url.padEnd(32)} ${u.tcp ? "✅" : "❌"}  ${u.http ? "✅" : "❌"}  ${u.https ? "✅" : "❌"}  ${u.upstream.padEnd(22)} [${u.code}]`;
+      }).join("\n");
+    })(),
 
     API_MCP_ENDPOINTS: data.api_mcp.map((e: any) =>
       `${e.up ? "✅" : "❌"} ${e.name.padEnd(22)} https://${e.url.padEnd(45)} [${e.http_code || "---"}]`
@@ -63,7 +103,7 @@ export function varsHealth(ctx: VarContext): Record<string, string> {
       lines.push("    " + "─".repeat(70));
       const REPOS = [
         { name: "cloud", path: "/home/diego/Mounts/Git/cloud" },
-        { name: "cloud-data", path: "/home/diego/Mounts/Git/cloud/cloud-data" },
+        { name: "cloud-data", path: "/home/diego/Mounts/Git/cloud-data" },
         { name: "front", path: "/home/diego/Mounts/Git/front" },
         { name: "unix", path: "/home/diego/Mounts/Git/unix" },
         { name: "tools", path: "/home/diego/Mounts/Git/tools" },

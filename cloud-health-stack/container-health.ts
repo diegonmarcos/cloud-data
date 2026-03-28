@@ -14,7 +14,7 @@ import { SCRIPT_DIR, CD, log, logErr, ERRORS, loadJson } from "./lib/config.js";
 import { run, sshCmd, tcpCheck, timed, timedAsync, collectVm, type VmData } from "./lib/collectors.js";
 import { parseVms, parsePublicUrls, parseMcpApiEndpoints, parseMailPorts, parsePrivateDns, parseDatabases } from "./lib/parsers.js";
 import type { VarContext } from "./lib/types.js";
-import { varsHealth } from "./lib/vars-health.js";
+import { varsHealth, checkPublicUrls } from "./lib/vars-health.js";
 import { varsContainers, checkPrivateHealth } from "./lib/vars-containers.js";
 import { varsMail } from "./lib/vars-mail.js";
 import { varsInfra } from "./lib/vars-infra.js";
@@ -101,24 +101,29 @@ const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData, back
 
 // Build vars — parallel async tasks first, then sync vars
 (async () => {
-  // Launch parallel tasks FIRST (run concurrently while sync vars compute)
-  log("Launching parallel checks (port scan + private health)...");
+  // Launch ALL parallel checks at once
+  log("Launching parallel checks (public URLs + private health + port scan)...");
   const portScanPromise = timedAsync("open_ports", () => scanOpenPorts(VMS));
   const privateHealthPromise = timedAsync("private_health", () => checkPrivateHealth(PRIVATE_DNS));
+  const publicUrlPromise = timedAsync("public_urls_multi", () => checkPublicUrls(
+    data.public_urls.map((u: any) => ({ url: u.url, upstream: u.upstream }))
+  ));
 
   // Build sync vars while parallel tasks run
   const vars: Record<string, string> = {
     GENERATED_DATE: `${data.generated.split("T")[0]}  ${data.generated.split("T")[1]?.split(".")[0] || ""}`,
     HUB_WG_IP: hubVm?.ip || "?",
-    ...varsHealth(ctx),
     ...varsMail(ctx),
     ...varsInfra(ctx),
     ...varsStack(ctx),
     ...varsAppendix(ctx, TOTAL_START),
   };
 
-  // Wait for parallel tasks to finish
-  const [openPortsResult, privateHealthResults] = await Promise.all([portScanPromise, privateHealthPromise]);
+  // Wait for ALL parallel tasks
+  const [openPortsResult, privateHealthResults, publicUrlResults] = await Promise.all([
+    portScanPromise, privateHealthPromise, publicUrlPromise
+  ]);
+  Object.assign(vars, varsHealth(ctx, publicUrlResults));
   Object.assign(vars, varsContainers(ctx, privateHealthResults));
   Object.assign(vars, varsSecurity(ctx, openPortsResult));
 

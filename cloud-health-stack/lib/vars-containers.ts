@@ -1,40 +1,46 @@
 /**
  * vars-containers.ts — A2: PRIVATE_HEALTH, A3: VM_CONTAINERS
- * A2: actual health checks to .app DNS names (curl/nc, not just dig)
+ * A2: multi-protocol health checks to .app DNS names (TCP + HTTP)
  * A3: docker ps state per VM (HEALTHY / UNHEALTHY / DOWN)
  */
-import { run, tcpCheckAsync, type VmData } from "./collectors.js";
+import { run, tcpCheckAsync, privateEndpointCheck, type VmData } from "./collectors.js";
 import { log } from "./config.js";
 import type { VarContext } from "./types.js";
 
+export interface PrivateHealthResult {
+  dns: string; container: string; port: number; vm: string;
+  tcp: boolean; http: boolean; code: string;
+  wg_down: boolean;
+}
+
 /**
- * Async: parallel health checks on all private .app endpoints
- * Uses the DNS name directly (not IP) — tests real connectivity
+ * Async: parallel multi-protocol health checks on all private .app endpoints
+ * Uses DNS NAME directly (not IP) — tests if local system can resolve + reach
  */
 export async function checkPrivateHealth(
   privateDns: { dns: string; container: string; port: number; vm: string }[]
-): Promise<{ dns: string; container: string; port: number; vm: string; healthy: boolean; method: string; wg_down: boolean }[]> {
-  // First check if WG/Hickory is reachable at all
+): Promise<PrivateHealthResult[]> {
+  // First check if WG/Hickory is reachable at all (TCP to 10.0.0.1:53)
   const hickoryUp = await tcpCheckAsync("10.0.0.1", 53);
   if (!hickoryUp) {
     log("  ⚠️ WireGuard/Hickory DOWN — skipping private health checks");
-    return privateDns.map(d => ({ ...d, healthy: false, method: "skipped", wg_down: true }));
+    return privateDns.map(d => ({ ...d, tcp: false, http: false, code: "---", wg_down: true }));
   }
 
-  log(`  Checking ${privateDns.length} private endpoints in parallel...`);
-  // Check all endpoints in parallel (nc to dns_name:port)
+  log(`  Checking ${privateDns.length} private endpoints (TCP+HTTP, parallel)...`);
   const results = await Promise.all(
     privateDns.map(async (d) => {
-      const ok = await tcpCheckAsync(d.dns, d.port);
-      return { ...d, healthy: ok, method: ok ? "tcp" : "unreachable", wg_down: false };
+      const check = await privateEndpointCheck(d.dns, d.port);
+      return { ...d, ...check, wg_down: false };
     })
   );
-  const up = results.filter(r => r.healthy).length;
-  log(`  Private health: ${up}/${results.length} reachable`);
+  const tcpUp = results.filter(r => r.tcp).length;
+  const httpUp = results.filter(r => r.http).length;
+  log(`  Private health: ${tcpUp}/${results.length} TCP, ${httpUp}/${results.length} HTTP`);
   return results;
 }
 
-export function varsContainers(ctx: VarContext, privateHealthResults?: Awaited<ReturnType<typeof checkPrivateHealth>>): Record<string, string> {
+export function varsContainers(ctx: VarContext, privateHealthResults?: PrivateHealthResult[]): Record<string, string> {
   const { data, PRIVATE_DNS } = ctx;
 
   return {
@@ -57,18 +63,22 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: Awaited<R
       }
       const conflictPorts = new Set([...portCount.entries()].filter(([, n]) => n.length > 1).map(([p]) => p));
 
-      // Table header
-      lines.push(`    ${"DNS Name".padEnd(28)} ${"Container:Port".padEnd(25)} ${"Port".padEnd(7)} ${"VM".padEnd(16)} Health`);
-      lines.push("    " + "─".repeat(85));
+      // Table
+      lines.push(`    ${"DNS Name".padEnd(28)} 📡TCP 🌐HTTP ${"Port".padEnd(7)} ${"VM".padEnd(16)} ${"Container".padEnd(22)} Code`);
+      lines.push("    " + "─".repeat(95));
 
       for (const r of results) {
         const conflict = conflictPorts.has(r.port);
         const portTag = conflict ? `⚠️${String(r.port).padEnd(4)}` : `  ${String(r.port).padEnd(4)}`;
+        const allOk = r.tcp && r.http;
         let icon: string;
         if (wgDown) icon = "⏸️";
-        else if (r.healthy) icon = "✅";
+        else if (allOk) icon = "✅";
+        else if (r.tcp) icon = "⚠️";
         else icon = "❌";
-        lines.push(`${icon} ${r.dns.padEnd(28)} ${(r.container + ":" + r.port).padEnd(25)} ${portTag} ${r.vm.padEnd(16)} ${r.method}`);
+        const tcpIcon = wgDown ? "⏸️" : r.tcp ? "✅" : "❌";
+        const httpIcon = wgDown ? "⏸️" : r.http ? "✅" : "❌";
+        lines.push(`${icon} ${r.dns.padEnd(28)} ${tcpIcon}   ${httpIcon}   ${portTag} ${r.vm.padEnd(16)} ${r.container.padEnd(22)} [${r.code}]`);
       }
 
       // Port conflict summary
@@ -80,12 +90,31 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: Awaited<R
         }
       }
 
+      // DNS config checker at bottom
+      lines.push("");
+      lines.push("  ─── DNS CONFIG CHECK ───");
+      const resolv = run("grep nameserver /etc/resolv.conf 2>/dev/null");
+      const hasHickory = resolv.includes("10.0.0.1");
+      lines.push(`  ${hasHickory ? "✅" : "❌"} /etc/resolv.conf     ${hasHickory ? "includes 10.0.0.1 (Hickory)" : "MISSING 10.0.0.1 — .app names won't resolve!"}`);
+      if (resolv) { for (const ns of resolv.split("\n").filter(Boolean)) lines.push(`     ${ns.trim()}`); }
+      const testName = PRIVATE_DNS[0]?.dns || "authelia.app";
+      const systemResolve = run(`dig +short ${testName} 2>/dev/null`);
+      const hickoryResolve = run(`dig @10.0.0.1 +short +time=2 +tries=1 ${testName} 2>/dev/null`);
+      lines.push(`  ${systemResolve ? "✅" : "❌"} dig ${testName.padEnd(20)} ${systemResolve || "NXDOMAIN"} (system DNS)`);
+      lines.push(`  ${hickoryResolve ? "✅" : "❌"} dig @10.0.0.1 ${testName.padEnd(12)} ${hickoryResolve || "NXDOMAIN"} (Hickory direct)`);
+      if (!systemResolve && hickoryResolve) {
+        lines.push("  ⚠️  System DNS can't resolve .app — add 10.0.0.1 to resolv.conf");
+        lines.push("     All checks above test via system DNS — if Hickory not configured, all fail");
+      }
+      if (systemResolve && hickoryResolve) lines.push("  ✅ Local DNS properly configured");
+      if (!hickoryResolve) lines.push("  ❌ Hickory DNS (10.0.0.1) not responding — WG down or hickory-dns container down");
+
       // Summary
       if (!wgDown) {
-        const up = results.filter(r => r.healthy).length;
-        const down = results.filter(r => !r.healthy).length;
+        const tcpUp = results.filter(r => r.tcp).length;
+        const httpUp = results.filter(r => r.http).length;
         lines.push("");
-        lines.push(`  ${up > 0 ? "✅" : "❌"} ${up}/${results.length} private endpoints reachable, ${down} unreachable`);
+        lines.push(`  📡 TCP: ${tcpUp}/${results.length}  🌐 HTTP: ${httpUp}/${results.length}`);
       }
 
       return lines.join("\n");
@@ -97,7 +126,6 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: Awaited<R
       lines.push(`${vm.alias} ${st} — ${vm.os} — ${vm.cpus}C/${vm.ram} — mem ${vm.mem_used}/${vm.mem_total} (${vm.mem_pct}%) — disk ${vm.disk_pct} — swap ${vm.swap} — load ${vm.load} — ${vm.containers_running}/${vm.containers_total} ctrs — ${vm.uptime}`);
       lines.push("─".repeat(60));
       for (const c of vm.containers) {
-        // Normalize to 3 states: HEALTHY / UNHEALTHY / DOWN
         let state: string;
         let icon: string;
         if (c.health === "healthy") { state = "HEALTHY"; icon = "✅"; }
@@ -107,7 +135,6 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: Awaited<R
           state = `DOWN(${code})`;
           icon = "❌";
         } else if (c.status.startsWith("Up") && c.health === "none") {
-          // UP but no healthcheck = UNHEALTHY (no healthcheck configured)
           state = "UP (no hc)";
           icon = "⚠️";
         } else if (c.health === "starting") {

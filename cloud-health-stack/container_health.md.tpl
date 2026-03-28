@@ -32,6 +32,8 @@ $WG_PEERS
 
 PUBLIC URLs (Caddy routes)
 ────────────────────────────────────────────────────────────
+    URL                              📡TCP 🌐HTTP 🔒HTTPS Upstream                  Code
+────────────────────────────────────────────────────────────
 $PUBLIC_URLS
 
 API / MCP ENDPOINTS

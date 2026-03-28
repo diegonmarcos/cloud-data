@@ -72,6 +72,30 @@ export async function tcpScanParallel(host: string, ports: number[]): Promise<nu
 }
 
 /**
+ * Multi-protocol health check: TCP + HTTP + HTTPS in parallel
+ */
+export async function publicUrlMultiCheck(domain: string): Promise<{ tcp: boolean; http: boolean; https: boolean; code: string }> {
+  const [tcp, httpCode, httpsCode] = await Promise.all([
+    tcpCheckAsync(domain, 443),
+    runAsync(`curl -sko /dev/null -w '%{http_code}' http://${domain} 2>/dev/null`, 8000),
+    runAsync(`curl -sko /dev/null -w '%{http_code}' https://${domain} 2>/dev/null`, 8000),
+  ]);
+  const code = httpsCode || httpCode || "---";
+  return { tcp, http: httpCode !== "" && httpCode !== "000", https: httpsCode !== "" && httpsCode !== "000" && httpsCode !== "502", code };
+}
+
+/**
+ * Private endpoint multi-check: TCP + HTTP (no HTTPS — internal)
+ */
+export async function privateEndpointCheck(dns: string, port: number): Promise<{ tcp: boolean; http: boolean; code: string }> {
+  const [tcp, httpCode] = await Promise.all([
+    tcpCheckAsync(dns, port),
+    runAsync(`curl -sko /dev/null -w '%{http_code}' http://${dns}:${port} 2>/dev/null`, 5000),
+  ]);
+  return { tcp, http: httpCode !== "" && httpCode !== "000", code: httpCode || "---" };
+}
+
+/**
  * Parallel URL checks — curl multiple URLs concurrently
  * Batched to avoid overwhelming the system (max concurrency)
  */
