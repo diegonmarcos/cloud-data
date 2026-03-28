@@ -1,7 +1,8 @@
 #!/usr/bin/env npx tsx
 /**
- * Container Health Reporter
- * Collects live data → container_health.json + container_health.md
+ * Container Health Reporter — Template-driven
+ * Collects live data → container_health.json
+ * Reads container_health.md.tpl → replaces $VARS → container_health.md
  * Usage: npx tsx container-health.ts
  */
 import { execSync } from "child_process";
@@ -12,10 +13,23 @@ const HOME = process.env.HOME || "/home/diego";
 const SCRIPT_DIR = __dirname;
 const CD = join(SCRIPT_DIR, ".."); // cloud-data/ root
 
+// ── Logging ─────────────────────────────────────────────────────
+const LOG: string[] = [];
+const ERRORS: string[] = [];
+function log(msg: string) { const ts = new Date().toISOString().split("T")[1]?.split(".")[0]; const line = `[${ts}] ${msg}`; LOG.push(line); console.log(line); }
+function logErr(msg: string) { const ts = new Date().toISOString().split("T")[1]?.split(".")[0]; const line = `[${ts}] ERROR: ${msg}`; LOG.push(line); ERRORS.push(line); console.error(line); }
+
 // ── Load cloud-data JSONs ───────────────────────────────────────
 function loadJson(name: string): any {
   const p = join(CD, name);
-  try { return JSON.parse(readFileSync(p, "utf-8")); } catch { return {}; }
+  try {
+    const data = JSON.parse(readFileSync(p, "utf-8"));
+    log(`Loaded ${name} (${Object.keys(data).length} keys)`);
+    return data;
+  } catch (e: any) {
+    logErr(`Failed to load ${name}: ${e.message}`);
+    return {};
+  }
 }
 
 const topology = loadJson("cloud-data-topology.json");
@@ -23,10 +37,12 @@ const caddyRoutes = loadJson("cloud-data-caddy-routes.json");
 const ghaConfig = loadJson("cloud-data-gha-config.json");
 const hmData = loadJson("cloud-data-home-manager.json");
 const wgPeersData = loadJson("cloud-data-wireguard-peers.json");
+const backupTargets = loadJson("cloud-data-backup-targets.json");
 
 // ── Parse VMs from home-manager data ────────────────────────────
 const VMS = Object.entries(hmData.vms ?? {}).map(([id, vm]: [string, any]) => ({
   alias: vm.ssh_alias || id,
+  vmId: vm.vm_id || id,
   ip: vm.wg_ip || "",
   user: vm.user || "ubuntu",
   cpus: vm.specs?.cpu || 0,
@@ -34,7 +50,6 @@ const VMS = Object.entries(hmData.vms ?? {}).map(([id, vm]: [string, any]) => ({
   os: vm.os || id,
   pubIp: vm.ip || "",
   diskGb: vm.specs?.disk_gb || 0,
-  provider: vm.provider || "?",
   shape: vm.specs?.shape || vm.specs?.machine_type || "?",
 })).filter(v => v.ip); // only VMs with WG IPs
 
@@ -60,7 +75,6 @@ function parsePublicUrls(): { url: string; upstream: string }[] {
     for (const s of Object.values(special) as any[]) { if (s?.domain) add(s.domain, s.upstream || s.comment || "special"); }
   }
   for (const gp of caddyRoutes.github_pages_proxies ?? []) {
-    // domain may be comma-separated (e.g. "diegonmarcos.com, www.diegonmarcos.com")
     for (const d of (gp.domain as string).split(",").map((s: string) => s.trim()).filter(Boolean)) {
       add(d, `github-pages:${gp.github_path}`);
     }
@@ -81,7 +95,6 @@ function parseMcpApiEndpoints(): { url: string; upstream: string; name: string }
       });
     }
   }
-  // API path routes (from path_routes with parent_domain = api.*)
   for (const pr of caddyRoutes.path_routes ?? []) {
     for (const r of pr.routes ?? []) {
       if (r.path && r.upstream) {
@@ -98,19 +111,16 @@ function parseMailPorts(): { host: string; port: number; proto: string }[] {
   const ports: { host: string; port: number; proto: string }[] = [];
   const MAIL_HOSTS = ["mail.diegonmarcos.com", "smtp.diegonmarcos.com", "imap.diegonmarcos.com"];
   const PROTO_MAP: Record<number, string> = { 25: "SMTP", 465: "SMTPS", 587: "Submission", 993: "IMAPS", 4190: "ManageSieve" };
-  // From L4 routes
   for (const l4 of caddyRoutes.l4_routes ?? []) {
     const port = l4.listen_port || (l4.upstream ? parseInt(l4.upstream.split(":").pop()) : 0);
     if (port && PROTO_MAP[port]) {
       for (const h of MAIL_HOSTS) {
-        // mail.* gets all, smtp.* gets 25/465/587, imap.* gets 993
         if (h.startsWith("smtp") && ![25, 465, 587].includes(port)) continue;
         if (h.startsWith("imap") && port !== 993) continue;
         ports.push({ host: h, port, proto: PROTO_MAP[port] });
       }
     }
   }
-  // Fallback if L4 routes are sparse — add standard mail ports
   if (ports.length === 0) {
     for (const h of MAIL_HOSTS) {
       if (h.startsWith("mail")) for (const p of [25, 465, 587, 993, 4190]) ports.push({ host: h, port: p, proto: PROTO_MAP[p] });
@@ -141,6 +151,27 @@ function parsePrivateDns(): { dns: string; container: string; port: number; vm: 
 }
 const PRIVATE_DNS = parsePrivateDns();
 
+// ── Parse databases from backup-targets ───────────────────────────
+function parseDatabases(): { service: string; type: string; container: string; db: string; vm: string; dns: string }[] {
+  const dbs: { service: string; type: string; container: string; db: string; vm: string; dns: string }[] = [];
+  for (const t of backupTargets.targets ?? []) {
+    for (const d of t.databases ?? []) {
+      const dnsEntry = PRIVATE_DNS.find(p => p.container === d.container || p.dns.startsWith(d.container));
+      const dns = dnsEntry ? `${dnsEntry.dns}:${dnsEntry.port}` : d.path || "embedded";
+      dbs.push({
+        service: d.service || t.service,
+        type: d.type,
+        container: d.container,
+        db: d.db || d.path || "custom",
+        vm: t.vm_alias || t.vm,
+        dns,
+      });
+    }
+  }
+  return dbs.sort((a, b) => a.vm.localeCompare(b.vm) || a.service.localeCompare(b.service));
+}
+const DATABASES = parseDatabases();
+
 // ── Helpers ─────────────────────────────────────────────────────
 
 // Clear stale SSH mux sockets at startup
@@ -152,17 +183,30 @@ try {
 } catch {}
 
 function run(cmd: string, timeout = 10000): string {
-  try { return execSync(cmd, { timeout, encoding: "utf-8" }).trim(); }
-  catch { return ""; }
+  try { return execSync(cmd, { timeout, encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] }).trim(); }
+  catch (e: any) {
+    const stderr = e.stderr?.toString()?.trim();
+    if (stderr && !stderr.includes("Connection timed out") && !stderr.includes("Connection refused")) {
+      logErr(`run failed: ${cmd.substring(0, 80)}... → ${stderr.substring(0, 200)}`);
+    }
+    return "";
+  }
 }
 
 function sshCmd(vm: string, cmd: string): string {
   const b64 = Buffer.from(cmd).toString("base64");
-  return run(`ssh -o ConnectTimeout=8 -o ControlPath=none -o BatchMode=yes ${vm} "echo ${b64} | base64 -d | sh"`, 20000);
+  const result = run(`ssh -o ConnectTimeout=8 -o ControlPath=none -o BatchMode=yes ${vm} "echo ${b64} | base64 -d | sh"`, 20000);
+  if (!result && cmd === "echo OK") {
+    logErr(`SSH unreachable: ${vm}`);
+  }
+  return result;
 }
 
+let tcpLogVerbose = true;
 function tcpCheck(host: string, port: number): boolean {
-  return run(`nc -zw3 ${host} ${port} 2>&1 && echo OK`).includes("OK");
+  const ok = run(`nc -zw3 ${host} ${port} 2>&1 && echo OK`).includes("OK");
+  if (!ok && tcpLogVerbose) log(`tcp-check FAIL: ${host}:${port}`);
+  return ok;
 }
 
 interface Container { name: string; status: string; health: string; icon: string; }
@@ -227,10 +271,13 @@ function timed<T>(name: string, fn: () => T): T {
   return result;
 }
 const TOTAL_START = Date.now();
-console.log("Collecting...");
+log("═══ Starting collection ═══");
+log(`VMs parsed: ${VMS.map(v => v.alias).join(", ")} (${VMS.length} total)`);
+log(`Public URLs: ${PUBLIC_URLS.length}, MCP endpoints: ${MCP_API_ENDPOINTS.length}, Mail ports: ${MAIL_PORTS.length}`);
+log(`Private DNS: ${PRIVATE_DNS.length}, Databases: ${DATABASES.length}`);
 
 // WG0 peers from gcp-proxy (hub)
-console.log("Collecting WG0 peers...");
+log("Collecting WG0 peers from gcp-proxy...");
 const wgRaw = sshCmd("gcp-proxy", "sudo wg show wg0 2>/dev/null");
 const wgPeers: { name: string; pubIp: string; privIp: string; handshake: string; transfer: string; alive: boolean }[] = [];
 if (wgRaw) {
@@ -265,299 +312,403 @@ const data = {
     const open = vmObj ? tcpCheck(vmObj.ip, d.port) : false;
     return { ...d, open };
   })),
-  vms: VMS.map(vm => timed(`vm_${vm.alias}`, () => { console.log(`  ${vm.alias}...`); return collectVm(vm); })),
+  vms: VMS.map(vm => timed(`vm_${vm.alias}`, () => { log(`  Collecting VM: ${vm.alias} (${vm.pubIp || vm.ip})...`); return collectVm(vm); })),
+  databases: DATABASES,
 };
 
-writeFileSync(`${SCRIPT_DIR}/container_health.json`, JSON.stringify(data, null, 2) + "\n");
-
-// ── Generate MD ─────────────────────────────────────────────────
-const L: string[] = [];
-const _ = (s: string) => L.push(s);
-
-_("```");
-_("");
-_("  ██████╗██╗      ██████╗ ██╗   ██╗██████╗ ");
-_("  ██╔════╝██║     ██╔═══██╗██║   ██║██╔══██╗");
-_("  ██║     ██║     ██║   ██║██║   ██║██║  ██║");
-_("  ██║     ██║     ██║   ██║██║   ██║██║  ██║");
-_("  ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝");
-_("   ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝ ");
-_(`         CONTAINER HEALTH — ${data.generated.split("T")[0]}  ${data.generated.split("T")[1]?.split(".")[0] || ""}`);
-_("═".repeat(60));
-_("");
-
-_("");
-_("══════════════════════════════════════════════════════════════");
-_("  A) HEALTH — Live checks");
-_("══════════════════════════════════════════════════════════════");
-_("");
-
-// WG Mesh: static info from cloud-data + live handshake overlay
-const hubVm = VMS.find(v => v.alias === "gcp-proxy");
-_(`WIREGUARD MESH (hub: gcp-proxy ${hubVm?.ip || "?"} — front door)`);
-_("─".repeat(60));
-_(`${"".padEnd(3)} ${"Name".padEnd(18)} ${"Public IP".padEnd(18)} ${"WG IP".padEnd(14)} ${"Type".padEnd(8)} ${"Handshake"}`);
-_("─".repeat(60));
-
-// Build peer list from cloud-data (static) + live handshake data
-const wgPeersList = (wgPeersData.mesh_peers ?? []) as any[];
-for (const peer of wgPeersList) {
-  const name = peer.name || peer.vm_id || "?";
-  const pubIp = peer.public_ip || "?";
-  const wgIp = peer.wg_ip || "?";
-  const isHub = name === "gcp-proxy";
-  const isVm = VMS.some(v => v.alias === name);
-  const peerType = isHub ? "HUB" : isVm ? "VM" : "CLIENT";
-  // Find live handshake from collected data
-  const live = data.wg_peers.find((p: any) => p.privIp === wgIp || p.name === name);
-  const handshake = live?.handshake || "no data";
-  const alive = live?.alive ?? false;
-  _(`${alive ? "✅" : "❌"} ${name.padEnd(18)} ${pubIp.padEnd(18)} ${wgIp.padEnd(14)} ${peerType.padEnd(8)} ${handshake}`);
-}
-if (wgPeersList.length === 0) {
-  // Fallback: just show live data
-  if (data.wg_peers.length) {
-    for (const p of data.wg_peers) {
-      _(`${p.alive ? "✅" : "❌"} ${p.name.padEnd(18)} ${p.pubIp.padEnd(18)} ${p.privIp.padEnd(14)} ${"?".padEnd(8)} ${p.handshake}`);
-    }
-  } else {
-    _("❌ No WG peer data available");
-  }
-}
-_("");
-
-_("PUBLIC URLs");
-_("─".repeat(60));
-for (const u of data.public_urls) {
-  _(`${u.up ? "✅" : "❌"} ${u.url.padEnd(35)} → ${u.upstream.padEnd(22)} [${u.http_code || "---"}]`);
-}
-_("");
-
-_("API / MCP ENDPOINTS");
-_("─".repeat(60));
-for (const e of data.api_mcp) {
-  _(`${e.up ? "✅" : "❌"} ${e.name.padEnd(22)} https://${e.url.padEnd(45)} [${e.http_code || "---"}]`);
-}
-_("");
-
-_("MAIL PORTS");
-_("─".repeat(60));
-for (const m of data.mail_ports) {
-  const icon = m.open ? "⚠️" : "❌";
-  _(`${icon} ${m.host.padEnd(28)} :${String(m.port).padEnd(5)} ${m.proto.padEnd(15)} ${m.open ? "tcp open" : "down"}`);
-}
-_("");
-
-_("PRIVATE DNS (WireGuard mesh)");
-_("─".repeat(60));
-for (const d of data.private_dns) {
-  _(`${d.open ? "✅" : "❌"} ${d.dns.padEnd(28)} ${(d.container + ":" + d.port).padEnd(25)} ${d.vm}`);
-}
-_("");
-
+log("═══ Data collection complete ═══");
+log(`WG peers: ${data.wg_peers.length}, Public URLs checked: ${data.public_urls.length}`);
+log(`VMs collected: ${data.vms.filter((v: VmData) => v.reachable).length}/${data.vms.length} reachable`);
 for (const vm of data.vms) {
-  const st = vm.reachable ? "✅" : "❌";
-  _(`${vm.alias} ${st} — ${vm.os} — ${vm.cpus}C/${vm.ram} — mem ${vm.mem_used}/${vm.mem_total} (${vm.mem_pct}%) — disk ${vm.disk_pct} — swap ${vm.swap} — load ${vm.load} — ${vm.containers_running}/${vm.containers_total} ctrs — ${vm.uptime}`);
-  _("─".repeat(60));
-  for (const c of vm.containers) {
-    let tag = "";
-    if (c.health === "healthy") tag = "HEALTHY";
-    else if (c.health === "unhealthy") tag = "UNHEALTHY";
-    else if (c.health === "starting") tag = "STARTING";
-    else if (c.health === "created") tag = "CREATED";
-    else if (c.health === "exited") {
-      const code = c.status.match(/Exited \((\d+)\)/)?.[1] || "?";
-      tag = `EXITED(${code})`;
-    } else if (c.status.startsWith("Up")) tag = "UP";
-    _(`  ${c.icon} ${c.name.padEnd(25)} ${tag.padEnd(14)} ${c.status.substring(0, 30)}`);
+  if (vm.reachable) log(`  ✅ ${vm.alias}: ${vm.containers_running}/${vm.containers_total} ctrs, mem ${vm.mem_pct}%, disk ${vm.disk_pct}`);
+  else logErr(`  ❌ ${vm.alias}: UNREACHABLE`);
+}
+
+writeFileSync(`${SCRIPT_DIR}/container_health.json`, JSON.stringify(data, null, 2) + "\n");
+log("Wrote container_health.json");
+
+// ── Template-driven MD generation ───────────────────────────────
+log("═══ Generating MD from template ═══");
+const tplPath = join(SCRIPT_DIR, "container_health.md.tpl");
+let template: string;
+try {
+  template = readFileSync(tplPath, "utf-8");
+  log(`Template loaded: ${tplPath} (${template.length} chars)`);
+} catch (e: any) {
+  logErr(`Failed to read template: ${e.message}`);
+  process.exit(1);
+}
+
+const hubVm = VMS.find(v => v.alias === "gcp-proxy");
+
+// Infer provider/cost from vm_id convention
+const inferProvider = (id: string) => {
+  if (id.startsWith("oci-")) return "OCI";
+  if (id.startsWith("gcp-")) return "GCP";
+  if (id.startsWith("aws-")) return "AWS";
+  if (id.startsWith("vast-")) return "Vast.ai";
+  return "?";
+};
+const inferCost = (id: string) => {
+  if (/-f[_\d]/.test(id)) return "Free";
+  if (/-p[_\d]/.test(id)) return "Spot";
+  return "?";
+};
+
+const vars: Record<string, string> = {
+
+  GENERATED_DATE: `${data.generated.split("T")[0]}  ${data.generated.split("T")[1]?.split(".")[0] || ""}`,
+
+  HUB_WG_IP: hubVm?.ip || "?",
+
+  WG_PEERS: (() => {
+    const lines: string[] = [];
+    const peers = (wgPeersData.mesh_peers ?? []) as any[];
+    if (peers.length > 0) {
+      for (const peer of peers) {
+        const name = peer.name || peer.vm_id || "?";
+        const pubIp = peer.public_ip || "?";
+        const wgIp = peer.wg_ip || "?";
+        const isHub = name === "gcp-proxy";
+        const isVm = VMS.some(v => v.alias === name);
+        const peerType = isHub ? "HUB" : isVm ? "VM" : "CLIENT";
+        const live = data.wg_peers.find((p: any) => p.privIp === wgIp || p.name === name);
+        const handshake = live?.handshake || "no data";
+        const alive = live?.alive ?? false;
+        lines.push(`${alive ? "✅" : "❌"} ${name.padEnd(18)} ${pubIp.padEnd(18)} ${wgIp.padEnd(14)} ${peerType.padEnd(8)} ${handshake}`);
+      }
+    } else if (data.wg_peers.length) {
+      for (const p of data.wg_peers) {
+        lines.push(`${p.alive ? "✅" : "❌"} ${p.name.padEnd(18)} ${p.pubIp.padEnd(18)} ${p.privIp.padEnd(14)} ${"?".padEnd(8)} ${p.handshake}`);
+      }
+    } else {
+      lines.push("❌ No WG peer data available");
+    }
+    return lines.join("\n");
+  })(),
+
+  PUBLIC_URLS: data.public_urls.map((u: any) =>
+    `${u.up ? "✅" : "❌"} ${u.url.padEnd(35)} → ${u.upstream.padEnd(22)} [${u.http_code || "---"}]`
+  ).join("\n"),
+
+  API_MCP_ENDPOINTS: data.api_mcp.map((e: any) =>
+    `${e.up ? "✅" : "❌"} ${e.name.padEnd(22)} https://${e.url.padEnd(45)} [${e.http_code || "---"}]`
+  ).join("\n"),
+
+  MAIL_PORTS: data.mail_ports.map((m: any) =>
+    `${m.open ? "⚠️" : "❌"} ${m.host.padEnd(28)} :${String(m.port).padEnd(5)} ${m.proto.padEnd(15)} ${m.open ? "tcp open" : "down"}`
+  ).join("\n"),
+
+  MAIL_FLOW: (() => {
+    const lines: string[] = [];
+    // Parse mail flow from topology: cloudflare-worker (inbound) + smtp-proxy (relay) + stalwart (MTA)
+    const cfWorker = topology.services?.["cloudflare-worker"];
+    const smtpProxy = topology.services?.["smtp-proxy"];
+    const stalwart = topology.services?.stalwart;
+    const ociMailVm = VMS.find(v => v.alias === "oci-mail");
+    const ociMailIp = ociMailVm?.pubIp || "?";
+
+    // INBOUND: Cloudflare Email Worker → smtp-proxy:8080 → Stalwart
+    lines.push("  INBOUND (Cloudflare Email Routing → Stalwart)");
+    lines.push("  ─────────────────────────────────────────────");
+    lines.push(`  📨 Cloudflare Worker   ${cfWorker?.description || "Email Worker - routes inbound email"}`);
+    lines.push(`     Route:              *@diegonmarcos.com → CF Worker → smtp-proxy:8080 → Stalwart`);
+    // Test: check smtp-proxy container is UP on oci-mail
+    const smtpProxyUp = data.vms.find((v: VmData) => v.alias === "oci-mail")
+      ?.containers.find((c: Container) => c.name === "smtp-proxy");
+    const smtpIcon = smtpProxyUp?.health !== "exited" && smtpProxyUp ? "✅" : "❌";
+    lines.push(`  ${smtpIcon} smtp-proxy           ${smtpProxyUp?.status || "not found"} (oci-mail:8080)`);
+    // Test: check port 8080 on oci-mail public IP (CF worker connects here)
+    const port8080 = tcpCheck(ociMailIp, 8080);
+    lines.push(`  ${port8080 ? "✅" : "❌"} oci-mail:8080        ${port8080 ? "reachable" : "unreachable"} (CF Worker ingress)`);
+    // Test: port 25 on oci-mail (stalwart SMTP for local delivery)
+    const port25 = tcpCheck(ociMailIp, 25);
+    lines.push(`  ${port25 ? "✅" : "❌"} oci-mail:25          ${port25 ? "SMTP open" : "SMTP closed"} (Stalwart local delivery)`);
+    lines.push("");
+
+    // OUTBOUND: Stalwart → direct SMTP from oci-mail public IP
+    lines.push("  OUTBOUND (Stalwart → direct SMTP)");
+    lines.push("  ─────────────────────────────────────────────");
+    lines.push(`  📤 Relay:              Stalwart → ${ociMailIp}:465/587 → recipient MX`);
+    const stalwartCt = data.vms.find((v: VmData) => v.alias === "oci-mail")
+      ?.containers.find((c: Container) => c.name === "stalwart");
+    const stalwartIcon = stalwartCt?.health !== "exited" && stalwartCt ? "✅" : "❌";
+    lines.push(`  ${stalwartIcon} stalwart             ${stalwartCt?.status || "not found"} (oci-mail MTA)`);
+    // Test: outbound ports from gcp-proxy L4 passthrough
+    const port465 = tcpCheck("smtp.diegonmarcos.com", 465);
+    const port587 = tcpCheck("smtp.diegonmarcos.com", 587);
+    lines.push(`  ${port465 ? "✅" : "❌"} smtp:465 (SMTPS)     ${port465 ? "open" : "closed"}`);
+    lines.push(`  ${port587 ? "✅" : "❌"} smtp:587 (Submission) ${port587 ? "open" : "closed"}`);
+    // Test: reverse DNS / SPF hint
+    lines.push(`  📋 SPF/DKIM/DMARC     via Cloudflare DNS (diegonmarcos.com)`);
+
+    return lines.join("\n");
+  })(),
+
+  PRIVATE_DNS: data.private_dns.map((d: any) =>
+    `${d.open ? "✅" : "❌"} ${d.dns.padEnd(28)} ${(d.container + ":" + d.port).padEnd(25)} ${d.vm}`
+  ).join("\n"),
+
+  VM_CONTAINERS: data.vms.map((vm: VmData) => {
+    const lines: string[] = [];
+    const st = vm.reachable ? "✅" : "❌";
+    lines.push(`${vm.alias} ${st} — ${vm.os} — ${vm.cpus}C/${vm.ram} — mem ${vm.mem_used}/${vm.mem_total} (${vm.mem_pct}%) — disk ${vm.disk_pct} — swap ${vm.swap} — load ${vm.load} — ${vm.containers_running}/${vm.containers_total} ctrs — ${vm.uptime}`);
+    lines.push("─".repeat(60));
+    for (const c of vm.containers) {
+      let tag = "";
+      if (c.health === "healthy") tag = "HEALTHY";
+      else if (c.health === "unhealthy") tag = "UNHEALTHY";
+      else if (c.health === "starting") tag = "STARTING";
+      else if (c.health === "created") tag = "CREATED";
+      else if (c.health === "exited") {
+        const code = c.status.match(/Exited \((\d+)\)/)?.[1] || "?";
+        tag = `EXITED(${code})`;
+      } else if (c.status.startsWith("Up")) tag = "UP";
+      lines.push(`  ${c.icon} ${c.name.padEnd(25)} ${tag.padEnd(14)} ${c.status.substring(0, 30)}`);
+    }
+    lines.push("");
+    return lines.join("\n");
+  }).join("\n"),
+
+  RESOURCES_TABLE: (() => {
+    const lines: string[] = [];
+    const fields: [string, (v: VmData) => string][] = [
+      ["OS", v => v.os],
+      ["CPU", v => `${v.cpus} cores`],
+      ["RAM", v => `${v.mem_used}/${v.mem_total}`],
+      ["RAM %", v => `${v.mem_pct}%`],
+      ["Swap", v => v.swap],
+      ["Disk", v => `${v.disk_used}/${v.disk_total}`],
+      ["Disk %", v => v.disk_pct],
+      ["Load", v => v.load],
+      ["Containers", v => `${v.containers_running}/${v.containers_total}`],
+      ["Uptime", v => v.uptime.replace("up ", "")],
+    ];
+    for (const [label, fn] of fields) {
+      const vals = data.vms.map((v: VmData) => fn(v).padEnd(14));
+      lines.push(`${label.padEnd(18)} ${vals.join(" ")}`);
+    }
+    return lines.join("\n");
+  })(),
+
+  GIT_REPOS: (() => {
+    const REPOS = [
+      { name: "cloud", path: "/home/diego/Mounts/Git/cloud" },
+      { name: "cloud-data", path: "/home/diego/Mounts/Git/cloud/cloud-data" },
+      { name: "front", path: "/home/diego/Mounts/Git/front" },
+      { name: "unix", path: "/home/diego/Mounts/Git/unix" },
+      { name: "tools", path: "/home/diego/Mounts/Git/tools" },
+      { name: "vault", path: "/home/diego/Mounts/Git/vault" },
+    ];
+    return REPOS.map(r => {
+      const branch = run(`git -C ${r.path} branch --show-current 2>/dev/null`) || "?";
+      const commit = run(`git -C ${r.path} log -1 --format="%h %s" 2>/dev/null`) || "?";
+      const dirty = run(`git -C ${r.path} status --porcelain 2>/dev/null`);
+      const icon = dirty ? "⚠️" : "✅";
+      return `${icon} ${r.name.padEnd(14)} ${branch.padEnd(8)} ${commit.substring(0, 55)}`;
+    }).join("\n");
+  })(),
+
+  GITHUB_GHCR: (() => {
+    const ghUser = run("gh api user --jq .login 2>/dev/null") || "?";
+    const lines: string[] = [];
+    lines.push(`  👤 User:       ${ghUser}`);
+    lines.push(`  🔗 Registry:   ghcr.io/${ghUser}/`);
+    lines.push(`  📦 Repos:      github.com/${ghUser}/`);
+    lines.push("");
+    const pkgsJson = run("gh api '/user/packages?package_type=container&per_page=100' 2>/dev/null");
+    if (pkgsJson) {
+      try {
+        const pkgs = JSON.parse(pkgsJson) as { name: string; visibility: string; repository?: { name: string } }[];
+        const pubCount = pkgs.filter(p => p.visibility === "public").length;
+        const privCount = pkgs.filter(p => p.visibility === "private").length;
+        lines.push(`  📦 GHCR Total:  ${pkgs.length} (${pubCount} public, ${privCount} private)`);
+        const byRepo: Record<string, { pub: number; priv: number }> = {};
+        for (const p of pkgs) {
+          const repo = p.repository?.name || "no-repo";
+          if (!byRepo[repo]) byRepo[repo] = { pub: 0, priv: 0 };
+          if (p.visibility === "public") byRepo[repo].pub++;
+          else byRepo[repo].priv++;
+        }
+        lines.push("");
+        lines.push(`  ${"Repo".padEnd(28)} ${"Public".padEnd(10)} ${"Private".padEnd(10)} Total`);
+        lines.push(`  ${"─".repeat(58)}`);
+        for (const [repo, counts] of Object.entries(byRepo).sort((a, b) => (b[1].pub + b[1].priv) - (a[1].pub + a[1].priv))) {
+          lines.push(`  ${repo.padEnd(28)} ${String(counts.pub).padEnd(10)} ${String(counts.priv).padEnd(10)} ${counts.pub + counts.priv}`);
+        }
+      } catch { lines.push(`  📦 GHCR images: (parse error)`); }
+    } else {
+      lines.push(`  📦 GHCR images: (unavailable)`);
+    }
+    return lines.join("\n");
+  })(),
+
+  VPS_SPECS: (() => {
+    const specs: { name: string; provider: string; shape: string; cpu: string; ram: string; disk: string; cost: string }[] = [];
+    for (const [, vm] of Object.entries(hmData.vms ?? {}) as [string, any][]) {
+      const vmId = vm.vm_id || "";
+      specs.push({
+        name: vm.ssh_alias || vmId,
+        provider: inferProvider(vmId),
+        shape: vm.specs?.shape || vm.specs?.machine_type || "?",
+        cpu: String(vm.specs?.cpu || "?"),
+        ram: `${vm.specs?.ram_gb || "?"}G`,
+        disk: `${vm.specs?.disk_gb || "?"}G`,
+        cost: inferCost(vmId),
+      });
+    }
+    specs.push({ name: "github-actions", provider: "GitHub", shape: "ubuntu-latest", cpu: "4", ram: "16G", disk: "14G", cost: "2000min/mo" });
+    specs.push({ name: "ghcr.io", provider: "GitHub", shape: "Container Registry", cpu: "-", ram: "-", disk: "∞", cost: "Free (public)" });
+    return specs.map(v =>
+      `   ${v.name.padEnd(16)} ${v.provider.padEnd(10)} ${v.shape.padEnd(20)} ${v.cpu.padEnd(6)} ${v.ram.padEnd(6)} ${v.disk.padEnd(8)} ${v.cost}`
+    ).join("\n");
+  })(),
+
+  FRAMEWORK_PATHS: (() => {
+    const FRAMEWORK = [
+      ["BUILD ENGINES", ""],
+      ["  Service engine", "cloud/a_solutions/_engine.sh"],
+      ["  HM engine", "cloud/b_infra/home-manager/_engine.sh"],
+      ["  Workflow engine", "cloud/workflows/build.sh"],
+      ["  Front engine", "front/1.ops/build_main.sh"],
+      ["  NixOS host", "unix/aa_nixos-surface_host/build.sh"],
+      ["  HM desktop", "unix/ba_flakes_desktop/build.sh"],
+      ["", ""],
+      ["HOME-MANAGER FLAKES", ""],
+      ["  Shared modules", "cloud/b_infra/home-manager/_shared/modules/"],
+      ...VMS.map(v => [`  ${v.alias}`, `cloud/b_infra/home-manager/${v.alias}/src/`]),
+      ["", ""],
+      ["GHA WORKFLOWS", ""],
+      ...VMS.map(v => [`  ship-${v.alias}`, `cloud/.github/workflows/ship-${v.alias}.yml`]),
+      ["  ship-home-manager", "cloud/.github/workflows/ship-home-manager.yml"],
+      ["  ship-ghcr", "cloud/.github/workflows/ship-ghcr.yml"],
+      ["  Templates", "cloud/workflows/src/"],
+      ["", ""],
+      ["DAGU WORKFLOWS", ""],
+      ["  DAGs source", "cloud/a_solutions/bc-obs_dagu/src/dags/"],
+      ["  deploy-pull-up", "cloud/a_solutions/bc-obs_dagu/src/dags/ops_deploy-pull-up.yaml"],
+      ["  cloud-data sync", "cloud/a_solutions/bc-obs_dagu/src/dags/sync_cloud-data.yaml"],
+      ["", ""],
+      ["DATA", ""],
+      ["  cloud-data", "cloud/cloud-data/"],
+      ["  Container manifests", "cloud/cloud-data/cloud-data-containers-{vm}.json"],
+      ["  Topology", "cloud/cloud-data/cloud-data-topology.json"],
+      ["  GHA config", "cloud/cloud-data/cloud-data-gha-config.json"],
+      ["  Consolidated", "cloud/cloud-data/_cloud-data-consolidated.json"],
+      ["", ""],
+      ["TERRAFORM", ""],
+      ["  OCI", "cloud/b_infra/vps_oci/src/main.tf"],
+      ["  GCP", "cloud/b_infra/vps_gcloud/src/main.tf"],
+      ["  Cloudflare", "cloud/a_solutions/ba-clo_cloudflare/src/main.tf"],
+      ["", ""],
+      ["SECURITY", ""],
+      ["  Vault", "vault/"],
+      ["  SOPS secrets", "cloud/a_solutions/*/src/secrets.yaml"],
+      ["  SSH keys", "vault/A0_keys/ssh/"],
+    ];
+    return FRAMEWORK.map(([label, path]) => {
+      if (!label && !path) return "";
+      if (!path) return `  ${label}`;
+      return `  ${label.padEnd(22)} ~/git/${path}`;
+    }).join("\n");
+  })(),
+
+  VAULT_PROVIDERS: (() => {
+    const vp = run(`ls -1 ${HOME}/Mounts/Git/vault/A0_keys/providers/ 2>/dev/null`);
+    if (!vp) return "  (not available)";
+    return vp.split("\n").filter(Boolean).map(p => `  🔑 ${p}`).join("\n");
+  })(),
+
+  OPEN_PORTS: (() => {
+    log("Scanning open ports (verbose tcp logging suppressed)...");
+    tcpLogVerbose = false;
+    const lines: string[] = [];
+    const ips = VMS.filter(v => v.pubIp).map(v => ({ name: v.alias, ip: v.pubIp }));
+    const ports = [22, 25, 80, 443, 465, 587, 993, 2200, 4190, 5000, 8080, 8443, 8888, 51820];
+    for (const vm of ips) {
+      const open: number[] = [];
+      for (const port of ports) {
+        if (tcpCheck(vm.ip, port)) open.push(port);
+      }
+      const icon = open.length > 0 ? "🔓" : "🔒";
+      lines.push(`${icon} ${vm.name.padEnd(18)} ${vm.ip.padEnd(18)} ports: ${open.length > 0 ? open.join(", ") : "none reachable"}`);
+      log(`  ${vm.name}: ${open.length > 0 ? open.join(", ") : "none"}`);
+    }
+    tcpLogVerbose = true;
+    return lines.join("\n");
+  })(),
+
+  RESOURCES_HEADER: (() => {
+    const vmNames = data.vms.map((v: VmData) => v.alias);
+    return `${"".padEnd(18)} ${vmNames.map((n: string) => n.padEnd(14)).join(" ")}`;
+  })(),
+
+  DATABASES: (() => {
+    const lines: string[] = [];
+    lines.push(`    ${"Service".padEnd(20)} ${"DB Type".padEnd(10)} ${"Container".padEnd(22)} ${"DB Name".padEnd(14)} ${"VM".padEnd(16)} DNS / Access`);
+    lines.push("    " + "─".repeat(90));
+    for (const d of DATABASES) {
+      lines.push(`   ${d.service.padEnd(20)} ${d.type.padEnd(10)} ${d.container.padEnd(22)} ${d.db.padEnd(14)} ${d.vm.padEnd(16)} ${d.dns}`);
+    }
+    return lines.join("\n");
+  })(),
+
+  DOCKER_NETWORKS: (() => {
+    // Parse Docker networks from topology
+    const networks = new Map<string, { vm: string; services: string[] }>();
+    for (const [svcName, svc] of Object.entries(topology.services ?? {}) as [string, any][]) {
+      for (const net of svc.compose?.networks ?? []) {
+        if (!networks.has(net)) networks.set(net, { vm: svc.vm || "?", services: [] });
+        networks.get(net)!.services.push(svcName);
+      }
+    }
+    if (networks.size === 0) return "  (no network data in topology)";
+    const lines: string[] = [];
+    lines.push(`    ${"Network".padEnd(28)} ${"VM".padEnd(16)} Services`);
+    lines.push("    " + "─".repeat(70));
+    for (const [net, info] of [...networks.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+      const vmAlias = Object.entries(hmData.vms ?? {}).find(([, v]: [string, any]) => v.vm_id === info.vm)?.[0] || info.vm;
+      lines.push(`    ${net.padEnd(28)} ${vmAlias.padEnd(16)} ${info.services.join(", ")}`);
+    }
+    return lines.join("\n");
+  })(),
+
+  PERFORMANCE: (() => {
+    const totalMs = Date.now() - TOTAL_START;
+    const fmtSec = (ms: number) => (ms / 1000).toFixed(1) + "s";
+    const lines = timers.sort((a, b) => b.ms - a.ms).map(t => {
+      const bar = "█".repeat(Math.min(30, Math.round(t.ms / (totalMs / 30))));
+      return `  ${t.name.padEnd(18)} ${fmtSec(t.ms).padStart(7)} ${bar}`;
+    });
+    lines.push(`  ${"TOTAL".padEnd(18)} ${fmtSec(totalMs).padStart(7)}`);
+    return lines.join("\n");
+  })(),
+};
+
+// Replace all $VARS in template
+log("Replacing template variables...");
+for (const [key, value] of Object.entries(vars)) {
+  if (template.includes(`$${key}`)) {
+    template = template.replace(`$${key}`, value);
+    log(`  $${key} → ${value.split("\n").length} lines`);
+  } else {
+    logErr(`Template variable $${key} NOT FOUND in template!`);
   }
-  _("");
+}
+// Check for unreplaced $VARS
+const unreplaced = template.match(/\$[A-Z_]+/g)?.filter(v => !v.startsWith("$POSTGRES") && !v.startsWith("${"));
+if (unreplaced?.length) {
+  logErr(`Unreplaced template vars: ${unreplaced.join(", ")}`);
 }
 
-_("");
-_("══════════════════════════════════════════════════════════════");
-_("  B) INFRA — Resources & Stack");
-_("══════════════════════════════════════════════════════════════");
-_("");
+writeFileSync(`${SCRIPT_DIR}/container_health.md`, template);
+log("Wrote container_health.md");
 
-// Resources table
-_("RESOURCES");
-_("─".repeat(60));
-_(`${"".padEnd(18)} ${"gcp-proxy".padEnd(14)} ${"oci-apps".padEnd(14)} ${"oci-mail".padEnd(14)} ${"oci-analytics"}`);
-_("─".repeat(60));
-const fields: [string, (v: VmData) => string][] = [
-  ["OS", v => v.os],
-  ["CPU", v => `${v.cpus} cores`],
-  ["RAM", v => `${v.mem_used}/${v.mem_total}`],
-  ["RAM %", v => `${v.mem_pct}%`],
-  ["Swap", v => v.swap],
-  ["Disk", v => `${v.disk_used}/${v.disk_total}`],
-  ["Disk %", v => v.disk_pct],
-  ["Load", v => v.load],
-  ["Containers", v => `${v.containers_running}/${v.containers_total}`],
-  ["Uptime", v => v.uptime.replace("up ", "")],
-];
-for (const [label, fn] of fields) {
-  const vals = data.vms.map(v => fn(v).padEnd(14));
-  _(`${label.padEnd(18)} ${vals.join(" ")}`);
-}
-_("");
-
-_("");
-_("══════════════════════════════════════════════════════════════");
-_("  C) SECURITY");
-_("══════════════════════════════════════════════════════════════");
-_("");
-
-// Security: open ports per public IP
-_("OPEN PORTS by Public IP");
-_("─".repeat(60));
-const PUBLIC_IPS = VMS.filter(v => v.pubIp).map(v => ({ name: v.alias, ip: v.pubIp }));
-const SCAN_PORTS = [22, 25, 80, 443, 465, 587, 993, 2200, 4190, 5000, 8080, 8443, 8888, 51820];
-for (const vm of PUBLIC_IPS) {
-  const openPorts: number[] = [];
-  for (const port of SCAN_PORTS) {
-    if (tcpCheck(vm.ip, port)) openPorts.push(port);
-  }
-  const icon = openPorts.length > 0 ? "🔓" : "🔒";
-  _(`${icon} ${vm.name.padEnd(18)} ${vm.ip.padEnd(18)} ports: ${openPorts.length > 0 ? openPorts.join(", ") : "none reachable"}`);
-}
-_("");
-
-_("");
-// (Section B content continues from RESOURCES above)
-_("");
-
-// Repos
-_("GIT REPOSITORIES");
-_("─".repeat(60));
-const REPOS = [
-  { name: "cloud", path: "/home/diego/Mounts/Git/cloud" },
-  { name: "cloud-data", path: "/home/diego/Mounts/Git/cloud/cloud-data" },
-  { name: "front", path: "/home/diego/Mounts/Git/front" },
-  { name: "unix", path: "/home/diego/Mounts/Git/unix" },
-  { name: "tools", path: "/home/diego/Mounts/Git/tools" },
-  { name: "vault", path: "/home/diego/Mounts/Git/vault" },
-];
-for (const r of REPOS) {
-  const branch = run(`git -C ${r.path} branch --show-current 2>/dev/null`) || "?";
-  const commit = run(`git -C ${r.path} log -1 --format="%h %s" 2>/dev/null`) || "?";
-  const dirty = run(`git -C ${r.path} status --porcelain 2>/dev/null`);
-  const icon = dirty ? "⚠️" : "✅";
-  _(`${icon} ${r.name.padEnd(14)} ${branch.padEnd(8)} ${commit.substring(0, 55)}`);
-}
-_("");
-
-// VPS Resources
-_("VPS / VM SPECS");
-_("─".repeat(60));
-_(`${"".padEnd(3)} ${"VM".padEnd(16)} ${"Provider".padEnd(10)} ${"Shape".padEnd(20)} ${"CPU".padEnd(6)} ${"RAM".padEnd(6)} ${"Disk".padEnd(8)} ${"Cost"}`);
-_("─".repeat(60));
-const VPS_SPECS = [
-  { name: "gcp-proxy", provider: "GCP", shape: "E2 Micro", cpu: "2", ram: "2G", disk: "30G", cost: "Free" },
-  { name: "gcp-t4", provider: "GCP", shape: "N1-Std-4 + T4 GPU", cpu: "4", ram: "15G", disk: "100G", cost: "Spot" },
-  { name: "oci-mail", provider: "OCI", shape: "E2 Micro", cpu: "2", ram: "1G", disk: "47G", cost: "Free" },
-  { name: "oci-analytics", provider: "OCI", shape: "E2 Micro", cpu: "2", ram: "1G", disk: "47G", cost: "Free" },
-  { name: "oci-apps", provider: "OCI", shape: "A1 Flex (ARM)", cpu: "4", ram: "24G", disk: "100G", cost: "Free" },
-  { name: "github-actions", provider: "GitHub", shape: "ubuntu-latest", cpu: "4", ram: "16G", disk: "14G", cost: "2000min/mo" },
-  { name: "ghcr.io", provider: "GitHub", shape: "Container Registry", cpu: "-", ram: "-", disk: "∞", cost: "Free (public)" },
-];
-for (const v of VPS_SPECS) {
-  _(`   ${v.name.padEnd(16)} ${v.provider.padEnd(10)} ${v.shape.padEnd(20)} ${v.cpu.padEnd(6)} ${v.ram.padEnd(6)} ${v.disk.padEnd(8)} ${v.cost}`);
-}
-_("");
-
-_("FRAMEWORK — Key Paths");
-_("─".repeat(60));
-const FRAMEWORK = [
-  ["BUILD ENGINES", ""],
-  ["  Service engine", "cloud/a_solutions/_engine.sh"],
-  ["  HM engine", "cloud/b_infra/home-manager/_engine.sh"],
-  ["  Workflow engine", "cloud/workflows/build.sh"],
-  ["  Front engine", "front/1.ops/build_main.sh"],
-  ["  NixOS host", "unix/aa_nixos-surface_host/build.sh"],
-  ["  HM desktop", "unix/ba_flakes_desktop/build.sh"],
-  ["", ""],
-  ["HOME-MANAGER FLAKES", ""],
-  ["  Shared modules", "cloud/b_infra/home-manager/_shared/modules/"],
-  ["  gcp-proxy", "cloud/b_infra/home-manager/gcp-proxy/src/"],
-  ["  oci-apps", "cloud/b_infra/home-manager/oci-apps/src/"],
-  ["  oci-mail", "cloud/b_infra/home-manager/oci-mail/src/"],
-  ["  oci-analytics", "cloud/b_infra/home-manager/oci-analytics/src/"],
-  ["", ""],
-  ["GHA WORKFLOWS", ""],
-  ["  ship-gcp-proxy", "cloud/.github/workflows/ship-gcp-proxy.yml"],
-  ["  ship-oci-apps", "cloud/.github/workflows/ship-oci-apps.yml"],
-  ["  ship-oci-mail", "cloud/.github/workflows/ship-oci-mail.yml"],
-  ["  ship-oci-analytics", "cloud/.github/workflows/ship-oci-analytics.yml"],
-  ["  ship-home-manager", "cloud/.github/workflows/ship-home-manager.yml"],
-  ["  ship-ghcr", "cloud/.github/workflows/ship-ghcr.yml"],
-  ["  Templates", "cloud/workflows/src/"],
-  ["", ""],
-  ["DAGU WORKFLOWS", ""],
-  ["  DAGs source", "cloud/a_solutions/bc-obs_dagu/src/dags/"],
-  ["  deploy-pull-up", "cloud/a_solutions/bc-obs_dagu/src/dags/ops_deploy-pull-up.yaml"],
-  ["  cloud-data sync", "cloud/a_solutions/bc-obs_dagu/src/dags/sync_cloud-data.yaml"],
-  ["", ""],
-  ["DATA", ""],
-  ["  cloud-data", "cloud/cloud-data/"],
-  ["  Container manifests", "cloud/cloud-data/cloud-data-containers-{vm}.json"],
-  ["  Topology", "cloud/cloud-data/cloud-data-topology.json"],
-  ["  GHA config", "cloud/cloud-data/cloud-data-gha-config.json"],
-  ["  Consolidated", "cloud/cloud-data/_cloud-data-consolidated.json"],
-  ["", ""],
-  ["TERRAFORM", ""],
-  ["  OCI", "cloud/b_infra/vps_oci/src/main.tf"],
-  ["  GCP", "cloud/b_infra/vps_gcloud/src/main.tf"],
-  ["  Cloudflare", "cloud/a_solutions/ba-clo_cloudflare/src/main.tf"],
-  ["", ""],
-  ["SECURITY", ""],
-  ["  Vault", "vault/"],
-  ["  SOPS secrets", "cloud/a_solutions/*/src/secrets.yaml"],
-  ["  SSH keys", "vault/A0_keys/ssh/"],
-];
-for (const [label, path] of FRAMEWORK) {
-  if (!label && !path) { _(""); continue; }
-  if (!path) { _(`  ${label}`); continue; }
-  _(`  ${label.padEnd(22)} ~/git/${path}`);
-}
-_("");
-
-// Vault providers
-_("VAULT — CLI Access Providers");
-_("─".repeat(60));
-const vaultProviders = run(`ls -1 ${HOME}/Mounts/Git/vault/A0_keys/providers/ 2>/dev/null`);
-if (vaultProviders) {
-  for (const p of vaultProviders.split("\n").filter(Boolean)) {
-    _(`  🔑 ${p}`);
-  }
-}
-_("");
-
-// GitHub / GHCR
-_("GITHUB / GHCR");
-_("─".repeat(60));
-const ghcrCount = run("gh api '/user/packages?package_type=container&per_page=100' --jq 'length' 2>/dev/null");
-const ghUser = run("gh api user --jq .login 2>/dev/null");
-_(`  👤 User:       ${ghUser || "?"}`);
-_(`  📦 GHCR images: ${ghcrCount || "?"}`);
-_(`  🔗 Registry:   ghcr.io/diegonmarcos/`);
-_("");
-
-_("PERFORMANCE");
-_("─".repeat(60));
+// ── Summary ─────────────────────────────────────────────────────
 const totalMs = Date.now() - TOTAL_START;
-for (const t of timers.sort((a, b) => b.ms - a.ms)) {
-  const bar = "█".repeat(Math.min(30, Math.round(t.ms / (totalMs / 30))));
-  _(`  ${t.name.padEnd(18)} ${String(t.ms).padStart(6)}ms ${bar}`);
+log(`═══ DONE in ${(totalMs / 1000).toFixed(1)}s ═══`);
+if (ERRORS.length > 0) {
+  console.error(`\n⚠️  ${ERRORS.length} ERRORS during run:`);
+  for (const e of ERRORS) console.error(`  ${e}`);
 }
-_(`  ${"TOTAL".padEnd(18)} ${String(totalMs).padStart(6)}ms`);
-_("");
-
-_("─".repeat(60));
-_(`Generated by: cloud-data/cloud-health-stack/container-health.ts`);
-_(`Run: npx tsx container-health.ts`);
-_("```");
-
-writeFileSync(`${SCRIPT_DIR}/container_health.md`, L.join("\n") + "\n");
-console.log("Done → container_health.json + container_health.md");
+console.log(`→ container_health.json + container_health.md (template-driven, ${ERRORS.length} errors)`);

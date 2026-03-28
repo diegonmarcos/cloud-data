@@ -32,6 +32,10 @@ MAIL PORTS
 ────────────────────────────────────────────────────────────
 $MAIL_PORTS
 
+MAIL FLOW — Inbound Worker / Outbound Relay
+────────────────────────────────────────────────────────────
+$MAIL_FLOW
+
 PRIVATE DNS (WireGuard mesh)
 ────────────────────────────────────────────────────────────
 $PRIVATE_DNS
