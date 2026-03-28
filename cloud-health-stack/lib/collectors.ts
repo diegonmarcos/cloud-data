@@ -60,6 +60,10 @@ export function tcpCheckAsync(host: string, port: number): Promise<boolean> {
   return runAsync(`nc -zw3 ${host} ${port} 2>&1 && echo OK`, 5000).then(r => r.includes("OK"));
 }
 
+export function udpCheckAsync(host: string, port: number): Promise<boolean> {
+  return runAsync(`nc -zuw3 ${host} ${port} 2>&1 && echo OK`, 5000).then(r => r.includes("OK"));
+}
+
 /**
  * Parallel port scan — check multiple ports on one host concurrently
  * Returns array of open port numbers
@@ -89,18 +93,19 @@ export async function publicUrlMultiCheck(domain: string): Promise<{ tcp: boolea
  * Resolves DNS name via Hickory (10.0.0.1) first, then checks the resolved IP
  * This avoids reliance on system DNS config (resolv.conf may not have Hickory)
  */
-export async function privateEndpointCheck(dns: string, port: number): Promise<{ tcp: boolean; http: boolean; code: string; resolvedIp: string }> {
+export async function privateEndpointCheck(dns: string, port: number): Promise<{ tcp: boolean; udp: boolean; http: boolean; code: string; resolvedIp: string }> {
   // Resolve via Hickory directly (not system DNS)
   const resolvedIp = await runAsync(`dig @10.0.0.1 +short +time=2 +tries=1 ${dns} 2>/dev/null`, 5000);
   if (!resolvedIp) {
-    return { tcp: false, http: false, code: "---", resolvedIp: "" };
+    return { tcp: false, udp: false, http: false, code: "---", resolvedIp: "" };
   }
-  // Check using resolved IP (bypass glibc/NSS issues with .app TLD)
-  const [tcp, httpCode] = await Promise.all([
+  // Check TCP + UDP + HTTP using resolved IP
+  const [tcp, udp, httpCode] = await Promise.all([
     runAsync(`nc -zw3 ${resolvedIp} ${port} 2>&1 && echo OK`, 5000).then(r => r.includes("OK")),
+    runAsync(`nc -zuw3 ${resolvedIp} ${port} 2>&1 && echo OK`, 5000).then(r => r.includes("OK")),
     runAsync(`curl -sko /dev/null -w '%{http_code}' --resolve '${dns}:${port}:${resolvedIp}' http://${dns}:${port} 2>/dev/null`, 5000),
   ]);
-  return { tcp, http: httpCode !== "" && httpCode !== "000", code: httpCode || "---", resolvedIp };
+  return { tcp, udp, http: httpCode !== "" && httpCode !== "000", code: httpCode || "---", resolvedIp };
 }
 
 /**
