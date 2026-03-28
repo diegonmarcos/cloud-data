@@ -487,9 +487,30 @@ const vars: Record<string, string> = {
     return lines.join("\n");
   })(),
 
-  PRIVATE_DNS: data.private_dns.map((d: any) =>
-    `${d.open ? "✅" : "❌"} ${d.dns.padEnd(28)} ${(d.container + ":" + d.port).padEnd(25)} ${String(d.port).padEnd(7)} ${d.vm}`
-  ).join("\n"),
+  PRIVATE_DNS: (() => {
+    // Find globally duplicated ports
+    const portCount = new Map<number, string[]>();
+    for (const d of data.private_dns) {
+      if (!portCount.has(d.port)) portCount.set(d.port, []);
+      portCount.get(d.port)!.push(d.dns);
+    }
+    const conflictPorts = new Set([...portCount.entries()].filter(([, names]) => names.length > 1).map(([p]) => p));
+    const lines = data.private_dns.map((d: any) => {
+      const conflict = conflictPorts.has(d.port);
+      const icon = d.open ? "✅" : "❌";
+      const portTag = conflict ? `⚠️${String(d.port).padEnd(5)}` : `  ${String(d.port).padEnd(5)}`;
+      return `${icon} ${d.dns.padEnd(28)} ${(d.container + ":" + d.port).padEnd(25)} ${portTag} ${d.vm}`;
+    });
+    // Append conflict summary
+    if (conflictPorts.size > 0) {
+      lines.push("");
+      lines.push(`  ⚠️  PORT CONFLICTS (${conflictPorts.size} duplicate ports globally):`);
+      for (const [port, names] of [...portCount.entries()].filter(([, n]) => n.length > 1).sort((a, b) => a[0] - b[0])) {
+        lines.push(`     :${String(port).padEnd(6)} used by: ${names.join(", ")}`);
+      }
+    }
+    return lines.join("\n");
+  })(),
 
   VM_CONTAINERS: data.vms.map((vm: VmData) => {
     const lines: string[] = [];
