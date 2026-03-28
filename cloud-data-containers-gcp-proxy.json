@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-28T14:31:45.017Z",
+  "_generated": "2026-03-28T14:48:24.100Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/vm-container-manifests",
   "vm": "gcp-proxy",
   "vm_id": "gcp-E2-f_0",
