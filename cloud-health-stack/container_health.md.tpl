@@ -18,7 +18,7 @@
 
 WIREGUARD MESH (hub: gcp-proxy $HUB_WG_IP — front door)
 ────────────────────────────────────────────────────────────
-    Name               VPS  Pub  WG   Public IP          WG IP          Type     Handshake
+    Name               ☁VPS 🌐Pub 🔒WG  Public IP          WG IP          Type     Handshake
 ────────────────────────────────────────────────────────────
 $WG_PEERS
 
