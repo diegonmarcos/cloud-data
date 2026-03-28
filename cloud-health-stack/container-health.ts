@@ -91,10 +91,16 @@ const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData: { me
 
 // Build vars — parallel async tasks first, then sync vars
 (async () => {
+  // Pre-check: probe Hickory BEFORE launching parallel barrage (avoids timeout under load)
+  log("Pre-checking Hickory DNS (10.0.0.1)...");
+  const hickoryProbe = run("dig @10.0.0.1 +short +time=3 +tries=2 authelia.app 2>/dev/null");
+  const hickoryUp = !!hickoryProbe && hickoryProbe.length > 0;
+  log(`  Hickory: ${hickoryUp ? "✅ UP" : "❌ DOWN"} (${hickoryProbe || "no response"})`);
+
   // Launch ALL parallel checks at once
   log("Launching parallel checks (public URLs + private health + port scan)...");
   const portScanPromise = timedAsync("open_ports", () => scanOpenPorts(VMS));
-  const privateHealthPromise = timedAsync("private_health", () => checkPrivateHealth(PRIVATE_DNS));
+  const privateHealthPromise = timedAsync("private_health", () => checkPrivateHealth(PRIVATE_DNS, hickoryUp));
   const publicUrlPromise = timedAsync("public_urls_multi", () => checkPublicUrls(PUBLIC_URLS));
 
   // Build sync vars while parallel tasks run

@@ -1,36 +1,36 @@
 {
-  "generated": "2026-03-28T23:13:52.540Z",
+  "generated": "2026-03-28T23:18:08.286Z",
   "wg_peers": [
     {
-      "name": "10.0.0.5",
+      "name": "10.0.0.9",
       "pubIp": "88.30.43.183",
-      "privIp": "10.0.0.5",
-      "handshake": "1 minute, 9 seconds ago",
-      "transfer": "51.74 KiB received, 38.36 KiB sent",
+      "privIp": "10.0.0.9",
+      "handshake": "29 seconds ago",
+      "transfer": "9.48 KiB received, 8.30 KiB sent",
       "alive": true
     },
     {
       "name": "oci-mail",
       "pubIp": "130.110.251.193",
       "privIp": "10.0.0.3",
-      "handshake": "2 minutes, 7 seconds ago",
-      "transfer": "126.92 KiB received, 165.76 KiB sent",
+      "handshake": "58 seconds ago",
+      "transfer": "131.35 KiB received, 172.70 KiB sent",
+      "alive": true
+    },
+    {
+      "name": "10.0.0.5",
+      "pubIp": "88.30.43.183",
+      "privIp": "10.0.0.5",
+      "handshake": "1 minute, 9 seconds ago",
+      "transfer": "52.01 KiB received, 38.96 KiB sent",
       "alive": true
     },
     {
       "name": "oci-analytics",
       "pubIp": "129.151.228.66",
       "privIp": "10.0.0.4",
-      "handshake": "2 minutes, 10 seconds ago",
-      "transfer": "19.91 KiB received, 23.63 KiB sent",
-      "alive": true
-    },
-    {
-      "name": "10.0.0.9",
-      "pubIp": "88.30.43.183",
-      "privIp": "10.0.0.9",
-      "handshake": "2 minutes, 12 seconds ago",
-      "transfer": "9.00 KiB received, 7.88 KiB sent",
+      "handshake": "1 minute, 25 seconds ago",
+      "transfer": "20.25 KiB received, 24.14 KiB sent",
       "alive": true
     },
     {
@@ -38,7 +38,7 @@
       "pubIp": "34.173.227.250",
       "privIp": "10.0.0.8",
       "handshake": "never",
-      "transfer": "0 B received, 105.22 KiB sent",
+      "transfer": "0 B received, 111.00 KiB sent",
       "alive": false
     },
     {
@@ -46,7 +46,7 @@
       "pubIp": "82.70.229.129",
       "privIp": "10.0.0.6",
       "handshake": "never",
-      "transfer": "0 B received, 108.11 KiB sent",
+      "transfer": "0 B received, 113.75 KiB sent",
       "alive": false
     }
   ],
@@ -669,15 +669,15 @@
       "os": "oci-mail",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "652M",
+      "mem_used": "653M",
       "mem_total": "954M",
       "mem_pct": 68,
       "swap": "220M/2559M",
       "disk_used": "28G",
       "disk_total": "45G",
       "disk_pct": "67%",
-      "load": "0.25 0.35 0.40",
-      "uptime": "up 19 hours, 46 minutes",
+      "load": "0.33 0.28 0.35",
+      "uptime": "up 19 hours, 51 minutes",
       "containers_running": 7,
       "containers_total": 7,
       "containers": [
@@ -731,15 +731,15 @@
       "os": "oci-analytics",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "720M",
+      "mem_used": "721M",
       "mem_total": "954M",
       "mem_pct": 75,
-      "swap": "268M/2559M",
+      "swap": "269M/2559M",
       "disk_used": "25G",
       "disk_total": "48G",
       "disk_pct": "56%",
-      "load": "2.37 2.26 2.18",
-      "uptime": "up 19 hours, 12 minutes",
+      "load": "2.07 2.16 2.16",
+      "uptime": "up 19 hours, 16 minutes",
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
@@ -799,14 +799,14 @@
       "os": "oci-apps",
       "cpus": 4,
       "ram": "24G",
-      "mem_used": "4796M",
+      "mem_used": "4701M",
       "mem_total": "23975M",
-      "mem_pct": 20,
+      "mem_pct": 19,
       "swap": "0M/0M",
       "disk_used": "64.9G",
       "disk_total": "95.8G",
       "disk_pct": "71%",
-      "load": "0.50 0.51 0.53",
+      "load": "0.71 0.58 0.54",
       "uptime": "up 1d 4h",
       "containers_running": 49,
       "containers_total": 54,
@@ -825,26 +825,20 @@
         },
         {
           "name": "surrealdb",
-          "status": "Exited (2) 17 minutes ago",
+          "status": "Exited (2) 22 minutes ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "crawlee_minio_init",
-          "status": "Exited (0) 18 minutes ago",
+          "status": "Exited (0) 22 minutes ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "crawlee_dashboard",
-          "status": "Exited (0) 18 minutes ago",
+          "status": "Exited (0) 22 minutes ago",
           "health": "exited",
-          "icon": "❌"
-        },
-        {
-          "name": "crawlee_db",
-          "status": "Up 57 seconds (unhealthy)",
-          "health": "unhealthy",
           "icon": "❌"
         },
         {
@@ -854,20 +848,26 @@
           "icon": "⚠️"
         },
         {
+          "name": "crawlee_db",
+          "status": "Up 9 seconds (health: starting)",
+          "health": "starting",
+          "icon": "⚠️"
+        },
+        {
           "name": "windmill-worker",
-          "status": "Up 12 minutes",
+          "status": "Up 17 minutes",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "mattermost-bots",
-          "status": "Up 16 minutes",
+          "status": "Up 20 minutes",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_scheduler",
-          "status": "Up 18 minutes",
+          "status": "Up 22 minutes",
           "health": "none",
           "icon": "✅"
         },
@@ -939,67 +939,67 @@
         },
         {
           "name": "windmill-server",
-          "status": "Up 12 minutes (healthy)",
+          "status": "Up 17 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "windmill-db",
-          "status": "Up 12 minutes (healthy)",
+          "status": "Up 17 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "quant_light_db",
-          "status": "Up 14 minutes (healthy)",
+          "status": "Up 19 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "photoprism_rclone",
-          "status": "Up 15 minutes (healthy)",
+          "status": "Up 19 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "photoprism_mariadb",
-          "status": "Up 15 minutes (healthy)",
+          "status": "Up 19 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "nocodb",
-          "status": "Up 15 minutes (healthy)",
+          "status": "Up 20 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "nocodb-db",
-          "status": "Up 15 minutes (healthy)",
+          "status": "Up 20 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "crawlee_minio",
-          "status": "Up 18 minutes (healthy)",
+          "status": "Up 22 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "cloud-cgc-mcp",
-          "status": "Up 18 minutes (healthy)",
+          "status": "Up 23 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-mcp",
-          "status": "Up 21 minutes (healthy)",
+          "status": "Up 26 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-api",
-          "status": "Up 21 minutes (healthy)",
+          "status": "Up 26 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -1162,19 +1162,134 @@
       "os": "gcp-proxy",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "?",
-      "mem_total": "?",
-      "mem_pct": 0,
-      "swap": "?",
-      "disk_used": "?",
-      "disk_total": "?",
-      "disk_pct": "?",
-      "load": "?",
-      "uptime": "?",
-      "containers_running": 0,
-      "containers_total": 0,
-      "containers": [],
-      "reachable": false
+      "mem_used": "910M",
+      "mem_total": "1952M",
+      "mem_pct": 46,
+      "swap": "130M/3999M",
+      "disk_used": "16G",
+      "disk_total": "31G",
+      "disk_pct": "52%",
+      "load": "1.09 1.85 1.68",
+      "uptime": "up 1 hour, 24 minutes",
+      "containers_running": 19,
+      "containers_total": 19,
+      "containers": [
+        {
+          "name": "hickory-dns",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "caddy",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-ntfy",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-authelia",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-npm",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-vaultwarden",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "syslog-bridge",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "github-rss",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "ntfy",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-authelia",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-npm",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-vaultwarden",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-ntfy",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "fluent-bit",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "authelia-redis",
+          "status": "Up About an hour",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "redis",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "vaultwarden",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "introspect-proxy",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "authelia",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        }
+      ],
+      "reachable": true
     }
   ],
   "databases": [

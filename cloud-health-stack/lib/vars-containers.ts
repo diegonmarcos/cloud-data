@@ -18,11 +18,9 @@ export interface PrivateHealthResult {
  * Uses DNS NAME directly (not IP) — tests if local system can resolve + reach
  */
 export async function checkPrivateHealth(
-  privateDns: { dns: string; container: string; port: number; vm: string }[]
+  privateDns: { dns: string; container: string; port: number; vm: string }[],
+  hickoryUp = false
 ): Promise<PrivateHealthResult[]> {
-  // First check if Hickory is reachable (dig probe — more reliable than nc under load)
-  const hickoryProbe = await runAsync("dig @10.0.0.1 +short +time=3 +tries=2 authelia.app 2>/dev/null", 8000);
-  const hickoryUp = !!hickoryProbe && hickoryProbe.length > 0;
   if (!hickoryUp) {
     log("  ⚠️ WireGuard/Hickory DOWN — skipping private health checks");
     return privateDns.map(d => ({ ...d, tcp: false, http: false, code: "---", wg_down: true }));
