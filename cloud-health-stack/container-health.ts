@@ -128,12 +128,12 @@ const MCP_API_ENDPOINTS = parseMcpApiEndpoints();
 // ── Parse Mail ports from L4 routes ─────────────────────────────
 function parseMailPorts(): { host: string; port: number; proto: string }[] {
   const ports: { host: string; port: number; proto: string }[] = [];
-  const MAIL_HOSTS = ["mail.diegonmarcos.com", "smtp.diegonmarcos.com", "imap.diegonmarcos.com"];
+  const STALWART_HOSTS = ["mail.diegonmarcos.com", "smtp.diegonmarcos.com", "imap.diegonmarcos.com"];
   const PROTO_MAP: Record<number, string> = { 25: "SMTP", 465: "SMTPS", 587: "Submission", 993: "IMAPS", 4190: "ManageSieve" };
   for (const l4 of caddyRoutes.l4_routes ?? []) {
     const port = l4.listen_port || (l4.upstream ? parseInt(l4.upstream.split(":").pop()) : 0);
     if (port && PROTO_MAP[port]) {
-      for (const h of MAIL_HOSTS) {
+      for (const h of STALWART_HOSTS) {
         if (h.startsWith("smtp") && ![25, 465, 587].includes(port)) continue;
         if (h.startsWith("imap") && port !== 993) continue;
         ports.push({ host: h, port, proto: PROTO_MAP[port] });
@@ -141,12 +141,15 @@ function parseMailPorts(): { host: string; port: number; proto: string }[] {
     }
   }
   if (ports.length === 0) {
-    for (const h of MAIL_HOSTS) {
+    for (const h of STALWART_HOSTS) {
       if (h.startsWith("mail")) for (const p of [25, 465, 587, 993, 4190]) ports.push({ host: h, port: p, proto: PROTO_MAP[p] });
       if (h.startsWith("smtp")) for (const p of [25, 465, 587]) ports.push({ host: h, port: p, proto: PROTO_MAP[p] });
       if (h.startsWith("imap")) ports.push({ host: h, port: 993, proto: "IMAPS" });
     }
   }
+  // Resend (mails.diegonmarcos.com) — transactional email via API, verify MX/SPF DNS
+  ports.push({ host: "mails.diegonmarcos.com", port: 25, proto: "MX (Resend/SES)" });
+  ports.push({ host: "send.mails.diegonmarcos.com", port: 25, proto: "SPF (Resend/SES)" });
   return ports;
 }
 const MAIL_PORTS = parseMailPorts();
