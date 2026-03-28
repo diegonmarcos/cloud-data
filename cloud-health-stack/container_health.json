@@ -1,6 +1,63 @@
 {
+<<<<<<< Updated upstream
   "generated": "2026-03-28T14:36:31.520Z",
   "wg_peers": [],
+||||||| Stash base
+  "generated": "2026-03-28T14:10:35.031Z",
+  "wg_peers": [
+    {
+      "name": "10.0.0.5",
+      "pubIp": "88.30.43.183",
+      "privIp": "10.0.0.5",
+      "handshake": "54 seconds ago",
+      "transfer": "43.43 KiB received, 45.89 KiB sent",
+      "alive": true
+    },
+    {
+      "name": "oci-analytics",
+      "pubIp": "129.151.228.66",
+      "privIp": "10.0.0.4",
+      "handshake": "54 seconds ago",
+      "transfer": "10.60 KiB received, 10.67 KiB sent",
+      "alive": true
+    },
+    {
+      "name": "oci-mail",
+      "pubIp": "130.110.251.193",
+      "privIp": "10.0.0.3",
+      "handshake": "1 minute, 40 seconds ago",
+      "transfer": "10.54 KiB received, 10.84 KiB sent",
+      "alive": true
+    },
+    {
+      "name": "oci-apps",
+      "pubIp": "82.70.229.129",
+      "privIp": "10.0.0.6",
+      "handshake": "1 minute, 41 seconds ago",
+      "transfer": "20.82 KiB received, 18.50 KiB sent",
+      "alive": true
+    },
+    {
+      "name": "gcp-t4",
+      "pubIp": "34.173.227.250",
+      "privIp": "10.0.0.8",
+      "handshake": "never",
+      "transfer": "0 B received, 8.53 KiB sent",
+      "alive": false
+    },
+    {
+      "name": "10.0.0.9",
+      "pubIp": "none",
+      "privIp": "10.0.0.9",
+      "handshake": "never",
+      "transfer": "0 B",
+      "alive": false
+    }
+  ],
+=======
+  "generated": "2026-03-28T14:43:44.039Z",
+  "wg_peers": [],
+>>>>>>> Stashed changes
   "api_mcp": [
     {
       "url": "mcp.diegonmarcos.com/g-workspace/mcp",
@@ -545,8 +602,15 @@
       "container": "mattermost",
       "port": 8065,
       "vm": "oci-A1-f_0",
+<<<<<<< Updated upstream
       "open": true,
       "resolved": "172.234.24.211\n172.239.57.117"
+||||||| Stash base
+      "open": false
+=======
+      "open": true,
+      "resolved": "172.239.57.117\n172.234.24.211"
+>>>>>>> Stashed changes
     },
     {
       "dns": "nocodb.app",
@@ -625,8 +689,15 @@
       "container": "stalwart",
       "port": 443,
       "vm": "oci-E2-f_0",
+<<<<<<< Updated upstream
       "open": true,
       "resolved": "151.101.65.195\n151.101.1.195"
+||||||| Stash base
+      "open": false
+=======
+      "open": true,
+      "resolved": "151.101.1.195\n151.101.65.195"
+>>>>>>> Stashed changes
     },
     {
       "dns": "dozzle.app",
@@ -667,15 +738,37 @@
       "os": "oci-mail",
       "cpus": 1,
       "ram": "1G",
+<<<<<<< Updated upstream
       "mem_used": "615M",
+||||||| Stash base
+      "mem_used": "676M",
+=======
+      "mem_used": "635M",
+>>>>>>> Stashed changes
       "mem_total": "954M",
+<<<<<<< Updated upstream
       "mem_pct": 64,
       "swap": "234M/2559M",
+||||||| Stash base
+      "mem_pct": 70,
+      "swap": "173M/2559M",
+=======
+      "mem_pct": 66,
+      "swap": "234M/2559M",
+>>>>>>> Stashed changes
       "disk_used": "28G",
       "disk_total": "45G",
       "disk_pct": "67%",
+<<<<<<< Updated upstream
       "load": "2.06 1.68 0.99",
       "uptime": "up 11 hours, 9 minutes",
+||||||| Stash base
+      "load": "0.48 0.31 0.28",
+      "uptime": "up 10 hours, 43 minutes",
+=======
+      "load": "2.08 1.97 1.40",
+      "uptime": "up 11 hours, 16 minutes",
+>>>>>>> Stashed changes
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
@@ -735,15 +828,29 @@
       "os": "oci-analytics",
       "cpus": 1,
       "ram": "1G",
+<<<<<<< Updated upstream
       "mem_used": "722M",
+||||||| Stash base
+      "mem_used": "721M",
+=======
+      "mem_used": "727M",
+>>>>>>> Stashed changes
       "mem_total": "954M",
-      "mem_pct": 75,
-      "swap": "250M/2559M",
+      "mem_pct": 76,
+      "swap": "247M/2559M",
       "disk_used": "25G",
       "disk_total": "48G",
       "disk_pct": "56%",
+<<<<<<< Updated upstream
       "load": "0.15 0.24 0.34",
       "uptime": "up 10 hours, 35 minutes",
+||||||| Stash base
+      "load": "0.86 0.56 0.52",
+      "uptime": "up 10 hours, 8 minutes",
+=======
+      "load": "0.60 0.31 0.31",
+      "uptime": "up 10 hours, 42 minutes",
+>>>>>>> Stashed changes
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
@@ -803,26 +910,37 @@
       "os": "oci-apps",
       "cpus": 4,
       "ram": "24G",
+<<<<<<< Updated upstream
       "mem_used": "4606M",
+||||||| Stash base
+      "mem_used": "4622M",
+=======
+      "mem_used": "5007M",
+>>>>>>> Stashed changes
       "mem_total": "23975M",
-      "mem_pct": 19,
+      "mem_pct": 20,
       "swap": "0M/0M",
       "disk_used": "59.7G",
       "disk_total": "95.8G",
       "disk_pct": "66%",
+<<<<<<< Updated upstream
       "load": "0.41 0.44 0.47",
       "uptime": "up 0d 20h",
       "containers_running": 50,
+||||||| Stash base
+      "load": "0.35 0.61 0.85",
+      "uptime": "up 0d 19h",
+      "containers_running": 49,
+=======
+      "load": "0.76 0.61 0.52",
+      "uptime": "up 0d 20h",
+      "containers_running": 52,
+>>>>>>> Stashed changes
       "containers_total": 53,
       "containers": [
         {
-          "name": "photoprism_app",
-          "status": "Created",
-          "health": "created",
-          "icon": "❌"
-        },
-        {
           "name": "crawlee_minio_init",
+<<<<<<< Updated upstream
           "status": "Exited (0) 40 minutes ago",
           "health": "exited",
           "icon": "❌"
@@ -838,105 +956,413 @@
           "status": "Up 2 minutes",
           "health": "none",
           "icon": "✅"
+||||||| Stash base
+          "status": "Exited (0) 14 minutes ago",
+          "health": "exited",
+          "icon": "❌"
+        },
+        {
+          "name": "photoprism_rclone",
+          "status": "Exited (1) 20 minutes ago",
+          "health": "exited",
+          "icon": "❌"
+        },
+        {
+          "name": "mattermost-bots",
+          "status": "Exited (1) 21 minutes ago",
+          "health": "exited",
+          "icon": "❌"
+=======
+          "status": "Exited (0) 48 minutes ago",
+          "health": "exited",
+          "icon": "❌"
+>>>>>>> Stashed changes
         },
         {
           "name": "windmill-worker",
+<<<<<<< Updated upstream
           "status": "Up 37 minutes",
+||||||| Stash base
+          "status": "Up 11 minutes",
+=======
+          "status": "Up About a minute",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "mattermost-bots",
+          "status": "Up 9 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "gitea",
+<<<<<<< Updated upstream
           "status": "Up 38 minutes",
+||||||| Stash base
+          "status": "Up 11 minutes",
+=======
+          "status": "Up 45 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "bup-server",
+<<<<<<< Updated upstream
           "status": "Up 38 minutes",
+||||||| Stash base
+          "status": "Up 12 minutes",
+=======
+          "status": "Up 46 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "borg-server",
+<<<<<<< Updated upstream
           "status": "Up 39 minutes",
+||||||| Stash base
+          "status": "Up 13 minutes",
+=======
+          "status": "Up 46 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "lgtm_mimir",
+<<<<<<< Updated upstream
           "status": "Up 40 minutes",
+||||||| Stash base
+          "status": "Up 13 minutes",
+=======
+          "status": "Up 47 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "lgtm_tempo",
+<<<<<<< Updated upstream
           "status": "Up 40 minutes",
+||||||| Stash base
+          "status": "Up 13 minutes",
+=======
+          "status": "Up 47 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "cloud-spec",
+<<<<<<< Updated upstream
           "status": "Up 40 minutes",
+||||||| Stash base
+          "status": "Up 13 minutes",
+=======
+          "status": "Up 47 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_runner",
+<<<<<<< Updated upstream
           "status": "Up 40 minutes",
+||||||| Stash base
+          "status": "Up 14 minutes",
+=======
+          "status": "Up 47 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_dashboard",
+<<<<<<< Updated upstream
           "status": "Up 40 minutes",
+||||||| Stash base
+          "status": "Up 14 minutes",
+=======
+          "status": "Up 47 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_scheduler",
+<<<<<<< Updated upstream
           "status": "Up 40 minutes",
+||||||| Stash base
+          "status": "Up 14 minutes",
+=======
+          "status": "Up 48 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "siem-api",
+<<<<<<< Updated upstream
           "status": "Up 42 minutes",
+||||||| Stash base
+          "status": "Up 16 minutes",
+=======
+          "status": "Up 50 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "quant_light_engine",
+<<<<<<< Updated upstream
           "status": "Up 45 minutes",
+||||||| Stash base
+          "status": "Up 19 minutes",
+=======
+          "status": "Up 52 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "mattermost-mcp",
+<<<<<<< Updated upstream
           "status": "Up 47 minutes",
+||||||| Stash base
+          "status": "Up 21 minutes",
+=======
+          "status": "Up 54 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "mail-mcp",
+<<<<<<< Updated upstream
           "status": "Up 48 minutes",
+||||||| Stash base
+          "status": "Up 21 minutes",
+=======
+          "status": "Up 55 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "code-server",
+<<<<<<< Updated upstream
           "status": "Up 48 minutes",
+||||||| Stash base
+          "status": "Up 22 minutes",
+=======
+          "status": "Up 55 minutes",
+>>>>>>> Stashed changes
           "health": "none",
           "icon": "✅"
         },
         {
-          "name": "mattermost",
+<<<<<<< Updated upstream
+||||||| Stash base
+          "name": "surrealdb",
+          "status": "Up 11 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "windmill-server",
+          "status": "Up 11 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photos-webhook",
+          "status": "Up 11 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "windmill-db",
+          "status": "Up 11 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photos-db",
+          "status": "Up 11 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "nocodb",
+          "status": "Up 13 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "nocodb-db",
+          "status": "Up 13 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "lgtm_grafana",
+          "status": "Up 13 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "lgtm_loki",
+          "status": "Up 13 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_api",
+          "status": "Up 14 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_minio",
+          "status": "Up 14 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_db",
+          "status": "Up 14 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_redis",
+          "status": "Up 14 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "c3-services-mcp",
+          "status": "Up 14 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "c3-infra-mcp",
+          "status": "Up 15 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "c3-infra-api",
+          "status": "Up 15 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "syslog-central",
+          "status": "Up 16 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "rig-agentic-sonn-14bq8",
+          "status": "Up 17 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "rig-agentic-hai",
+          "status": "Up 17 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "ollama-hai",
+          "status": "Up 18 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "quant_light_research",
+          "status": "Up 19 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "quant_light_db",
+          "status": "Up 19 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "revealmd_app",
+          "status": "Up 19 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_mariadb",
+          "status": "Up 20 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "radicale",
+          "status": "Up 20 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+=======
+          "name": "windmill-server",
+          "status": "Up About a minute (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "windmill-db",
+          "status": "Up About a minute (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_app",
           "status": "Up 2 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
+          "name": "photoprism_mariadb",
+          "status": "Up 3 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_rclone",
+          "status": "Up 3 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+>>>>>>> Stashed changes
+          "name": "mattermost",
+<<<<<<< Updated upstream
+          "status": "Up 2 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 21 minutes (healthy)",
+=======
+          "status": "Up 9 minutes (healthy)",
+>>>>>>> Stashed changes
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
           "name": "mattermost-postgres",
+<<<<<<< Updated upstream
           "status": "Up 2 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
@@ -1088,48 +1514,227 @@
         {
           "name": "radicale",
           "status": "Up 47 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 21 minutes (healthy)",
+=======
+          "status": "Up 10 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
-          "name": "hedgedoc_app",
+          "name": "surrealdb",
+          "status": "Up 44 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photos-webhook",
+          "status": "Up 45 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photos-db",
+          "status": "Up 45 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "nocodb",
           "status": "Up 47 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
-          "name": "hedgedoc_postgres",
+          "name": "nocodb-db",
+          "status": "Up 47 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "lgtm_grafana",
+          "status": "Up 47 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "lgtm_loki",
+          "status": "Up 47 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_api",
           "status": "Up 48 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_minio",
+          "status": "Up 48 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_db",
+          "status": "Up 48 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "crawlee_redis",
+          "status": "Up 48 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "c3-services-mcp",
+          "status": "Up 48 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "c3-infra-mcp",
+          "status": "Up 49 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "c3-infra-api",
+          "status": "Up 49 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "syslog-central",
+          "status": "Up 50 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "rig-agentic-sonn-14bq8",
+          "status": "Up 51 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "rig-agentic-hai",
+          "status": "Up 51 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "ollama-hai",
+          "status": "Up 52 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "quant_light_research",
+          "status": "Up 52 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "quant_light_db",
+          "status": "Up 52 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "revealmd_app",
+          "status": "Up 53 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "radicale",
+          "status": "Up 54 minutes (healthy)",
+>>>>>>> Stashed changes
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "hedgedoc_app",
+<<<<<<< Updated upstream
+          "status": "Up 47 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 21 minutes (healthy)",
+=======
+          "status": "Up 55 minutes (healthy)",
+>>>>>>> Stashed changes
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "hedgedoc_postgres",
+<<<<<<< Updated upstream
+          "status": "Up 48 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 21 minutes (healthy)",
+=======
+          "status": "Up 55 minutes (healthy)",
+>>>>>>> Stashed changes
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "grist_app",
+<<<<<<< Updated upstream
           "status": "Up 48 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 21 minutes (healthy)",
+=======
+          "status": "Up 55 minutes (healthy)",
+>>>>>>> Stashed changes
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "google-workspace-mcp",
+<<<<<<< Updated upstream
           "status": "Up 48 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 22 minutes (healthy)",
+=======
+          "status": "Up 55 minutes (healthy)",
+>>>>>>> Stashed changes
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "etherpad_app",
+<<<<<<< Updated upstream
           "status": "Up 48 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 22 minutes (healthy)",
+=======
+          "status": "Up 55 minutes (healthy)",
+>>>>>>> Stashed changes
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "etherpad_postgres",
+<<<<<<< Updated upstream
           "status": "Up 48 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 22 minutes (healthy)",
+=======
+          "status": "Up 55 minutes (healthy)",
+>>>>>>> Stashed changes
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "filebrowser_app",
+<<<<<<< Updated upstream
           "status": "Up 49 minutes (healthy)",
+||||||| Stash base
+          "status": "Up 22 minutes (healthy)",
+=======
+          "status": "Up 56 minutes (healthy)",
+>>>>>>> Stashed changes
           "health": "healthy",
           "icon": "✅"
         }
