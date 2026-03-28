@@ -94,7 +94,7 @@ jobs:
             -e SSH_ALIAS='${{ matrix.vm }}' \
             -e SOPS_AGE_KEY='${{ secrets.SOPS_AGE_KEY }}' \
             -e GITHUB_ACTIONS=true \
-            -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            -e GITHUB_REPOSITORY="diegonmarcos/cloud" \
             -e GITHUB_SHA="${{ github.sha }}" \
             ghcr.io/diegonmarcos/cloud-builder-x86-nixos:latest \
             bash -c '

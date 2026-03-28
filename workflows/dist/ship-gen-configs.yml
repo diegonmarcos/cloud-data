@@ -36,7 +36,7 @@ jobs:
             -e CLOUD_DATA_DEPLOY_KEY='${{ secrets.CLOUD_DATA_DEPLOY_KEY }}' \
             -e GITHUB_TOKEN='${{ secrets.GITHUB_TOKEN }}' \
             -e GITHUB_ACTIONS=true \
-            -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+            -e GITHUB_REPOSITORY="diegonmarcos/cloud" \
             -e GITHUB_SHA="${{ github.sha }}" \
             -e GIT_AUTHOR_NAME="github-actions[bot]" \
             -e GIT_AUTHOR_EMAIL="github-actions[bot]@users.noreply.github.com" \
