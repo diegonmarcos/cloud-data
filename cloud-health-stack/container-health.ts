@@ -1,13 +1,32 @@
-#!/usr/bin/env npx tsx
+#!/usr/bin/env tsx
 /**
  * Container Health Reporter — Template-driven
  * Collects live data → container_health.json
  * Reads container_health.md.tpl → replaces $VARS → container_health.md
- * Usage: npx tsx container-health.ts
+ * Usage: ./container-health.ts   (or: tsx container-health.ts)
+ *
+ * Dependencies: node ≥18, tsx, ssh, curl, nc, dig, git, gh
  */
 import { execSync } from "child_process";
 import { writeFileSync, readFileSync, existsSync } from "fs";
 import { join } from "path";
+
+// ── Dependency solver ───────────────────────────────────────
+const REQUIRED_DEPS = ["ssh", "curl", "nc", "dig", "git", "gh"];
+const depStatus: { name: string; path: string; ok: boolean }[] = [];
+for (const dep of REQUIRED_DEPS) {
+  try {
+    const p = execSync(`command -v ${dep} 2>/dev/null`, { encoding: "utf-8" }).trim();
+    depStatus.push({ name: dep, path: p, ok: true });
+  } catch {
+    depStatus.push({ name: dep, path: "", ok: false });
+  }
+}
+const missingDeps = depStatus.filter(d => !d.ok);
+if (missingDeps.length > 0) {
+  console.error(`⚠️  Missing dependencies: ${missingDeps.map(d => d.name).join(", ")}`);
+  console.error("   Some checks will be skipped. Install missing tools to get full results.");
+}
 
 const HOME = process.env.HOME || "/home/diego";
 const SCRIPT_DIR = __dirname;
@@ -426,27 +445,47 @@ const vars: Record<string, string> = {
     lines.push(`  ${port25 ? "✅" : "❌"} oci-mail:25          ${port25 ? "SMTP open" : "SMTP closed"} (Stalwart local delivery)`);
     lines.push("");
 
-    // OUTBOUND: Stalwart → direct SMTP from oci-mail public IP
-    lines.push("  OUTBOUND (Stalwart → direct SMTP)");
+    // OUTBOUND PERSONAL: Stalwart → direct SMTP from oci-mail
+    lines.push("  OUTBOUND PERSONAL (Stalwart → direct SMTP)");
     lines.push("  ─────────────────────────────────────────────");
     lines.push(`  📤 Relay:              Stalwart → ${ociMailIp}:465/587 → recipient MX`);
     const stalwartCt = data.vms.find((v: VmData) => v.alias === "oci-mail")
       ?.containers.find((c: Container) => c.name === "stalwart");
     const stalwartIcon = stalwartCt?.health !== "exited" && stalwartCt ? "✅" : "❌";
     lines.push(`  ${stalwartIcon} stalwart             ${stalwartCt?.status || "not found"} (oci-mail MTA)`);
-    // Test: outbound ports from gcp-proxy L4 passthrough
     const port465 = tcpCheck("smtp.diegonmarcos.com", 465);
     const port587 = tcpCheck("smtp.diegonmarcos.com", 587);
     lines.push(`  ${port465 ? "✅" : "❌"} smtp:465 (SMTPS)     ${port465 ? "open" : "closed"}`);
     lines.push(`  ${port587 ? "✅" : "❌"} smtp:587 (Submission) ${port587 ? "open" : "closed"}`);
-    // Test: reverse DNS / SPF hint
     lines.push(`  📋 SPF/DKIM/DMARC     via Cloudflare DNS (diegonmarcos.com)`);
+    lines.push("");
+
+    // OUTBOUND TRANSACTIONAL: Resend API (SES)
+    // Parse from topology.providers.resend or terraform.json
+    const resendTf = topology.providers?.resend;
+    const resendDomain = "mails.diegonmarcos.com";
+    const resendRegion = "us-east-1";
+    lines.push("  OUTBOUND TRANSACTIONAL (Resend API → SES)");
+    lines.push("  ─────────────────────────────────────────────");
+    lines.push(`  📤 Provider:           Resend (Amazon SES ${resendRegion})`);
+    lines.push(`     Domain:             ${resendDomain}`);
+    lines.push(`     Terraform:          ~/git/cloud/${resendTf?.folder || "b_infra/vps_resend"}/src/main.tf`);
+    // Test: Resend API reachability
+    const resendApi = run("curl -sko /dev/null -w '%{http_code}' https://api.resend.com/domains 2>/dev/null");
+    lines.push(`  ${resendApi === "401" || resendApi === "200" ? "✅" : "❌"} api.resend.com        [${resendApi || "---"}] (401=needs key, 200=authed)`);
+    // Test: DNS for mails.diegonmarcos.com
+    const resendMx = run("dig +short MX send.mails.diegonmarcos.com 2>/dev/null");
+    lines.push(`  ${resendMx ? "✅" : "❌"} MX send.mails         ${resendMx || "no MX record"}`);
+    const resendSpf = run("dig +short TXT send.mails.diegonmarcos.com 2>/dev/null");
+    lines.push(`  ${resendSpf?.includes("spf") ? "✅" : "❌"} SPF send.mails        ${resendSpf?.substring(0, 50) || "no SPF record"}`);
+    const resendDkim = run("dig +short TXT resend._domainkey.mails.diegonmarcos.com 2>/dev/null");
+    lines.push(`  ${resendDkim ? "✅" : "❌"} DKIM resend._dk       ${resendDkim ? "present" : "no DKIM record"}`);
 
     return lines.join("\n");
   })(),
 
   PRIVATE_DNS: data.private_dns.map((d: any) =>
-    `${d.open ? "✅" : "❌"} ${d.dns.padEnd(28)} ${(d.container + ":" + d.port).padEnd(25)} ${d.vm}`
+    `${d.open ? "✅" : "❌"} ${d.dns.padEnd(28)} ${(d.container + ":" + d.port).padEnd(25)} ${String(d.port).padEnd(7)} ${d.vm}`
   ).join("\n"),
 
   VM_CONTAINERS: data.vms.map((vm: VmData) => {
@@ -616,7 +655,16 @@ const vars: Record<string, string> = {
   VAULT_PROVIDERS: (() => {
     const vp = run(`ls -1 ${HOME}/Mounts/Git/vault/A0_keys/providers/ 2>/dev/null`);
     if (!vp) return "  (not available)";
-    return vp.split("\n").filter(Boolean).map(p => `  🔑 ${p}`).join("\n");
+    const providers = vp.split("\n").filter(Boolean);
+    // Side-by-side layout (3 columns)
+    const cols = 3;
+    const colWidth = 22;
+    const lines: string[] = [];
+    for (let i = 0; i < providers.length; i += cols) {
+      const row = providers.slice(i, i + cols).map(p => `🔑 ${p}`.padEnd(colWidth)).join(" ");
+      lines.push(`  ${row}`);
+    }
+    return lines.join("\n");
   })(),
 
   OPEN_PORTS: (() => {
@@ -669,6 +717,28 @@ const vars: Record<string, string> = {
     for (const [net, info] of [...networks.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
       const vmAlias = Object.entries(hmData.vms ?? {}).find(([, v]: [string, any]) => v.vm_id === info.vm)?.[0] || info.vm;
       lines.push(`    ${net.padEnd(28)} ${vmAlias.padEnd(16)} ${info.services.join(", ")}`);
+    }
+    return lines.join("\n");
+  })(),
+
+  SCRIPT_INFO: (() => {
+    const lines: string[] = [];
+    lines.push(`  Script:    cloud-data/cloud-health-stack/container-health.ts`);
+    lines.push(`  Run:       ./container-health.ts  (or: tsx container-health.ts)`);
+    lines.push(`  Node:      ${process.version}`);
+    lines.push(`  Platform:  ${process.platform} ${process.arch}`);
+    lines.push(`  CWD:       ${SCRIPT_DIR}`);
+    lines.push(`  Template:  container_health.md.tpl (21 vars)`);
+    lines.push(`  Data src:  ${CD}/`);
+    lines.push("");
+    lines.push("  Dependencies:");
+    for (const d of depStatus) {
+      lines.push(`    ${d.ok ? "✅" : "❌"} ${d.name.padEnd(10)} ${d.path || "NOT FOUND"}`);
+    }
+    lines.push("");
+    lines.push(`  Errors:    ${ERRORS.length}`);
+    if (ERRORS.length > 0) {
+      for (const e of ERRORS) lines.push(`    ${e}`);
     }
     return lines.join("\n");
   })(),

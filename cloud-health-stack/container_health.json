@@ -1,36 +1,36 @@
 {
-  "generated": "2026-03-28T12:42:48.811Z",
+  "generated": "2026-03-28T13:09:39.790Z",
   "wg_peers": [
     {
-      "name": "oci-apps",
-      "pubIp": "82.70.229.129",
-      "privIp": "10.0.0.6",
-      "handshake": "8 seconds ago",
-      "transfer": "42.66 KiB received, 26.47 KiB sent",
+      "name": "oci-analytics",
+      "pubIp": "129.151.228.66",
+      "privIp": "10.0.0.4",
+      "handshake": "1 minute, 1 second ago",
+      "transfer": "237.09 KiB received, 9.41 KiB sent",
       "alive": true
     },
     {
       "name": "oci-mail",
       "pubIp": "130.110.251.193",
       "privIp": "10.0.0.3",
-      "handshake": "20 seconds ago",
-      "transfer": "10.86 KiB received, 10.37 KiB sent",
+      "handshake": "1 minute, 14 seconds ago",
+      "transfer": "6.93 KiB received, 8.06 KiB sent",
       "alive": true
     },
     {
       "name": "10.0.0.5",
       "pubIp": "88.30.43.183",
       "privIp": "10.0.0.5",
-      "handshake": "31 seconds ago",
-      "transfer": "38.63 KiB received, 43.81 KiB sent",
+      "handshake": "1 minute, 37 seconds ago",
+      "transfer": "11.95 KiB received, 9.61 KiB sent",
       "alive": true
     },
     {
-      "name": "oci-analytics",
-      "pubIp": "129.151.228.66",
-      "privIp": "10.0.0.4",
-      "handshake": "2 minutes ago",
-      "transfer": "11.31 KiB received, 10.40 KiB sent",
+      "name": "oci-apps",
+      "pubIp": "82.70.229.129",
+      "privIp": "10.0.0.6",
+      "handshake": "12 minutes, 21 seconds ago",
+      "transfer": "7.63 KiB received, 22.86 KiB sent",
       "alive": true
     },
     {
@@ -38,7 +38,7 @@
       "pubIp": "34.173.227.250",
       "privIp": "10.0.0.8",
       "handshake": "never",
-      "transfer": "0 B received, 17.49 KiB sent",
+      "transfer": "0 B received, 22.98 KiB sent",
       "alive": false
     },
     {
@@ -55,207 +55,207 @@
       "url": "mcp.diegonmarcos.com/g-workspace/mcp",
       "upstream": "g-workspace-mcp.app:3104",
       "name": "g-workspace",
-      "http_code": "",
+      "http_code": "502",
       "up": false
     },
     {
       "url": "mcp.diegonmarcos.com/mail-mcp/mcp",
       "upstream": "mail-mcp.app:3103",
       "name": "mail-mcp",
-      "http_code": "",
+      "http_code": "502",
       "up": false
     },
     {
       "url": "mcp.diegonmarcos.com/mattermost-mcp/mcp",
       "upstream": "mattermost-mcp.app:3102",
       "name": "mattermost-mcp",
-      "http_code": "",
+      "http_code": "502",
       "up": false
     },
     {
       "url": "mcp.diegonmarcos.com/c3-infra-mcp/mcp",
       "upstream": "c3-infra-mcp.app:3100",
       "name": "c3-infra-mcp",
-      "http_code": "",
+      "http_code": "502",
       "up": false
     },
     {
       "url": "mcp.diegonmarcos.com/c3-services-mcp/mcp",
       "upstream": "c3-services-mcp.app:3101",
       "name": "c3-services-mcp",
-      "http_code": "",
+      "http_code": "502",
       "up": false
     },
     {
       "url": "mcp.diegonmarcos.com/cloud-cgc-mcp/mcp",
       "upstream": "cloud-cgc-mcp.app:3105",
       "name": "cloud-cgc-mcp",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     }
   ],
   "public_urls": [
     {
       "url": "ide.diegonmarcos.com",
       "upstream": "code-server.app:8443",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "sheets.diegonmarcos.com",
       "upstream": "grist.app:3011",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "chat.diegonmarcos.com",
       "upstream": "mattermost.app:8065",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "photos.diegonmarcos.com",
       "upstream": "photoprism.app:3013",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "cal.diegonmarcos.com",
       "upstream": "radicale.app:5232",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "webmail.diegonmarcos.com",
       "upstream": "snappymail.app:8888",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "mail.diegonmarcos.com",
       "upstream": "stalwart.app:443",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "vault.diegonmarcos.com",
       "upstream": "vaultwarden.app:8880",
-      "http_code": "",
-      "up": false
+      "http_code": "404",
+      "up": true
     },
     {
       "url": "api.diegonmarcos.com",
       "upstream": "crawlee.app:3000",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "auth.diegonmarcos.com",
       "upstream": "authelia.app:9091",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "workflows.diegonmarcos.com",
       "upstream": "dagu.app:8070",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "grafana.diegonmarcos.com",
       "upstream": "grafana.app:3200",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "analytics.diegonmarcos.com",
       "upstream": "matomo.app:8080",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "db.diegonmarcos.com",
       "upstream": "nocodb.app:8085",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "rss.diegonmarcos.com",
       "upstream": "ntfy.app:8090",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "windmill.diegonmarcos.com",
       "upstream": "windmill-app.app:8000",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "git.diegonmarcos.com",
       "upstream": "backup-gitea.app:3002",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "app.diegonmarcos.com",
       "upstream": "path-based",
-      "http_code": "",
-      "up": false
+      "http_code": "404",
+      "up": true
     },
     {
       "url": "cloud.diegonmarcos.com",
       "upstream": "path-based",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "mcp.diegonmarcos.com",
       "upstream": "MCP hub",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "proxy.diegonmarcos.com",
       "upstream": "Infrastructure dashboard (static HTML)",
-      "http_code": "",
-      "up": false
+      "http_code": "302",
+      "up": true
     },
     {
       "url": "diegonmarcos.com",
       "upstream": "github-pages:landpage",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "www.diegonmarcos.com",
       "upstream": "github-pages:landpage",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "linktree.diegonmarcos.com",
       "upstream": "github-pages:linktree",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "nexus.diegonmarcos.com",
       "upstream": "github-pages:nexus",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "suite.diegonmarcos.com",
       "upstream": "github-pages:suite",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     },
     {
       "url": "maps.diegonmarcos.com",
       "upstream": "github-pages:mymaps",
-      "http_code": "",
-      "up": false
+      "http_code": "200",
+      "up": true
     }
   ],
   "mail_ports": [
@@ -263,37 +263,37 @@
       "host": "mail.diegonmarcos.com",
       "port": 993,
       "proto": "IMAPS",
-      "open": false
+      "open": true
     },
     {
       "host": "imap.diegonmarcos.com",
       "port": 993,
       "proto": "IMAPS",
-      "open": false
+      "open": true
     },
     {
       "host": "mail.diegonmarcos.com",
       "port": 465,
       "proto": "SMTPS",
-      "open": false
+      "open": true
     },
     {
       "host": "smtp.diegonmarcos.com",
       "port": 465,
       "proto": "SMTPS",
-      "open": false
+      "open": true
     },
     {
       "host": "mail.diegonmarcos.com",
       "port": 587,
       "proto": "Submission",
-      "open": false
+      "open": true
     },
     {
       "host": "smtp.diegonmarcos.com",
       "port": 587,
       "proto": "Submission",
-      "open": false
+      "open": true
     }
   ],
   "private_dns": [
@@ -654,15 +654,15 @@
       "os": "oci-mail",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "684M",
+      "mem_used": "683M",
       "mem_total": "954M",
       "mem_pct": 71,
       "swap": "170M/2559M",
       "disk_used": "28G",
       "disk_total": "45G",
       "disk_pct": "67%",
-      "load": "0.28 0.98 1.56",
-      "uptime": "up 9 hours, 15 minutes",
+      "load": "0.12 0.22 0.44",
+      "uptime": "up 9 hours, 42 minutes",
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
@@ -692,7 +692,7 @@
         },
         {
           "name": "fluent-bit",
-          "status": "Up 9 hours",
+          "status": "Up 10 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -722,15 +722,15 @@
       "os": "oci-analytics",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "702M",
+      "mem_used": "716M",
       "mem_total": "954M",
-      "mem_pct": 73,
-      "swap": "265M/2559M",
+      "mem_pct": 75,
+      "swap": "249M/2559M",
       "disk_used": "25G",
       "disk_total": "48G",
       "disk_pct": "56%",
-      "load": "1.37 1.75 1.95",
-      "uptime": "up 8 hours, 40 minutes",
+      "load": "0.41 0.49 0.75",
+      "uptime": "up 9 hours, 7 minutes",
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
@@ -742,25 +742,25 @@
         },
         {
           "name": "sauron-forwarder",
-          "status": "Up 8 hours",
+          "status": "Up 9 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "matomo-hybrid",
-          "status": "Up 8 hours",
+          "status": "Up 9 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "fluent-bit",
-          "status": "Up 8 hours",
+          "status": "Up 9 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "dozzle",
-          "status": "Up 8 hours",
+          "status": "Up 9 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -790,33 +790,33 @@
       "os": "oci-apps",
       "cpus": 4,
       "ram": "24G",
-      "mem_used": "4679M",
+      "mem_used": "4596M",
       "mem_total": "23975M",
       "mem_pct": 19,
       "swap": "0M/0M",
       "disk_used": "57.5G",
       "disk_total": "95.8G",
       "disk_pct": "63%",
-      "load": "0.17 0.27 0.27",
+      "load": "0.36 0.45 0.43",
       "uptime": "up 0d 18h",
       "containers_running": 48,
       "containers_total": 53,
       "containers": [
         {
           "name": "windmill-server",
-          "status": "Exited (137) 6 hours ago",
+          "status": "Exited (137) 7 hours ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "syslog-central",
-          "status": "Exited (2) 6 hours ago",
+          "status": "Exited (2) 7 hours ago",
           "health": "exited",
           "icon": "❌"
         },
         {
           "name": "crawlee_minio_init",
-          "status": "Exited (0) 6 hours ago",
+          "status": "Exited (0) 7 hours ago",
           "health": "exited",
           "icon": "❌"
         },
@@ -834,67 +834,67 @@
         },
         {
           "name": "gitea",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "bup-server",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "borg-server",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "windmill-worker",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "lgtm_tempo",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "lgtm_mimir",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "cloud-spec",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "siem-api",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_runner",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_dashboard",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "crawlee_scheduler",
-          "status": "Up 6 hours",
+          "status": "Up 7 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -918,7 +918,7 @@
         },
         {
           "name": "code-server",
-          "status": "Up 8 hours",
+          "status": "Up 9 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -936,91 +936,91 @@
         },
         {
           "name": "surrealdb",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "windmill-db",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "nocodb",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "nocodb-db",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "lgtm_grafana",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "lgtm_loki",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-services-mcp",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-mcp",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-api",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "photos-webhook",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "photos-db",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "crawlee_api",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "crawlee_minio",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "crawlee_db",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "crawlee_redis",
-          "status": "Up 6 hours (healthy)",
+          "status": "Up 7 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -1147,18 +1147,133 @@
       "os": "gcp-proxy",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "719M",
+      "mem_used": "978M",
       "mem_total": "1952M",
-      "mem_pct": 36,
-      "swap": "24M/3999M",
+      "mem_pct": 50,
+      "swap": "42M/3999M",
       "disk_used": "16G",
       "disk_total": "31G",
       "disk_pct": "51%",
-      "load": "1.68 1.81 2.18",
-      "uptime": "up 9 hours, 41 minutes",
-      "containers_running": 0,
-      "containers_total": 0,
-      "containers": [],
+      "load": "1.37 2.73 2.33",
+      "uptime": "up 18 minutes",
+      "containers_running": 17,
+      "containers_total": 19,
+      "containers": [
+        {
+          "name": "vaultwarden",
+          "status": "Exited (1) 6 minutes ago",
+          "health": "exited",
+          "icon": "❌"
+        },
+        {
+          "name": "redis",
+          "status": "Exited (1) 7 minutes ago",
+          "health": "exited",
+          "icon": "❌"
+        },
+        {
+          "name": "caddy",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "hickory-dns",
+          "status": "Up 8 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "fluent-bit",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-ntfy",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-vaultwarden",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-vaultwarden",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-ntfy",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-npm",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-authelia",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "sqlite-npm",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "postlite-authelia",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "authelia-redis",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "syslog-bridge",
+          "status": "Up 7 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "github-rss",
+          "status": "Up 7 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "ntfy",
+          "status": "Up 8 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "introspect-proxy",
+          "status": "Up 9 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "authelia",
+          "status": "Up 9 minutes (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        }
+      ],
       "reachable": true
     }
   ],

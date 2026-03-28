@@ -6,7 +6,7 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-03-28  12:42:48
+         CONTAINER HEALTH — 2026-03-28  13:01:46
 ════════════════════════════════════════════════════════════
 
 
@@ -14,83 +14,60 @@
   A) HEALTH — Live checks
 ══════════════════════════════════════════════════════════════
 
+── A1) URLs & Endpoints ──────────────────────────────────────
+
+PUBLIC URLs
+────────────────────────────────────────────────────────────
+❌ ide.diegonmarcos.com                → code-server.app:8443   [502]
+❌ sheets.diegonmarcos.com             → grist.app:3011         [502]
+❌ chat.diegonmarcos.com               → mattermost.app:8065    [502]
+❌ photos.diegonmarcos.com             → photoprism.app:3013    [---]
+❌ cal.diegonmarcos.com                → radicale.app:5232      [502]
+✅ webmail.diegonmarcos.com            → snappymail.app:8888    [200]
+✅ mail.diegonmarcos.com               → stalwart.app:443       [200]
+❌ vault.diegonmarcos.com              → vaultwarden.app:8880   [502]
+✅ api.diegonmarcos.com                → crawlee.app:3000       [200]
+❌ auth.diegonmarcos.com               → authelia.app:9091      [502]
+❌ workflows.diegonmarcos.com          → dagu.app:8070          [502]
+✅ grafana.diegonmarcos.com            → grafana.app:3200       [200]
+❌ analytics.diegonmarcos.com          → matomo.app:8080        [502]
+❌ db.diegonmarcos.com                 → nocodb.app:8085        [502]
+❌ rss.diegonmarcos.com                → ntfy.app:8090          [502]
+✅ windmill.diegonmarcos.com           → windmill-app.app:8000  [200]
+✅ git.diegonmarcos.com                → backup-gitea.app:3002  [200]
+✅ app.diegonmarcos.com                → path-based             [404]
+✅ cloud.diegonmarcos.com              → path-based             [200]
+✅ mcp.diegonmarcos.com                → MCP hub                [200]
+❌ proxy.diegonmarcos.com              → Infrastructure dashboard (static HTML) [502]
+✅ diegonmarcos.com                    → github-pages:landpage  [200]
+✅ www.diegonmarcos.com                → github-pages:landpage  [200]
+✅ linktree.diegonmarcos.com           → github-pages:linktree  [200]
+✅ nexus.diegonmarcos.com              → github-pages:nexus     [200]
+✅ suite.diegonmarcos.com              → github-pages:suite     [200]
+✅ maps.diegonmarcos.com               → github-pages:mymaps    [200]
+
+API / MCP ENDPOINTS
+────────────────────────────────────────────────────────────
+❌ g-workspace            https://mcp.diegonmarcos.com/g-workspace/mcp          [502]
+❌ mail-mcp               https://mcp.diegonmarcos.com/mail-mcp/mcp             [502]
+❌ mattermost-mcp         https://mcp.diegonmarcos.com/mattermost-mcp/mcp       [502]
+❌ c3-infra-mcp           https://mcp.diegonmarcos.com/c3-infra-mcp/mcp         [502]
+❌ c3-services-mcp        https://mcp.diegonmarcos.com/c3-services-mcp/mcp      [502]
+✅ cloud-cgc-mcp          https://mcp.diegonmarcos.com/cloud-cgc-mcp/mcp        [200]
+
+── A2) Containers & VMs ──────────────────────────────────────
+
 WIREGUARD MESH (hub: gcp-proxy 10.0.0.1 — front door)
 ────────────────────────────────────────────────────────────
     Name               Public IP          WG IP          Type     Handshake
 ────────────────────────────────────────────────────────────
-✅ oci-mail           130.110.251.193    10.0.0.3       VM       20 seconds ago
-✅ oci-analytics      129.151.228.66     10.0.0.4       VM       2 minutes ago
-✅ oci-apps           82.70.229.129      10.0.0.6       VM       8 seconds ago
-❌ gcp-t4             34.173.227.250     10.0.0.8       VM       never
+❌ oci-mail           130.110.251.193    10.0.0.3       VM       no data
+❌ oci-analytics      129.151.228.66     10.0.0.4       VM       no data
+❌ oci-apps           82.70.229.129      10.0.0.6       VM       no data
+❌ gcp-t4             34.173.227.250     10.0.0.8       VM       no data
 ❌ gcp-proxy          35.226.147.64      10.0.0.1       HUB      no data
-✅ surface            dynamic            10.0.0.5       CLIENT   31 seconds ago
-❌ termux             dynamic            10.0.0.9       CLIENT   never
-
-PUBLIC URLs
-────────────────────────────────────────────────────────────
-❌ ide.diegonmarcos.com                → code-server.app:8443   [---]
-❌ sheets.diegonmarcos.com             → grist.app:3011         [---]
-❌ chat.diegonmarcos.com               → mattermost.app:8065    [---]
-❌ photos.diegonmarcos.com             → photoprism.app:3013    [---]
-❌ cal.diegonmarcos.com                → radicale.app:5232      [---]
-❌ webmail.diegonmarcos.com            → snappymail.app:8888    [---]
-❌ mail.diegonmarcos.com               → stalwart.app:443       [---]
-❌ vault.diegonmarcos.com              → vaultwarden.app:8880   [---]
-❌ api.diegonmarcos.com                → crawlee.app:3000       [---]
-❌ auth.diegonmarcos.com               → authelia.app:9091      [---]
-❌ workflows.diegonmarcos.com          → dagu.app:8070          [---]
-❌ grafana.diegonmarcos.com            → grafana.app:3200       [---]
-❌ analytics.diegonmarcos.com          → matomo.app:8080        [---]
-❌ db.diegonmarcos.com                 → nocodb.app:8085        [---]
-❌ rss.diegonmarcos.com                → ntfy.app:8090          [---]
-❌ windmill.diegonmarcos.com           → windmill-app.app:8000  [---]
-❌ git.diegonmarcos.com                → backup-gitea.app:3002  [---]
-❌ app.diegonmarcos.com                → path-based             [---]
-❌ cloud.diegonmarcos.com              → path-based             [---]
-❌ mcp.diegonmarcos.com                → MCP hub                [---]
-❌ proxy.diegonmarcos.com              → Infrastructure dashboard (static HTML) [---]
-❌ diegonmarcos.com                    → github-pages:landpage  [---]
-❌ www.diegonmarcos.com                → github-pages:landpage  [---]
-❌ linktree.diegonmarcos.com           → github-pages:linktree  [---]
-❌ nexus.diegonmarcos.com              → github-pages:nexus     [---]
-❌ suite.diegonmarcos.com              → github-pages:suite     [---]
-❌ maps.diegonmarcos.com               → github-pages:mymaps    [---]
-
-API / MCP ENDPOINTS
-────────────────────────────────────────────────────────────
-❌ g-workspace            https://mcp.diegonmarcos.com/g-workspace/mcp          [---]
-❌ mail-mcp               https://mcp.diegonmarcos.com/mail-mcp/mcp             [---]
-❌ mattermost-mcp         https://mcp.diegonmarcos.com/mattermost-mcp/mcp       [---]
-❌ c3-infra-mcp           https://mcp.diegonmarcos.com/c3-infra-mcp/mcp         [---]
-❌ c3-services-mcp        https://mcp.diegonmarcos.com/c3-services-mcp/mcp      [---]
-❌ cloud-cgc-mcp          https://mcp.diegonmarcos.com/cloud-cgc-mcp/mcp        [---]
-
-MAIL PORTS
-────────────────────────────────────────────────────────────
-❌ mail.diegonmarcos.com        :993   IMAPS           down
-❌ imap.diegonmarcos.com        :993   IMAPS           down
-❌ mail.diegonmarcos.com        :465   SMTPS           down
-❌ smtp.diegonmarcos.com        :465   SMTPS           down
-❌ mail.diegonmarcos.com        :587   Submission      down
-❌ smtp.diegonmarcos.com        :587   Submission      down
-
-MAIL FLOW — Inbound Worker / Outbound Relay
-────────────────────────────────────────────────────────────
-  INBOUND (Cloudflare Email Routing → Stalwart)
-  ─────────────────────────────────────────────
-  📨 Cloudflare Worker   Cloudflare Email Worker - routes inbound email (me@diegonmarcos.com) to Mailu via SMTP proxy
-     Route:              *@diegonmarcos.com → CF Worker → smtp-proxy:8080 → Stalwart
-  ✅ smtp-proxy           Up 9 hours (oci-mail:8080)
-  ✅ oci-mail:8080        reachable (CF Worker ingress)
-  ✅ oci-mail:25          SMTP open (Stalwart local delivery)
-
-  OUTBOUND (Stalwart → direct SMTP)
-  ─────────────────────────────────────────────
-  📤 Relay:              Stalwart → 130.110.251.193:465/587 → recipient MX
-  ✅ stalwart             Up 6 hours (oci-mail MTA)
-  ❌ smtp:465 (SMTPS)     closed
-  ❌ smtp:587 (Submission) closed
-  📋 SPF/DKIM/DMARC     via Cloudflare DNS (diegonmarcos.com)
+❌ surface            dynamic            10.0.0.5       CLIENT   no data
+❌ termux             dynamic            10.0.0.9       CLIENT   no data
 
 PRIVATE DNS (WireGuard mesh)
 ────────────────────────────────────────────────────────────
@@ -145,67 +122,67 @@ PRIVATE DNS (WireGuard mesh)
 ❌ umami-db.app                 umami-db:5442             oci-E2-f_1
 ❌ umami.app                    umami:3006                oci-E2-f_1
 
-oci-mail ✅ — oci-mail — 1C/1G — mem 684M/954M (71%) — disk 67% — swap 170M/2559M — load 0.28 0.98 1.56 — 7/8 ctrs — up 9 hours, 15 minutes
+oci-mail ✅ — oci-mail — 1C/1G — mem 675M/954M (70%) — disk 67% — swap 170M/2559M — load 0.04 0.14 0.54 — 7/8 ctrs — up 9 hours, 34 minutes
 ────────────────────────────────────────────────────────────
   ❌ caddy                     EXITED(0)      Exited (0) 6 hours ago
   ✅ stalwart                  UP             Up 6 hours
   ✅ smtp-proxy                UP             Up 9 hours
   ✅ dagu                      UP             Up 9 hours
-  ✅ fluent-bit                UP             Up 9 hours
+  ✅ fluent-bit                UP             Up 10 hours
   ✅ snappymail                HEALTHY        Up 8 hours (healthy)
   ✅ introspect-proxy          HEALTHY        Up 9 hours (healthy)
   ✅ syslog-forwarder          HEALTHY        Up 9 hours (healthy)
 
-oci-analytics ✅ — oci-analytics — 1C/1G — mem 702M/954M (73%) — disk 56% — swap 265M/2559M — load 1.37 1.75 1.95 — 7/8 ctrs — up 8 hours, 40 minutes
+oci-analytics ✅ — oci-analytics — 1C/1G — mem 724M/954M (75%) — disk 56% — swap 249M/2559M — load 0.35 0.47 0.90 — 7/8 ctrs — up 9 hours, 0 minutes
 ────────────────────────────────────────────────────────────
   ❌ umami-setup               EXITED(1)      Exited (1) 7 hours ago
-  ✅ sauron-forwarder          UP             Up 8 hours
-  ✅ matomo-hybrid             UP             Up 8 hours
-  ✅ fluent-bit                UP             Up 8 hours
-  ✅ dozzle                    UP             Up 8 hours
+  ✅ sauron-forwarder          UP             Up 9 hours
+  ✅ matomo-hybrid             UP             Up 9 hours
+  ✅ fluent-bit                UP             Up 9 hours
+  ✅ dozzle                    UP             Up 9 hours
   ✅ alerts-api                HEALTHY        Up 7 hours (healthy)
   ✅ umami                     HEALTHY        Up 7 hours (healthy)
   ✅ umami-db                  HEALTHY        Up 7 hours (healthy)
 
-oci-apps ✅ — oci-apps — 4C/24G — mem 4679M/23975M (19%) — disk 63% — swap 0M/0M — load 0.17 0.27 0.27 — 48/53 ctrs — up 0d 18h
+oci-apps ✅ — oci-apps — 4C/24G — mem 4683M/23975M (19%) — disk 63% — swap 0M/0M — load 0.72 0.57 0.41 — 48/53 ctrs — up 0d 18h
 ────────────────────────────────────────────────────────────
-  ❌ windmill-server           EXITED(137)    Exited (137) 6 hours ago
-  ❌ syslog-central            EXITED(2)      Exited (2) 6 hours ago
-  ❌ crawlee_minio_init        EXITED(0)      Exited (0) 6 hours ago
+  ❌ windmill-server           EXITED(137)    Exited (137) 7 hours ago
+  ❌ syslog-central            EXITED(2)      Exited (2) 7 hours ago
+  ❌ crawlee_minio_init        EXITED(0)      Exited (0) 7 hours ago
   ❌ photoprism_rclone         EXITED(1)      Exited (1) 7 hours ago
   ❌ mattermost-bots           EXITED(1)      Exited (1) 7 hours ago
-  ✅ gitea                     UP             Up 6 hours
-  ✅ bup-server                UP             Up 6 hours
-  ✅ borg-server               UP             Up 6 hours
-  ✅ windmill-worker           UP             Up 6 hours
-  ✅ lgtm_tempo                UP             Up 6 hours
-  ✅ lgtm_mimir                UP             Up 6 hours
-  ✅ cloud-spec                UP             Up 6 hours
-  ✅ siem-api                  UP             Up 6 hours
-  ✅ crawlee_runner            UP             Up 6 hours
-  ✅ crawlee_dashboard         UP             Up 6 hours
-  ✅ crawlee_scheduler         UP             Up 6 hours
+  ✅ gitea                     UP             Up 7 hours
+  ✅ bup-server                UP             Up 7 hours
+  ✅ borg-server               UP             Up 7 hours
+  ✅ windmill-worker           UP             Up 7 hours
+  ✅ lgtm_tempo                UP             Up 7 hours
+  ✅ lgtm_mimir                UP             Up 7 hours
+  ✅ cloud-spec                UP             Up 7 hours
+  ✅ siem-api                  UP             Up 7 hours
+  ✅ crawlee_runner            UP             Up 7 hours
+  ✅ crawlee_dashboard         UP             Up 7 hours
+  ✅ crawlee_scheduler         UP             Up 7 hours
   ✅ quant_light_engine        UP             Up 7 hours
   ✅ mattermost-mcp            UP             Up 7 hours
   ✅ mail-mcp                  UP             Up 7 hours
-  ✅ code-server               UP             Up 8 hours
+  ✅ code-server               UP             Up 9 hours
   ✅ rig-agentic-sonn-14bq8    HEALTHY        Up 6 hours (healthy)
   ✅ rig-agentic-hai           HEALTHY        Up 6 hours (healthy)
-  ✅ surrealdb                 HEALTHY        Up 6 hours (healthy)
-  ✅ windmill-db               HEALTHY        Up 6 hours (healthy)
-  ✅ nocodb                    HEALTHY        Up 6 hours (healthy)
-  ✅ nocodb-db                 HEALTHY        Up 6 hours (healthy)
-  ✅ lgtm_grafana              HEALTHY        Up 6 hours (healthy)
-  ✅ lgtm_loki                 HEALTHY        Up 6 hours (healthy)
-  ✅ c3-services-mcp           HEALTHY        Up 6 hours (healthy)
-  ✅ c3-infra-mcp              HEALTHY        Up 6 hours (healthy)
-  ✅ c3-infra-api              HEALTHY        Up 6 hours (healthy)
-  ✅ photos-webhook            HEALTHY        Up 6 hours (healthy)
-  ✅ photos-db                 HEALTHY        Up 6 hours (healthy)
-  ✅ crawlee_api               HEALTHY        Up 6 hours (healthy)
-  ✅ crawlee_minio             HEALTHY        Up 6 hours (healthy)
-  ✅ crawlee_db                HEALTHY        Up 6 hours (healthy)
-  ✅ crawlee_redis             HEALTHY        Up 6 hours (healthy)
+  ✅ surrealdb                 HEALTHY        Up 7 hours (healthy)
+  ✅ windmill-db               HEALTHY        Up 7 hours (healthy)
+  ✅ nocodb                    HEALTHY        Up 7 hours (healthy)
+  ✅ nocodb-db                 HEALTHY        Up 7 hours (healthy)
+  ✅ lgtm_grafana              HEALTHY        Up 7 hours (healthy)
+  ✅ lgtm_loki                 HEALTHY        Up 7 hours (healthy)
+  ✅ c3-services-mcp           HEALTHY        Up 7 hours (healthy)
+  ✅ c3-infra-mcp              HEALTHY        Up 7 hours (healthy)
+  ✅ c3-infra-api              HEALTHY        Up 7 hours (healthy)
+  ✅ photos-webhook            HEALTHY        Up 7 hours (healthy)
+  ✅ photos-db                 HEALTHY        Up 7 hours (healthy)
+  ✅ crawlee_api               HEALTHY        Up 7 hours (healthy)
+  ✅ crawlee_minio             HEALTHY        Up 7 hours (healthy)
+  ✅ crawlee_db                HEALTHY        Up 7 hours (healthy)
+  ✅ crawlee_redis             HEALTHY        Up 7 hours (healthy)
   ✅ ollama-hai                HEALTHY        Up 7 hours (healthy)
   ✅ quant_light_research      HEALTHY        Up 7 hours (healthy)
   ✅ quant_light_db            HEALTHY        Up 7 hours (healthy)
@@ -226,53 +203,72 @@ oci-apps ✅ — oci-apps — 4C/24G — mem 4679M/23975M (19%) — disk 63% —
 gcp-t4 ❌ — gcp-t4 — 4C/15G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
 ────────────────────────────────────────────────────────────
 
-gcp-proxy ✅ — gcp-proxy — 1C/1G — mem 719M/1952M (36%) — disk 51% — swap 24M/3999M — load 1.68 1.81 2.18 — 0/0 ctrs — up 9 hours, 41 minutes
+gcp-proxy ✅ — gcp-proxy — 1C/1G — mem 896M/1952M (45%) — disk ? — swap 33M/3999M — load ? — 18/19 ctrs — up 11 minutes
 ────────────────────────────────────────────────────────────
+  ❌ redis                     EXITED(1)      Exited (1) 10 seconds ago
+  ⚠️ vaultwarden               STARTING       Up 2 seconds (health: starting
+  ✅ caddy                     UP             Up 2 minutes
+  ✅ hickory-dns               UP             Up About a minute
+  ✅ fluent-bit                UP             Up 2 minutes
+  ✅ sqlite-ntfy               UP             Up 2 minutes
+  ✅ postlite-vaultwarden      UP             Up 2 minutes
+  ✅ sqlite-vaultwarden        UP             Up 2 minutes
+  ✅ postlite-ntfy             UP             Up 2 minutes
+  ✅ postlite-npm              UP             Up 2 minutes
+  ✅ sqlite-authelia           UP             Up 2 minutes
+  ✅ sqlite-npm                UP             Up 2 minutes
+  ✅ postlite-authelia         UP             Up 2 minutes
+  ✅ authelia-redis            UP             Up 2 minutes
+  ✅ syslog-bridge             UP             Up 57 seconds
+  ✅ github-rss                UP             Up 55 seconds
+  ✅ ntfy                      UP             Up About a minute
+  ✅ introspect-proxy          HEALTHY        Up 2 minutes (healthy)
+  ✅ authelia                  HEALTHY        Up 2 minutes (healthy)
 
+
+── A3) Mail ──────────────────────────────────────────────────
+
+MAIL PORTS
+────────────────────────────────────────────────────────────
+⚠️ mail.diegonmarcos.com        :993   IMAPS           tcp open
+⚠️ imap.diegonmarcos.com        :993   IMAPS           tcp open
+⚠️ mail.diegonmarcos.com        :465   SMTPS           tcp open
+⚠️ smtp.diegonmarcos.com        :465   SMTPS           tcp open
+⚠️ mail.diegonmarcos.com        :587   Submission      tcp open
+⚠️ smtp.diegonmarcos.com        :587   Submission      tcp open
+
+MAIL FLOW — Inbound Worker / Outbound Relay
+────────────────────────────────────────────────────────────
+  INBOUND (Cloudflare Email Routing → Stalwart)
+  ─────────────────────────────────────────────
+  📨 Cloudflare Worker   Cloudflare Email Worker - routes inbound email (me@diegonmarcos.com) to Mailu via SMTP proxy
+     Route:              *@diegonmarcos.com → CF Worker → smtp-proxy:8080 → Stalwart
+  ✅ smtp-proxy           Up 9 hours (oci-mail:8080)
+  ✅ oci-mail:8080        reachable (CF Worker ingress)
+  ✅ oci-mail:25          SMTP open (Stalwart local delivery)
+
+  OUTBOUND PERSONAL (Stalwart → direct SMTP)
+  ─────────────────────────────────────────────
+  📤 Relay:              Stalwart → 130.110.251.193:465/587 → recipient MX
+  ✅ stalwart             Up 6 hours (oci-mail MTA)
+  ✅ smtp:465 (SMTPS)     open
+  ✅ smtp:587 (Submission) open
+  📋 SPF/DKIM/DMARC     via Cloudflare DNS (diegonmarcos.com)
+
+  OUTBOUND TRANSACTIONAL (Resend API → SES)
+  ─────────────────────────────────────────────
+  📤 Provider:           Resend (Amazon SES us-east-1)
+     Domain:             mails.diegonmarcos.com
+     Terraform:          ~/git/cloud/b_infra/vps_resend/src/main.tf
+  ✅ api.resend.com        [401] (401=needs key, 200=authed)
+  ✅ MX send.mails         10 feedback-smtp.us-east-1.amazonses.com.
+  ✅ SPF send.mails        "v=spf1 include:amazonses.com ~all"
+  ✅ DKIM resend._dk       present
 
 
 ══════════════════════════════════════════════════════════════
   B) INFRA — Resources & Stack
 ══════════════════════════════════════════════════════════════
-
-RESOURCES
-────────────────────────────────────────────────────────────
-                   oci-mail       oci-analytics  oci-apps       gcp-t4         gcp-proxy     
-────────────────────────────────────────────────────────────
-OS                 oci-mail       oci-analytics  oci-apps       gcp-t4         gcp-proxy     
-CPU                1 cores        1 cores        4 cores        4 cores        1 cores       
-RAM                684M/954M      702M/954M      4679M/23975M   ?/?            719M/1952M    
-RAM %              71%            73%            19%            0%             36%           
-Swap               170M/2559M     265M/2559M     0M/0M          ?              24M/3999M     
-Disk               28G/45G        25G/48G        57.5G/95.8G    ?/?            16G/31G       
-Disk %             67%            56%            63%            ?              51%           
-Load               0.28 0.98 1.56 1.37 1.75 1.95 0.17 0.27 0.27 ?              1.68 1.81 2.18
-Containers         7/8            7/8            48/53          0/0            0/0           
-Uptime             9 hours, 15 minutes 8 hours, 40 minutes 0d 18h         ?              9 hours, 41 minutes
-
-
-══════════════════════════════════════════════════════════════
-  C) SECURITY
-══════════════════════════════════════════════════════════════
-
-OPEN PORTS by Public IP
-────────────────────────────────────────────────────────────
-🔓 oci-mail           130.110.251.193    ports: 22, 25, 465, 587, 993, 8080
-🔓 oci-analytics      129.151.228.66     ports: 22
-🔓 oci-apps           82.70.229.129      ports: 22
-🔒 gcp-t4             34.173.227.250     ports: none reachable
-🔓 gcp-proxy          35.226.147.64      ports: 22, 80, 443, 465, 587, 993, 2200
-
-
-
-GIT REPOSITORIES
-────────────────────────────────────────────────────────────
-⚠️ cloud          main     374a3120 fix: health bugs + HM GHA packages:write + der
-⚠️ cloud-data     main     975df8a fix: regenerate cloud-data with correct oci-app
-✅ front          main     2df5bc69 add(task): Garmin fenix 8 custom watchface des
-⚠️ unix           main     22e6ce5 feat: SSH stale socket cleaner — systemd user t
-⚠️ tools          main     fc21dbb fix: L letter foot extended to 7-wide
-⚠️ vault          main     ab6f5f0 chore: update vaultwarden setup.ts + tokens
 
 VPS / VM SPECS
 ────────────────────────────────────────────────────────────
@@ -286,6 +282,44 @@ VPS / VM SPECS
    vast-RTX-p_0     Vast.ai    ?                    ?      ?G     ?G       Spot
    github-actions   GitHub     ubuntu-latest        4      16G    14G      2000min/mo
    ghcr.io          GitHub     Container Registry   -      -      ∞        Free (public)
+
+RESOURCES (live)
+────────────────────────────────────────────────────────────
+                   oci-mail       oci-analytics  oci-apps       gcp-t4         gcp-proxy     
+────────────────────────────────────────────────────────────
+OS                 oci-mail       oci-analytics  oci-apps       gcp-t4         gcp-proxy     
+CPU                1 cores        1 cores        4 cores        4 cores        1 cores       
+RAM                675M/954M      724M/954M      4683M/23975M   ?/?            896M/1952M    
+RAM %              70%            75%            19%            0%             45%           
+Swap               170M/2559M     249M/2559M     0M/0M          ?              33M/3999M     
+Disk               28G/45G        25G/48G        57.5G/95.8G    ?/?            ?/?           
+Disk %             67%            56%            63%            ?              ?             
+Load               0.04 0.14 0.54 0.35 0.47 0.90 0.72 0.57 0.41 ?              ?             
+Containers         7/8            7/8            48/53          0/0            18/19         
+Uptime             9 hours, 34 minutes 9 hours, 0 minutes 0d 18h         ?              11 minutes    
+
+GIT REPOSITORIES
+────────────────────────────────────────────────────────────
+⚠️ cloud          main     fb7697c2 fix: HM remote build — create nix-build symlin
+⚠️ cloud-data     main     0076661 feat: template-driven health reporter + mail fl
+✅ front          main     2df5bc69 add(task): Garmin fenix 8 custom watchface des
+⚠️ unix           main     22e6ce5 feat: SSH stale socket cleaner — systemd user t
+⚠️ tools          main     fc21dbb fix: L letter foot extended to 7-wide
+⚠️ vault          main     ab6f5f0 chore: update vaultwarden setup.ts + tokens
+
+GITHUB / GHCR
+────────────────────────────────────────────────────────────
+  👤 User:       diegonmarcos
+  🔗 Registry:   ghcr.io/diegonmarcos/
+  📦 Repos:      github.com/diegonmarcos/
+
+  📦 GHCR Total:  84 (84 public, 0 private)
+
+  Repo                         Public     Private    Total
+  ──────────────────────────────────────────────────────────
+  cloud                        74         0          74
+  cloud-data                   8          0          8
+  unix                         2          0          2
 
 FRAMEWORK — Key Paths
 ────────────────────────────────────────────────────────────
@@ -358,19 +392,18 @@ VAULT — CLI Access Providers
   🔑 vaultwarden
   🔑 wireguard
 
-GITHUB / GHCR
+
+══════════════════════════════════════════════════════════════
+  C) SECURITY
+══════════════════════════════════════════════════════════════
+
+OPEN PORTS by Public IP
 ────────────────────────────────────────────────────────────
-  👤 User:       diegonmarcos
-  🔗 Registry:   ghcr.io/diegonmarcos/
-  📦 Repos:      github.com/diegonmarcos/
-
-  📦 GHCR Total:  84 (84 public, 0 private)
-
-  Repo                         Public     Private    Total
-  ──────────────────────────────────────────────────────────
-  cloud                        74         0          74
-  cloud-data                   8          0          8
-  unix                         2          0          2
+🔓 oci-mail           130.110.251.193    ports: 22, 25, 465, 587, 993, 8080
+🔓 oci-analytics      129.151.228.66     ports: 22
+🔓 oci-apps           82.70.229.129      ports: 22
+🔒 gcp-t4             34.173.227.250     ports: none reachable
+🔓 gcp-proxy          35.226.147.64      ports: 22, 80, 443, 465, 587, 993, 2200
 
 BACKUPS / DATABASES
 ────────────────────────────────────────────────────────────
@@ -402,16 +435,16 @@ DOCKER NETWORKS
 
 PERFORMANCE
 ────────────────────────────────────────────────────────────
-  vm_gcp-proxy         17.1s ██
+  vm_gcp-proxy         71.6s ███████
+  public_urls          34.7s ███
   vm_gcp-t4             8.0s █
-  public_urls           5.8s █
-  vm_oci-analytics      5.7s █
-  vm_oci-mail           5.0s █
-  vm_oci-apps           4.7s █
-  mail_ports            1.2s 
-  api_mcp               1.1s 
+  api_mcp               5.5s █
+  vm_oci-apps           5.1s 
+  vm_oci-mail           5.1s 
+  vm_oci-analytics      4.7s 
+  mail_ports            1.1s 
   private_dns           0.0s 
-  TOTAL               221.4s
+  TOTAL               326.7s
 
 ────────────────────────────────────────────────────────────
 Generated by: cloud-data/cloud-health-stack/container-health.ts
