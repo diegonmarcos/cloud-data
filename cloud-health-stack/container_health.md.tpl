@@ -24,6 +24,10 @@ API / MCP ENDPOINTS
 ────────────────────────────────────────────────────────────
 $API_MCP_ENDPOINTS
 
+REPOS & REGISTRIES
+────────────────────────────────────────────────────────────
+$REPOS_REGISTRIES
+
 ── A2) Containers & VMs ──────────────────────────────────────
 
 WIREGUARD MESH (hub: gcp-proxy $HUB_WG_IP — front door)
@@ -75,15 +79,7 @@ $RESOURCES_HEADER
 ────────────────────────────────────────────────────────────
 $RESOURCES_TABLE
 
-GIT REPOSITORIES
-────────────────────────────────────────────────────────────
-$GIT_REPOS
-
-GITHUB / GHCR
-────────────────────────────────────────────────────────────
-$GITHUB_GHCR
-
-STORAGE — Object Storage / Files / Databases
+STORAGE
 ────────────────────────────────────────────────────────────
 $STORAGE
 

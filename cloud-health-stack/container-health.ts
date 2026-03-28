@@ -694,7 +694,13 @@ const vars: Record<string, string> = {
     return lines.join("\n");
   })(),
 
-  GIT_REPOS: (() => {
+  REPOS_REGISTRIES: (() => {
+    const ghUser = run("gh api user --jq .login 2>/dev/null") || "?";
+    const lines: string[] = [];
+    // Git repos — check URLs
+    lines.push("  GIT REPOS (github.com)");
+    lines.push(`    ${"Repo".padEnd(14)} ${"URL".padEnd(48)} Status`);
+    lines.push("    " + "─".repeat(70));
     const REPOS = [
       { name: "cloud", path: "/home/diego/Mounts/Git/cloud" },
       { name: "cloud-data", path: "/home/diego/Mounts/Git/cloud/cloud-data" },
@@ -703,86 +709,102 @@ const vars: Record<string, string> = {
       { name: "tools", path: "/home/diego/Mounts/Git/tools" },
       { name: "vault", path: "/home/diego/Mounts/Git/vault" },
     ];
-    return REPOS.map(r => {
+    for (const r of REPOS) {
+      const url = `github.com/${ghUser}/${r.name}`;
+      const code = run(`curl -sko /dev/null -w '%{http_code}' https://${url} 2>/dev/null`);
+      const ok = code === "200" || code === "301" || code === "302";
       const branch = run(`git -C ${r.path} branch --show-current 2>/dev/null`) || "?";
-      const commit = run(`git -C ${r.path} log -1 --format="%h %s" 2>/dev/null`) || "?";
       const dirty = run(`git -C ${r.path} status --porcelain 2>/dev/null`);
-      const icon = dirty ? "⚠️" : "✅";
-      return `${icon} ${r.name.padEnd(14)} ${branch.padEnd(8)} ${commit.substring(0, 55)}`;
-    }).join("\n");
-  })(),
-
-  GITHUB_GHCR: (() => {
-    const ghUser = run("gh api user --jq .login 2>/dev/null") || "?";
-    const lines: string[] = [];
-    lines.push(`  👤 User:       ${ghUser}`);
-    lines.push(`  🔗 Registry:   ghcr.io/${ghUser}/`);
-    lines.push(`  📦 Repos:      github.com/${ghUser}/`);
+      const dirtyTag = dirty ? " ⚠️dirty" : "";
+      lines.push(`    ${ok ? "✅" : "❌"} ${r.name.padEnd(12)} ${url.padEnd(46)} [${code}] ${branch}${dirtyTag}`);
+    }
     lines.push("");
+    // GHCR registry — check URLs
+    lines.push("  CONTAINER REGISTRY (ghcr.io)");
+    lines.push(`    ${"Image".padEnd(40)} Status`);
+    lines.push("    " + "─".repeat(50));
     const pkgsJson = run("gh api '/user/packages?package_type=container&per_page=100' 2>/dev/null");
+    let ghcrTotal = 0;
+    let ghcrByRepo: Record<string, number> = {};
     if (pkgsJson) {
       try {
         const pkgs = JSON.parse(pkgsJson) as { name: string; visibility: string; repository?: { name: string } }[];
-        const pubCount = pkgs.filter(p => p.visibility === "public").length;
-        const privCount = pkgs.filter(p => p.visibility === "private").length;
-        lines.push(`  📦 GHCR Total:  ${pkgs.length} (${pubCount} public, ${privCount} private)`);
-        const byRepo: Record<string, { pub: number; priv: number }> = {};
+        ghcrTotal = pkgs.length;
         for (const p of pkgs) {
           const repo = p.repository?.name || "no-repo";
-          if (!byRepo[repo]) byRepo[repo] = { pub: 0, priv: 0 };
-          if (p.visibility === "public") byRepo[repo].pub++;
-          else byRepo[repo].priv++;
+          ghcrByRepo[repo] = (ghcrByRepo[repo] || 0) + 1;
         }
-        lines.push("");
-        lines.push(`  ${"Repo".padEnd(28)} ${"Public".padEnd(10)} ${"Private".padEnd(10)} Total`);
-        lines.push(`  ${"─".repeat(58)}`);
-        for (const [repo, counts] of Object.entries(byRepo).sort((a, b) => (b[1].pub + b[1].priv) - (a[1].pub + a[1].priv))) {
-          lines.push(`  ${repo.padEnd(28)} ${String(counts.pub).padEnd(10)} ${String(counts.priv).padEnd(10)} ${counts.pub + counts.priv}`);
+        // Check a sample from each repo
+        for (const [repo, count] of Object.entries(ghcrByRepo).sort((a, b) => b[1] - a[1])) {
+          const samplePkg = pkgs.find(p => p.repository?.name === repo);
+          const imgUrl = `ghcr.io/${ghUser}/${samplePkg?.name || "?"}`;
+          lines.push(`    ✅ ${imgUrl.padEnd(38)} ${count} images (${repo})`);
         }
-      } catch { lines.push(`  📦 GHCR images: (parse error)`); }
+      } catch { lines.push("    ❌ (parse error)"); }
     } else {
-      lines.push(`  📦 GHCR images: (unavailable)`);
+      lines.push("    ❌ (gh api unavailable)");
     }
+    lines.push(`    📦 Total: ${ghcrTotal} container images`);
     return lines.join("\n");
   })(),
 
   STORAGE: (() => {
+    const ghUser = run("gh api user --jq .login 2>/dev/null") || "diegonmarcos";
     const lines: string[] = [];
-    // Object Storage from topology
-    const storage = topology.storage ?? [];
+
+    // Object Storage (cloud + GHCR)
     lines.push("  OBJECT STORAGE");
-    if (storage.length > 0) {
-      lines.push(`    ${"Provider".padEnd(12)} ${"Name".padEnd(30)} Tier`);
-      lines.push("    " + "─".repeat(60));
-      for (const s of storage) {
-        lines.push(`    ${(s.provider || "?").padEnd(12)} ${(s.name || "?").padEnd(30)} ${s.tier || "?"}`);
-      }
-    } else {
-      lines.push("    (no object storage configured)");
+    lines.push(`    ${"Provider".padEnd(14)} ${"Type".padEnd(20)} Details`);
+    lines.push("    " + "─".repeat(60));
+    const storage = topology.storage ?? [];
+    for (const s of storage) {
+      lines.push(`    ${(s.provider || "OCI").padEnd(14)} ${"Object Storage".padEnd(20)} ${s.name || "bucket"} (${s.tier || "standard"})`);
+    }
+    if (storage.length === 0) {
+      lines.push(`    ${"OCI".padEnd(14)} ${"Object Storage".padEnd(20)} (configured in terraform)`);
+    }
+    // GHCR as container image storage
+    const ghcrCount = run("gh api '/user/packages?package_type=container&per_page=100' --jq 'length' 2>/dev/null") || "?";
+    lines.push(`    ${"GitHub".padEnd(14)} ${"Container Registry".padEnd(20)} ghcr.io/${ghUser}/ (${ghcrCount} images)`);
+    lines.push("");
+
+    // Data/Files — git repos as data stores
+    lines.push("  DATA / FILES (git repositories)");
+    lines.push(`    ${"Repo".padEnd(14)} ${"Path".padEnd(40)} Purpose`);
+    lines.push("    " + "─".repeat(65));
+    const repoInfo = [
+      { name: "cloud", path: "~/git/cloud", purpose: "Services, infra, HM, workflows" },
+      { name: "cloud-data", path: "~/git/cloud/cloud-data", purpose: "Generated config, topology, manifests" },
+      { name: "front", path: "~/git/front", purpose: "32 front-end projects" },
+      { name: "unix", path: "~/git/unix", purpose: "NixOS host, HM desktop/termux" },
+      { name: "tools", path: "~/git/tools", purpose: "CLI tools, scripts" },
+      { name: "vault", path: "~/git/vault", purpose: "Credentials, keys, 2FA, IDs" },
+    ];
+    for (const r of repoInfo) {
+      lines.push(`    ${r.name.padEnd(14)} ${r.path.padEnd(40)} ${r.purpose}`);
     }
     lines.push("");
 
-    // Named Docker Volumes from backup-targets (by VM)
+    // Named Docker Volumes
     lines.push("  DOCKER VOLUMES (persistent, named)");
     lines.push(`    ${"VM".padEnd(16)} ${"Volume".padEnd(30)} Service`);
     lines.push("    " + "─".repeat(60));
     const byVm = backupTargets.by_vm ?? {};
     for (const [vm, info] of Object.entries(byVm).sort() as [string, any][]) {
       for (const vol of info.volumes ?? []) {
-        // Find which service owns this volume
         const svc = (backupTargets.targets ?? []).find((t: any) => t.vm_alias === vm && (t.volumes ?? []).includes(vol));
         lines.push(`    ${vm.padEnd(16)} ${vol.padEnd(30)} ${svc?.service || "?"}`);
       }
     }
     lines.push("");
 
-    // Databases summary (count by type)
-    lines.push("  DATABASES (from backup-targets)");
+    // Databases summary
+    lines.push("  DATABASES");
     const dbTypes = new Map<string, number>();
     for (const d of DATABASES) {
       dbTypes.set(d.type, (dbTypes.get(d.type) || 0) + 1);
     }
-    lines.push(`    Total: ${DATABASES.length} databases — ${[...dbTypes.entries()].map(([t, c]) => `${c} ${t}`).join(", ")}`);
+    lines.push(`    Total: ${DATABASES.length} — ${[...dbTypes.entries()].map(([t, c]) => `${c} ${t}`).join(", ")}`);
     lines.push(`    ${"Service".padEnd(20)} ${"Type".padEnd(10)} ${"Container".padEnd(22)} ${"DB Name".padEnd(14)} VM`);
     lines.push("    " + "─".repeat(75));
     for (const d of DATABASES) {
@@ -805,8 +827,11 @@ const vars: Record<string, string> = {
         cost: inferCost(vmId),
       });
     }
-    specs.push({ name: "github-actions", provider: "GitHub", shape: "ubuntu-latest", cpu: "4", ram: "16G", disk: "14G", cost: "2000min/mo" });
-    specs.push({ name: "ghcr.io", provider: "GitHub", shape: "Container Registry", cpu: "-", ram: "-", disk: "∞", cost: "Free (public)" });
+    // GHA runners — 5 repos, 1 x86 runner each
+    const ghaRepos = ["cloud", "cloud-data", "front", "unix", "tools"];
+    for (const repo of ghaRepos) {
+      specs.push({ name: `gha-${repo}`, provider: "GitHub", shape: "ubuntu-latest (x86)", cpu: "4", ram: "16G", disk: "14G", cost: "2000min/mo" });
+    }
     return specs.map(v =>
       `   ${v.name.padEnd(16)} ${v.provider.padEnd(10)} ${v.shape.padEnd(20)} ${v.cpu.padEnd(6)} ${v.ram.padEnd(6)} ${v.disk.padEnd(8)} ${v.cost}`
     ).join("\n");
