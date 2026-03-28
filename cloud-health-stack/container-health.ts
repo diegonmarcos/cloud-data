@@ -11,14 +11,14 @@ import { writeFileSync, readFileSync } from "fs";
 import { join } from "path";
 
 import { SCRIPT_DIR, CD, log, logErr, ERRORS, loadJson } from "./lib/config.js";
-import { run, sshCmd, tcpCheck, timed, collectVm, type VmData } from "./lib/collectors.js";
+import { run, sshCmd, tcpCheck, timed, timedAsync, collectVm, type VmData } from "./lib/collectors.js";
 import { parseVms, parsePublicUrls, parseMcpApiEndpoints, parseMailPorts, parsePrivateDns, parseDatabases } from "./lib/parsers.js";
 import type { VarContext } from "./lib/types.js";
 import { varsHealth } from "./lib/vars-health.js";
 import { varsContainers } from "./lib/vars-containers.js";
 import { varsMail } from "./lib/vars-mail.js";
 import { varsInfra } from "./lib/vars-infra.js";
-import { varsSecurity } from "./lib/vars-security.js";
+import { varsSecurity, scanOpenPorts } from "./lib/vars-security.js";
 import { varsStack } from "./lib/vars-stack.js";
 import { varsAppendix, buildIssuesSummary } from "./lib/vars-appendix.js";
 
@@ -102,43 +102,53 @@ catch (e: any) { logErr(`Failed to read template: ${e.message}`); process.exit(1
 const hubVm = VMS.find(v => v.alias === "gcp-proxy");
 const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData, backupTargets, VMS, PRIVATE_DNS, DATABASES };
 
-// Build all vars from modules
-const vars: Record<string, string> = {
-  GENERATED_DATE: `${data.generated.split("T")[0]}  ${data.generated.split("T")[1]?.split(".")[0] || ""}`,
-  HUB_WG_IP: hubVm?.ip || "?",
-  ...varsHealth(ctx),
-  ...varsContainers(ctx),
-  ...varsMail(ctx),
-  ...varsInfra(ctx),
-  ...varsSecurity(ctx),
-  ...varsStack(ctx),
-  ...varsAppendix(ctx, TOTAL_START),
-};
+// Build vars — port scan runs in parallel (async)
+(async () => {
+  // Launch parallel port scan FIRST (takes longest, runs while other vars compute)
+  log("Launching parallel port scan...");
+  const portScanPromise = timedAsync("open_ports", () => scanOpenPorts(VMS));
 
-// Issues summary (must be last — scans all collected data)
-vars.ISSUES_SUMMARY = buildIssuesSummary(ctx);
+  // Build sync vars while port scan runs
+  const vars: Record<string, string> = {
+    GENERATED_DATE: `${data.generated.split("T")[0]}  ${data.generated.split("T")[1]?.split(".")[0] || ""}`,
+    HUB_WG_IP: hubVm?.ip || "?",
+    ...varsHealth(ctx),
+    ...varsContainers(ctx),
+    ...varsMail(ctx),
+    ...varsInfra(ctx),
+    ...varsStack(ctx),
+    ...varsAppendix(ctx, TOTAL_START),
+  };
 
-// Replace all $VARS in template
-log("Replacing template variables...");
-for (const [key, value] of Object.entries(vars)) {
-  if (template.includes(`$${key}`)) {
-    template = template.replace(`$${key}`, value);
-    log(`  $${key} → ${value.split("\n").length} lines`);
-  } else {
-    logErr(`Template variable $${key} NOT FOUND in template!`);
+  // Wait for parallel port scan to finish
+  const openPortsResult = await portScanPromise;
+  Object.assign(vars, varsSecurity(ctx, openPortsResult));
+
+  // Issues summary (must be last — scans all collected data)
+  vars.ISSUES_SUMMARY = buildIssuesSummary(ctx);
+
+  // Replace all $VARS in template
+  log("Replacing template variables...");
+  for (const [key, value] of Object.entries(vars)) {
+    if (template.includes(`$${key}`)) {
+      template = template.replace(`$${key}`, value);
+      log(`  $${key} → ${value.split("\n").length} lines`);
+    } else {
+      logErr(`Template variable $${key} NOT FOUND in template!`);
+    }
   }
-}
-const unreplaced = template.match(/\$[A-Z_]+/g)?.filter(v => !v.startsWith("$POSTGRES") && !v.startsWith("${"));
-if (unreplaced?.length) logErr(`Unreplaced template vars: ${unreplaced.join(", ")}`);
+  const unreplaced = template.match(/\$[A-Z_]+/g)?.filter(v => !v.startsWith("$POSTGRES") && !v.startsWith("${"));
+  if (unreplaced?.length) logErr(`Unreplaced template vars: ${unreplaced.join(", ")}`);
 
-writeFileSync(`${SCRIPT_DIR}/container_health.md`, template);
-log("Wrote container_health.md");
+  writeFileSync(`${SCRIPT_DIR}/container_health.md`, template);
+  log("Wrote container_health.md");
 
-// ── Summary ──────────────────────────────────────────────────
-const totalMs = Date.now() - TOTAL_START;
-log(`═══ DONE in ${(totalMs / 1000).toFixed(1)}s ═══`);
-if (ERRORS.length > 0) {
-  console.error(`\n⚠️  ${ERRORS.length} ERRORS during run:`);
-  for (const e of ERRORS) console.error(`  ${e}`);
-}
-console.log(`→ container_health.json + container_health.md (template-driven, ${ERRORS.length} errors)`);
+  // ── Summary ──────────────────────────────────────────────────
+  const totalMs = Date.now() - TOTAL_START;
+  log(`═══ DONE in ${(totalMs / 1000).toFixed(1)}s ═══`);
+  if (ERRORS.length > 0) {
+    console.error(`\n⚠️  ${ERRORS.length} ERRORS during run:`);
+    for (const e of ERRORS) console.error(`  ${e}`);
+  }
+  console.log(`→ container_health.json + container_health.md (template-driven, ${ERRORS.length} errors)`);
+})();

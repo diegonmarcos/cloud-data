@@ -1,29 +1,39 @@
 /**
  * vars-security.ts — C: OPEN_PORTS, DATABASES, DOCKER_NETWORKS, VAULT_PROVIDERS
+ * OPEN_PORTS uses async parallel port scanning for speed
  */
-import { run, tcpCheck, setTcpLogVerbose } from "./collectors.js";
+import { run, tcpCheck, tcpScanParallel, setTcpLogVerbose } from "./collectors.js";
 import { HOME, log } from "./config.js";
 import type { VarContext } from "./types.js";
 
-export function varsSecurity(ctx: VarContext): Record<string, string> {
+/**
+ * Async: parallel port scan across all VMs (biggest perf win)
+ * Must be called separately and result passed into varsSecurity
+ */
+export async function scanOpenPorts(VMS: VarContext["VMS"]): Promise<string> {
+  log("Scanning open ports (parallel — all VMs × 14 ports)...");
+  const ips = VMS.filter(v => v.pubIp).map(v => ({ name: v.alias, ip: v.pubIp }));
+  const ports = [22, 25, 80, 443, 465, 587, 993, 2200, 4190, 5000, 8080, 8443, 8888, 51820];
+
+  // Scan ALL VMs in parallel (each VM scans all ports in parallel)
+  const scanResults = await Promise.all(
+    ips.map(async (vm) => {
+      const open = await tcpScanParallel(vm.ip, ports);
+      log(`  ${vm.name}: ${open.length > 0 ? open.join(", ") : "none"}`);
+      return { name: vm.name, ip: vm.ip, open };
+    })
+  );
+
+  return scanResults.map(r =>
+    `${r.open.length > 0 ? "🔓" : "🔒"} ${r.name.padEnd(18)} ${r.ip.padEnd(18)} ports: ${r.open.length > 0 ? r.open.join(", ") : "none reachable"}`
+  ).join("\n");
+}
+
+export function varsSecurity(ctx: VarContext, openPortsResult: string): Record<string, string> {
   const { topology, hmData, VMS, DATABASES } = ctx;
 
   return {
-    OPEN_PORTS: (() => {
-      log("Scanning open ports (verbose tcp logging suppressed)...");
-      setTcpLogVerbose(false);
-      const lines: string[] = [];
-      const ips = VMS.filter(v => v.pubIp).map(v => ({ name: v.alias, ip: v.pubIp }));
-      const ports = [22, 25, 80, 443, 465, 587, 993, 2200, 4190, 5000, 8080, 8443, 8888, 51820];
-      for (const vm of ips) {
-        const open: number[] = [];
-        for (const port of ports) { if (tcpCheck(vm.ip, port)) open.push(port); }
-        lines.push(`${open.length > 0 ? "🔓" : "🔒"} ${vm.name.padEnd(18)} ${vm.ip.padEnd(18)} ports: ${open.length > 0 ? open.join(", ") : "none reachable"}`);
-        log(`  ${vm.name}: ${open.length > 0 ? open.join(", ") : "none"}`);
-      }
-      setTcpLogVerbose(true);
-      return lines.join("\n");
-    })(),
+    OPEN_PORTS: openPortsResult,
 
     DATABASES: (() => {
       const lines: string[] = [];

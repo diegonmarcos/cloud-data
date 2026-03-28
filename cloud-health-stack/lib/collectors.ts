@@ -1,7 +1,8 @@
 /**
  * collectors.ts — Shell commands, SSH, TCP checks, VM data collection
+ * Supports both sync and async parallel execution with SSH mutex
  */
-import { execSync } from "child_process";
+import { execSync, exec } from "child_process";
 import { existsSync } from "fs";
 import { join } from "path";
 import { HOME, log, logErr } from "./config.js";
@@ -14,6 +15,7 @@ try {
   }
 } catch {}
 
+// ── Sync execution ─────────────────────────────────────────
 export function run(cmd: string, timeout = 10000): string {
   try { return execSync(cmd, { timeout, encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] }).trim(); }
   catch (e: any) {
@@ -25,6 +27,16 @@ export function run(cmd: string, timeout = 10000): string {
   }
 }
 
+// ── Async execution ────────────────────────────────────────
+export function runAsync(cmd: string, timeout = 10000): Promise<string> {
+  return new Promise((resolve) => {
+    const child = exec(cmd, { timeout, encoding: "utf-8" }, (err, stdout) => {
+      resolve(stdout?.trim() || "");
+    });
+  });
+}
+
+// ── SSH ────────────────────────────────────────────────────
 export function sshCmd(vm: string, cmd: string): string {
   const b64 = Buffer.from(cmd).toString("base64");
   const result = run(`ssh -o ConnectTimeout=8 -o ControlPath=none -o BatchMode=yes ${vm} "echo ${b64} | base64 -d | sh"`, 20000);
@@ -34,12 +46,51 @@ export function sshCmd(vm: string, cmd: string): string {
   return result;
 }
 
+// ── TCP checks (sync + async) ──────────────────────────────
 export let tcpLogVerbose = true;
 export function setTcpLogVerbose(v: boolean) { tcpLogVerbose = v; }
+
 export function tcpCheck(host: string, port: number): boolean {
   const ok = run(`nc -zw3 ${host} ${port} 2>&1 && echo OK`).includes("OK");
   if (!ok && tcpLogVerbose) log(`tcp-check FAIL: ${host}:${port}`);
   return ok;
+}
+
+export function tcpCheckAsync(host: string, port: number): Promise<boolean> {
+  return runAsync(`nc -zw3 ${host} ${port} 2>&1 && echo OK`, 5000).then(r => r.includes("OK"));
+}
+
+/**
+ * Parallel port scan — check multiple ports on one host concurrently
+ * Returns array of open port numbers
+ */
+export async function tcpScanParallel(host: string, ports: number[]): Promise<number[]> {
+  const results = await Promise.all(
+    ports.map(async (port) => ({ port, open: await tcpCheckAsync(host, port) }))
+  );
+  return results.filter(r => r.open).map(r => r.port);
+}
+
+/**
+ * Parallel URL checks — curl multiple URLs concurrently
+ * Batched to avoid overwhelming the system (max concurrency)
+ */
+export async function curlCheckParallel(
+  urls: { url: string; upstream: string }[],
+  maxConcurrency = 10
+): Promise<{ url: string; upstream: string; http_code: string; up: boolean }[]> {
+  const results: { url: string; upstream: string; http_code: string; up: boolean }[] = [];
+  for (let i = 0; i < urls.length; i += maxConcurrency) {
+    const batch = urls.slice(i, i + maxConcurrency);
+    const batchResults = await Promise.all(
+      batch.map(async (u) => {
+        const code = await runAsync(`curl -sko /dev/null -w '%{http_code}' https://${u.url} 2>/dev/null`);
+        return { ...u, http_code: code, up: code !== "" && code !== "000" && code !== "502" };
+      })
+    );
+    results.push(...batchResults);
+  }
+  return results;
 }
 
 // ── Types ─────────────────────────────────────────────────────
@@ -101,6 +152,12 @@ export const timers: { name: string; ms: number }[] = [];
 export function timed<T>(name: string, fn: () => T): T {
   const start = Date.now();
   const result = fn();
+  timers.push({ name, ms: Date.now() - start });
+  return result;
+}
+export async function timedAsync<T>(name: string, fn: () => Promise<T>): Promise<T> {
+  const start = Date.now();
+  const result = await fn();
   timers.push({ name, ms: Date.now() - start });
   return result;
 }
