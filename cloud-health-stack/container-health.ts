@@ -1066,6 +1066,68 @@ const vars: Record<string, string> = {
   })(),
 };
 
+// Build ISSUES_SUMMARY from all collected data (must be after all vars)
+vars.ISSUES_SUMMARY = (() => {
+  const issues: { severity: string; section: string; msg: string }[] = [];
+
+  // VMs unreachable
+  for (const vm of data.vms) {
+    if (!vm.reachable) issues.push({ severity: "❌", section: "A2", msg: `VM ${vm.alias} — UNREACHABLE` });
+  }
+
+  // Containers down
+  for (const vm of data.vms) {
+    for (const c of vm.containers) {
+      if (c.health === "exited" || c.health === "unhealthy") {
+        const code = c.status.match(/Exited \((\d+)\)/)?.[1];
+        issues.push({ severity: c.health === "unhealthy" ? "⚠️" : "❌", section: "A2", msg: `${vm.alias}/${c.name} — ${c.health}${code ? `(${code})` : ""}` });
+      }
+    }
+  }
+
+  // Public URLs down
+  for (const u of data.public_urls) {
+    if (!u.up) issues.push({ severity: "❌", section: "A1", msg: `${u.url} — [${u.http_code || "---"}]` });
+  }
+
+  // MCP endpoints down
+  for (const e of data.api_mcp) {
+    if (!e.up) issues.push({ severity: "❌", section: "A1", msg: `MCP ${e.name} — [${e.http_code || "---"}]` });
+  }
+
+  // Mail ports down
+  for (const m of data.mail_ports) {
+    if (!m.open) issues.push({ severity: "⚠️", section: "A3", msg: `${m.host}:${m.port} ${m.proto} — down` });
+  }
+
+  // SPF bug (hardcoded known issue)
+  const ociMailIp = VMS.find(v => v.alias === "oci-mail")?.pubIp || "?";
+  issues.push({ severity: "❌", section: "A3", msg: `Stalwart SPF FAIL — VM IP ${ociMailIp} not in SPF (outbound emails rejected)` });
+
+  // Script errors
+  for (const e of ERRORS) {
+    issues.push({ severity: "❌", section: "SYS", msg: e.replace(/^\[.*?\] ERROR: /, "") });
+  }
+
+  if (issues.length === 0) {
+    return "✅ No issues found — all systems healthy";
+  }
+
+  const lines: string[] = [];
+  const critCount = issues.filter(i => i.severity === "❌").length;
+  const warnCount = issues.filter(i => i.severity === "⚠️").length;
+  lines.push(`${critCount} critical, ${warnCount} warnings — ${issues.length} total`);
+  lines.push("");
+  lines.push(`    ${"".padEnd(3)} ${"Section".padEnd(8)} Issue`);
+  lines.push("    " + "─".repeat(70));
+  // Sort: critical first, then warnings
+  const sorted = [...issues].sort((a, b) => (a.severity === "❌" ? 0 : 1) - (b.severity === "❌" ? 0 : 1));
+  for (const i of sorted) {
+    lines.push(`    ${i.severity} ${i.section.padEnd(8)} ${i.msg}`);
+  }
+  return lines.join("\n");
+})();
+
 // Replace all $VARS in template
 log("Replacing template variables...");
 for (const [key, value] of Object.entries(vars)) {
