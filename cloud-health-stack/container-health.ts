@@ -15,7 +15,7 @@ import { run, sshCmd, tcpCheck, timed, timedAsync, collectVm, type VmData } from
 import { parseVms, parsePublicUrls, parseMcpApiEndpoints, parseMailPorts, parsePrivateDns, parseDatabases } from "./lib/parsers.js";
 import type { VarContext } from "./lib/types.js";
 import { varsHealth } from "./lib/vars-health.js";
-import { varsContainers } from "./lib/vars-containers.js";
+import { varsContainers, checkPrivateHealth } from "./lib/vars-containers.js";
 import { varsMail } from "./lib/vars-mail.js";
 import { varsInfra } from "./lib/vars-infra.js";
 import { varsSecurity, scanOpenPorts } from "./lib/vars-security.js";
@@ -73,17 +73,7 @@ const data = {
     return { ...u, http_code: code, up: code !== "" && code !== "000" && code !== "502" };
   })),
   mail_ports: timed("mail_ports", () => MAIL_PORTS.map(m => ({ ...m, open: tcpCheck(m.host, m.port) }))),
-  private_dns: timed("private_dns", () => {
-    // Check if Hickory is reachable first (avoids 50× timeouts when WG is down)
-    const hickoryUp = run(`dig @10.0.0.1 +short +time=2 +tries=1 authelia.app 2>/dev/null`);
-    const wgDown = !hickoryUp;
-    if (wgDown) log("  ⚠️ Hickory DNS (10.0.0.1) unreachable — WG likely down, skipping per-name checks");
-    return PRIVATE_DNS.map(d => {
-      if (wgDown) return { ...d, open: false, resolved: "", wg_down: true };
-      const resolved = run(`dig @10.0.0.1 +short +time=2 ${d.dns} 2>/dev/null`);
-      return { ...d, open: !!resolved && resolved.length > 0, resolved: resolved || "", wg_down: false };
-    });
-  }),
+  private_dns: PRIVATE_DNS, // raw parsed data — health checks done async in A2
   vms: VMS.map(vm => timed(`vm_${vm.alias}`, () => { log(`  Collecting VM: ${vm.alias} (${vm.pubIp || vm.ip})...`); return collectVm(vm); })),
   databases: DATABASES,
 };
@@ -109,26 +99,27 @@ catch (e: any) { logErr(`Failed to read template: ${e.message}`); process.exit(1
 const hubVm = VMS.find(v => v.alias === "gcp-proxy");
 const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData, backupTargets, VMS, PRIVATE_DNS, DATABASES };
 
-// Build vars — port scan runs in parallel (async)
+// Build vars — parallel async tasks first, then sync vars
 (async () => {
-  // Launch parallel port scan FIRST (takes longest, runs while other vars compute)
-  log("Launching parallel port scan...");
+  // Launch parallel tasks FIRST (run concurrently while sync vars compute)
+  log("Launching parallel checks (port scan + private health)...");
   const portScanPromise = timedAsync("open_ports", () => scanOpenPorts(VMS));
+  const privateHealthPromise = timedAsync("private_health", () => checkPrivateHealth(PRIVATE_DNS));
 
-  // Build sync vars while port scan runs
+  // Build sync vars while parallel tasks run
   const vars: Record<string, string> = {
     GENERATED_DATE: `${data.generated.split("T")[0]}  ${data.generated.split("T")[1]?.split(".")[0] || ""}`,
     HUB_WG_IP: hubVm?.ip || "?",
     ...varsHealth(ctx),
-    ...varsContainers(ctx),
     ...varsMail(ctx),
     ...varsInfra(ctx),
     ...varsStack(ctx),
     ...varsAppendix(ctx, TOTAL_START),
   };
 
-  // Wait for parallel port scan to finish
-  const openPortsResult = await portScanPromise;
+  // Wait for parallel tasks to finish
+  const [openPortsResult, privateHealthResults] = await Promise.all([portScanPromise, privateHealthPromise]);
+  Object.assign(vars, varsContainers(ctx, privateHealthResults));
   Object.assign(vars, varsSecurity(ctx, openPortsResult));
 
   // Issues summary (must be last — scans all collected data)
