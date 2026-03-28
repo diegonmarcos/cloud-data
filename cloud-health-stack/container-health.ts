@@ -601,13 +601,15 @@ const vars: Record<string, string> = {
   MAIL_FLOW: (() => {
     const lines: string[] = [];
     const ociMailIp = VMS.find(v => v.alias === "oci-mail")?.pubIp || "?";
+    const gcpProxyIp = VMS.find(v => v.alias === "gcp-proxy")?.pubIp || "?";
     const resendTf = topology.providers?.resend;
     lines.push("MAIL FLOW — Pipeline Status");
     lines.push("────────────────────────────────────────────────────────────");
     lines.push("");
-    // INBOUND
-    lines.push("  📨 INBOUND: someone@gmail.com → me@diegonmarcos.com");
-    lines.push("     Gmail → MX → Cloudflare Email Routing → CF Worker → smtp-proxy:8080 → Stalwart");
+
+    // INBOUND EMAIL
+    lines.push("  📨 INBOUND EMAIL: someone@gmail.com → me@diegonmarcos.com");
+    lines.push(`     Gmail → MX → Cloudflare Email Routing → CF Worker → oci-mail:8080 → smtp-proxy → Stalwart`);
     lines.push("     ─────────────────────────────────────────────");
     const smtpProxyCt = data.vms.find((v: VmData) => v.alias === "oci-mail")?.containers.find((c: Container) => c.name === "smtp-proxy");
     const smtpProxyOk = smtpProxyCt && smtpProxyCt.health !== "exited";
@@ -616,22 +618,48 @@ const vars: Record<string, string> = {
     lines.push(`     ${p8080 ? "✅" : "❌"} oci-mail:8080        ${p8080 ? "reachable" : "unreachable"} (CF Worker ingress)`);
     const p25 = tcpCheck(ociMailIp, 25);
     lines.push(`     ${p25 ? "✅" : "❌"} oci-mail:25          ${p25 ? "SMTP open" : "SMTP closed"} (Stalwart local delivery)`);
+    const stalwartCt = data.vms.find((v: VmData) => v.alias === "oci-mail")?.containers.find((c: Container) => c.name === "stalwart");
+    const stalwartOk = stalwartCt && stalwartCt.health !== "exited";
+    lines.push(`     ${stalwartOk ? "✅" : "❌"} stalwart             ${stalwartCt?.status || "not found"} (oci-mail MTA)`);
     lines.push("");
+
+    // CLIENT ACCESS (Caddy L4 passthrough)
+    lines.push("  📱 CLIENT ACCESS: phone/Thunderbird → read/send mail via Caddy L4");
+    lines.push(`     Client → gcp-proxy (${gcpProxyIp}) → Caddy L4 TLS passthrough → oci-mail (${ociMailIp}) → Stalwart`);
+    lines.push("     ─────────────────────────────────────────────");
+    // Parse L4 routes from caddy-routes
+    const l4Routes = caddyRoutes.l4_routes ?? [];
+    for (const l4 of l4Routes) {
+      const port = l4.port;
+      const upstream = l4.upstream;
+      const comment = l4.comment || "";
+      const portOk = tcpCheck(gcpProxyIp, port);
+      lines.push(`     ${portOk ? "✅" : "❌"} :${String(port).padEnd(5)} → ${upstream.padEnd(28)} ${portOk ? "open" : "closed"} (${comment})`);
+    }
+    // Also check webmail
+    const webmailCode = run(`curl -sko /dev/null -w '%{http_code}' https://webmail.diegonmarcos.com 2>/dev/null`);
+    const webmailOk = webmailCode === "200" || webmailCode === "302";
+    lines.push(`     ${webmailOk ? "✅" : "❌"} webmail.diegonmarcos.com     [${webmailCode || "---"}] (Snappymail via HTTPS)`);
+    const mailWebCode = run(`curl -sko /dev/null -w '%{http_code}' https://mail.diegonmarcos.com 2>/dev/null`);
+    const mailWebOk = mailWebCode === "200" || mailWebCode === "302";
+    lines.push(`     ${mailWebOk ? "✅" : "❌"} mail.diegonmarcos.com        [${mailWebCode || "---"}] (Stalwart admin via HTTPS)`);
+    lines.push("");
+
     // OUTBOUND PERSONAL
     lines.push("  📤 OUTBOUND PERSONAL: me@diegonmarcos.com → someone@gmail.com");
     lines.push(`     Stalwart → ⚠️ direct from ${ociMailIp} (NOT IN SPF!) → recipient MX`);
     lines.push("     ─────────────────────────────────────────────");
-    const stalwartCt = data.vms.find((v: VmData) => v.alias === "oci-mail")?.containers.find((c: Container) => c.name === "stalwart");
-    const stalwartOk = stalwartCt && stalwartCt.health !== "exited";
     lines.push(`     ${stalwartOk ? "✅" : "❌"} stalwart             ${stalwartCt?.status || "not found"} (oci-mail MTA)`);
+    // Outbound uses L4 passthrough too (client submits via gcp-proxy:465/587 → stalwart)
     const p465 = tcpCheck("smtp.diegonmarcos.com", 465);
     const p587 = tcpCheck("smtp.diegonmarcos.com", 587);
-    lines.push(`     ${p465 ? "✅" : "❌"} smtp:465 (SMTPS)     ${p465 ? "open" : "closed"} (via gcp-proxy L4)`);
-    lines.push(`     ${p587 ? "✅" : "❌"} smtp:587 (Submission) ${p587 ? "open" : "closed"} (via gcp-proxy L4)`);
-    lines.push(`     ❌ SPF WILL FAIL        VM IP not in SPF — needs OCI relay or ip4: in SPF`);
+    lines.push(`     ${p465 ? "✅" : "❌"} smtp:465 (SMTPS)     ${p465 ? "open" : "closed"} (client → gcp-proxy L4 → stalwart)`);
+    lines.push(`     ${p587 ? "✅" : "❌"} smtp:587 (Submission) ${p587 ? "open" : "closed"} (client → gcp-proxy L4 → stalwart)`);
+    lines.push(`     ❌ SPF WILL FAIL        VM IP ${ociMailIp} not in SPF — needs OCI relay or ip4: in SPF`);
     lines.push(`     ✅ DKIM OK              dkim._domainkey key present`);
     lines.push(`     ❌ DMARC RESULT         p=reject + SPF fail = email REJECTED by receiver`);
     lines.push("");
+
     // OUTBOUND TRANSACTIONAL
     lines.push("  📤 OUTBOUND TRANSACTIONAL: noreply@mails.diegonmarcos.com → someone@gmail.com");
     lines.push("     App → Resend API → Amazon SES (us-east-1) → recipient MX");
