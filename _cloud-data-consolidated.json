@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-03-28T13:17:05.623Z",
+    "generated_at": "2026-03-28T13:26:58.497Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -141,7 +141,7 @@
       },
       "description": "Oracle Free - A1 Flex 0 (4 OCPUs / 24GB / 100GB) — Consolidated",
       "wg_ip": "10.0.0.6",
-      "wg_public_key": "96dKQvDhJt0vgOdRFqniHiH6BAIefeaGxJ13cn/842g=",
+      "wg_public_key": "g5IcE29p8ysZkIDYwqJqmGPhtfahIfXn8/QuBwoHXH0=",
       "wg_port": 51820,
       "wg_role": "spoke",
       "user": "ubuntu",
@@ -5746,7 +5746,7 @@
         "vm_id": "oci-A1-f_0",
         "ip": "82.70.229.129",
         "wg_ip": "10.0.0.6",
-        "wg_public_key": "96dKQvDhJt0vgOdRFqniHiH6BAIefeaGxJ13cn/842g=",
+        "wg_public_key": "g5IcE29p8ysZkIDYwqJqmGPhtfahIfXn8/QuBwoHXH0=",
         "wg_port": 51820,
         "wg_role": "spoke",
         "user": "ubuntu",
