@@ -104,7 +104,6 @@ const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData: { me
     ...varsMail(ctx),
     ...varsInfra(ctx),
     ...varsStack(ctx),
-    ...varsAppendix(ctx, TOTAL_START),
   };
 
   // Wait for ALL parallel tasks
@@ -114,6 +113,9 @@ const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData: { me
   Object.assign(vars, varsHealth(ctx, publicUrlResults));
   Object.assign(vars, varsContainers(ctx, privateHealthResults));
   Object.assign(vars, varsSecurity(ctx, openPortsResult));
+
+  // Appendix AFTER parallel tasks (so PERFORMANCE includes async timers)
+  Object.assign(vars, varsAppendix(ctx, TOTAL_START));
 
   // Issues summary (must be last — scans all collected data)
   vars.ISSUES_SUMMARY = buildIssuesSummary(ctx);
