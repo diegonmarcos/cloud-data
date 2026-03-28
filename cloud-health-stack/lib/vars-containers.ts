@@ -3,7 +3,7 @@
  * A2: multi-protocol health checks to .app DNS names (TCP + HTTP)
  * A3: docker ps state per VM (HEALTHY / UNHEALTHY / DOWN)
  */
-import { run, tcpCheckAsync, privateEndpointCheck, type VmData } from "./collectors.js";
+import { run, runAsync, tcpCheckAsync, privateEndpointCheck, type VmData } from "./collectors.js";
 import { log } from "./config.js";
 import type { VarContext } from "./types.js";
 
