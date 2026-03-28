@@ -330,9 +330,10 @@ const data = {
   })),
   mail_ports: timed("mail_ports", () => MAIL_PORTS.map(m => ({ ...m, open: tcpCheck(m.host, m.port) }))),
   private_dns: timed("private_dns", () => PRIVATE_DNS.map(d => {
-    const vmObj = VMS.find(v => v.alias === d.vm);
-    const open = vmObj ? tcpCheck(vmObj.ip, d.port) : false;
-    return { ...d, open };
+    // Check via system DNS (plain dig, no @IP) — tests if local DNS resolves .app names
+    const resolved = run(`dig +short ${d.dns} 2>/dev/null`);
+    const open = !!resolved && resolved.length > 0;
+    return { ...d, open, resolved: resolved || "" };
   })),
   vms: VMS.map(vm => timed(`vm_${vm.alias}`, () => { log(`  Collecting VM: ${vm.alias} (${vm.pubIp || vm.ip})...`); return collectVm(vm); })),
   databases: DATABASES,
@@ -658,13 +659,41 @@ const vars: Record<string, string> = {
       const portTag = conflict ? `⚠️${String(d.port).padEnd(5)}` : `  ${String(d.port).padEnd(5)}`;
       return `${icon} ${d.dns.padEnd(28)} ${(d.container + ":" + d.port).padEnd(25)} ${portTag} ${d.vm}`;
     });
-    // Append conflict summary
+    // Port conflict summary
     if (conflictPorts.size > 0) {
       lines.push("");
       lines.push(`  ⚠️  PORT CONFLICTS (${conflictPorts.size} duplicate ports globally):`);
       for (const [port, names] of [...portCount.entries()].filter(([, n]) => n.length > 1).sort((a, b) => a[0] - b[0])) {
         lines.push(`     :${String(port).padEnd(6)} used by: ${names.join(", ")}`);
       }
+    }
+    // DNS config checker
+    lines.push("");
+    lines.push("  ─── DNS CONFIG CHECK ───");
+    // Test 1: system resolv.conf
+    const resolv = run("grep nameserver /etc/resolv.conf 2>/dev/null");
+    const hasHickory = resolv.includes("10.0.0.1");
+    lines.push(`  ${hasHickory ? "✅" : "❌"} /etc/resolv.conf     ${hasHickory ? "includes 10.0.0.1 (Hickory)" : "MISSING 10.0.0.1 — .app names won't resolve!"}`);
+    if (resolv) {
+      for (const ns of resolv.split("\n").filter(Boolean)) {
+        lines.push(`     ${ns.trim()}`);
+      }
+    }
+    // Test 2: plain dig (system DNS) vs dig @10.0.0.1 (Hickory direct)
+    const testName = data.private_dns[0]?.dns || "authelia.app";
+    const systemResolve = run(`dig +short ${testName} 2>/dev/null`);
+    const hickoryResolve = run(`dig @10.0.0.1 +short ${testName} 2>/dev/null`);
+    lines.push(`  ${systemResolve ? "✅" : "❌"} dig ${testName.padEnd(20)} ${systemResolve || "NXDOMAIN"} (system DNS)`);
+    lines.push(`  ${hickoryResolve ? "✅" : "❌"} dig @10.0.0.1 ${testName.padEnd(12)} ${hickoryResolve || "NXDOMAIN"} (Hickory direct)`);
+    if (!systemResolve && hickoryResolve) {
+      lines.push("  ⚠️  System DNS can't resolve .app names — add 10.0.0.1 to resolv.conf or WG DNS");
+      lines.push("     All ❌ above are due to missing local DNS config, NOT service failures");
+    }
+    if (systemResolve && hickoryResolve) {
+      lines.push("  ✅ Local DNS properly configured — Hickory resolves .app names");
+    }
+    if (!hickoryResolve) {
+      lines.push("  ❌ Hickory DNS (10.0.0.1) not responding — check gcp-proxy hickory-dns container");
     }
     return lines.join("\n");
   })(),
