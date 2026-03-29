@@ -6,20 +6,17 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-03-29T04:52:32.978297393+00:00
+         CONTAINER HEALTH — 2026-03-29T05:35:47.522020134+00:00
 ════════════════════════════════════════════════════════════
 
 
 ══════════════════════════════════════════════════════════════
   ⚠️  ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-48 critical, 0 warnings — 48 total
+45 critical, 0 warnings — 45 total
 
     ❌ A3       VM gcp-proxy — UNREACHABLE
-    ❌ A3       oci-apps/surrealdb — exited
-    ❌ A3       oci-apps/crawlee_runner — exited
-    ❌ A3       oci-apps/crawlee_api — exited
-    ❌ A3       oci-apps/crawlee_minio_init — exited
+    ❌ A3       VM oci-apps — UNREACHABLE
     ❌ A3       oci-mail/introspect-proxy — exited
     ❌ A3       oci-analytics/umami-setup — exited
     ❌ A1       auth.diegonmarcos.com — [---]
@@ -214,62 +211,8 @@ REPOS & REGISTRIES
 gcp-proxy ❌ — 0C/0G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
 ────────────────────────────────────────────────────────────
 
-oci-apps ✅ — 4C/24G — mem 4813M/23975M (20%) — disk 74% — swap 0M/0M — load 0.53 0.39 0.37 — 50/54 ctrs — 1d 10h
+oci-apps ❌ — 4C/24G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
 ────────────────────────────────────────────────────────────
-  ❌ surrealdb                 —      —      DOWN(2)        Exited (2) 6 hours ago
-  ❌ crawlee_runner            —      —      DOWN(1)        Exited (1) 2 hours ago
-  ❌ crawlee_api               3000   3000   DOWN(1)        Exited (1) 2 hours ago
-  ❌ crawlee_minio_init        —      —      DOWN(0)        Exited (0) 6 hours ago
-  ⚠️ crawlee_db                —      5433   STARTING       Up 12 seconds (health: startin
-  ⚠️ lgtm_mimir                —      9009   UP (no hc)     Up 2 hours
-  ⚠️ lgtm_tempo                —      3210   UP (no hc)     Up 2 hours
-  ⚠️ windmill-worker           —      —      UP (no hc)     Up 2 hours
-  ⚠️ mattermost-bots           —      —      UP (no hc)     Up 2 hours
-  ⚠️ mattermost-mcp            —      3102   UP (no hc)     Up 2 hours
-  ⚠️ mail-mcp                  —      3103   UP (no hc)     Up 2 hours
-  ⚠️ crawlee_scheduler         —      —      UP (no hc)     Up 6 hours
-  ⚠️ gitea                     —      3002   UP (no hc)     Up 9 hours
-  ⚠️ bup-server                —      —      UP (no hc)     Up 9 hours
-  ⚠️ borg-server               —      —      UP (no hc)     Up 9 hours
-  ⚠️ cloud-spec                —      3080   UP (no hc)     Up 9 hours
-  ⚠️ siem-api                  —      —      UP (no hc)     Up 10 hours
-  ⚠️ crawlee_dashboard         3001   3001   UP (no hc)     Up 2 hours
-  ⚠️ quant_light_engine        —      5001   UP (no hc)     Up 10 hours
-  ⚠️ code-server               —      8443   UP (no hc)     Up 10 hours
-  ✅ c3-infra-mcp              —      3100   HEALTHY        Up 46 minutes (healthy)
-  ✅ lgtm_grafana              —      3200   HEALTHY        Up 2 hours (healthy)
-  ✅ lgtm_loki                 —      3110   HEALTHY        Up 2 hours (healthy)
-  ✅ windmill-server           —      8000   HEALTHY        Up 2 hours (healthy)
-  ✅ windmill-db               —      5440   HEALTHY        Up 2 hours (healthy)
-  ✅ c3-services-mcp           —      3101   HEALTHY        Up 2 hours (healthy)
-  ✅ c3-infra-api              8081   8081   HEALTHY        Up 2 hours (healthy)
-  ✅ ollama-hai                —      11435  HEALTHY        Up 2 hours (healthy)
-  ✅ photoprism_app            —      3013   HEALTHY        Up 2 hours (healthy)
-  ✅ photoprism_mariadb        —      —      HEALTHY        Up 2 hours (healthy)
-  ✅ photoprism_rclone         —      —      HEALTHY        Up 2 hours (healthy)
-  ✅ mattermost                —      8065   HEALTHY        Up 2 hours (healthy)
-  ✅ mattermost-postgres       —      5435   HEALTHY        Up 2 hours (healthy)
-  ✅ hedgedoc_app              —      3018   HEALTHY        Up 2 hours (healthy)
-  ✅ hedgedoc_postgres         —      5439   HEALTHY        Up 2 hours (healthy)
-  ✅ etherpad_app              —      3012   HEALTHY        Up 2 hours (healthy)
-  ✅ etherpad_postgres         —      5436   HEALTHY        Up 2 hours (healthy)
-  ✅ google-workspace-mcp      —      3104   HEALTHY        Up 2 hours (healthy)
-  ✅ quant_light_db            —      5434   HEALTHY        Up 6 hours (healthy)
-  ✅ nocodb                    —      8085   HEALTHY        Up 6 hours (healthy)
-  ✅ nocodb-db                 —      5441   HEALTHY        Up 6 hours (healthy)
-  ✅ crawlee_minio             —      9000   HEALTHY        Up 6 hours (healthy)
-  ✅ cloud-cgc-mcp             —      3105   HEALTHY        Up 6 hours (healthy)
-  ✅ syslog-central            —      —      HEALTHY        Up 10 hours (healthy)
-  ✅ crawlee_redis             —      6381   HEALTHY        Up 10 hours (healthy)
-  ✅ rig-agentic-sonn-14bq8    —      —      HEALTHY        Up 10 hours (healthy)
-  ✅ rig-agentic-hai           —      —      HEALTHY        Up 10 hours (healthy)
-  ✅ photos-webhook            —      —      HEALTHY        Up 10 hours (healthy)
-  ✅ photos-db                 —      —      HEALTHY        Up 10 hours (healthy)
-  ✅ quant_light_research      —      8889   HEALTHY        Up 10 hours (healthy)
-  ✅ revealmd_app              —      3014   HEALTHY        Up 10 hours (healthy)
-  ✅ radicale                  —      5232   HEALTHY        Up 10 hours (healthy)
-  ✅ grist_app                 —      3011   HEALTHY        Up 10 hours (healthy)
-  ✅ filebrowser_app           —      3015   HEALTHY        Up 10 hours (healthy)
 
 oci-mail ✅ — 1C/0G — mem 629M/954M (65%) — disk 68% — swap 115M/2559M — load 0.97 0.98 1.00 — 6/8 ctrs — 0d 1h
 ────────────────────────────────────────────────────────────
@@ -347,15 +290,15 @@ RESOURCES (live)
 ────────────────────────────────────────────────────────────
 gcp-proxy      oci-apps       oci-mail       oci-analytics 
 ────────────────────────────────────────────────────────────
-CPU                ? cores       20 cores      65 cores      73 cores      
-RAM                ?/?           4813M/23975M  629M/954M     703M/954M     
-RAM %              0%            20%           65%           73%           
-Swap               ?             0M/0M         115M/2559M    232M/2559M    
-Disk               ?/?           67.0G/95.8G   29G/45G       25G/48G       
-Disk %             ?             74%           68%           56%           
-Load               ?             0.53 0.39 0.370.97 0.98 1.002.08 2.12 2.09
-Containers         0/0           50/54         6/8           7/8           
-Uptime             ?             1d 10h        0d 1h         0d 1h         
+CPU                ? cores       ? cores       65 cores      73 cores      
+RAM                ?/?           ?/?           629M/954M     703M/954M     
+RAM %              0%            0%            65%           73%           
+Swap               ?             ?             115M/2559M    232M/2559M    
+Disk               ?/?           ?/?           29G/45G       25G/48G       
+Disk %             ?             ?             68%           56%           
+Load               ?             ?             0.97 0.98 1.002.08 2.12 2.09
+Containers         0/0           0/0           6/8           7/8           
+Uptime             ?             ?             0d 1h         0d 1h         
 
 STORAGE
 ────────────────────────────────────────────────────────────
@@ -415,18 +358,18 @@ FRAMEWORK — Key Paths
 
 PERFORMANCE
 ────────────────────────────────────────────────────────────
-  TOTAL                62.6s
-  mail_dns             56.3s
-  public_urls          9.8s
-  mesh                 9.6s
-  vm_ssh               9.6s
-  port_scan            6.3s
+  TOTAL                60.7s
+  mail_dns             55.0s
+  vm_ssh               9.9s
+  public_urls          7.3s
+  mesh                 7.2s
+  port_scan            4.5s
   private              0.0s
 
 SCRIPT INFO
 ────────────────────────────────────────────────────────────
   Engine:    Rust (native async tokio)
-  Duration:  62.6s
+  Duration:  60.7s
   Checks:    TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(async process)
 
 ────────────────────────────────────────────────────────────

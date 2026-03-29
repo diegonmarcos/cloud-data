@@ -171,8 +171,8 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
     }).collect();
     let futs: Vec<_> = active_vms.iter().map(|vm| {
         let alias = vm.alias.clone();
-        let pub_ip = vm.pub_ip.clone();
-        let rescue_port = vm.rescue_port;
+        let _pub_ip = vm.pub_ip.clone();
+        let _rescue_port = vm.rescue_port;
         let dns_entries: Vec<_> = ctx.private_dns.iter().filter(|d| d.vm == alias).cloned().collect();
         async move {
             let mut data = VmLiveData {

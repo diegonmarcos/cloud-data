@@ -107,7 +107,7 @@ fn build_public_urls(live: &LiveData) -> String {
     }).collect::<Vec<_>>().join("\n")
 }
 
-fn build_private(ctx: &Context, live: &LiveData) -> String {
+fn build_private(_ctx: &Context, live: &LiveData) -> String {
     let mut lines = Vec::new();
     if live.private_endpoints.iter().all(|p| p.resolved_ip.is_empty()) {
         lines.push("⚠️  WireGuard/Hickory DOWN — cannot reach .app endpoints".into());

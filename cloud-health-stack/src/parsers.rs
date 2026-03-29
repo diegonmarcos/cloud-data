@@ -121,7 +121,7 @@ pub fn load_context() -> Result<Context> {
     }
 
     // Mail ports
-    let mut mail_ports = vec![
+    let mail_ports = vec![
         MailPort { host: "mail.diegonmarcos.com".into(), port: 465, proto: "SMTPS".into() },
         MailPort { host: "mail.diegonmarcos.com".into(), port: 587, proto: "Submission".into() },
         MailPort { host: "mail.diegonmarcos.com".into(), port: 993, proto: "IMAPS".into() },

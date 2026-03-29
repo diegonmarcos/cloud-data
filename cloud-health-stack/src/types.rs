@@ -1,6 +1,7 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use std::collections::HashMap;
 
+#[allow(dead_code)]
 /// Static context parsed from consolidated JSON
 pub struct Context {
     pub consolidated: serde_json::Value,
@@ -15,6 +16,7 @@ pub struct Context {
 }
 
 #[derive(Clone, Debug)]
+#[allow(dead_code)]
 pub struct VmInfo {
     pub alias: String,
     pub vm_id: String,
@@ -65,6 +67,7 @@ pub struct WgPeer {
 }
 
 #[derive(Clone, Debug)]
+#[allow(dead_code)]
 pub struct MailPort {
     pub host: String,
     pub port: u16,
@@ -72,6 +75,7 @@ pub struct MailPort {
 }
 
 #[derive(Clone, Debug)]
+#[allow(dead_code)]
 pub struct L4Route {
     pub port: u16,
     pub upstream: String,
