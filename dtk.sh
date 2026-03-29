@@ -5,12 +5,21 @@
 # OS-agnostic POSIX: NixOS, Arch, Debian, Fedora, macOS, Termux
 set -eu
 
-# Logging — verbose trace to file, clean output to console
+# Logging — verbose trace to screen + log file
 LOGFILE="${HOME:-/tmp}/dtk.log"
 _LOG_USER=$(whoami 2>/dev/null || echo "?")
 _LOG_HOST=$(hostname -s 2>/dev/null || echo "?")
 echo "=== $(date '+%Y-%m-%d %H:%M:%S') ${_LOG_USER}@${_LOG_HOST} === dtk.sh $* ===" >> "$LOGFILE"
-# Verbose: every command shown on screen + logged
+# POSIX: write set -x trace to log file via fd 9, copy stdout/stderr to log too
+exec 9>>"$LOGFILE"
+# set -x trace goes to stderr → capture stderr to both screen and log
+# Use a named pipe to tee stderr without bash process substitution
+_DTK_FIFO="/tmp/.dtk-log-$$"
+mkfifo "$_DTK_FIFO" 2>/dev/null || true
+tee -a "$LOGFILE" < "$_DTK_FIFO" >&2 &
+_DTK_TEE_PID=$!
+exec 2>"$_DTK_FIFO"
+trap 'rm -f "$_DTK_FIFO"; kill "$_DTK_TEE_PID" 2>/dev/null || true' EXIT
 set -x
 
 # Force real system binaries FIRST (bypass nix guardrail wrappers)
@@ -664,6 +673,7 @@ if [ $# -ge 1 ]; then
   case "$1" in
     commands)       do_commands "${2:-}" ;;
     fix-journal)    do_commands 14 ;;
+    full-rescue)    do_commands 15 ;;
     docker-start)   do_docker_start ;;
     install)        do_install ;;
     ssh)            do_ssh ;;
