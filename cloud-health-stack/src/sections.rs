@@ -253,7 +253,7 @@ fn build_script_info(live: &LiveData) -> String {
 
 fn build_mail_auth(ctx: &Context) -> String {
     let oci_ip = ctx.vms.iter().find(|v| v.alias == "oci-mail").map(|v| v.pub_ip.as_str()).unwrap_or("?");
-    let mut lines = vec![
+    let lines = vec![
         "MAIL AUTH — Authorized Senders".into(),
         "─".repeat(60),
         format!("    {:20} {:26} {:16} {:30} DKIM Selector", "Sender", "Domain", "Auth Method", "SPF IP Range"),
@@ -357,7 +357,7 @@ fn build_docker_networks(ctx: &Context) -> String {
     if networks.is_empty() { return "(no network data)".into(); }
     let mut lines = vec![format!("    {:28} Services", "Network"), "    ".to_string() + &"─".repeat(60)];
     let mut sorted: Vec<_> = networks.iter().collect();
-    sorted.sort_by_key(|(k, _)| k.clone());
+    sorted.sort_by_key(|(k, _)| (*k).clone());
     for (net, svcs) in sorted {
         lines.push(format!("    {:28} {}", net, svcs.join(", ")));
     }
