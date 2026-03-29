@@ -3,6 +3,7 @@
 # Usage: ./alias.sh                # interactive
 #        ./alias.sh <cmd> [args]   # direct
 set -euo pipefail
+export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:$PATH"
 
 declare -A VM_MAP=(
   [gcp-proxy]="arch-1:us-central1-a"
@@ -40,8 +41,8 @@ resolve_vm() {
 
 install_dev_arch() {
   echo "=== Arch Linux: Full Dev Toolchain ==="
-  sudo pacman -Syu --noconfirm
-  sudo pacman -S --noconfirm --needed \
+  pacman -Syu --noconfirm
+  pacman -S --noconfirm --needed \
     fish git curl wget htop btop vim nano neovim \
     base-devel gcc make cmake rust cargo go \
     python python-pip python-virtualenv \
@@ -62,8 +63,8 @@ install_dev_arch() {
 
 install_dev_debian() {
   echo "=== Debian/Ubuntu: Full Dev Toolchain ==="
-  sudo apt-get update -qq
-  sudo apt-get install -y -qq \
+  apt-get update -qq
+  apt-get install -y -qq \
     fish git curl wget htop vim nano neovim \
     build-essential gcc make cmake rustc cargo golang \
     python3 python3-pip python3-venv \
@@ -111,7 +112,7 @@ install_cloud_clis() {
   if ! command -v gcloud >/dev/null 2>&1; then
     echo "Installing Google Cloud SDK..."
     curl -sL https://sdk.cloud.google.com | bash -s -- --disable-prompts --install-dir=/opt 2>/dev/null || true
-    sudo ln -sf /opt/google-cloud-sdk/bin/gcloud /usr/local/bin/gcloud 2>/dev/null || true
+    ln -sf /opt/google-cloud-sdk/bin/gcloud /usr/local/bin/gcloud 2>/dev/null || true
   fi
   if ! command -v oci >/dev/null 2>&1; then
     echo "Installing OCI CLI..."
@@ -132,9 +133,9 @@ install_extras() {
   # Fish as default shell
   if command -v fish >/dev/null 2>&1; then
     FISH_PATH="$(command -v fish)"
-    grep -qxF "$FISH_PATH" /etc/shells 2>/dev/null || echo "$FISH_PATH" | sudo tee -a /etc/shells >/dev/null
-    sudo chsh -s "$FISH_PATH" "$(logname 2>/dev/null || whoami)" 2>/dev/null || true
-    sudo chsh -s "$FISH_PATH" root 2>/dev/null || true
+    grep -qxF "$FISH_PATH" /etc/shells 2>/dev/null || echo "$FISH_PATH" | tee -a /etc/shells >/dev/null
+    chsh -s "$FISH_PATH" "$(logname 2>/dev/null || whoami)" 2>/dev/null || true
+    chsh -s "$FISH_PATH" root 2>/dev/null || true
   fi
 
   setup_fish_config
