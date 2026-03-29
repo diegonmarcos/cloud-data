@@ -64,6 +64,17 @@ do_docker_start() {
     fi
   fi
 
+  # Ensure Docker daemon is running
+  if ! docker info >/dev/null 2>&1; then
+    echo "Docker daemon not running — starting..."
+    systemctl enable --now docker 2>/dev/null || service docker start 2>/dev/null || true
+    sleep 2
+    if ! docker info >/dev/null 2>&1; then
+      echo "ERROR: Docker daemon failed to start"
+      exit 1
+    fi
+  fi
+
   echo "=== Docker Start: $IMG ==="
   echo "Pulling latest image..."
   docker pull "$IMG"
