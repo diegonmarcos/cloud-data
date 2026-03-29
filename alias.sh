@@ -2,15 +2,17 @@
 # Diego's VM toolkit — install, ssh, clone, info
 # Usage: ./alias.sh                # interactive
 #        ./alias.sh <cmd> [args]   # direct
-set -euxo pipefail
-# Logging — all output to console + alias.log
+set -euo pipefail
+
+# Logging — verbose trace to file, clean output to console
 LOGFILE="${HOME:-/tmp}/alias.log"
-exec > >(tee -a "$LOGFILE") 2>&1
-echo "=== $(date) === alias.sh $* ==="
+echo "=== $(date) === alias.sh $* ===" >> "$LOGFILE"
+exec 3>> "$LOGFILE"
+BASH_XTRACEFD=3
+set -x
 
 # Force real system binaries FIRST (bypass nix guardrail wrappers)
 export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:/nix/var/nix/profiles/default/bin:${HOME:-/root}/.nix-profile/bin:/run/current-system/sw/bin:$PATH"
-echo "[PATH] $PATH"
 
 # Stop systemd journal from flooding the terminal
 if [ "$(id -u)" = "0" ] 2>/dev/null; then
