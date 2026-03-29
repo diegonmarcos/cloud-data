@@ -42,3 +42,4 @@
 terraform.tfvars
 *.tfvars
 !*.tfvars.example
+cloud-health-stack/cache/

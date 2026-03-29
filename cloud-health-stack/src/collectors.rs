@@ -159,7 +159,17 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
     let t = Instant::now();
     // Try rsync from /opt/health/latest.json first (fast, via Dropbear if needed)
     // Fallback to SSH commands if rsync fails
-    let futs: Vec<_> = ctx.vms.iter().map(|vm| {
+    // Skip terminated spot instances (gcp-t4) — check via gcloud first
+    let active_vms: Vec<_> = ctx.vms.iter().filter(|vm| {
+        if vm.vm_id.contains("-p_") || vm.vm_id.contains("-p-") {
+            // Spot/paid instance — check if running via gcloud
+            if vm.vm_id.starts_with("gcp-") {
+                return crate::checks::gcloud_status(&vm.cloud_name).map(|s| s == "RUNNING").unwrap_or(false);
+            }
+        }
+        true
+    }).collect();
+    let futs: Vec<_> = active_vms.iter().map(|vm| {
         let alias = vm.alias.clone();
         let pub_ip = vm.pub_ip.clone();
         let rescue_port = vm.rescue_port;
@@ -173,23 +183,15 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                 containers: vec![], containers_running: 0, containers_total: 0,
             };
 
-            // Strategy 1: rsync /opt/health/latest.json (fast, works via Dropbear too)
+            // Strategy 1: rsync /opt/health/latest.json via SSH alias (uses ~/.ssh/config)
             let cache_dir = format!("cache/{}", alias);
             let _ = std::fs::create_dir_all(&cache_dir);
             let cache_file = format!("{}/latest.json", cache_dir);
 
-            // Try normal SSH first, then Dropbear port
             let rsync_ok = {
                 let out = tokio::process::Command::new("rsync")
                     .args(["-az", "-e", "ssh -o ConnectTimeout=5 -o ControlPath=none -o BatchMode=yes",
-                           &format!("{}@{}:/opt/health/latest.json", "ubuntu", pub_ip), &cache_file])
-                    .output().await;
-                out.map(|o| o.status.success()).unwrap_or(false)
-            } || {
-                // Fallback: Dropbear port
-                let out = tokio::process::Command::new("rsync")
-                    .args(["-az", "-e", &format!("ssh -p {} -o ConnectTimeout=5 -o ControlPath=none -o BatchMode=yes", rescue_port),
-                           &format!("{}@{}:/opt/health/latest.json", "ubuntu", pub_ip), &cache_file])
+                           &format!("{}:/opt/health/latest.json", alias), &cache_file])
                     .output().await;
                 out.map(|o| o.status.success()).unwrap_or(false)
             };
@@ -233,7 +235,9 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                 }
             }
 
-            // Strategy 2: SSH all-in-one command (fallback if rsync fails — agent not deployed yet)
+            // Strategy 2: SSH fallback DISABLED — agents deployed on all VMs
+            // Uncomment if agents are not yet deployed:
+            /*
             let cmd = r#"echo "MEM:$(free -m | awk '/Mem/{printf "%d %d %d", $3, $2, $3*100/$2}')";echo "SWAP:$(free -m | awk '/Swap/{printf "%dM/%dM", $3, $2}')";echo "DISK:$(df -h / | awk 'NR==2{printf "%s %s %s", $3, $2, $5}')";echo "LOAD:$(cut -d' ' -f1-3 /proc/loadavg)";echo "UPTIME:$(uptime -p 2>/dev/null || awk '{printf "up %dd %dh", $1/86400, ($1%86400)/3600}' /proc/uptime)";docker ps -a --format '{{.Names}}|{{.Status}}' 2>/dev/null | sed 's/^/CTR:/' "#;
 
             let output = tokio::process::Command::new("ssh")
@@ -294,6 +298,7 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                 }
                 _ => { /* unreachable */ }
             }
+            */
             data
         }
     }).collect();
