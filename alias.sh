@@ -40,6 +40,27 @@ resolve_vm() {
 # 1) INSTALL
 # ═══════════════════════════════════════════════════════════════════
 
+install_dev_fedora() {
+  echo "=== Fedora/RHEL: Full Dev Toolchain ==="
+  dnf install -y \
+    fish git curl wget htop btop vim nano neovim \
+    gcc gcc-c++ make cmake rust cargo golang \
+    python3 python3-pip python3-virtualenv \
+    nodejs npm \
+    docker docker-compose \
+    jq ripgrep fd-find bat eza tree fzf zoxide duf ncdu \
+    rsync openssh-server wireguard-tools \
+    tmux screen strace lsof bind-utils net-tools iproute nmap ncat \
+    zip unzip p7zip tar gzip \
+    man-db less which file \
+    gnupg2 openssl \
+    sqlite sqlite-devel postgresql-devel \
+    starship gh terraform \
+    rclone
+  install_cloud_clis
+  install_extras
+}
+
 install_dev_arch() {
   echo "=== Arch Linux: Full Dev Toolchain ==="
   /usr/bin/pacman -Syu --noconfirm
@@ -218,10 +239,39 @@ FISHCONF
   echo "Fish config written to $FISH_DIR/config.fish"
 }
 
+detect_distro() {
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    case "$ID" in
+      fedora|rhel|centos|rocky|alma) echo "fedora" ;;
+      arch|manjaro)                  echo "arch" ;;
+      debian|ubuntu|pop|mint)        echo "debian" ;;
+      nixos)                         echo "nix" ;;
+      *)                             echo "" ;;
+    esac
+  else
+    echo ""
+  fi
+}
+
 do_install() {
-  local distros=(arch debian nix)
-  pick "Distro:" "${distros[@]}"
+  local detected
+  detected=$(detect_distro)
+  if [[ -n "$detected" ]]; then
+    echo "Detected: $detected"
+    read -rp "Use $detected? [Y/n] " yn
+    if [[ "${yn:-y}" =~ ^[Yy]?$ ]]; then
+      PICK="$detected"
+    else
+      local distros=(fedora arch debian nix)
+      pick "Distro:" "${distros[@]}"
+    fi
+  else
+    local distros=(fedora arch debian nix)
+    pick "Distro:" "${distros[@]}"
+  fi
   case "$PICK" in
+    fedora) install_dev_fedora ;;
     arch)   install_dev_arch ;;
     debian) install_dev_debian ;;
     nix)    install_dev_nix ;;
