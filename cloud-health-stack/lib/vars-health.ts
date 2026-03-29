@@ -53,6 +53,23 @@ export async function checkPublicUrls(
     );
     results.push(...batchResults);
   }
+  // Retry failed checks sequentially (parallel barrage can cause false timeouts)
+  const failed = results.filter(r => !r.tcp && !r.http && !r.https && r.code === "---");
+  if (failed.length > 0 && failed.length < results.length) {
+    log(`  Retrying ${failed.length} failed URLs sequentially...`);
+    for (const f of failed) {
+      const retry = await publicUrlMultiCheck(f.url);
+      if (retry.tcp || retry.http || retry.https) {
+        Object.assign(f, retry);
+        // Also retry auth if HTTPS now works
+        if (BEARER_TOKEN && retry.https) {
+          const authCode = await runAsync(`curl -sko /dev/null -w '%{http_code}' -L -H 'Authorization: Bearer ${BEARER_TOKEN}' https://${f.url} 2>/dev/null`, 8000);
+          f.auth = authCode !== "" && authCode !== "000" && authCode !== "401" && authCode !== "403" && authCode !== "502";
+          f.authCode = authCode;
+        }
+      }
+    }
+  }
   const up = results.filter(r => r.https).length;
   const authed = results.filter(r => r.auth).length;
   log(`  Public URLs: ${up}/${results.length} HTTPS, ${authed}/${results.length} AUTH OK`);
