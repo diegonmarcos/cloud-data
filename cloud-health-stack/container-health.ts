@@ -87,7 +87,7 @@ try { template = readFileSync(tplPath, "utf-8"); log(`Template loaded (${templat
 catch (e: any) { logErr(`Failed to read template: ${e.message}`); process.exit(1); }
 
 const hubVm = VMS.find(v => v.alias === "gcp-proxy");
-const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData: { mesh_peers: wgPeersData }, backupTargets, VMS, PRIVATE_DNS, DATABASES };
+const ctx: VarContext = { data, topology, caddyRoutes, hmData, wgPeersData: { mesh_peers: wgPeersData }, backupTargets, VMS, PRIVATE_DNS, DATABASES, consolidated };
 
 // Build vars — parallel async tasks first, then sync vars
 (async () => {

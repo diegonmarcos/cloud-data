@@ -59,8 +59,24 @@ export async function checkPublicUrls(
   return results;
 }
 
+/**
+ * Check VPS status via cloud CLI (gcloud/oci) — authoritative, not SSH
+ */
+function checkVpsStatus(vmId: string, cloudName: string): { ok: boolean; status: string } {
+  if (vmId.startsWith("gcp-")) {
+    const status = run(`gcloud compute instances list --filter="name=${cloudName}" --format="value(status)" 2>/dev/null`, 15000);
+    return { ok: status === "RUNNING", status: status || "?" };
+  }
+  if (vmId.startsWith("oci-")) {
+    // OCI CLI: list instances filtered by display name
+    const status = run(`oci compute instance list --compartment-id $(oci iam compartment list --query 'data[0].id' --raw-output 2>/dev/null) --display-name "${cloudName}" --query 'data[0]."lifecycle-state"' --raw-output 2>/dev/null`, 15000);
+    return { ok: status === "RUNNING", status: status || "?" };
+  }
+  return { ok: false, status: "?" };
+}
+
 export function varsHealth(ctx: VarContext, publicUrlResults?: PublicUrlResult[]): Record<string, string> {
-  const { data, wgPeersData, VMS } = ctx;
+  const { data, wgPeersData, VMS, consolidated } = ctx;
 
   return {
     WG_PEERS: (() => {
@@ -79,22 +95,37 @@ export function varsHealth(ctx: VarContext, publicUrlResults?: PublicUrlResult[]
           const handshake = live?.handshake || "no data";
           const alive = live?.alive ?? false;
 
+          // Get cloud name from consolidated
+          const vmInfo = VMS.find(v => v.alias === name);
+          const vmData = consolidated?.vms?.[vmInfo?.vmId || ""];
+          const cloudName = vmData?.specs?.cloud_name || "—";
+
           let vpsOk = false, pubOk = false, wgOk = false;
+          let vpsStatus = "—";
           if (isClient) {
-            vpsOk = true; pubOk = true; wgOk = alive;
+            vpsOk = true; pubOk = true; wgOk = alive; vpsStatus = "client";
           } else {
-            const vmData = data.vms.find((v: VmData) => v.alias === name);
-            vpsOk = vmData?.reachable ?? false;
+            // Use cloud CLI for VPS check (authoritative)
+            if (cloudName !== "—" && vmInfo) {
+              const vps = checkVpsStatus(vmInfo.vmId, cloudName);
+              vpsOk = vps.ok;
+              vpsStatus = vps.status;
+            } else {
+              // Fallback to SSH reachability
+              const vmLive = data.vms.find((v: VmData) => v.alias === name);
+              vpsOk = vmLive?.reachable ?? false;
+              vpsStatus = vpsOk ? "SSH OK" : "SSH fail";
+            }
             pubOk = pubIp !== "?" && pubIp !== "dynamic" && run(`nc -zw3 ${pubIp} 22 2>&1 && echo OK`).includes("OK");
             wgOk = alive;
           }
           const allOk = vpsOk && pubOk && wgOk;
           const overallIcon = allOk ? "✅" : (vpsOk || pubOk || wgOk) ? "⚠️" : "❌";
-          lines.push(`${overallIcon} ${name.padEnd(18)} ${vpsOk ? "✅" : "❌"}  ${pubOk ? "✅" : "❌"}  ${wgOk ? "✅" : "❌"}  ${pubIp.padEnd(18)} ${wgIp.padEnd(14)} ${peerType.padEnd(8)} ${handshake}`);
+          lines.push(`${overallIcon} ${name.padEnd(14)} ${cloudName.padEnd(18)} ${vpsOk ? "✅" : "❌"}  ${pubOk ? "✅" : "❌"}  ${wgOk ? "✅" : "❌"}  ${pubIp.padEnd(18)} ${wgIp.padEnd(14)} ${peerType.padEnd(8)} ${handshake}`);
         }
       } else if (data.wg_peers.length) {
         for (const p of data.wg_peers) {
-          lines.push(`${p.alive ? "✅" : "❌"} ${p.name.padEnd(18)} ?    ?    ${p.alive ? "✅" : "❌"}  ${p.pubIp.padEnd(18)} ${p.privIp.padEnd(14)} ${"?".padEnd(8)} ${p.handshake}`);
+          lines.push(`${p.alive ? "✅" : "❌"} ${p.name.padEnd(14)} ${"—".padEnd(18)} ?    ?    ${p.alive ? "✅" : "❌"}  ${p.pubIp.padEnd(18)} ${p.privIp.padEnd(14)} ${"?".padEnd(8)} ${p.handshake}`);
         }
       } else {
         lines.push("❌ No WG peer data available");
