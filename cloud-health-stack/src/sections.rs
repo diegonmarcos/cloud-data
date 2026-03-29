@@ -42,6 +42,7 @@ pub fn build_all_vars(ctx: &Context, live: &LiveData) -> HashMap<String, String>
 
     // C Security
     vars.insert("OPEN_PORTS".into(), build_port_scan(live));
+    vars.insert("NETWORK_AUDIT".into(), build_network_audit(ctx, live));
     vars.insert("DATABASES".into(), build_databases(ctx));
     vars.insert("DOCKER_NETWORKS".into(), build_docker_networks(ctx));
     vars.insert("VAULT_PROVIDERS".into(), build_vault_providers());
@@ -233,6 +234,97 @@ fn build_port_scan(live: &LiveData) -> String {
         let ports = if r.open_ports.is_empty() { "none reachable".into() } else { r.open_ports.iter().map(|p| p.to_string()).collect::<Vec<_>>().join(", ") };
         format!("{} {:18} {:18} ports: {}", icon, r.name, r.ip, ports)
     }).collect::<Vec<_>>().join("\n")
+}
+
+fn build_network_audit(ctx: &Context, live: &LiveData) -> String {
+    // VM columns: gcp-proxy | oci-mail | oci-analytics | oci-apps
+    let vm_order: Vec<&str> = vec!["gcp-proxy", "oci-mail", "oci-analytics", "oci-apps"];
+    let col_w = 18;
+
+    // Header
+    let header = format!("    {:20} {}", "Check",
+        vm_order.iter().map(|v| format!("{:>w$}", v, w = col_w)).collect::<Vec<_>>().join(" "));
+    let sep = format!("    {}", "─".repeat(20 + (col_w + 1) * vm_order.len()));
+
+    let mut rows = vec![header, sep.clone()];
+
+    // Row 1: Declared public ports (from cloud-data JSON)
+    let declared: Vec<String> = vm_order.iter().map(|alias| {
+        ctx.vms.iter().find(|v| v.alias == *alias)
+            .map(|v| if v.declared_ports.is_empty() { "none".into() } else {
+                v.declared_ports.iter().map(|p| p.to_string()).collect::<Vec<_>>().join(",")
+            }).unwrap_or("?".into())
+    }).collect();
+    rows.push(format!("    {:20} {}", "Declared ports",
+        declared.iter().map(|d| format!("{:>w$}", d, w = col_w)).collect::<Vec<_>>().join(" ")));
+
+    // Row 2: Scanned open ports (from port scan on public IP)
+    let scanned: Vec<String> = vm_order.iter().map(|alias| {
+        let vm_info = ctx.vms.iter().find(|v| v.alias == *alias);
+        let ip = vm_info.map(|v| v.pub_ip.as_str()).unwrap_or("?");
+        live.port_scan.iter().find(|r| r.ip == ip || r.name == *alias)
+            .map(|r| if r.open_ports.is_empty() { "🔒 none".into() } else {
+                r.open_ports.iter().map(|p| p.to_string()).collect::<Vec<_>>().join(",")
+            }).unwrap_or("—".into())
+    }).collect();
+    rows.push(format!("    {:20} {}", "Scanned (public)",
+        scanned.iter().map(|s| format!("{:>w$}", s, w = col_w)).collect::<Vec<_>>().join(" ")));
+
+    // Row 3: Docker exposed ports (from container health agent data)
+    let docker: Vec<String> = vm_order.iter().map(|alias| {
+        live.vm_data.iter().find(|v| v.alias == *alias)
+            .map(|v| {
+                let ports: Vec<String> = v.containers.iter()
+                    .filter(|c| !c.host_port.is_empty() && c.host_port != "—")
+                    .map(|c| c.host_port.clone())
+                    .collect();
+                if ports.is_empty() { "none".into() } else {
+                    let unique: std::collections::BTreeSet<&str> = ports.iter().map(|s| s.as_str()).collect();
+                    unique.into_iter().collect::<Vec<_>>().join(",")
+                }
+            }).unwrap_or("—".into())
+    }).collect();
+    rows.push(format!("    {:20} {}", "Docker host ports",
+        docker.iter().map(|d| format!("{:>w$}", d, w = col_w)).collect::<Vec<_>>().join(" ")));
+
+    // Row 4: Undeclared leaks (scanned - declared)
+    let leaks: Vec<String> = vm_order.iter().map(|alias| {
+        let vm_info = ctx.vms.iter().find(|v| v.alias == *alias);
+        let declared_set: std::collections::HashSet<u16> = vm_info.map(|v| v.declared_ports.iter().copied().collect()).unwrap_or_default();
+        // Always-allowed: 22 (SSH), 51820 (WG), 2200 (Dropbear)
+        let always_allowed: std::collections::HashSet<u16> = [22, 51820, 2200].into();
+        let ip = vm_info.map(|v| v.pub_ip.as_str()).unwrap_or("?");
+        let scanned_ports: Vec<u16> = live.port_scan.iter().find(|r| r.ip == ip || r.name == *alias)
+            .map(|r| r.open_ports.clone()).unwrap_or_default();
+        let leaked: Vec<u16> = scanned_ports.into_iter()
+            .filter(|p| !declared_set.contains(p) && !always_allowed.contains(p))
+            .collect();
+        if leaked.is_empty() { "✅ clean".into() } else {
+            format!("⚠️ {}", leaked.iter().map(|p| p.to_string()).collect::<Vec<_>>().join(","))
+        }
+    }).collect();
+    rows.push(format!("    {:20} {}", "Undeclared leaks",
+        leaks.iter().map(|l| format!("{:>w$}", l, w = col_w)).collect::<Vec<_>>().join(" ")));
+
+    // Row 5: WG status
+    let wg: Vec<String> = vm_order.iter().map(|alias| {
+        live.vm_data.iter().find(|v| v.alias == *alias)
+            .map(|v| if v.reachable { "✅ up".into() } else { "❌ down".into() })
+            .unwrap_or("—".into())
+    }).collect();
+    rows.push(format!("    {:20} {}", "WG reachable",
+        wg.iter().map(|w| format!("{:>w$}", w, w = col_w)).collect::<Vec<_>>().join(" ")));
+
+    // Row 6: Container count
+    let containers: Vec<String> = vm_order.iter().map(|alias| {
+        live.vm_data.iter().find(|v| v.alias == *alias)
+            .map(|v| format!("{}/{}", v.containers_running, v.containers_total))
+            .unwrap_or("—".into())
+    }).collect();
+    rows.push(format!("    {:20} {}", "Containers (up/total)",
+        containers.iter().map(|c| format!("{:>w$}", c, w = col_w)).collect::<Vec<_>>().join(" ")));
+
+    rows.join("\n")
 }
 
 fn build_databases(ctx: &Context) -> String {

@@ -21,10 +21,12 @@ pub fn load_context() -> Result<Context> {
         if let Some(pp) = vm["public_ports"].as_array() {
             for p in pp { if let Some(port) = p["port"].as_u64() { ports.insert(port as u16); } }
         }
+        let mut declared_ports: Vec<u16> = ports.iter().copied().collect();
         host_ports_by_vm.insert(alias.clone(), ports);
 
         let provider = if id.starts_with("oci-") { "OCI" } else if id.starts_with("gcp-") { "GCP" } else if id.starts_with("vast-") { "Vast.ai" } else { "?" };
         let cost = if id.contains("-f_") || id.contains("-f-") { "Free" } else if id.contains("-p_") { "Spot" } else { "?" };
+        declared_ports.sort();
         VmInfo {
             alias, vm_id: id.clone(),
             pub_ip: vm["ip"].as_str().unwrap_or("?").to_string(),
@@ -38,6 +40,7 @@ pub fn load_context() -> Result<Context> {
             shape: vm["specs"]["shape"].as_str().or(vm["specs"]["machine_type"].as_str()).unwrap_or("?").to_string(),
             provider: provider.to_string(),
             cost: cost.to_string(),
+            declared_ports,
         }
     }).filter(|v| !v.wg_ip.is_empty() && v.wg_ip != "?").collect();
 

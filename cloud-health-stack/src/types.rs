@@ -31,6 +31,7 @@ pub struct VmInfo {
     pub shape: String,
     pub provider: String,
     pub cost: String,
+    pub declared_ports: Vec<u16>,
 }
 
 #[derive(Clone, Debug)]
