@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GCP VM operations — run from Surface (requires gcloud)
+# VM operations — works everywhere (gcloud commands auto-skipped if missing)
 # Usage: ./alias.sh                # interactive
 #        ./alias.sh <cmd> <vm>     # direct
 set -euo pipefail
@@ -10,12 +10,7 @@ declare -A VM_MAP=(
 )
 PROJECT="diegonmarcos-infra-prod"
 
-COMMANDS=(serial ssh rescue reset setup dev-install kill-watchdog)
-
-resolve_vm() {
-  [[ -n "${VM_MAP[$1]:-}" ]] || { echo "Unknown VM: $1 (available: ${!VM_MAP[*]})"; exit 1; }
-  IFS=: read -r INSTANCE ZONE <<< "${VM_MAP[$1]}"
-}
+COMMANDS=(install serial ssh rescue reset kill-watchdog)
 
 pick() {
   local label="$1"; shift; local -a items=("$@")
@@ -26,20 +21,17 @@ pick() {
   PICK="${items[$idx]}"
 }
 
-run_cmd() {
-  local cmd="$1" vm="$2"
-  resolve_vm "$vm"
-  case "$cmd" in
-    serial)         gcloud compute connect-to-serial-port "$INSTANCE" --zone="$ZONE" --project="$PROJECT" ;;
-    ssh)            gcloud compute ssh root@"$INSTANCE" --zone="$ZONE" --project="$PROJECT" ;;
-    rescue)         gcloud compute ssh "$INSTANCE" --zone="$ZONE" --project="$PROJECT" --command='sudo iptables -F INPUT; sudo iptables -P INPUT ACCEPT; sudo systemctl restart sshd 2>/dev/null || sudo systemctl restart ssh 2>/dev/null; echo done' ;;
-    reset)          gcloud compute instances reset "$INSTANCE" --zone="$ZONE" --project="$PROJECT" ;;
-    setup)          gcloud compute ssh "$INSTANCE" --zone="$ZONE" --project="$PROJECT" --command='command -v pacman >/dev/null && sudo pacman -Sy --noconfirm fish || { sudo apt-get update -qq && sudo apt-get install -y -qq fish; }; fish --version' ;;
-    dev-install)    gcloud compute ssh root@"$INSTANCE" --zone="$ZONE" --project="$PROJECT" --command='
-set -e
-if command -v pacman >/dev/null 2>&1; then
-  pacman -Syu --noconfirm
-  pacman -S --noconfirm --needed \
+resolve_vm() {
+  [[ -n "${VM_MAP[$1]:-}" ]] || { echo "Unknown VM: $1 (available: ${!VM_MAP[*]})"; exit 1; }
+  IFS=: read -r INSTANCE ZONE <<< "${VM_MAP[$1]}"
+}
+
+# ── Install packages (runs locally, no gcloud needed) ───────────────
+
+install_dev_arch() {
+  echo "=== Arch: Full Dev Toolchain ==="
+  sudo pacman -Syu --noconfirm
+  sudo pacman -S --noconfirm --needed \
     fish git curl wget htop btop vim nano neovim \
     base-devel gcc make cmake rust cargo go \
     python python-pip python-virtualenv \
@@ -53,9 +45,13 @@ if command -v pacman >/dev/null 2>&1; then
     sops age gnupg \
     sqlite postgresql-libs \
     starship github-cli
-elif command -v apt-get >/dev/null 2>&1; then
-  apt-get update -qq
-  apt-get install -y -qq \
+  install_extras
+}
+
+install_dev_debian() {
+  echo "=== Debian/Ubuntu: Full Dev Toolchain ==="
+  sudo apt-get update -qq
+  sudo apt-get install -y -qq \
     fish git curl wget htop vim nano neovim \
     build-essential gcc make cmake rustc cargo golang \
     python3 python3-pip python3-venv \
@@ -69,30 +65,92 @@ elif command -v apt-get >/dev/null 2>&1; then
     sops age gnupg \
     sqlite3 libpq-dev \
     gh
-fi
-# Set fish as default shell
-chsh -s "$(command -v fish)" "$(logname 2>/dev/null || echo diego)" 2>/dev/null || true
-chsh -s "$(command -v fish)" root 2>/dev/null || true
-# Claude Code
-npm install -g @anthropic-ai/claude-code 2>/dev/null || true
-# Nix (if not installed)
-if ! command -v nix >/dev/null 2>&1; then
-  curl -L https://nixos.org/nix/install | sh -s -- --daemon --yes 2>/dev/null || true
-fi
-echo "dev-install done"
-' ;;
+  install_extras
+}
+
+install_dev_nix() {
+  echo "=== Nix: Full Dev Toolchain ==="
+  if ! command -v nix >/dev/null 2>&1; then
+    echo "Installing Nix..."
+    curl -L https://nixos.org/nix/install | sh -s -- --daemon --yes
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh 2>/dev/null || true
+  fi
+  nix-env -iA \
+    nixpkgs.fish nixpkgs.git nixpkgs.curl nixpkgs.wget nixpkgs.htop nixpkgs.btop \
+    nixpkgs.neovim nixpkgs.gcc nixpkgs.gnumake nixpkgs.cmake \
+    nixpkgs.rustc nixpkgs.cargo nixpkgs.go \
+    nixpkgs.python3 nixpkgs.nodejs nixpkgs.yarn nixpkgs.typescript \
+    nixpkgs.docker-compose \
+    nixpkgs.jq nixpkgs.yq nixpkgs.ripgrep nixpkgs.fd nixpkgs.bat nixpkgs.eza \
+    nixpkgs.tree nixpkgs.fzf nixpkgs.zoxide \
+    nixpkgs.rsync nixpkgs.wireguard-tools \
+    nixpkgs.tmux nixpkgs.strace nixpkgs.nmap \
+    nixpkgs.unzip nixpkgs.p7zip \
+    nixpkgs.sops nixpkgs.age nixpkgs.gnupg \
+    nixpkgs.sqlite nixpkgs.starship nixpkgs.gh
+  install_extras
+}
+
+install_extras() {
+  # Claude Code
+  echo "Installing Claude Code..."
+  npm install -g @anthropic-ai/claude-code 2>/dev/null || true
+  # Fish as default shell
+  if command -v fish >/dev/null 2>&1; then
+    sudo chsh -s "$(command -v fish)" "$(logname 2>/dev/null || whoami)" 2>/dev/null || true
+    sudo chsh -s "$(command -v fish)" root 2>/dev/null || true
+    echo "Fish set as default shell"
+  fi
+  echo "=== Install complete ==="
+}
+
+do_install() {
+  local distros=(arch debian nix)
+  pick "Distro:" "${distros[@]}"
+  case "$PICK" in
+    arch)   install_dev_arch ;;
+    debian) install_dev_debian ;;
+    nix)    install_dev_nix ;;
+  esac
+}
+
+# ── Remote commands (require gcloud) ────────────────────────────────
+
+run_cmd() {
+  local cmd="$1" vm="$2"
+  case "$cmd" in
+    install) do_install; return ;;
+  esac
+  resolve_vm "$vm"
+  if ! command -v gcloud >/dev/null 2>&1; then
+    echo "gcloud not found — remote commands need gcloud CLI"
+    exit 1
+  fi
+  case "$cmd" in
+    serial)         gcloud compute connect-to-serial-port "$INSTANCE" --zone="$ZONE" --project="$PROJECT" ;;
+    ssh)            gcloud compute ssh root@"$INSTANCE" --zone="$ZONE" --project="$PROJECT" ;;
+    rescue)         gcloud compute ssh "$INSTANCE" --zone="$ZONE" --project="$PROJECT" --command='sudo iptables -F INPUT; sudo iptables -P INPUT ACCEPT; sudo systemctl restart sshd 2>/dev/null || sudo systemctl restart ssh 2>/dev/null; echo done' ;;
+    reset)          gcloud compute instances reset "$INSTANCE" --zone="$ZONE" --project="$PROJECT" ;;
     kill-watchdog)  gcloud compute ssh "$INSTANCE" --zone="$ZONE" --project="$PROJECT" --command='sudo systemctl stop watchdog-petter.timer watchdog-petter.service 2>/dev/null; sudo systemctl disable watchdog-petter.timer 2>/dev/null; echo done' ;;
     *)              echo "Unknown: $cmd"; exit 1 ;;
   esac
 }
 
+# ── Entry point ─────────────────────────────────────────────────────
+
 if [[ $# -ge 2 ]]; then
   run_cmd "$1" "$2"
+elif [[ $# -eq 1 && "$1" == "install" ]]; then
+  do_install
 elif [[ $# -eq 0 ]]; then
-  mapfile -t vms < <(printf '%s\n' "${!VM_MAP[@]}" | sort)
   pick "Command:" "${COMMANDS[@]}"; cmd="$PICK"
-  pick "VM:" "${vms[@]}"; vm="$PICK"
-  run_cmd "$cmd" "$vm"
+  if [[ "$cmd" == "install" ]]; then
+    do_install
+  else
+    mapfile -t vms < <(printf '%s\n' "${!VM_MAP[@]}" | sort)
+    pick "VM:" "${vms[@]}"; vm="$PICK"
+    run_cmd "$cmd" "$vm"
+  fi
 else
   echo "Usage: $0 [command] [vm]"
   echo "Commands: ${COMMANDS[*]}"
