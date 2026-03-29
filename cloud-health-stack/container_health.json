@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-29T02:26:26.862Z",
+  "generated": "2026-03-29T02:30:03.030Z",
   "wg_peers": [],
   "api_mcp": [],
   "public_urls": [
@@ -30,56 +30,56 @@
     {
       "url": "doc.diegonmarcos.com",
       "upstream": "hedgedoc.app:3018",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "chat.diegonmarcos.com",
       "upstream": "mattermost.app:8065",
-      "http_code": "302",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "photos.diegonmarcos.com",
       "upstream": "photoprism.app:3013",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "cal.diegonmarcos.com",
       "upstream": "radicale.app:5232",
-      "http_code": "302",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "slides.diegonmarcos.com",
       "upstream": "revealmd.app:3014",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "webmail.diegonmarcos.com",
       "upstream": "snappymail.app:8888",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "mail.diegonmarcos.com",
       "upstream": "stalwart.app:443",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "vault.diegonmarcos.com",
       "upstream": "vaultwarden.app:8880",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "api.diegonmarcos.com",
       "upstream": "crawlee.app:3000",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "dns.internal",
@@ -90,164 +90,164 @@
     {
       "url": "auth.diegonmarcos.com",
       "upstream": "authelia.app:9091",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "proxy.diegonmarcos.com",
       "upstream": "caddy.app:443",
-      "http_code": "302",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "api.diegonmarcos.com/c3-api",
       "upstream": "c3-infra-api.app:8081",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "mcp.diegonmarcos.com/c3-infra-mcp",
       "upstream": "c3-infra-mcp.app:3100",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "api.diegonmarcos.com/services",
       "upstream": "c3-services-api.app:8082",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "workflows.diegonmarcos.com",
       "upstream": "dagu.app:8070",
-      "http_code": "302",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "logs.diegonmarcos.com",
       "upstream": "dozzle.app:9999",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "grafana.diegonmarcos.com",
       "upstream": "grafana.app:3200",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "analytics.diegonmarcos.com",
       "upstream": "matomo.app:8080",
-      "http_code": "302",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "db.diegonmarcos.com",
       "upstream": "nocodb.app:8085",
-      "http_code": "302",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "rss.diegonmarcos.com",
       "upstream": "ntfy.app:8090",
-      "http_code": "302",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "windmill.diegonmarcos.com",
       "upstream": "windmill-app.app:8000",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "git.diegonmarcos.com",
       "upstream": "backup-gitea.app:3002",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "api.diegonmarcos.com/dash",
       "upstream": "diegonmarcos.github.io",
-      "http_code": "301",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "api.diegonmarcos.com/crawlee",
       "upstream": "crawlee.app:3000",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/windmill",
       "upstream": "windmill-app.app:8000",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/etherpad",
       "upstream": "etherpad.app:3012",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/filebrowser",
       "upstream": "filebrowser.app:3015",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/hedgedoc",
       "upstream": "hedgedoc.app:3018",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/revealmd",
       "upstream": "revealmd.app:3014",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/dozzle",
       "upstream": "dozzle.app:9999",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/grafana",
       "upstream": "grafana.app:3016",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/gitea",
       "upstream": "gitea.app:3017",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com/crawlee",
       "upstream": "crawlee.app:3001",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "cloud.diegonmarcos.com",
       "upstream": "c3-spec.app:3080",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "mcp.diegonmarcos.com",
       "upstream": "c3-infra-mcp.app:3100",
-      "http_code": "200",
-      "up": true
+      "http_code": "",
+      "up": false
     },
     {
       "url": "app.diegonmarcos.com",
       "upstream": "path-based",
-      "http_code": "404",
-      "up": true
+      "http_code": "",
+      "up": false
     }
   ],
   "mail_ports": [
@@ -261,19 +261,19 @@
       "host": "mail.diegonmarcos.com",
       "port": 465,
       "proto": "SMTPS",
-      "open": true
+      "open": false
     },
     {
       "host": "mail.diegonmarcos.com",
       "port": 587,
       "proto": "Submission",
-      "open": true
+      "open": false
     },
     {
       "host": "mail.diegonmarcos.com",
       "port": 993,
       "proto": "IMAPS",
-      "open": true
+      "open": false
     },
     {
       "host": "mail.diegonmarcos.com",
@@ -291,19 +291,19 @@
       "host": "smtp.diegonmarcos.com",
       "port": 465,
       "proto": "SMTPS",
-      "open": true
+      "open": false
     },
     {
       "host": "smtp.diegonmarcos.com",
       "port": 587,
       "proto": "Submission",
-      "open": true
+      "open": false
     },
     {
       "host": "imap.diegonmarcos.com",
       "port": 993,
       "proto": "IMAPS",
-      "open": true
+      "open": false
     },
     {
       "host": "mails.diegonmarcos.com",
@@ -777,14 +777,14 @@
       "os": "oci-apps",
       "cpus": 4,
       "ram": "24G",
-      "mem_used": "4918M",
+      "mem_used": "4936M",
       "mem_total": "23975M",
       "mem_pct": 20,
       "swap": "0M/0M",
       "disk_used": "64.8G",
       "disk_total": "95.8G",
       "disk_pct": "71%",
-      "load": "0.47 0.41 0.43",
+      "load": "1.03 0.76 0.56",
       "uptime": "up 1d 8h",
       "containers_running": 49,
       "containers_total": 54,
@@ -821,30 +821,36 @@
         },
         {
           "name": "crawlee_db",
-          "status": "Up 45 seconds (unhealthy)",
+          "status": "Up 49 seconds (unhealthy)",
           "health": "unhealthy",
           "icon": "❌"
         },
         {
-          "name": "photoprism_app",
-          "status": "Up About a minute (health: starting)",
+          "name": "ollama-hai",
+          "status": "Up 2 seconds (health: starting)",
           "health": "starting",
           "icon": "⚠️"
         },
         {
+          "name": "mattermost-bots",
+          "status": "Up About a minute",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
+          "name": "mattermost-mcp",
+          "status": "Up 2 minutes",
+          "health": "none",
+          "icon": "✅"
+        },
+        {
           "name": "mail-mcp",
-          "status": "Up 52 seconds",
+          "status": "Up 4 minutes",
           "health": "none",
           "icon": "✅"
         },
         {
           "name": "windmill-worker",
-          "status": "Up 3 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "mattermost-bots",
           "status": "Up 3 hours",
           "health": "none",
           "icon": "✅"
@@ -904,44 +910,68 @@
           "icon": "✅"
         },
         {
-          "name": "mattermost-mcp",
-          "status": "Up 7 hours",
+          "name": "code-server",
+          "status": "Up 8 hours",
           "health": "none",
           "icon": "✅"
         },
         {
-          "name": "code-server",
-          "status": "Up 7 hours",
-          "health": "none",
+          "name": "photoprism_app",
+          "status": "Up 22 seconds (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_mariadb",
+          "status": "Up 33 seconds (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "photoprism_rclone",
+          "status": "Up 33 seconds (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "mattermost",
+          "status": "Up About a minute (healthy)",
+          "health": "healthy",
+          "icon": "✅"
+        },
+        {
+          "name": "mattermost-postgres",
+          "status": "Up About a minute (healthy)",
+          "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "hedgedoc_app",
-          "status": "Up 51 seconds (healthy)",
+          "status": "Up 4 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "hedgedoc_postgres",
-          "status": "Up About a minute (healthy)",
+          "status": "Up 4 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "etherpad_app",
-          "status": "Up About a minute (healthy)",
+          "status": "Up 4 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "etherpad_postgres",
-          "status": "Up About a minute (healthy)",
+          "status": "Up 4 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "google-workspace-mcp",
-          "status": "Up 2 minutes (healthy)",
+          "status": "Up 6 minutes (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -965,31 +995,19 @@
         },
         {
           "name": "quant_light_db",
-          "status": "Up 3 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photoprism_rclone",
-          "status": "Up 3 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "photoprism_mariadb",
-          "status": "Up 3 hours (healthy)",
+          "status": "Up 4 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "nocodb",
-          "status": "Up 3 hours (healthy)",
+          "status": "Up 4 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "nocodb-db",
-          "status": "Up 3 hours (healthy)",
+          "status": "Up 4 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -1066,12 +1084,6 @@
           "icon": "✅"
         },
         {
-          "name": "ollama-hai",
-          "status": "Up 7 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
           "name": "quant_light_research",
           "status": "Up 7 hours (healthy)",
           "health": "healthy",
@@ -1090,26 +1102,14 @@
           "icon": "✅"
         },
         {
-          "name": "mattermost",
-          "status": "Up 7 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "mattermost-postgres",
-          "status": "Up 7 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
           "name": "grist_app",
-          "status": "Up 7 hours (healthy)",
+          "status": "Up 8 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "filebrowser_app",
-          "status": "Up 7 hours (healthy)",
+          "status": "Up 8 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         }

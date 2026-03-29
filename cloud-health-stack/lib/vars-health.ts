@@ -136,13 +136,20 @@ export function varsHealth(ctx: VarContext, publicUrlResults?: PublicUrlResult[]
             pubOk = pubIp !== "?" && pubIp !== "dynamic" && run(`nc -zw3 ${pubIp} 22 2>&1 && echo OK`).includes("OK");
             wgOk = alive;
           }
+          // Dropbear rescue SSH check (port 2200)
+          let dropbearOk = false;
+          if (!isClient && pubIp !== "?" && pubIp !== "dynamic") {
+            const rescuePort = vmData?.rescue_port || 2200;
+            dropbearOk = run(`nc -zw3 ${pubIp} ${rescuePort} 2>&1 && echo OK`).includes("OK");
+          }
           const allOk = vpsOk && pubOk && wgOk;
-          const overallIcon = allOk ? "✅" : (vpsOk || pubOk || wgOk) ? "⚠️" : "❌";
-          lines.push(`${overallIcon} ${name.padEnd(14)} ${cloudName.padEnd(18)} ${vpsOk ? "✅" : "❌"}  ${pubOk ? "✅" : "❌"}  ${wgOk ? "✅" : "❌"}  ${pubIp.padEnd(18)} ${wgIp.padEnd(14)} ${peerType.padEnd(8)} ${handshake}`);
+          const overallIcon = allOk ? "✅" : (vpsOk || pubOk || wgOk || dropbearOk) ? "⚠️" : "❌";
+          const dbIcon = isClient ? "—" : dropbearOk ? "✅" : "❌";
+          lines.push(`${overallIcon} ${name.padEnd(14)} ${cloudName.padEnd(18)} ${vpsOk ? "✅" : "❌"}  ${pubOk ? "✅" : "❌"}  ${dbIcon}  ${wgOk ? "✅" : "❌"}  ${pubIp.padEnd(18)} ${wgIp.padEnd(14)} ${peerType.padEnd(8)} ${handshake}`);
         }
       } else if (data.wg_peers.length) {
         for (const p of data.wg_peers) {
-          lines.push(`${p.alive ? "✅" : "❌"} ${p.name.padEnd(14)} ${"—".padEnd(18)} ?    ?    ${p.alive ? "✅" : "❌"}  ${p.pubIp.padEnd(18)} ${p.privIp.padEnd(14)} ${"?".padEnd(8)} ${p.handshake}`);
+          lines.push(`${p.alive ? "✅" : "❌"} ${p.name.padEnd(14)} ${"—".padEnd(18)} ?    ?    ?    ${p.alive ? "✅" : "❌"}  ${p.pubIp.padEnd(18)} ${p.privIp.padEnd(14)} ${"?".padEnd(8)} ${p.handshake}`);
         }
       } else {
         lines.push("❌ No WG peer data available");
