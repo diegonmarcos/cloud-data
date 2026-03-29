@@ -108,5 +108,27 @@
         "duration_s": 274
       }
     ]
+  },
+  {
+    "vm": "gcp-t4",
+    "run_id": "23699439386",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23699439386",
+    "sha": "4afbf4bc969cd6e3d3d4d1298978defcb1444678",
+    "trigger": "push",
+    "ts": "2026-03-29T02:34:39Z",
+    "duration_s": 662,
+    "total": 1,
+    "ok": 0,
+    "fail": 1,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "ollama",
+        "dir": "ad-agi_ollama",
+        "status": "fail",
+        "duration_s": 528
+      }
+    ]
   }
 ]
