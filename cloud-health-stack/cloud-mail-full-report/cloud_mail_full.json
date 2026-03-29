@@ -1,0 +1,556 @@
+{
+  "generated": "2026-03-29T21:01:48.553348040+00:00",
+  "duration_ms": 42395,
+  "instant_kpis": [
+    {
+      "name": "mail.* HTTPS",
+      "passed": false,
+      "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/)",
+      "duration_ms": 188,
+      "error": "err: error sending request for url (https://mail.diegonmarcos.com/)",
+      "severity": "Critical"
+    },
+    {
+      "name": "webmail HTTPS",
+      "passed": false,
+      "details": "HTTP err: error sending request for url (https://webmail.diegonmarcos.com/)",
+      "duration_ms": 224,
+      "error": "err: error sending request for url (https://webmail.diegonmarcos.com/)",
+      "severity": "Critical"
+    },
+    {
+      "name": "auth HTTPS",
+      "passed": false,
+      "details": "HTTP err: error sending request for url (https://auth.diegonmarcos.com/api/health)",
+      "duration_ms": 189,
+      "error": "err: error sending request for url (https://auth.diegonmarcos.com/api/health)",
+      "severity": "Warning"
+    },
+    {
+      "name": "MCP endpoint",
+      "passed": false,
+      "details": "HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
+      "duration_ms": 196,
+      "error": "err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
+      "severity": "Warning"
+    },
+    {
+      "name": "mail:993 TLS",
+      "passed": false,
+      "details": "FAIL",
+      "duration_ms": 218,
+      "error": "FAIL",
+      "severity": "Critical"
+    },
+    {
+      "name": "mail:465 TLS",
+      "passed": false,
+      "details": "FAIL",
+      "duration_ms": 219,
+      "error": "FAIL",
+      "severity": "Critical"
+    },
+    {
+      "name": "mail:587 STARTTLS",
+      "passed": false,
+      "details": "FAIL",
+      "duration_ms": 177,
+      "error": "FAIL",
+      "severity": "Critical"
+    },
+    {
+      "name": "MX record",
+      "passed": true,
+      "details": "22 route1.mx.cloudflare.net.",
+      "duration_ms": 68,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "DKIM record",
+      "passed": true,
+      "details": "present",
+      "duration_ms": 68,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "GHA health",
+      "passed": false,
+      "details": "2 failing: Health → Mail (Full Check), Health → Mail (Full Check)",
+      "duration_ms": 971,
+      "error": "2 failing: Health → Mail (Full Check), Health → Mail (Full Check)",
+      "severity": "Info"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "WG oci-mail",
+      "passed": true,
+      "details": "10.0.0.3:22 OK",
+      "duration_ms": 251,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "WG oci-apps",
+      "passed": false,
+      "details": "WG DOWN",
+      "duration_ms": 3000,
+      "error": "WG DOWN",
+      "severity": "Critical"
+    },
+    {
+      "name": "WG gcp-proxy",
+      "passed": true,
+      "details": "10.0.0.1:22 OK",
+      "duration_ms": 185,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "SSH batch oci-mail",
+      "passed": true,
+      "details": "Docker 27.5.1",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "SSH batch oci-apps",
+      "passed": false,
+      "details": "SSH FAILED",
+      "duration_ms": 0,
+      "error": "SSH FAILED",
+      "severity": "Warning"
+    },
+    {
+      "name": "SSH batch gcp-proxy",
+      "passed": false,
+      "details": "SSH FAILED",
+      "duration_ms": 0,
+      "error": "SSH or Authelia FAILED",
+      "severity": "Warning"
+    },
+    {
+      "name": "Disk space",
+      "passed": true,
+      "details": "68% used",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Memory",
+      "passed": true,
+      "details": "667/954MB (70%)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Load",
+      "passed": true,
+      "details": "load: 2.16 2.04 1.99 WARNING",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    }
+  ],
+  "containers": [
+    {
+      "name": "stalwart",
+      "passed": true,
+      "details": "Up 39 minutes",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "smtp-proxy",
+      "passed": true,
+      "details": "Up 40 minutes",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "snappymail",
+      "passed": true,
+      "details": "Up 40 minutes",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "mail-mcp",
+      "passed": false,
+      "details": "no data",
+      "duration_ms": 0,
+      "error": "no data",
+      "severity": "Warning"
+    }
+  ],
+  "network": [
+    {
+      "name": "Caddy (gcp-proxy)",
+      "passed": false,
+      "details": "Caddy DOWN",
+      "duration_ms": 3198,
+      "error": "Caddy DOWN",
+      "severity": "Critical"
+    },
+    {
+      "name": "Hickory DNS",
+      "passed": false,
+      "details": "FAIL: no response",
+      "duration_ms": 3002,
+      "error": "FAIL: no response",
+      "severity": "Critical"
+    },
+    {
+      "name": "TLS WG direct",
+      "passed": true,
+      "details": "993 OK 465 OK 587 OK",
+      "duration_ms": 591,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "Caddy L4 -> IMAP",
+      "passed": false,
+      "details": "no proxy data",
+      "duration_ms": 0,
+      "error": "no proxy data",
+      "severity": "Critical"
+    },
+    {
+      "name": "Caddy L4 -> SMTPS",
+      "passed": false,
+      "details": "no proxy data",
+      "duration_ms": 0,
+      "error": "no proxy data",
+      "severity": "Critical"
+    },
+    {
+      "name": "Caddy L4 -> SMTP",
+      "passed": false,
+      "details": "no proxy data",
+      "duration_ms": 0,
+      "error": "no proxy data",
+      "severity": "Critical"
+    },
+    {
+      "name": "mail:993 (IMAP)",
+      "passed": false,
+      "details": "FAIL",
+      "duration_ms": 181,
+      "error": "FAIL",
+      "severity": "Critical"
+    },
+    {
+      "name": "mail:465 (SMTPS)",
+      "passed": false,
+      "details": "FAIL",
+      "duration_ms": 181,
+      "error": "FAIL",
+      "severity": "Critical"
+    },
+    {
+      "name": "mail:587 (SMTP Sub)",
+      "passed": false,
+      "details": "FAIL",
+      "duration_ms": 191,
+      "error": "FAIL",
+      "severity": "Critical"
+    },
+    {
+      "name": "SMTP :25 relay",
+      "passed": true,
+      "details": "220 mail.diegonmarcos.com Stalwart ESMTP at your service",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Warning"
+    },
+    {
+      "name": "SMTP :587 local TLS",
+      "passed": true,
+      "details": "STARTTLS OK",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Warning"
+    },
+    {
+      "name": "Webmail HTTPS",
+      "passed": false,
+      "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/)",
+      "duration_ms": 159,
+      "error": "err: error sending request for url (https://mail.diegonmarcos.com/)",
+      "severity": "Warning"
+    },
+    {
+      "name": "Webmail internal",
+      "passed": true,
+      "details": "HTTP 200",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Warning"
+    },
+    {
+      "name": "SnappyMail internal",
+      "passed": true,
+      "details": "HTTP 200",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Warning"
+    },
+    {
+      "name": "ManageSieve :4190",
+      "passed": true,
+      "details": "ManageSieve OK",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Warning"
+    },
+    {
+      "name": "Authelia health",
+      "passed": false,
+      "details": "no proxy data",
+      "duration_ms": 0,
+      "error": "no proxy data",
+      "severity": "Warning"
+    },
+    {
+      "name": "OIDC bearer -> webmail",
+      "passed": false,
+      "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/)",
+      "duration_ms": 154,
+      "error": "HTTP 0",
+      "severity": "Warning"
+    },
+    {
+      "name": "Stalwart Admin via Bearer",
+      "passed": false,
+      "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/api/)",
+      "duration_ms": 168,
+      "error": "HTTP 0",
+      "severity": "Warning"
+    },
+    {
+      "name": "mcp->DNS resolve",
+      "passed": false,
+      "details": "no app data",
+      "duration_ms": 0,
+      "error": "no app data",
+      "severity": "Warning"
+    },
+    {
+      "name": "mcp->IMAP TLS",
+      "passed": false,
+      "details": "no app data",
+      "duration_ms": 0,
+      "error": "no app data",
+      "severity": "Warning"
+    },
+    {
+      "name": "mcp->SMTP TLS",
+      "passed": false,
+      "details": "no app data",
+      "duration_ms": 0,
+      "error": "no app data",
+      "severity": "Warning"
+    },
+    {
+      "name": "mcp->IMAP WG direct",
+      "passed": false,
+      "details": "no app data",
+      "duration_ms": 0,
+      "error": "no app data",
+      "severity": "Warning"
+    },
+    {
+      "name": "mcp->IMAP LOGIN",
+      "passed": false,
+      "details": "no app data",
+      "duration_ms": 0,
+      "error": "no app data",
+      "severity": "Warning"
+    },
+    {
+      "name": "mcp->SMTP AUTH",
+      "passed": false,
+      "details": "no app data",
+      "duration_ms": 0,
+      "error": "no app data",
+      "severity": "Warning"
+    },
+    {
+      "name": "mail-mcp MCP",
+      "passed": false,
+      "details": "HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (alive)",
+      "duration_ms": 154,
+      "error": "err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
+      "severity": "Warning"
+    },
+    {
+      "name": "All ports bound",
+      "passed": false,
+      "details": "missing: 8443",
+      "duration_ms": 0,
+      "error": "missing: 8443",
+      "severity": "Critical"
+    }
+  ],
+  "dns_auth": [
+    {
+      "name": "MX",
+      "passed": true,
+      "details": "22 route1.mx.cloudflare.net.",
+      "duration_ms": 19,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "DKIM",
+      "passed": true,
+      "details": "present",
+      "duration_ms": 20,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "SPF",
+      "passed": true,
+      "details": "v=spf1",
+      "duration_ms": 17,
+      "error": null,
+      "severity": "Critical"
+    },
+    {
+      "name": "DMARC",
+      "passed": true,
+      "details": "v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
+      "duration_ms": 19,
+      "error": null,
+      "severity": "Critical"
+    }
+  ],
+  "internals": [
+    {
+      "name": "IMAP auth",
+      "passed": true,
+      "details": "Stalwart IMAP responding",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "IMAP protocol",
+      "passed": true,
+      "details": "IMAP4rev1",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "spam filter",
+      "passed": true,
+      "details": "Stalwart built-in",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "data store",
+      "passed": true,
+      "details": "RocksDB",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "admin panel",
+      "passed": false,
+      "details": "HTTP 000",
+      "duration_ms": 0,
+      "error": "admin panel down",
+      "severity": "Warning"
+    },
+    {
+      "name": "sieve filter",
+      "passed": true,
+      "details": "Stalwart ManageSieve",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "mailbox quota",
+      "passed": true,
+      "details": "stalwart-builtin-quota",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Admin API accounts",
+      "passed": false,
+      "details": "",
+      "duration_ms": 0,
+      "error": "parse failed",
+      "severity": "Info"
+    },
+    {
+      "name": "Admin API domains",
+      "passed": false,
+      "details": "",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Mail queue",
+      "passed": true,
+      "details": "",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "User accounts",
+      "passed": false,
+      "details": "unknown ()",
+      "duration_ms": 0,
+      "error": "no users found",
+      "severity": "Warning"
+    }
+  ],
+  "e2e_delivery": [
+    {
+      "name": "Resend API key",
+      "passed": false,
+      "details": "not set (set RESEND_API_KEY to enable E2E)",
+      "duration_ms": 0,
+      "error": "RESEND_API_KEY not set",
+      "severity": "Info"
+    }
+  ],
+  "summary": {
+    "total_checks": 65,
+    "passed": 28,
+    "failed": 37,
+    "warnings": 18,
+    "critical": 15
+  },
+  "timers": {
+    "P3_network": 3198,
+    "P2-P5_parallel": 3198,
+    "P4_dns_auth": 3198,
+    "P6_e2e_delivery": 0,
+    "P2_containers": 0,
+    "P5_internals": 0,
+    "P1_preflight": 38003,
+    "P0_instant_kpis": 1192,
+    "TOTAL": 42395
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "vm": "arch-1",
+  "timestamp": "2026-03-29T20:59:34Z",
+  "mem": {"used":739,"total":1952,"pct":37},
+  "swap": {"used":0,"total":3999},
+  "disk": {"used":"19G","total":"31G","pct":"61%"},
+  "load": "1.99 0.63 0.22",
+  "uptime": "0d 0h",
+  "wg_up": true,
+  "containers_running": 0
+0,
+  "containers_total": 0,
+  "containers": []
+}

@@ -3,7 +3,7 @@ use anyhow::Result;
 use serde_json::Value;
 use std::collections::{HashMap, HashSet};
 
-const CONSOLIDATED: &str = "../_cloud-data-consolidated.json";
+const CONSOLIDATED: &str = "../../_cloud-data-consolidated.json";
 
 pub fn load_context() -> Result<Context> {
     let raw = std::fs::read_to_string(CONSOLIDATED)?;

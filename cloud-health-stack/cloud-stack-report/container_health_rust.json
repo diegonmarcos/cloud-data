@@ -1,6 +1,6 @@
 {
-  "generated": "2026-03-29T05:35:47.522020134+00:00",
-  "duration_ms": 60722,
+  "generated": "2026-03-29T21:02:33.879448856+00:00",
+  "duration_ms": 66551,
   "mesh": [
     {
       "name": "oci-mail",
@@ -8,9 +8,9 @@
       "pub_ip": "130.110.251.193",
       "wg_ip": "10.0.0.3",
       "peer_type": "VM",
-      "vps_ok": true,
-      "vps_status": "SSH OK",
-      "pub_ok": true,
+      "vps_ok": false,
+      "vps_status": "SSH fail",
+      "pub_ok": false,
       "dropbear_ok": false,
       "wg_ok": false,
       "wg_handshake": "no data"
@@ -21,9 +21,9 @@
       "pub_ip": "129.151.228.66",
       "wg_ip": "10.0.0.4",
       "peer_type": "VM",
-      "vps_ok": true,
-      "vps_status": "SSH OK",
-      "pub_ok": true,
+      "vps_ok": false,
+      "vps_status": "SSH fail",
+      "pub_ok": false,
       "dropbear_ok": false,
       "wg_ok": false,
       "wg_handshake": "no data"
@@ -63,7 +63,20 @@
       "vps_ok": true,
       "vps_status": "RUNNING",
       "pub_ok": true,
-      "dropbear_ok": true,
+      "dropbear_ok": false,
+      "wg_ok": false,
+      "wg_handshake": "no data"
+    },
+    {
+      "name": "gha-runner",
+      "cloud_name": "—",
+      "pub_ip": "dynamic",
+      "wg_ip": "10.0.0.200",
+      "peer_type": "CLIENT",
+      "vps_ok": true,
+      "vps_status": "client",
+      "pub_ok": true,
+      "dropbear_ok": false,
       "wg_ok": false,
       "wg_handshake": "no data"
     },
@@ -376,36 +389,6 @@
       "auth_code": "---"
     },
     {
-      "url": "api.diegonmarcos.com/dash",
-      "upstream": "diegonmarcos.github.io",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "---",
-      "auth_code": "---"
-    },
-    {
-      "url": "api.diegonmarcos.com/crawlee",
-      "upstream": "crawlee.app:3000",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "---",
-      "auth_code": "---"
-    },
-    {
-      "url": "app.diegonmarcos.com/windmill",
-      "upstream": "windmill-app.app:8000",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "---",
-      "auth_code": "---"
-    },
-    {
       "url": "app.diegonmarcos.com/etherpad",
       "upstream": "etherpad.app:3012",
       "tcp": false,
@@ -456,6 +439,16 @@
       "auth_code": "---"
     },
     {
+      "url": "app.diegonmarcos.com/windmill",
+      "upstream": "windmill-app.app:8000",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "---",
+      "auth_code": "---"
+    },
+    {
       "url": "app.diegonmarcos.com/grafana",
       "upstream": "grafana.app:3016",
       "tcp": false,
@@ -486,6 +479,26 @@
       "auth_code": "---"
     },
     {
+      "url": "api.diegonmarcos.com/dash",
+      "upstream": "diegonmarcos.github.io",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "---",
+      "auth_code": "---"
+    },
+    {
+      "url": "api.diegonmarcos.com/crawlee",
+      "upstream": "crawlee.app:3000",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "---",
+      "auth_code": "---"
+    },
+    {
       "url": "cloud.diegonmarcos.com",
       "upstream": "c3-spec.app:3080",
       "tcp": false,
@@ -497,7 +510,7 @@
     },
     {
       "url": "mcp.diegonmarcos.com",
-      "upstream": "c3-infra-mcp.app:3100",
+      "upstream": "g-workspace-mcp.app:3104",
       "tcp": false,
       "http": false,
       "https": false,
@@ -541,16 +554,6 @@
       "dns": "hickory-dns.app",
       "container": "hickory-dns",
       "port": 53,
-      "vm": "gcp-proxy",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": ""
-    },
-    {
-      "dns": "introspect-proxy.app",
-      "container": "introspect-proxy",
-      "port": 4182,
       "vm": "gcp-proxy",
       "tcp": false,
       "http": false,
@@ -1354,8 +1357,7 @@
       "name": "gcp-proxy",
       "ip": "35.226.147.64",
       "open_ports": [
-        22,
-        2200
+        22
       ]
     },
     {
@@ -1374,7 +1376,6 @@
       "name": "oci-mail",
       "ip": "130.110.251.193",
       "open_ports": [
-        22,
         25,
         465,
         587,
@@ -1385,18 +1386,16 @@
     {
       "name": "oci-analytics",
       "ip": "129.151.228.66",
-      "open_ports": [
-        22
-      ]
+      "open_ports": []
     }
   ],
   "timers": {
-    "vm_ssh": 9904,
-    "mesh": 7250,
-    "mail_dns": 55017,
-    "port_scan": 4550,
-    "public_urls": 7251,
+    "public_urls": 7899,
+    "vm_ssh": 63545,
+    "port_scan": 4546,
+    "mesh": 7756,
     "private": 0,
-    "TOTAL": 60722
+    "mail_dns": 55016,
+    "TOTAL": 66551
   }
 }
