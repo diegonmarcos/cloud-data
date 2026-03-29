@@ -20,7 +20,7 @@ REPOS=(
   "vault:https://github.com/diegonmarcos/vault.git"
 )
 
-MAIN_COMMANDS=(install ssh git-clone info)
+MAIN_COMMANDS=(docker-start install ssh git-clone info)
 
 pick() {
   local label="$1"; shift; local -a items=("$@")
@@ -34,6 +34,55 @@ pick() {
 resolve_vm() {
   [[ -n "${VM_MAP[$1]:-}" ]] || { echo "Unknown VM: $1 (available: ${!VM_MAP[*]})"; exit 1; }
   IFS=: read -r INSTANCE ZONE <<< "${VM_MAP[$1]}"
+}
+
+# ═══════════════════════════════════════════════════════════════════
+# 0) DOCKER START — pull & run dev environment container
+# ═══════════════════════════════════════════════════════════════════
+
+do_docker_start() {
+  local IMG="ghcr.io/diegonmarcos/diego-user-env:latest"
+  local HOME_DIR="${HOME:-/root}"
+
+  # Check docker + git, install if missing
+  if ! command -v docker >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+    echo "Docker or git not found — installing..."
+    if command -v dnf >/dev/null 2>&1; then
+      dnf install -y --skip-unavailable docker git curl
+      systemctl enable --now docker 2>/dev/null || true
+    elif command -v apt-get >/dev/null 2>&1; then
+      apt-get update -qq && apt-get install -y -qq docker.io git curl
+      systemctl enable --now docker 2>/dev/null || true
+    elif command -v pacman >/dev/null 2>&1; then
+      pacman -Sy --noconfirm docker git curl
+      systemctl enable --now docker 2>/dev/null || true
+    elif command -v nix-env >/dev/null 2>&1; then
+      nix-env -iA nixpkgs.docker nixpkgs.git nixpkgs.curl
+    else
+      echo "No package manager found — install docker and git manually"
+      exit 1
+    fi
+  fi
+
+  echo "=== Docker Start: $IMG ==="
+  echo "Pulling latest image..."
+  docker pull "$IMG"
+  echo "Starting container (root, home mounted at $HOME_DIR)..."
+  exec docker run -it --rm \
+    --name diego-env \
+    --hostname "$(hostname)-dev" \
+    --privileged \
+    --network host \
+    --pid host \
+    -v "$HOME_DIR":"$HOME_DIR" \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /etc/wireguard:/etc/wireguard:ro \
+    -v /opt:/opt \
+    -w "$HOME_DIR" \
+    -e HOME="$HOME_DIR" \
+    -e USER="${USER:-root}" \
+    -e TERM="${TERM:-xterm-256color}" \
+    "$IMG"
 }
 
 # ═══════════════════════════════════════════════════════════════════
@@ -377,15 +426,17 @@ do_info() {
 
 if [[ $# -ge 1 ]]; then
   case "$1" in
+    docker-start)   do_docker_start ;;
     install)        do_install ;;
     ssh)            do_ssh ;;
     git-clone)      do_git_clone "${2:-$HOME/git}" ;;
     info)           do_info ;;
-    *)              echo "Usage: $0 {install|ssh|git-clone|info}"; exit 1 ;;
+    *)              echo "Usage: $0 {docker-start|install|ssh|git-clone|info}"; exit 1 ;;
   esac
 elif [[ $# -eq 0 ]]; then
   pick "What do you need?" "${MAIN_COMMANDS[@]}"
   case "$PICK" in
+    docker-start)   do_docker_start ;;
     install)        do_install ;;
     ssh)            do_ssh ;;
     git-clone)      do_git_clone ;;
