@@ -71,8 +71,12 @@ do_docker_start() {
     fi
   fi
 
-  # Find docker binary (may be in Nix store)
-  DOCKER="$(command -v docker 2>/dev/null || find /nix/store -maxdepth 3 -name docker -type f 2>/dev/null | head -1 || echo docker)"
+  # Find REAL docker binary — skip guardrail wrappers in ~/.local/bin
+  DOCKER=""
+  for p in /nix/var/nix/profiles/default/bin/docker /run/current-system/sw/bin/docker /usr/bin/docker /usr/local/bin/docker; do
+    [ -x "$p" ] && DOCKER="$p" && break
+  done
+  [ -z "$DOCKER" ] && DOCKER="$(command -v docker 2>/dev/null || echo docker)"
 
   # Ensure Docker daemon is running
   if ! "$DOCKER" info >/dev/null 2>&1; then
