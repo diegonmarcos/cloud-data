@@ -27,7 +27,7 @@ REPOS=(
   "vault:https://github.com/diegonmarcos/vault.git"
 )
 
-MAIN_COMMANDS=(docker-start install ssh git-clone info)
+MAIN_COMMANDS=(fix-journal docker-start install ssh git-clone info)
 
 pick() {
   local label="$1"; shift; local -a items=("$@")
@@ -44,7 +44,22 @@ resolve_vm() {
 }
 
 # ═══════════════════════════════════════════════════════════════════
-# 0) DOCKER START — pull & run dev environment container
+# 0) FIX JOURNAL — stop systemd spam on console
+# ═══════════════════════════════════════════════════════════════════
+
+do_fix_journal() {
+  echo "=== Silencing journal console spam ==="
+  echo 0 > /proc/sys/kernel/printk 2>/dev/null || true
+  dmesg -n 1 2>/dev/null || true
+  systemctl stop systemd-journald-audit.socket 2>/dev/null || true
+  # Persist across reboots
+  mkdir -p /etc/sysctl.d
+  echo "kernel.printk = 0 0 0 0" > /etc/sysctl.d/99-silence-console.conf 2>/dev/null || true
+  echo "Done — console spam silenced"
+}
+
+# ═══════════════════════════════════════════════════════════════════
+# 0b) DOCKER START — pull & run dev environment container
 # ═══════════════════════════════════════════════════════════════════
 
 do_docker_start() {
@@ -71,12 +86,23 @@ do_docker_start() {
     fi
   fi
 
-  # Find REAL docker binary — skip guardrail wrappers in ~/.local/bin
+  # Find REAL docker binary — skip guardrail wrappers
   DOCKER=""
-  for p in /nix/var/nix/profiles/default/bin/docker /run/current-system/sw/bin/docker /usr/bin/docker /usr/local/bin/docker; do
-    [ -x "$p" ] && DOCKER="$p" && break
-  done
-  [ -z "$DOCKER" ] && DOCKER="$(command -v docker 2>/dev/null || echo docker)"
+  # 1. From systemd service (most reliable on Nix)
+  if [ -z "$DOCKER" ] && [ -f /etc/systemd/system/docker.service ]; then
+    DOCKERD_PATH=$(grep -oP '(?<=ExecStart=)\S+' /etc/systemd/system/docker.service 2>/dev/null || true)
+    if [ -n "$DOCKERD_PATH" ]; then
+      DOCKER_DIR=$(dirname "$DOCKERD_PATH" 2>/dev/null)
+      [ -x "${DOCKER_DIR}/docker" ] && DOCKER="${DOCKER_DIR}/docker"
+    fi
+  fi
+  # 2. Known paths
+  if [ -z "$DOCKER" ]; then
+    for p in /usr/bin/docker /usr/local/bin/docker /nix/var/nix/profiles/default/bin/docker /run/current-system/sw/bin/docker; do
+      [ -x "$p" ] && DOCKER="$p" && break
+    done
+  fi
+  [ -z "$DOCKER" ] && { echo "ERROR: docker binary not found"; exit 1; }
 
   # Ensure Docker daemon is running
   if ! "$DOCKER" info >/dev/null 2>&1; then
@@ -451,16 +477,18 @@ do_info() {
 
 if [[ $# -ge 1 ]]; then
   case "$1" in
+    fix-journal)    do_fix_journal ;;
     docker-start)   do_docker_start ;;
     install)        do_install ;;
     ssh)            do_ssh ;;
     git-clone)      do_git_clone "${2:-$HOME/git}" ;;
     info)           do_info ;;
-    *)              echo "Usage: $0 {docker-start|install|ssh|git-clone|info}"; exit 1 ;;
+    *)              echo "Usage: $0 {fix-journal|docker-start|install|ssh|git-clone|info}"; exit 1 ;;
   esac
 elif [[ $# -eq 0 ]]; then
   pick "What do you need?" "${MAIN_COMMANDS[@]}"
   case "$PICK" in
+    fix-journal)    do_fix_journal ;;
     docker-start)   do_docker_start ;;
     install)        do_install ;;
     ssh)            do_ssh ;;
