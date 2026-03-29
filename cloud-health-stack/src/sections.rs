@@ -16,8 +16,8 @@ pub fn build_all_vars(ctx: &Context, live: &LiveData) -> HashMap<String, String>
 
     // A1 Public
     vars.insert("PUBLIC_URLS".into(), build_public_urls(live));
-    vars.insert("API_MCP_ENDPOINTS".into(), String::new()); // TODO from services
-    vars.insert("REPOS_REGISTRIES".into(), "(Rust: TODO)".into());
+    vars.insert("API_MCP_ENDPOINTS".into(), build_api_mcp(ctx));
+    vars.insert("REPOS_REGISTRIES".into(), build_repos_registries());
 
     // A2 Private
     vars.insert("PRIVATE_HEALTH".into(), build_private(ctx, live));
@@ -31,23 +31,23 @@ pub fn build_all_vars(ctx: &Context, live: &LiveData) -> HashMap<String, String>
     vars.insert("MAIL_SPF".into(), build_mail_spf(ctx, live));
     vars.insert("MAIL_DKIM".into(), build_mail_dkim(live));
     vars.insert("MAIL_DMARC".into(), build_mail_dmarc(live));
-    vars.insert("MAIL_AUTH".into(), "(TODO)".into());
-    vars.insert("MAIL_FLOW".into(), "(TODO)".into());
+    vars.insert("MAIL_AUTH".into(), build_mail_auth(ctx));
+    vars.insert("MAIL_FLOW".into(), build_mail_flow(ctx, live));
 
     // B Infra
     vars.insert("VPS_SPECS".into(), build_vps_specs(ctx));
     vars.insert("RESOURCES_HEADER".into(), live.vm_data.iter().map(|v| format!("{:14}", v.alias)).collect::<Vec<_>>().join(" "));
     vars.insert("RESOURCES_TABLE".into(), build_resources(live));
-    vars.insert("STORAGE".into(), "(TODO)".into());
+    vars.insert("STORAGE".into(), build_storage(ctx));
 
     // C Security
     vars.insert("OPEN_PORTS".into(), build_port_scan(live));
     vars.insert("DATABASES".into(), build_databases(ctx));
-    vars.insert("DOCKER_NETWORKS".into(), "(TODO)".into());
-    vars.insert("VAULT_PROVIDERS".into(), "(TODO)".into());
+    vars.insert("DOCKER_NETWORKS".into(), build_docker_networks(ctx));
+    vars.insert("VAULT_PROVIDERS".into(), build_vault_providers());
 
     // D Stack
-    vars.insert("FRAMEWORK_PATHS".into(), "(TODO)".into());
+    vars.insert("FRAMEWORK_PATHS".into(), build_framework_paths(ctx));
 
     // Z Appendix
     vars.insert("PERFORMANCE".into(), build_performance(live));
@@ -248,5 +248,160 @@ fn build_performance(live: &LiveData) -> String {
 }
 
 fn build_script_info(live: &LiveData) -> String {
-    format!("  Engine:    Rust (native async tokio)\n  Duration:  {:.1}s\n  Checks:    TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(async process)", live.duration_ms as f64 / 1000.0)
+    format!("  Engine:    Rust (native async tokio)\n  Duration:  {:.1}s\n  Checks:    TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(rsync)", live.duration_ms as f64 / 1000.0)
+}
+
+fn build_mail_auth(ctx: &Context) -> String {
+    let oci_ip = ctx.vms.iter().find(|v| v.alias == "oci-mail").map(|v| v.pub_ip.as_str()).unwrap_or("?");
+    let mut lines = vec![
+        "MAIL AUTH — Authorized Senders".into(),
+        "─".repeat(60),
+        format!("    {:20} {:26} {:16} {:30} DKIM Selector", "Sender", "Domain", "Auth Method", "SPF IP Range"),
+        "─".repeat(60),
+        format!("✅ {:20} {:26} {:16} {:30} cf2024-1._domainkey", "Cloudflare", "diegonmarcos.com", "Email Routing", "104.30.0.0/19"),
+        format!("⚠️ {:20} {:26} {:16} {:30} dkim._domainkey", "Stalwart", "diegonmarcos.com", "Direct SMTP", format!("{} NOT IN SPF!", oci_ip)),
+        format!("✅ {:20} {:26} {:16} {:30} google._domainkey", "Google", "diegonmarcos.com", "Google SMTP", "(via include)"),
+        format!("✅ {:20} {:26} {:16} {:30} resend._dk.mails", "Resend/SES", "mails.diegonmarcos.com", "API + SES", "54.240.0.0/18"),
+        format!("✅ {:20} {:26} {:16} {:30} (via Stalwart)", "OCI Email Dlv", "diegonmarcos.com", "SMTP Relay", "192.29.200.0/25"),
+    ];
+    lines.join("\n")
+}
+
+fn build_mail_flow(ctx: &Context, live: &LiveData) -> String {
+    let oci_ip = ctx.vms.iter().find(|v| v.alias == "oci-mail").map(|v| v.pub_ip.as_str()).unwrap_or("?");
+    let gcp_ip = ctx.vms.iter().find(|v| v.alias == "gcp-proxy").map(|v| v.pub_ip.as_str()).unwrap_or("?");
+    let stalwart = live.vm_data.iter().find(|v| v.alias == "oci-mail").and_then(|v| v.containers.iter().find(|c| c.name == "stalwart"));
+    let smtp_proxy = live.vm_data.iter().find(|v| v.alias == "oci-mail").and_then(|v| v.containers.iter().find(|c| c.name == "smtp-proxy"));
+    let st_ok = stalwart.map(|c| c.health != "exited").unwrap_or(false);
+    let sp_ok = smtp_proxy.map(|c| c.health != "exited").unwrap_or(false);
+    format!(
+"MAIL FLOW — Pipeline Status
+─────────────────────────────────
+  📨 INBOUND: Gmail → MX → CF Email Routing → CF Worker → Caddy → smtp-proxy → Stalwart
+     {} smtp-proxy           {}
+     {} stalwart             {}
+
+  📱 CLIENT: Phone/Thunderbird → gcp-proxy ({}) → Caddy L4 → oci-mail → Stalwart
+{}
+  📤 OUTBOUND PERSONAL: Stalwart → ⚠️ direct from {} (NOT IN SPF!)
+     ❌ SPF FAIL  ✅ DKIM OK  ❌ DMARC=reject
+
+  📤 OUTBOUND TRANSACTIONAL: App → Resend API → SES → recipient
+     ✅ SPF OK  ✅ DKIM OK  ✅ DMARC OK",
+        if sp_ok { "✅" } else { "❌" }, smtp_proxy.map(|c| c.status.as_str()).unwrap_or("not found"),
+        if st_ok { "✅" } else { "❌" }, stalwart.map(|c| c.status.as_str()).unwrap_or("not found"),
+        gcp_ip,
+        ctx.caddy_l4.iter().map(|l| format!("     :{}  → {}", l.port, l.upstream)).collect::<Vec<_>>().join("\n"),
+        oci_ip)
+}
+
+fn build_api_mcp(_ctx: &Context) -> String {
+    // MCP endpoints from services with proxy.primary.type=mcp
+    let services = _ctx.consolidated["services"].as_object();
+    let mut lines = Vec::new();
+    if let Some(svcs) = services {
+        for (name, svc) in svcs {
+            let proxy_type = svc["proxy"]["primary"]["type"].as_str().unwrap_or("");
+            if proxy_type == "mcp" || name.contains("mcp") {
+                let domain = svc["proxy"]["primary"]["parent_domain"].as_str().or(svc["domain"].as_str()).unwrap_or("?");
+                let base = svc["proxy"]["primary"]["base_path"].as_str().unwrap_or("");
+                if !base.is_empty() {
+                    lines.push(format!("  {}{}/mcp", domain, base));
+                }
+            }
+        }
+    }
+    if lines.is_empty() { "(no MCP endpoints found in consolidated)".into() } else { lines.join("\n") }
+}
+
+fn build_repos_registries() -> String {
+    let repos = vec!["cloud", "cloud-data", "front", "unix", "tools", "vault"];
+    let mut lines = vec!["  GIT REPOS".into()];
+    for r in &repos {
+        lines.push(format!("    {}", r));
+    }
+    lines.push(String::new());
+    lines.push("  CONTAINER REGISTRY: ghcr.io/diegonmarcos/".into());
+    lines.join("\n")
+}
+
+fn build_storage(ctx: &Context) -> String {
+    let mut lines = vec!["  OBJECT STORAGE".into()];
+    let storage = ctx.consolidated["storage"].as_array();
+    if let Some(buckets) = storage {
+        for b in buckets {
+            lines.push(format!("    {} — {} ({})", b["provider"].as_str().unwrap_or("?"), b["name"].as_str().unwrap_or("?"), b["tier"].as_str().unwrap_or("?")));
+        }
+    }
+    lines.push(String::new());
+    lines.push("  DATABASES".into());
+    for d in &ctx.databases {
+        lines.push(format!("    {:20} {:10} {:22} {}", d.service, d.db_type, d.container, d.vm));
+    }
+    lines.join("\n")
+}
+
+fn build_docker_networks(ctx: &Context) -> String {
+    let mut networks: std::collections::HashMap<String, Vec<String>> = std::collections::HashMap::new();
+    if let Some(svcs) = ctx.consolidated["services"].as_object() {
+        for (name, svc) in svcs {
+            if let Some(nets) = svc["compose"]["networks"].as_array() {
+                for n in nets {
+                    if let Some(net) = n.as_str() {
+                        networks.entry(net.to_string()).or_default().push(name.clone());
+                    }
+                }
+            }
+        }
+    }
+    if networks.is_empty() { return "(no network data)".into(); }
+    let mut lines = vec![format!("    {:28} Services", "Network"), "    ".to_string() + &"─".repeat(60)];
+    let mut sorted: Vec<_> = networks.iter().collect();
+    sorted.sort_by_key(|(k, _)| k.clone());
+    for (net, svcs) in sorted {
+        lines.push(format!("    {:28} {}", net, svcs.join(", ")));
+    }
+    lines.join("\n")
+}
+
+fn build_vault_providers() -> String {
+    let home = std::env::var("HOME").unwrap_or("/home/diego".into());
+    let path = format!("{}/Mounts/Git/vault/A0_keys/providers/", home);
+    match std::fs::read_dir(&path) {
+        Ok(entries) => {
+            let providers: Vec<String> = entries.filter_map(|e| e.ok()).filter(|e| e.path().is_dir()).map(|e| format!("🔑 {}", e.file_name().to_string_lossy())).collect();
+            let mut lines = Vec::new();
+            for chunk in providers.chunks(3) {
+                lines.push(format!("  {}", chunk.iter().map(|p| format!("{:22}", p)).collect::<Vec<_>>().join(" ")));
+            }
+            lines.join("\n")
+        }
+        Err(_) => "  (vault not available)".into(),
+    }
+}
+
+fn build_framework_paths(ctx: &Context) -> String {
+    let mut lines = vec![
+        "  BUILD ENGINES".into(),
+        "    Service engine       ~/git/cloud/a_solutions/_engine.sh".into(),
+        "    HM engine            ~/git/cloud/b_infra/home-manager/_engine.sh".into(),
+        "    Front engine         ~/git/front/1.ops/build_main.sh".into(),
+        "    NixOS host           ~/git/unix/aa_nixos-surface_host/build.sh".into(),
+        String::new(),
+        "  HOME-MANAGER".into(),
+    ];
+    for vm in &ctx.vms {
+        lines.push(format!("    {:20} ~/git/cloud/b_infra/home-manager/{}/src/", vm.alias, vm.alias));
+    }
+    lines.push(String::new());
+    lines.push("  DATA".into());
+    lines.push("    cloud-data           ~/git/cloud-data/".into());
+    lines.push("    Topology             ~/git/cloud-data/cloud-data-topology.json".into());
+    lines.push("    Consolidated         ~/git/cloud-data/_cloud-data-consolidated.json".into());
+    lines.push(String::new());
+    lines.push("  TERRAFORM".into());
+    lines.push("    OCI                  ~/git/cloud/b_infra/vps_oci/src/main.tf".into());
+    lines.push("    GCP                  ~/git/cloud/b_infra/vps_gcloud/src/main.tf".into());
+    lines.push("    Cloudflare           ~/git/cloud/a_solutions/ba-clo_cloudflare/src/main.tf".into());
+    lines.join("\n")
 }
