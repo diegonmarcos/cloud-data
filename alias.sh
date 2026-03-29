@@ -124,7 +124,7 @@ REPOS=(
   "vault:https://github.com/diegonmarcos/vault.git"
 )
 
-MAIN_COMMANDS=(commands fix-journal docker-start install ssh git-clone info)
+MAIN_COMMANDS=(commands docker-start install ssh git-clone info)
 
 pick() {
   local label="$1"; shift; local -a items=("$@")
@@ -159,6 +159,7 @@ do_commands() {
     "disk-usage:df -h / /var /opt 2>/dev/null"
     "kill-watchdog:systemctl stop watchdog-petter.timer watchdog-petter.service 2>/dev/null; systemctl disable watchdog-petter.timer 2>/dev/null; echo watchdog killed"
     "journal-silence:echo 0 > /proc/sys/kernel/printk; dmesg -n 1; echo journal silenced"
+    "fix-journal:echo 0 > /proc/sys/kernel/printk 2>/dev/null; dmesg -n 1 2>/dev/null; systemctl stop systemd-journald-audit.socket 2>/dev/null; mkdir -p /etc/sysctl.d; echo 'kernel.printk = 0 0 0 0' > /etc/sysctl.d/99-silence-console.conf 2>/dev/null; echo journal spam silenced"
     "full-rescue:iptables -F INPUT; iptables -P INPUT ACCEPT; systemctl restart sshd 2>/dev/null || systemctl restart ssh 2>/dev/null; systemctl restart wg-quick@wg0 2>/dev/null; echo full rescue done"
   )
 
@@ -181,117 +182,107 @@ do_commands() {
 }
 
 # ═══════════════════════════════════════════════════════════════════
-# 0b) FIX JOURNAL — stop systemd spam on console
-# ═══════════════════════════════════════════════════════════════════
-
-do_fix_journal() {
-  echo "=== Silencing journal console spam ==="
-  echo 0 > /proc/sys/kernel/printk 2>/dev/null || true
-  dmesg -n 1 2>/dev/null || true
-  systemctl stop systemd-journald-audit.socket 2>/dev/null || true
-  # Persist across reboots
-  mkdir -p /etc/sysctl.d
-  echo "kernel.printk = 0 0 0 0" > /etc/sysctl.d/99-silence-console.conf 2>/dev/null || true
-  echo "Done — console spam silenced"
-}
-
-# ═══════════════════════════════════════════════════════════════════
-# 0b) DOCKER START — pull & run dev environment container
+# 1) DOCKER START — pull & run dev environment container
 # ═══════════════════════════════════════════════════════════════════
 
 do_docker_start() {
   local IMG="ghcr.io/diegonmarcos/diego-user-env:latest"
   local HOME_DIR="${HOME:-/root}"
+  local DOCKER="" RUNTIME="docker"
 
-  # ── Step 1: Ensure docker CLI is available ─────────────────────────────
-  if [ "$SYS_HAS_DOCKER" = false ]; then
+  # ── Step 1: Find docker binary by full path (skip shell aliases/wrappers) ─
+  # Priority: systemd service path > known paths > command -v > podman
+  find_docker() {
+    # 1a. From systemd service ExecStart (most reliable on Nix — points to real nix store path)
+    if [ -f /etc/systemd/system/docker.service ]; then
+      local dockerd_path
+      dockerd_path=$(grep -oP '(?<=ExecStart=)\S+' /etc/systemd/system/docker.service 2>/dev/null || true)
+      if [ -n "$dockerd_path" ]; then
+        local docker_dir
+        docker_dir=$(dirname "$dockerd_path" 2>/dev/null)
+        [ -x "${docker_dir}/docker" ] && { DOCKER="${docker_dir}/docker"; return 0; }
+      fi
+    fi
+    # 1b. Known full paths (every OS)
+    for p in \
+      /run/current-system/sw/bin/docker \
+      /usr/bin/docker \
+      /usr/local/bin/docker \
+      /nix/var/nix/profiles/default/bin/docker \
+      "${HOME}/.nix-profile/bin/docker" \
+      /opt/homebrew/bin/docker \
+      /data/data/com.termux.nix/files/home/.nix-profile/bin/docker; do
+      [ -x "$p" ] && { DOCKER="$p"; return 0; }
+    done
+    # 1c. command -v (last — may find guardrail wrapper, but better than nothing)
+    local found
+    found=$(command -v docker 2>/dev/null || true)
+    [ -n "$found" ] && { DOCKER="$found"; return 0; }
+    return 1
+  }
+
+  find_docker || true
+
+  # ── Step 2: If no docker, try to install it ────────────────────────────
+  if [ -z "$DOCKER" ]; then
     echo "Docker not found — installing for $SYS_PKG..."
     case "$SYS_PKG" in
       apt)    apt-get update -qq && apt-get install -y -qq docker.io ;;
       dnf)    dnf install -y --skip-unavailable docker ;;
       pacman) pacman -Sy --noconfirm docker ;;
       nix)
-        # NixOS: docker must be in system config. Non-NixOS nix: use nix-shell.
         if [ "$SYS_OS" = "nixos" ]; then
           echo "On NixOS, Docker must be enabled in your system flake:"
           echo "  virtualisation.docker.enable = true;"
-          echo "Then rebuild: sudo nixos-rebuild switch"
+          echo "Then: sudo nixos-rebuild switch"
           echo ""
           echo "Trying nix-shell fallback for docker CLI..."
-          exec nix-shell -p docker --run "bash $0 docker-start"
-        else
-          exec nix-shell -p docker --run "bash $0 docker-start"
-        fi ;;
+        fi
+        exec nix-shell -p docker --run "bash $0 docker-start" ;;
       brew)   brew install --cask docker ;;
       pkg)    echo "Docker not available on Termux"; exit 1 ;;
-      *)      echo "No package manager found — install docker manually"; exit 1 ;;
+      *)      echo "No supported package manager — install docker manually"; exit 1 ;;
     esac
-    # Re-detect after install
-    command -v docker >/dev/null 2>&1 || { echo "ERROR: docker still not found after install"; exit 1; }
+    # Re-scan after install
+    find_docker || true
+    [ -z "$DOCKER" ] && { echo "ERROR: docker still not found after install"; exit 1; }
   fi
 
-  # ── Step 2: Find container runtime (docker preferred, podman fallback) ─
-  DOCKER=""
-  RUNTIME="docker"
-  # From systemd service (most reliable on Nix)
-  if [ -f /etc/systemd/system/docker.service ]; then
-    DOCKERD_PATH=$(grep -oP '(?<=ExecStart=)\S+' /etc/systemd/system/docker.service 2>/dev/null || true)
-    if [ -n "$DOCKERD_PATH" ]; then
-      DOCKER_DIR=$(dirname "$DOCKERD_PATH" 2>/dev/null)
-      [ -x "${DOCKER_DIR}/docker" ] && DOCKER="${DOCKER_DIR}/docker"
-    fi
-  fi
-  # Known docker paths
-  if [ -z "$DOCKER" ]; then
-    for p in /run/current-system/sw/bin/docker /usr/bin/docker /usr/local/bin/docker \
-             /nix/var/nix/profiles/default/bin/docker "${HOME}/.nix-profile/bin/docker"; do
-      [ -x "$p" ] && DOCKER="$p" && break
-    done
-  fi
-  # command -v docker
-  [ -z "$DOCKER" ] && DOCKER=$(command -v docker 2>/dev/null || true)
-  # Last resort: podman as drop-in replacement
-  if [ -z "$DOCKER" ] || ! "$DOCKER" info >/dev/null 2>&1; then
-    PODMAN=$(command -v podman 2>/dev/null || true)
-    if [ -n "$PODMAN" ]; then
-      echo "Docker unavailable — falling back to podman"
-      DOCKER="$PODMAN"
-      RUNTIME="podman"
-    fi
-  fi
-  [ -z "$DOCKER" ] && { echo "ERROR: neither docker nor podman found"; exit 1; }
-
-  # ── Step 3: Ensure container runtime is ready ───────────────────────────
+  # ── Step 3: Start daemon if not running ────────────────────────────────
   if ! "$DOCKER" info >/dev/null 2>&1; then
-    if [ "$RUNTIME" = "podman" ]; then
-      # Podman is daemonless — if info fails, it's a config issue
-      echo "Podman check failed — trying to initialize..."
+    echo "Docker daemon not running — starting..."
+    if [ "$SYS_INIT" = "systemd" ]; then
+      systemctl start docker 2>/dev/null || true
+      for i in $(seq 1 15); do "$DOCKER" info >/dev/null 2>&1 && break; sleep 1; done
+    elif command -v service >/dev/null 2>&1; then
+      service docker start 2>/dev/null || true; sleep 3
+    elif [ "$SYS_OS" = "macos" ]; then
+      open -a Docker 2>/dev/null || true
+      echo "Waiting for Docker Desktop..."
+      for i in $(seq 1 30); do "$DOCKER" info >/dev/null 2>&1 && break; sleep 1; done
+    fi
+  fi
+
+  # ── Step 4: If docker daemon still down, podman fallback ───────────────
+  if ! "$DOCKER" info >/dev/null 2>&1; then
+    # Try podman full paths
+    local podman=""
+    for p in /usr/bin/podman /usr/local/bin/podman /run/current-system/sw/bin/podman \
+             "${HOME}/.nix-profile/bin/podman" /nix/var/nix/profiles/default/bin/podman; do
+      [ -x "$p" ] && { podman="$p"; break; }
+    done
+    [ -z "$podman" ] && podman=$(command -v podman 2>/dev/null || true)
+
+    if [ -n "$podman" ]; then
+      echo "Docker daemon failed — falling back to podman ($podman)"
+      DOCKER="$podman"; RUNTIME="podman"
       "$DOCKER" system migrate 2>/dev/null || true
     else
-      echo "Docker daemon not running — starting..."
-      if [ "$SYS_INIT" = "systemd" ]; then
-        systemctl start docker 2>/dev/null || true
-        for i in $(seq 1 15); do "$DOCKER" info >/dev/null 2>&1 && break; sleep 1; done
-      elif command -v service >/dev/null 2>&1; then
-        service docker start 2>/dev/null || true; sleep 3
-      elif [ "$SYS_OS" = "macos" ]; then
-        open -a Docker 2>/dev/null || true
-        echo "Waiting for Docker Desktop..."
-        for i in $(seq 1 30); do "$DOCKER" info >/dev/null 2>&1 && break; sleep 1; done
-      fi
-    fi
-    if ! "$DOCKER" info >/dev/null 2>&1; then
-      # Final fallback: if docker failed, try podman
-      PODMAN=$(command -v podman 2>/dev/null || true)
-      if [ -n "$PODMAN" ] && [ "$RUNTIME" != "podman" ]; then
-        echo "Docker daemon failed — falling back to podman"
-        DOCKER="$PODMAN"; RUNTIME="podman"
-      else
-        echo "ERROR: Container runtime failed to start"
-        echo "  Runtime=$RUNTIME OS=$SYS_OS PKG=$SYS_PKG INIT=$SYS_INIT"
-        echo "  Try: systemctl status docker / journalctl -u docker"
-        exit 1
-      fi
+      echo "ERROR: Neither docker daemon nor podman available"
+      echo "  Docker: $DOCKER (found but daemon not running)"
+      echo "  OS=$SYS_OS PKG=$SYS_PKG INIT=$SYS_INIT"
+      echo "  Try: systemctl status docker / journalctl -u docker"
+      exit 1
     fi
   fi
   echo "Using: $RUNTIME ($DOCKER)"
@@ -662,7 +653,7 @@ do_info() {
 if [[ $# -ge 1 ]]; then
   case "$1" in
     commands)       do_commands ;;
-    fix-journal)    do_fix_journal ;;
+    fix-journal)    do_commands ;;  # legacy alias
     docker-start)   do_docker_start ;;
     install)        do_install ;;
     ssh)            do_ssh ;;
@@ -675,7 +666,7 @@ elif [[ $# -eq 0 ]]; then
   pick "What do you need?" "${MAIN_COMMANDS[@]}"
   case "$PICK" in
     commands)       do_commands ;;
-    fix-journal)    do_fix_journal ;;
+    fix-journal)    do_commands ;;  # legacy alias
     docker-start)   do_docker_start ;;
     install)        do_install ;;
     ssh)            do_ssh ;;
