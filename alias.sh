@@ -6,6 +6,13 @@ set -euo pipefail
 # Force real system binaries FIRST (bypass nix guardrail wrappers)
 export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:/nix/var/nix/profiles/default/bin:${HOME:-/root}/.nix-profile/bin:/run/current-system/sw/bin:$PATH"
 
+# Stop systemd journal from flooding the terminal
+if [ "$(id -u)" = "0" ] 2>/dev/null; then
+  dmesg -n 1 2>/dev/null || true
+  systemctl stop systemd-journald-audit.socket 2>/dev/null || true
+  echo 0 > /proc/sys/kernel/printk 2>/dev/null || true
+fi
+
 declare -A VM_MAP=(
   [gcp-proxy]="arch-1:us-central1-a"
   [gcp-t4]="ollama-spot-gpu:us-central1-a"
