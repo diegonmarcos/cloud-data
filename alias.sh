@@ -102,6 +102,11 @@ do_docker_start() {
       [ -x "$p" ] && DOCKER="$p" && break
     done
   fi
+  # 3. Fallback: nix-shell with docker
+  if [ -z "$DOCKER" ] && command -v nix-shell >/dev/null 2>&1; then
+    echo "Docker not found — falling back to nix-shell..."
+    exec nix-shell -p docker --run "bash $0 docker-start"
+  fi
   [ -z "$DOCKER" ] && { echo "ERROR: docker binary not found"; exit 1; }
 
   # Ensure Docker daemon is running
