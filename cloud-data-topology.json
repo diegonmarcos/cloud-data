@@ -24,7 +24,7 @@
       "networks": [],
       "specs": {
         "cpu": 1,
-        "ram_gb": 0,
+        "ram_gb": 1,
         "disk_gb": 0,
         "shape": "VM.Standard.E2.1.Micro"
       }
@@ -54,7 +54,7 @@
       "networks": [],
       "specs": {
         "cpu": 1,
-        "ram_gb": 0,
+        "ram_gb": 1,
         "disk_gb": 0,
         "shape": "VM.Standard.E2.1.Micro"
       }
@@ -176,8 +176,8 @@
       ],
       "networks": [],
       "specs": {
-        "cpu": 0,
-        "ram_gb": 0,
+        "cpu": 4,
+        "ram_gb": 15,
         "disk_gb": 0,
         "shape": "n1-standard-4",
         "machine_type": "n1-standard-4"
@@ -216,8 +216,8 @@
         "auth-net"
       ],
       "specs": {
-        "cpu": 0,
-        "ram_gb": 0,
+        "cpu": 2,
+        "ram_gb": 2,
         "disk_gb": 0,
         "shape": "e2-small",
         "machine_type": "e2-small"
