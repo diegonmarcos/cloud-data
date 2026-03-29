@@ -28,9 +28,9 @@
     },
     "gcp-proxy": {
       "ssh_secret": "GCP_PROXY_SSH_KEY",
+      "host": "35.226.147.64",
       "host_secret": "GCP_PROXY_HOST",
-      "user_secret": "GCP_PROXY_USER",
-      "wg_ip": "10.0.0.1"
+      "user_secret": "GCP_PROXY_USER"
     }
   },
   "services": {
