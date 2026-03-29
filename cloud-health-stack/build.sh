@@ -2,27 +2,34 @@
 set -eu
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-cd "$ROOT"
+
+build_one() {
+  echo "═══ Building $2 ═══"
+  cargo build --release --manifest-path "$ROOT/$1/Cargo.toml"
+}
 
 run_one() {
-  dir="$1"; bin="$2"
   echo ""
-  echo "═══ Running $bin ═══"
-  (cd "$ROOT/$dir" && "$ROOT/target/release/$bin")
+  echo "═══ Running $2 ═══"
+  (cd "$ROOT/$1" && "$ROOT/$1/target/release/$2")
+}
+
+do_project() {
+  build_one "$1" "$2"
+  run_one "$1" "$2"
 }
 
 target="${1:-all}"
-cargo build --release
 
 case "$target" in
   all)
-    run_one cloud-stack-report       health-reporter
-    run_one cloud-health-full-report cloud-health-full
-    run_one cloud-mail-full-report   cloud-mail-full
+    do_project cloud-stack-report       health-reporter
+    do_project cloud-health-full-report cloud-health-full
+    do_project cloud-mail-full-report   cloud-mail-full
     ;;
-  stack) run_one cloud-stack-report       health-reporter ;;
-  cloud) run_one cloud-health-full-report cloud-health-full ;;
-  mail)  run_one cloud-mail-full-report   cloud-mail-full ;;
+  stack) do_project cloud-stack-report       health-reporter ;;
+  cloud) do_project cloud-health-full-report cloud-health-full ;;
+  mail)  do_project cloud-mail-full-report   cloud-mail-full ;;
   *)
     echo "Usage: $0 [all|stack|cloud|mail]"
     echo ""

@@ -17,3 +17,8 @@ tera = "1"
 russh = "0.46"
 russh-keys = "0.46"
 async-trait = "0.1"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
