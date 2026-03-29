@@ -60,19 +60,19 @@ export async function checkPublicUrls(
 }
 
 /**
- * Check VPS status via cloud CLI (gcloud/oci) — authoritative, not SSH
+ * Check VPS status via cloud CLI (gcloud/oci) — authoritative, with SSH fallback
  */
-function checkVpsStatus(vmId: string, cloudName: string): { ok: boolean; status: string } {
+function checkVpsStatus(vmId: string, cloudName: string, sshReachable: boolean): { ok: boolean; status: string } {
   if (vmId.startsWith("gcp-")) {
     const status = run(`gcloud compute instances list --filter="name=${cloudName}" --format="value(status)" 2>/dev/null`, 15000);
-    return { ok: status === "RUNNING", status: status || "?" };
+    if (status) return { ok: status === "RUNNING", status };
   }
   if (vmId.startsWith("oci-")) {
-    // OCI CLI: list instances filtered by display name
-    const status = run(`oci compute instance list --compartment-id $(oci iam compartment list --query 'data[0].id' --raw-output 2>/dev/null) --display-name "${cloudName}" --query 'data[0]."lifecycle-state"' --raw-output 2>/dev/null`, 15000);
-    return { ok: status === "RUNNING", status: status || "?" };
+    // OCI CLI has symlink permission issues — fallback to SSH
+    // TODO: fix OCI config symlink permissions
   }
-  return { ok: false, status: "?" };
+  // Fallback: SSH reachability
+  return { ok: sshReachable, status: sshReachable ? "SSH OK" : "SSH fail" };
 }
 
 export function varsHealth(ctx: VarContext, publicUrlResults?: PublicUrlResult[]): Record<string, string> {
@@ -106,15 +106,15 @@ export function varsHealth(ctx: VarContext, publicUrlResults?: PublicUrlResult[]
             vpsOk = true; pubOk = true; wgOk = alive; vpsStatus = "client";
           } else {
             // Use cloud CLI for VPS check (authoritative)
+            const vmLive = data.vms.find((v: VmData) => v.alias === name);
+            const sshOk = vmLive?.reachable ?? false;
             if (cloudName !== "—" && vmInfo) {
-              const vps = checkVpsStatus(vmInfo.vmId, cloudName);
+              const vps = checkVpsStatus(vmInfo.vmId, cloudName, sshOk);
               vpsOk = vps.ok;
               vpsStatus = vps.status;
             } else {
-              // Fallback to SSH reachability
-              const vmLive = data.vms.find((v: VmData) => v.alias === name);
-              vpsOk = vmLive?.reachable ?? false;
-              vpsStatus = vpsOk ? "SSH OK" : "SSH fail";
+              vpsOk = sshOk;
+              vpsStatus = sshOk ? "SSH OK" : "SSH fail";
             }
             pubOk = pubIp !== "?" && pubIp !== "dynamic" && run(`nc -zw3 ${pubIp} 22 2>&1 && echo OK`).includes("OK");
             wgOk = alive;

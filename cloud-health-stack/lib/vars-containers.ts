@@ -67,14 +67,14 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: PrivateHe
       }
       const conflictPorts = new Set([...portCount.entries()].filter(([, n]) => n.length > 1).map(([p]) => p));
 
-      // Table
-      lines.push(`    ${"DNS Name".padEnd(28)} 📡TCP 📦UDP 🌐HTTP ${"Port".padEnd(7)} ${"VM".padEnd(16)} ${"Container".padEnd(22)} Code`);
-      lines.push("    " + "─".repeat(105));
+      // Table (no UDP — nc -u gives false positives on connectionless protocol)
+      lines.push(`    ${"DNS Name".padEnd(28)} 📡TCP 🌐HTTP ${"Port".padEnd(7)} ${"VM".padEnd(16)} ${"Container".padEnd(22)} Code`);
+      lines.push("    " + "─".repeat(95));
 
       for (const r of results) {
         const conflict = conflictPorts.has(r.port);
         const portTag = conflict ? `⚠️${String(r.port).padEnd(4)}` : `  ${String(r.port).padEnd(4)}`;
-        const anyOk = r.tcp || r.udp || r.http;
+        const anyOk = r.tcp || r.http;
         const allOk = r.tcp && r.http;
         let icon: string;
         if (wgDown) icon = "⏸️";
@@ -82,9 +82,8 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: PrivateHe
         else if (anyOk) icon = "⚠️";
         else icon = "❌";
         const tcpIcon = wgDown ? "⏸️" : r.tcp ? "✅" : "❌";
-        const udpIcon = wgDown ? "⏸️" : r.udp ? "✅" : "❌";
         const httpIcon = wgDown ? "⏸️" : r.http ? "✅" : "❌";
-        lines.push(`${icon} ${r.dns.padEnd(28)} ${tcpIcon}   ${udpIcon}   ${httpIcon}   ${portTag} ${r.vm.padEnd(16)} ${r.container.padEnd(22)} [${r.code}]`);
+        lines.push(`${icon} ${r.dns.padEnd(28)} ${tcpIcon}   ${httpIcon}   ${portTag} ${r.vm.padEnd(16)} ${r.container.padEnd(22)} [${r.code}]`);
       }
 
       // Port conflict summary
@@ -118,10 +117,9 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: PrivateHe
       // Summary
       if (!wgDown) {
         const tcpUp = results.filter(r => r.tcp).length;
-        const udpUp = results.filter(r => r.udp).length;
         const httpUp = results.filter(r => r.http).length;
         lines.push("");
-        lines.push(`  📡 TCP: ${tcpUp}/${results.length}  📦 UDP: ${udpUp}/${results.length}  🌐 HTTP: ${httpUp}/${results.length}`);
+        lines.push(`  📡 TCP: ${tcpUp}/${results.length}  🌐 HTTP: ${httpUp}/${results.length}`);
       }
 
       return lines.join("\n");

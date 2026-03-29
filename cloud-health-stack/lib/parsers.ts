@@ -75,9 +75,41 @@ export function parseConsolidated(c: any): ParsedData {
     }
   }
 
-  // ── Caddy config (routes, L4, GH pages, MCP, special) ──
+  // ── Caddy config routes ──
   const caddy = c.configs?.caddy ?? {};
   for (const r of caddy.routes ?? []) { if (r.domain) addUrl(r.domain, r.upstream || "?"); }
+
+  // ── Extract MCP + path routes from services' proxy config ──
+  for (const [svcName, svc] of Object.entries(c.services ?? {}) as [string, any][]) {
+    const proxy = svc.proxy;
+    if (!proxy) continue;
+    // MCP routes (services with mcp_routes in proxy)
+    if (proxy.mcp_routes) {
+      for (const mr of proxy.mcp_routes) {
+        if (mr.parent_domain) addUrl(mr.parent_domain, "MCP hub");
+        for (const ep of mr.endpoints ?? []) {
+          mcpEndpoints.push({ url: `${mr.parent_domain}${ep.base_path}/mcp`, upstream: ep.upstream, name: ep.base_path.replace(/^\//, "") });
+        }
+      }
+    }
+    // Path-based routes
+    if (proxy.primary?.type === "path" && proxy.primary?.parent_domain) {
+      addUrl(proxy.primary.parent_domain, "path-based");
+    }
+    // MCP hub entries
+    if (proxy.primary?.type === "mcp" && proxy.primary?.parent_domain) {
+      addUrl(proxy.primary.parent_domain, "MCP hub");
+      if (proxy.primary.base_path) {
+        mcpEndpoints.push({
+          url: `${proxy.primary.parent_domain}${proxy.primary.base_path}/mcp`,
+          upstream: svc.upstream || `${svc.dns}:${svc.port}`,
+          name: proxy.primary.base_path.replace(/^\//, ""),
+        });
+      }
+    }
+  }
+
+  // Legacy caddy config paths (if present)
   for (const pr of caddy.path_routes ?? []) {
     if (pr.parent_domain) addUrl(pr.parent_domain, "path-based");
     for (const r of pr.routes ?? []) {

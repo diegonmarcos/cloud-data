@@ -6,14 +6,14 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-03-29  00:22:02
+         CONTAINER HEALTH — 2026-03-29  02:17:47
 ════════════════════════════════════════════════════════════
 
 
 ══════════════════════════════════════════════════════════════
   ⚠️  ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-12 critical, 6 warnings — 18 total
+12 critical, 5 warnings — 17 total
 
         Section  Issue
     ──────────────────────────────────────────────────────────────────────
@@ -29,7 +29,6 @@
     ❌ SYS      SSH unreachable: gcp-proxy
     ❌ SYS        ❌ gcp-t4: UNREACHABLE
     ❌ SYS        ❌ gcp-proxy: UNREACHABLE
-    ⚠️ A2       oci-apps/crawlee_db — unhealthy
     ⚠️ A3       mail.diegonmarcos.com:25 SMTP — down
     ⚠️ A3       mail.diegonmarcos.com:4190 ManageSieve — down
     ⚠️ A3       smtp.diegonmarcos.com:25 SMTP — down
@@ -45,15 +44,15 @@
 
 WIREGUARD MESH (hub: gcp-proxy 10.0.0.1 — front door)
 ────────────────────────────────────────────────────────────
-    Name               ☁VPS 🌐Pub 🔒WG  Public IP          WG IP          Type     Handshake
+    Name           Cloud Name         ☁VPS 🌐Pub 🔒WG  Public IP          WG IP          Type     Handshake
 ────────────────────────────────────────────────────────────
-⚠️ oci-mail           ✅  ✅  ❌  130.110.251.193    10.0.0.3       VM       no data
-⚠️ oci-analytics      ✅  ✅  ❌  129.151.228.66     10.0.0.4       VM       no data
-⚠️ oci-apps           ✅  ✅  ❌  82.70.229.129      10.0.0.6       VM       no data
-❌ gcp-t4             ❌  ❌  ❌  34.173.227.250     10.0.0.8       VM       no data
-⚠️ gcp-proxy          ❌  ✅  ❌  35.226.147.64      10.0.0.1       HUB      no data
-⚠️ surface            ✅  ✅  ❌  dynamic            10.0.0.5       CLIENT   no data
-⚠️ termux             ✅  ✅  ❌  dynamic            10.0.0.9       CLIENT   no data
+⚠️ oci-mail       oci-E2-f_0         ❌  ✅  ❌  130.110.251.193    10.0.0.3       VM       no data
+⚠️ oci-analytics  oci-E2-f_1         ❌  ✅  ❌  129.151.228.66     10.0.0.4       VM       no data
+⚠️ oci-apps       oci-A1-f_0         ❌  ✅  ❌  82.70.229.129      10.0.0.6       VM       no data
+❌ gcp-t4         ollama-spot-gpu    ❌  ❌  ❌  34.173.227.250     10.0.0.8       VM       no data
+⚠️ gcp-proxy      arch-1             ✅  ✅  ❌  35.226.147.64      10.0.0.1       HUB      no data
+⚠️ surface        —                  ✅  ✅  ❌  dynamic            10.0.0.5       CLIENT   no data
+⚠️ termux         —                  ✅  ✅  ❌  dynamic            10.0.0.9       CLIENT   no data
 
 ── A1) Public ────────────────────────────────────────────────
 
@@ -91,16 +90,16 @@ PUBLIC URLs (Caddy routes)
 ⚠️ api.diegonmarcos.com/dash        ❌  ✅  ✅  ✅  diegonmarcos.github.io [301] 
 ⚠️ api.diegonmarcos.com/crawlee     ❌  ✅  ✅  ✅  crawlee.app:3000       [404] 
 ⚠️ app.diegonmarcos.com/windmill    ❌  ✅  ✅  ✅  windmill-app.app:8000  [404] 
-❌ app.diegonmarcos.com/etherpad    ❌  ❌  ❌  —  etherpad.app:3012      [---] 
-❌ app.diegonmarcos.com/filebrowser ❌  ❌  ❌  —  filebrowser.app:3015   [---] 
-❌ app.diegonmarcos.com/hedgedoc    ❌  ❌  ❌  —  hedgedoc.app:3018      [---] 
-❌ app.diegonmarcos.com/revealmd    ❌  ❌  ❌  —  revealmd.app:3014      [---] 
-❌ app.diegonmarcos.com/dozzle      ❌  ❌  ❌  —  dozzle.app:9999        [---] 
-❌ app.diegonmarcos.com/grafana     ❌  ❌  ❌  —  grafana.app:3016       [---] 
-❌ app.diegonmarcos.com/gitea       ❌  ❌  ❌  —  gitea.app:3017         [---] 
-❌ app.diegonmarcos.com/crawlee     ❌  ❌  ❌  —  crawlee.app:3001       [---] 
-⚠️ cloud.diegonmarcos.com           ✅  ❌  ❌  —  c3-spec.app:3080       [---] 
-⚠️ mcp.diegonmarcos.com             ✅  ❌  ❌  —  c3-infra-mcp.app:3100  [---] 
+⚠️ app.diegonmarcos.com/etherpad    ❌  ✅  ✅  ✅  etherpad.app:3012      [404] 
+⚠️ app.diegonmarcos.com/filebrowser ❌  ✅  ✅  ✅  filebrowser.app:3015   [404] 
+⚠️ app.diegonmarcos.com/hedgedoc    ❌  ✅  ✅  ✅  hedgedoc.app:3018      [404] 
+⚠️ app.diegonmarcos.com/revealmd    ❌  ✅  ✅  ✅  revealmd.app:3014      [404] 
+⚠️ app.diegonmarcos.com/dozzle      ❌  ✅  ✅  ✅  dozzle.app:9999        [404] 
+⚠️ app.diegonmarcos.com/grafana     ❌  ✅  ✅  ✅  grafana.app:3016       [404] 
+⚠️ app.diegonmarcos.com/gitea       ❌  ✅  ✅  ✅  gitea.app:3017         [404] 
+⚠️ app.diegonmarcos.com/crawlee     ❌  ✅  ✅  ✅  crawlee.app:3001       [404] 
+✅ cloud.diegonmarcos.com           ✅  ✅  ✅  ✅  c3-spec.app:3080       [200] 
+✅ mcp.diegonmarcos.com             ✅  ✅  ✅  ✅  c3-infra-mcp.app:3100  [200] 
 
 API / MCP ENDPOINTS
 ────────────────────────────────────────────────────────────
@@ -134,12 +133,13 @@ REPOS & REGISTRIES
 ❌ authelia.app                 ❌   ❌   ❌     9091 gcp-proxy        authelia               [---]
 ❌ caddy.app                    ❌   ❌   ❌   ⚠️443  gcp-proxy        caddy                  [---]
 ❌ hickory-dns.app              ❌   ❌   ❌     53   gcp-proxy        hickory-dns            [---]
-❌ introspect-proxy.app         ❌   ❌   ❌     4182 gcp-proxy        introspect-proxy       [---]
+❌ introspect-proxy.app         ❌   ❌   ❌   ⚠️4182 gcp-proxy        introspect-proxy       [---]
+❌ introspect-proxy.app         ❌   ❌   ❌   ⚠️4182 gcp-proxy        introspect-proxy       [---]
 ❌ ntfy.app                     ❌   ❌   ❌     8090 gcp-proxy        ntfy                   [---]
 ❌ redis.app                    ❌   ❌   ❌     6379 gcp-proxy        redis                  [---]
 ❌ vaultwarden.app              ❌   ❌   ❌     8880 gcp-proxy        vaultwarden            [---]
 ❌ ollama.app                   ❌   ❌   ❌     11434 gcp-t4           ollama                 [---]
-❌ dozzle.app                   ❌   ❌   ❌     9999 oci-analytics    dozzle                 [---]
+✅ dozzle.app                   ✅   ✅   ✅     9999 oci-analytics    dozzle                 [200]
 ✅ matomo.app                   ✅   ✅   ✅     8080 oci-analytics    matomo-hybrid          [503]
 ⚠️ umami-db.app                 ✅   ✅   ❌     5442 oci-analytics    umami-db               [000]
 ✅ umami.app                    ✅   ✅   ✅     3006 oci-analytics    umami                  [200]
@@ -156,12 +156,14 @@ REPOS & REGISTRIES
 ⚠️ crawlee-minio.app            ❌   ✅   ❌     9000 oci-apps         crawlee_minio          [---]
 ⚠️ crawlee-redis.app            ❌   ✅   ❌     6381 oci-apps         crawlee_redis          [---]
 ⚠️ crawlee.app                  ❌   ✅   ❌     3000 oci-apps         crawlee_api            [---]
+❌ etherpad-db.app              ❌   ❌   ❌     5436 oci-apps         etherpad_postgres      [---]
 ⚠️ etherpad.app                 ❌   ✅   ❌     3012 oci-apps         etherpad_app           [---]
 ⚠️ filebrowser.app              ❌   ✅   ❌     3015 oci-apps         filebrowser_app        [---]
 ⚠️ g-workspace-mcp.app          ❌   ✅   ❌     3104 oci-apps         google-workspace-mcp   [---]
 ⚠️ gitea.app                    ❌   ✅   ❌     3017 oci-apps         gitea                  [---]
 ⚠️ grafana.app                  ❌   ✅   ❌     3200 oci-apps         lgtm_grafana           [---]
 ⚠️ grist.app                    ❌   ✅   ❌     3011 oci-apps         grist_app              [---]
+❌ hedgedoc-db.app              ❌   ❌   ❌     5439 oci-apps         hedgedoc_postgres      [---]
 ⚠️ hedgedoc.app                 ❌   ✅   ❌     3018 oci-apps         hedgedoc_app           [---]
 ⚠️ lgtm-loki.app                ❌   ✅   ❌     3110 oci-apps         lgtm_loki              [---]
 ⚠️ lgtm-mimir.app               ❌   ✅   ❌     9009 oci-apps         lgtm_mimir             [---]
@@ -170,19 +172,26 @@ REPOS & REGISTRIES
 ⚠️ mattermost-mcp.app           ❌   ✅   ❌     3102 oci-apps         mattermost-mcp         [---]
 ⚠️ mattermost-postgres.app      ❌   ✅   ❌     5435 oci-apps         mattermost-postgres    [---]
 ⚠️ mattermost.app               ❌   ✅   ❌     8065 oci-apps         mattermost             [---]
+❌ nocodb-db.app                ❌   ❌   ❌     5441 oci-apps         nocodb-db              [000]
 ⚠️ nocodb.app                   ❌   ✅   ❌     8085 oci-apps         nocodb                 [---]
 ⚠️ ollama-hai.app               ❌   ✅   ❌     11435 oci-apps         ollama-hai             [---]
 ⚠️ photoprism.app               ❌   ✅   ❌     3013 oci-apps         photoprism_app         [---]
+❌ quant-full-db.app            ❌   ❌   ❌     5437 oci-apps         quant_full_db          [---]
+❌ quant-full-research.app      ❌   ❌   ❌     8890 oci-apps         quant_full_research    [---]
+❌ quant-light-db.app           ❌   ❌   ❌     5434 oci-apps         quant_light_db         [---]
+❌ quant-light-engine.app       ❌   ❌   ❌     5001 oci-apps         quant_light_engine     [---]
+❌ quant-light-research.app     ❌   ❌   ❌     8889 oci-apps         quant_light_research   [---]
 ⚠️ radicale.app                 ❌   ✅   ❌     5232 oci-apps         radicale               [---]
 ⚠️ revealmd.app                 ❌   ✅   ❌     3014 oci-apps         revealmd_app           [---]
 ⚠️ windmill-app.app             ❌   ✅   ❌     8000 oci-apps         windmill-server        [---]
 ⚠️ windmill-db.app              ❌   ✅   ❌     5440 oci-apps         windmill-db            [---]
 ✅ dagu.app                     ✅   ✅   ✅     8070 oci-mail         dagu                   [200]
-⚠️ snappymail.app               ✅   ✅   ❌     8888 oci-mail         snappymail             [---]
+✅ snappymail.app               ✅   ✅   ✅     8888 oci-mail         snappymail             [200]
 ⚠️ stalwart.app                 ✅   ✅   ❌   ⚠️443  oci-mail         stalwart               [000]
 
-  ⚠️  PORT CONFLICTS (1 duplicate ports globally):
+  ⚠️  PORT CONFLICTS (2 duplicate ports globally):
      :443    used by: caddy.app, stalwart.app
+     :4182   used by: introspect-proxy.app, introspect-proxy.app
 
   ─── DNS CONFIG CHECK ───
   ❌ /etc/resolv.conf     MISSING 10.0.0.1 — .app names won't resolve!
@@ -193,92 +202,92 @@ REPOS & REGISTRIES
   ⚠️  System DNS can't resolve .app — add 10.0.0.1 to resolv.conf
      All checks above test via system DNS — if Hickory not configured, all fail
 
-  📡 TCP: 6/50  📦 UDP: 40/50  🌐 HTTP: 3/50
+  📡 TCP: 7/59  📦 UDP: 41/59  🌐 HTTP: 5/59
 
 ── A3) Containers ────────────────────────────────────────────
 
-oci-mail ✅ — oci-mail — 1C/1G — mem 646M/954M (67%) — disk 67% — swap 219M/2559M — load 0.42 0.48 0.42 — 7/7 ctrs — up 20 hours, 55 minutes
+oci-mail ✅ — oci-mail — 1C/?G — mem 637M/954M (66%) — disk 67% — swap 208M/2559M — load 0.62 1.51 1.78 — 7/7 ctrs — up 22 hours, 51 minutes
 ────────────────────────────────────────────────────────────
-  ⚠️ stalwart                  443    443    UP (no hc)     Up 18 hours
-  ⚠️ smtp-proxy                —      —      UP (no hc)     Up 20 hours
-  ⚠️ dagu                      8070   8070   UP (no hc)     Up 21 hours
-  ⚠️ fluent-bit                —      —      UP (no hc)     Up 21 hours
-  ✅ snappymail                8888   8888   HEALTHY        Up 19 hours (healthy)
-  ✅ introspect-proxy          —      4182   HEALTHY        Up 20 hours (healthy)
-  ✅ syslog-forwarder          —      —      HEALTHY        Up 20 hours (healthy)
+  ⚠️ stalwart                  443    443    UP (no hc)     Up About an hour
+  ⚠️ smtp-proxy                —      —      UP (no hc)     Up 22 hours
+  ⚠️ dagu                      8070   8070   UP (no hc)     Up 23 hours
+  ⚠️ fluent-bit                —      —      UP (no hc)     Up 23 hours
+  ✅ snappymail                8888   8888   HEALTHY        Up 21 hours (healthy)
+  ✅ introspect-proxy          —      4182   HEALTHY        Up 22 hours (healthy)
+  ✅ syslog-forwarder          —      —      HEALTHY        Up 22 hours (healthy)
 
-oci-analytics ✅ — oci-analytics — 1C/1G — mem 721M/954M (75%) — disk 56% — swap 258M/2559M — load 2.19 2.09 2.05 — 7/8 ctrs — up 20 hours, 20 minutes
+oci-analytics ✅ — oci-analytics — 1C/?G — mem 703M/954M (73%) — disk 56% — swap 264M/2559M — load 2.26 2.08 2.02 — 7/8 ctrs — up 22 hours, 16 minutes
 ────────────────────────────────────────────────────────────
-  ❌ umami-setup               —      —      DOWN(1)        Exited (1) 19 hours ago
-  ⚠️ sauron-forwarder          —      —      UP (no hc)     Up 20 hours
-  ⚠️ matomo-hybrid             8080   8080   UP (no hc)     Up 20 hours
-  ⚠️ fluent-bit                —      —      UP (no hc)     Up 20 hours
-  ⚠️ dozzle                    —      9999   UP (no hc)     Up 20 hours
-  ✅ alerts-api                —      —      HEALTHY        Up 18 hours (healthy)
-  ✅ umami                     3006   3006   HEALTHY        Up 19 hours (healthy)
-  ✅ umami-db                  5442   5442   HEALTHY        Up 19 hours (healthy)
+  ❌ umami-setup               —      —      DOWN(1)        Exited (1) 21 hours ago
+  ⚠️ sauron-forwarder          —      —      UP (no hc)     Up 22 hours
+  ⚠️ matomo-hybrid             8080   8080   UP (no hc)     Up 22 hours
+  ⚠️ fluent-bit                —      —      UP (no hc)     Up 22 hours
+  ⚠️ dozzle                    9999   9999   UP (no hc)     Up 22 hours
+  ✅ alerts-api                —      —      HEALTHY        Up 20 hours (healthy)
+  ✅ umami                     3006   3006   HEALTHY        Up 21 hours (healthy)
+  ✅ umami-db                  5442   5442   HEALTHY        Up 21 hours (healthy)
 
-oci-apps ✅ — oci-apps — 4C/24G — mem 4920M/23975M (20%) — disk 71% — swap 0M/0M — load 0.65 0.47 0.46 — 49/54 ctrs — up 1d 6h
+oci-apps ✅ — oci-apps — 4C/24G — mem 4791M/23975M (19%) — disk 71% — swap 0M/0M — load 0.53 0.47 0.48 — 49/54 ctrs — up 1d 7h
 ────────────────────────────────────────────────────────────
   ❌ crawlee_runner            —      —      DOWN(?)        Created
   ❌ crawlee_api               —      3000   DOWN(?)        Created
-  ❌ surrealdb                 —      —      DOWN(2)        Exited (2) About an hour ago
-  ❌ crawlee_minio_init        —      —      DOWN(0)        Exited (0) About an hour ago
-  ❌ crawlee_dashboard         —      3001   DOWN(0)        Exited (0) About an hour ago
-  ❌ crawlee_db                —      5433   UNHEALTHY      Up 55 seconds (unhealthy)
-  ⚠️ photoprism_app            —      3013   STARTING       Up About a minute (health: sta
-  ⚠️ windmill-worker           —      —      UP (no hc)     Up About an hour
-  ⚠️ mattermost-bots           —      —      UP (no hc)     Up About an hour
-  ⚠️ crawlee_scheduler         —      —      UP (no hc)     Up About an hour
-  ⚠️ gitea                     —      3002   UP (no hc)     Up 5 hours
-  ⚠️ bup-server                —      —      UP (no hc)     Up 5 hours
-  ⚠️ lgtm_tempo                —      3210   UP (no hc)     Up 5 hours
-  ⚠️ lgtm_mimir                —      9009   UP (no hc)     Up 5 hours
-  ⚠️ borg-server               —      —      UP (no hc)     Up 5 hours
-  ⚠️ cloud-spec                —      3080   UP (no hc)     Up 5 hours
-  ⚠️ siem-api                  —      —      UP (no hc)     Up 5 hours
-  ⚠️ quant_light_engine        —      —      UP (no hc)     Up 5 hours
-  ⚠️ mattermost-mcp            —      3102   UP (no hc)     Up 5 hours
-  ⚠️ mail-mcp                  —      3103   UP (no hc)     Up 5 hours
-  ⚠️ code-server               —      8443   UP (no hc)     Up 5 hours
-  ✅ windmill-server           —      8000   HEALTHY        Up About an hour (healthy)
-  ✅ windmill-db               —      5440   HEALTHY        Up About an hour (healthy)
-  ✅ quant_light_db            —      —      HEALTHY        Up About an hour (healthy)
-  ✅ photoprism_rclone         —      —      HEALTHY        Up About an hour (healthy)
-  ✅ photoprism_mariadb        —      —      HEALTHY        Up About an hour (healthy)
-  ✅ nocodb                    —      8085   HEALTHY        Up About an hour (healthy)
-  ✅ nocodb-db                 —      —      HEALTHY        Up About an hour (healthy)
-  ✅ crawlee_minio             —      9000   HEALTHY        Up About an hour (healthy)
-  ✅ cloud-cgc-mcp             —      3105   HEALTHY        Up About an hour (healthy)
+  ❌ surrealdb                 —      —      DOWN(2)        Exited (2) 3 hours ago
+  ❌ crawlee_minio_init        —      —      DOWN(0)        Exited (0) 3 hours ago
+  ❌ crawlee_dashboard         —      3001   DOWN(0)        Exited (0) 3 hours ago
+  ⚠️ photoprism_app            —      3013   STARTING       Up 21 seconds (health: startin
+  ⚠️ crawlee_db                —      5433   STARTING       Up 10 seconds (health: startin
+  ⚠️ windmill-worker           —      —      UP (no hc)     Up 3 hours
+  ⚠️ mattermost-bots           —      —      UP (no hc)     Up 3 hours
+  ⚠️ crawlee_scheduler         —      —      UP (no hc)     Up 3 hours
+  ⚠️ gitea                     —      3002   UP (no hc)     Up 7 hours
+  ⚠️ bup-server                —      —      UP (no hc)     Up 7 hours
+  ⚠️ lgtm_tempo                —      3210   UP (no hc)     Up 7 hours
+  ⚠️ lgtm_mimir                —      9009   UP (no hc)     Up 7 hours
+  ⚠️ borg-server               —      —      UP (no hc)     Up 7 hours
+  ⚠️ cloud-spec                —      3080   UP (no hc)     Up 7 hours
+  ⚠️ siem-api                  —      —      UP (no hc)     Up 7 hours
+  ⚠️ quant_light_engine        —      5001   UP (no hc)     Up 7 hours
+  ⚠️ mattermost-mcp            —      3102   UP (no hc)     Up 7 hours
+  ⚠️ mail-mcp                  —      3103   UP (no hc)     Up 7 hours
+  ⚠️ code-server               —      8443   UP (no hc)     Up 7 hours
   ✅ c3-infra-mcp              —      3100   HEALTHY        Up 2 hours (healthy)
-  ✅ c3-infra-api              —      8081   HEALTHY        Up 2 hours (healthy)
-  ✅ lgtm_grafana              —      3200   HEALTHY        Up 5 hours (healthy)
-  ✅ lgtm_loki                 —      3110   HEALTHY        Up 5 hours (healthy)
-  ✅ c3-services-mcp           —      3101   HEALTHY        Up 5 hours (healthy)
-  ✅ syslog-central            —      —      HEALTHY        Up 5 hours (healthy)
-  ✅ crawlee_redis             —      6381   HEALTHY        Up 5 hours (healthy)
-  ✅ rig-agentic-sonn-14bq8    —      —      HEALTHY        Up 5 hours (healthy)
-  ✅ rig-agentic-hai           —      —      HEALTHY        Up 5 hours (healthy)
-  ✅ photos-webhook            —      —      HEALTHY        Up 5 hours (healthy)
-  ✅ photos-db                 —      —      HEALTHY        Up 5 hours (healthy)
-  ✅ ollama-hai                —      11435  HEALTHY        Up 5 hours (healthy)
-  ✅ quant_light_research      —      —      HEALTHY        Up 5 hours (healthy)
-  ✅ revealmd_app              —      3014   HEALTHY        Up 5 hours (healthy)
-  ✅ radicale                  —      5232   HEALTHY        Up 5 hours (healthy)
-  ✅ mattermost                —      8065   HEALTHY        Up 5 hours (healthy)
-  ✅ mattermost-postgres       —      5435   HEALTHY        Up 5 hours (healthy)
-  ✅ hedgedoc_app              —      3018   HEALTHY        Up 5 hours (healthy)
-  ✅ hedgedoc_postgres         —      —      HEALTHY        Up 5 hours (healthy)
-  ✅ grist_app                 —      3011   HEALTHY        Up 5 hours (healthy)
-  ✅ google-workspace-mcp      —      3104   HEALTHY        Up 5 hours (healthy)
-  ✅ etherpad_app              —      3012   HEALTHY        Up 5 hours (healthy)
-  ✅ etherpad_postgres         —      —      HEALTHY        Up 5 hours (healthy)
-  ✅ filebrowser_app           —      3015   HEALTHY        Up 5 hours (healthy)
+  ✅ windmill-server           —      8000   HEALTHY        Up 3 hours (healthy)
+  ✅ windmill-db               —      5440   HEALTHY        Up 3 hours (healthy)
+  ✅ quant_light_db            —      5434   HEALTHY        Up 3 hours (healthy)
+  ✅ photoprism_rclone         —      —      HEALTHY        Up 3 hours (healthy)
+  ✅ photoprism_mariadb        —      —      HEALTHY        Up 3 hours (healthy)
+  ✅ nocodb                    —      8085   HEALTHY        Up 3 hours (healthy)
+  ✅ nocodb-db                 —      5441   HEALTHY        Up 3 hours (healthy)
+  ✅ crawlee_minio             —      9000   HEALTHY        Up 3 hours (healthy)
+  ✅ cloud-cgc-mcp             —      3105   HEALTHY        Up 3 hours (healthy)
+  ✅ c3-infra-api              —      8081   HEALTHY        Up 3 hours (healthy)
+  ✅ lgtm_grafana              —      3200   HEALTHY        Up 7 hours (healthy)
+  ✅ lgtm_loki                 —      3110   HEALTHY        Up 7 hours (healthy)
+  ✅ c3-services-mcp           —      3101   HEALTHY        Up 7 hours (healthy)
+  ✅ syslog-central            —      —      HEALTHY        Up 7 hours (healthy)
+  ✅ crawlee_redis             —      6381   HEALTHY        Up 7 hours (healthy)
+  ✅ rig-agentic-sonn-14bq8    —      —      HEALTHY        Up 7 hours (healthy)
+  ✅ rig-agentic-hai           —      —      HEALTHY        Up 7 hours (healthy)
+  ✅ photos-webhook            —      —      HEALTHY        Up 7 hours (healthy)
+  ✅ photos-db                 —      —      HEALTHY        Up 7 hours (healthy)
+  ✅ ollama-hai                —      11435  HEALTHY        Up 7 hours (healthy)
+  ✅ quant_light_research      —      8889   HEALTHY        Up 7 hours (healthy)
+  ✅ revealmd_app              —      3014   HEALTHY        Up 7 hours (healthy)
+  ✅ radicale                  —      5232   HEALTHY        Up 7 hours (healthy)
+  ✅ mattermost                —      8065   HEALTHY        Up 7 hours (healthy)
+  ✅ mattermost-postgres       —      5435   HEALTHY        Up 7 hours (healthy)
+  ✅ hedgedoc_app              —      3018   HEALTHY        Up 7 hours (healthy)
+  ✅ hedgedoc_postgres         —      5439   HEALTHY        Up 7 hours (healthy)
+  ✅ grist_app                 —      3011   HEALTHY        Up 7 hours (healthy)
+  ✅ google-workspace-mcp      —      3104   HEALTHY        Up 7 hours (healthy)
+  ✅ etherpad_app              —      3012   HEALTHY        Up 7 hours (healthy)
+  ✅ etherpad_postgres         —      5436   HEALTHY        Up 7 hours (healthy)
+  ✅ filebrowser_app           —      3015   HEALTHY        Up 7 hours (healthy)
 
-gcp-t4 ❌ — gcp-t4 — 4C/15G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
+gcp-t4 ❌ — gcp-t4 — 0C/?G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
 ────────────────────────────────────────────────────────────
 
-gcp-proxy ❌ — gcp-proxy — 1C/1G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
+gcp-proxy ❌ — gcp-proxy — 0C/?G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
 ────────────────────────────────────────────────────────────
 
 
@@ -302,10 +311,10 @@ MX — Inbound Routing (dig MX)
 ────────────────────────────────────────────────────────────
     Domain                       Pri   Server                                     IP
 ────────────────────────────────────────────────────────────
-✅ diegonmarcos.com             22    route1.mx.cloudflare.net.                  162.159.205.11
-✅ diegonmarcos.com             85    route2.mx.cloudflare.net.                  162.159.205.17
-✅ diegonmarcos.com             97    route3.mx.cloudflare.net.                  162.159.205.25
-✅ send.mails.diegonmarcos.com  10    feedback-smtp.us-east-1.amazonses.com.     34.192.233.193
+✅ diegonmarcos.com             85    route2.mx.cloudflare.net.                  162.159.205.19
+✅ diegonmarcos.com             22    route1.mx.cloudflare.net.                  162.159.205.12
+✅ diegonmarcos.com             97    route3.mx.cloudflare.net.                  162.159.205.24
+✅ send.mails.diegonmarcos.com  10    feedback-smtp.us-east-1.amazonses.com.     18.235.76.96
 ❌ mails.diegonmarcos.com       —     no MX record
   ─── checks ───
   ✅ Cloudflare Email Routing active (3 MX routes for diegonmarcos.com)
@@ -376,21 +385,21 @@ MAIL FLOW — Pipeline Status
   📨 INBOUND EMAIL: someone@gmail.com → me@diegonmarcos.com
      Gmail → MX → CF Email Routing → CF Worker → oci-mail:8080 → smtp-proxy → Stalwart
      ─────────────────────────────────────────────
-     ✅ smtp-proxy           Up 20 hours (oci-mail:8080)
+     ✅ smtp-proxy           Up 22 hours (oci-mail:8080)
      ✅ oci-mail:8080        reachable (CF Worker ingress)
      ✅ oci-mail:25          SMTP open (Stalwart local delivery)
-     ✅ stalwart             Up 18 hours (oci-mail MTA)
+     ✅ stalwart             Up About an hour (oci-mail MTA)
 
   📱 CLIENT ACCESS: phone/Thunderbird → read/send mail via Caddy L4
      Client → gcp-proxy (35.226.147.64) → Caddy L4 TLS passthrough → oci-mail (130.110.251.193) → Stalwart
      ─────────────────────────────────────────────
-     ❌ webmail.diegonmarcos.com     [---] (Snappymail)
-     ❌ mail.diegonmarcos.com        [---] (Stalwart admin)
+     ✅ webmail.diegonmarcos.com     [200] (Snappymail)
+     ✅ mail.diegonmarcos.com        [200] (Stalwart admin)
 
   📤 OUTBOUND PERSONAL: me@diegonmarcos.com → someone@gmail.com
      Stalwart → ⚠️ direct from 130.110.251.193 (NOT IN SPF!) → recipient MX
      ─────────────────────────────────────────────
-     ✅ stalwart             Up 18 hours (oci-mail MTA)
+     ✅ stalwart             Up About an hour (oci-mail MTA)
      ✅ smtp:465 (SMTPS)     open (client → gcp-proxy L4 → stalwart)
      ✅ smtp:587 (Submission) open (client → gcp-proxy L4 → stalwart)
      ❌ SPF WILL FAIL        VM IP 130.110.251.193 not in SPF
@@ -413,11 +422,11 @@ VPS / VM SPECS (all providers)
 ────────────────────────────────────────────────────────────
     VM               Provider   Shape                CPU    RAM    Disk     Cost
 ────────────────────────────────────────────────────────────
-   oci-mail         ?          VM.Standard.E2.1.Micro 1      1G     47G      ?
-   oci-analytics    ?          VM.Standard.E2.1.Micro 1      1G     47G      ?
-   oci-apps         ?          VM.Standard.A1.Flex  4      24G    100G     ?
-   gcp-t4           ?          n1-standard-4        4      15G    100G     ?
-   gcp-proxy        ?          e2-micro             1      1G     30G      ?
+   oci-mail         ?          VM.Standard.E2.1.Micro 1      ?G     ?G       ?
+   oci-analytics    ?          VM.Standard.E2.1.Micro 1      ?G     ?G       ?
+   oci-apps         ?          VM.Standard.A1.Flex  4      24G    ?G       ?
+   gcp-t4           ?          n1-standard-4        ?      ?G     ?G       ?
+   gcp-proxy        ?          e2-small             ?      ?G     ?G       ?
    vast-ollama      ?          ?                    ?      ?G     ?G       ?
    gha-cloud        GitHub     ubuntu-latest (x86)  4      16G    14G      2000min/mo
    gha-cloud-data   GitHub     ubuntu-latest (x86)  4      16G    14G      2000min/mo
@@ -430,22 +439,23 @@ RESOURCES (live)
                    oci-mail       oci-analytics  oci-apps       gcp-t4         gcp-proxy     
 ────────────────────────────────────────────────────────────
 OS                 oci-mail       oci-analytics  oci-apps       gcp-t4         gcp-proxy     
-CPU                1 cores        1 cores        4 cores        4 cores        1 cores       
-RAM                646M/954M      721M/954M      4920M/23975M   ?/?            ?/?           
-RAM %              67%            75%            20%            0%             0%            
-Swap               219M/2559M     258M/2559M     0M/0M          ?              ?             
+CPU                1 cores        1 cores        4 cores        0 cores        0 cores       
+RAM                637M/954M      703M/954M      4791M/23975M   ?/?            ?/?           
+RAM %              66%            73%            19%            0%             0%            
+Swap               208M/2559M     264M/2559M     0M/0M          ?              ?             
 Disk               28G/45G        25G/48G        64.8G/95.8G    ?/?            ?/?           
 Disk %             67%            56%            71%            ?              ?             
-Load               0.42 0.48 0.42 2.19 2.09 2.05 0.65 0.47 0.46 ?              ?             
+Load               0.62 1.51 1.78 2.26 2.08 2.02 0.53 0.47 0.48 ?              ?             
 Containers         7/7            7/8            49/54          0/0            0/0           
-Uptime             20 hours, 55 minutes 20 hours, 20 minutes 1d 6h          ?              ?             
+Uptime             22 hours, 51 minutes 22 hours, 16 minutes 1d 7h          ?              ?             
 
 STORAGE
 ────────────────────────────────────────────────────────────
   OBJECT STORAGE
     Provider       Type                 Details
     ────────────────────────────────────────────────────────────
-    oci            Object Storage       each.value.name (each.value.storage_tier)
+    oci            Object Storage       archlinux-images (Standard)
+    oci            Object Storage       my-photos (Standard)
     GitHub         Container Registry   ghcr.io/diegonmarcos/ (84 images)
 
   DATA / FILES (git repositories)
@@ -513,14 +523,14 @@ BACKUPS / DATABASES
    vaultwarden          sqlite     vaultwarden            /data/db.sqlite3 gcp-proxy        vaultwarden.app:8880
    umami                postgres   umami-db               umami          oci-analytics    umami-db.app:5442
    crawlee-cloud        postgres   crawlee_db             crawlee        oci-apps         crawlee-db.app:5433
-   etherpad             postgres   etherpad_postgres      etherpad       oci-apps         embedded
+   etherpad             postgres   etherpad_postgres      etherpad       oci-apps         etherpad-db.app:5436
    gitea                ?          gitea                  /data/gitea/gitea.db oci-apps         backup-gitea.app:3002
    grist                ?          grist_app              /persist/grist-sessions.db oci-apps         grist.app:3011
-   hedgedoc             postgres   hedgedoc_postgres      hedgedoc       oci-apps         embedded
+   hedgedoc             postgres   hedgedoc_postgres      hedgedoc       oci-apps         hedgedoc-db.app:5439
    mattermost-bots      postgres   mattermost-postgres    mattermost     oci-apps         mattermost-postgres.app:5435
-   nocodb               postgres   nocodb-db              nocodb         oci-apps         embedded
+   nocodb               postgres   nocodb-db              nocodb         oci-apps         nocodb-db.app:5441
    photoprism           mariadb    photoprism_mariadb     photoprism     oci-apps         embedded
-   quant-lab-light      postgres   quant_light_db         quantlab       oci-apps         embedded
+   quant-lab-light      postgres   quant_light_db         quantlab       oci-apps         quant-light-db.app:5434
    windmill             postgres   windmill-db            windmill       oci-apps         windmill-db.app:5440
 
 DOCKER NETWORKS
@@ -602,18 +612,18 @@ FRAMEWORK — Key Paths
 
 PERFORMANCE
 ────────────────────────────────────────────────────────────
-  public_urls_multi    48.9s █████████
-  private_health       46.4s █████████
-  public_urls          42.8s ████████
-  open_ports           24.0s █████
-  mail_ports           14.0s ███
-  vm_gcp-proxy          8.2s ██
-  vm_gcp-t4             8.0s ██
-  vm_oci-analytics      7.3s █
-  vm_oci-mail           5.9s █
-  vm_oci-apps           4.7s █
+  public_urls          51.8s █████████
+  private_health       40.3s ███████
+  public_urls_multi    25.6s ████
+  mail_ports           13.8s ██
+  open_ports           12.4s ██
+  vm_gcp-proxy          8.4s █
+  vm_gcp-t4             8.0s █
+  vm_oci-analytics      7.5s █
+  vm_oci-apps           5.0s █
+  vm_oci-mail           4.8s █
   api_mcp               0.0s 
-  TOTAL               159.7s
+  TOTAL               174.3s
 
 SCRIPT INFO
 ────────────────────────────────────────────────────────────
@@ -634,10 +644,10 @@ SCRIPT INFO
     ✅ gh         /home/diego/.nix-profile/bin/gh
 
   Errors:    4
-    [00:23:25] ERROR: SSH unreachable: gcp-t4
-    [00:23:33] ERROR: SSH unreachable: gcp-proxy
-    [00:23:33] ERROR:   ❌ gcp-t4: UNREACHABLE
-    [00:23:33] ERROR:   ❌ gcp-proxy: UNREACHABLE
+    [02:19:18] ERROR: SSH unreachable: gcp-t4
+    [02:19:27] ERROR: SSH unreachable: gcp-proxy
+    [02:19:27] ERROR:   ❌ gcp-t4: UNREACHABLE
+    [02:19:27] ERROR:   ❌ gcp-proxy: UNREACHABLE
 
 ────────────────────────────────────────────────────────────
 Generated by: cloud-data/cloud-health-stack/container-health.ts
