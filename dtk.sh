@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Diego's VM toolkit — install, ssh, clone, info
-# Usage: ./alias.sh                # interactive
-#        ./alias.sh <cmd> [args]   # direct
+# Usage: ./dtk.sh                # interactive
+#        ./dtk.sh <cmd> [args]   # direct
 # OS-agnostic: NixOS, Arch, Debian, Fedora, macOS, Termux
 set -euo pipefail
 
 # Logging — verbose trace to file, clean output to console
 LOGFILE="${HOME:-/tmp}/alias.log"
 _LOG_USER=$(whoami 2>/dev/null || echo "?")
-echo "=== $(date '+%Y-%m-%d %H:%M:%S') ${_LOG_USER}@$(hostname -s 2>/dev/null || echo '?') === alias.sh $* ===" >> "$LOGFILE"
+echo "=== $(date '+%Y-%m-%d %H:%M:%S') ${_LOG_USER}@$(hostname -s 2>/dev/null || echo '?') === dtk.sh $* ===" >> "$LOGFILE"
 exec 3>> "$LOGFILE"
 BASH_XTRACEFD=3
 PS4='+[$(date +%H:%M:%S)] ${_LOG_USER} | '
@@ -588,7 +588,7 @@ do_ssh() {
   resolve_vm "$vm"
 
   if ! command -v gcloud >/dev/null 2>&1; then
-    echo "gcloud not found — install first (alias.sh install)"
+    echo "gcloud not found — install first (dtk.sh install)"
     exit 1
   fi
 
