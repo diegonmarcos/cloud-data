@@ -153,7 +153,9 @@ export function varsContainers(ctx: VarContext, privateHealthResults?: PrivateHe
         }
         const dnsEntry = PRIVATE_DNS.find(p => p.container === c.name);
         const dockerPort = dnsEntry ? String(dnsEntry.port) : "—";
-        const hostPort = dnsEntry?.hostPort ? String(dnsEntry.port) : "—";
+        // Check if this port was reachable in A2 private health (host-exposed)
+        const privResult = privateHealthResults?.find(r => r.container === c.name);
+        const hostPort = privResult?.tcp ? String(dnsEntry?.port || "—") : "—";
         lines.push(`  ${icon} ${c.name.padEnd(25)} ${hostPort.padEnd(6)} ${dockerPort.padEnd(6)} ${state.padEnd(14)} ${c.status.substring(0, 30)}`);
       }
       lines.push("");
