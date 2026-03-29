@@ -7,9 +7,11 @@ set -euo pipefail
 
 # Logging — verbose trace to file, clean output to console
 LOGFILE="${HOME:-/tmp}/alias.log"
-echo "=== $(date) === alias.sh $* ===" >> "$LOGFILE"
+_LOG_USER=$(whoami 2>/dev/null || echo "?")
+echo "=== $(date '+%Y-%m-%d %H:%M:%S') ${_LOG_USER}@$(hostname -s 2>/dev/null || echo '?') === alias.sh $* ===" >> "$LOGFILE"
 exec 3>> "$LOGFILE"
 BASH_XTRACEFD=3
+PS4='+[$(date +%H:%M:%S)] ${_LOG_USER} | '
 set -x
 
 # Force real system binaries FIRST (bypass nix guardrail wrappers)
