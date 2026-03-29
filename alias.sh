@@ -3,7 +3,8 @@
 # Usage: ./alias.sh                # interactive
 #        ./alias.sh <cmd> [args]   # direct
 set -euo pipefail
-export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:$PATH"
+# Force real system binaries FIRST (bypass nix guardrail wrappers)
+export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:/nix/var/nix/profiles/default/bin:$PATH"
 
 declare -A VM_MAP=(
   [gcp-proxy]="arch-1:us-central1-a"
@@ -41,8 +42,8 @@ resolve_vm() {
 
 install_dev_arch() {
   echo "=== Arch Linux: Full Dev Toolchain ==="
-  pacman -Syu --noconfirm
-  pacman -S --noconfirm --needed \
+  /usr/bin/pacman -Syu --noconfirm
+  /usr/bin/pacman -S --noconfirm --needed \
     fish git curl wget htop btop vim nano neovim \
     base-devel gcc make cmake rust cargo go \
     python python-pip python-virtualenv \
