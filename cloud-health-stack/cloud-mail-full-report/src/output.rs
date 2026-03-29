@@ -9,13 +9,11 @@ pub fn format_checks(checks: &[Check]) -> String {
 
     let mut lines = Vec::new();
     for c in checks {
-        let icon = if c.passed {
-            "\u{2713}" // checkmark
-        } else {
+        let icon = if c.passed { "✅" } else {
             match c.severity {
-                Severity::Critical => "\u{2717}", // X
-                Severity::Warning => "!",
-                Severity::Info => "-",
+                Severity::Critical => "❌",
+                Severity::Warning => "⚠️ ",
+                Severity::Info => "ℹ️ ",
             }
         };
 
@@ -126,21 +124,21 @@ fn build_issues_summary(results: &MailHealthResult) -> String {
     if !critical.is_empty() {
         lines.push("  CRITICAL:".into());
         for c in &critical {
-            lines.push(format!("    [X] {}: {}", c.name, c.details));
+            lines.push(format!("    ❌ {}: {}", c.name, c.details));
         }
     }
 
     if !warnings.is_empty() {
         lines.push("  WARNINGS:".into());
         for c in &warnings {
-            lines.push(format!("    [!] {}: {}", c.name, c.details));
+            lines.push(format!("    ⚠️  {}: {}", c.name, c.details));
         }
     }
 
     if !info.is_empty() {
         lines.push("  INFO:".into());
         for c in &info {
-            lines.push(format!("    [-] {}: {}", c.name, c.details));
+            lines.push(format!("    ℹ️  {}: {}", c.name, c.details));
         }
     }
 

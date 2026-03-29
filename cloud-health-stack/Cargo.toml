@@ -1,0 +1,7 @@
+[workspace]
+resolver = "2"
+members = [
+    "cloud-stack-report",
+    "cloud-health-full-report",
+    "cloud-mail-full-report",
+]

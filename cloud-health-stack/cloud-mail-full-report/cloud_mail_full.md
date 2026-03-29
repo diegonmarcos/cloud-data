@@ -6,173 +6,158 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-03-29T21:01:48.553348040+00:00
+  CLOUD MAIL FULL — 2026-03-29T21:16:09.232200026+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-  37 issues: 15 critical, 18 warnings, 4 info
+  22 issues: 4 critical, 14 warnings, 4 info
 
   CRITICAL:
-    [X] mail.* HTTPS: HTTP err: error sending request for url (https://mail.diegonmarcos.com/)
-    [X] webmail HTTPS: HTTP err: error sending request for url (https://webmail.diegonmarcos.com/)
-    [X] mail:993 TLS: FAIL
-    [X] mail:465 TLS: FAIL
-    [X] mail:587 STARTTLS: FAIL
-    [X] WG oci-apps: WG DOWN
-    [X] Caddy (gcp-proxy): Caddy DOWN
-    [X] Hickory DNS: FAIL: no response
-    [X] Caddy L4 -> IMAP: no proxy data
-    [X] Caddy L4 -> SMTPS: no proxy data
-    [X] Caddy L4 -> SMTP: no proxy data
-    [X] mail:993 (IMAP): FAIL
-    [X] mail:465 (SMTPS): FAIL
-    [X] mail:587 (SMTP Sub): FAIL
-    [X] All ports bound: missing: 8443
+    ❌ Caddy L4 -> IMAP: no proxy data
+    ❌ Caddy L4 -> SMTPS: no proxy data
+    ❌ Caddy L4 -> SMTP: no proxy data
+    ❌ All ports bound: missing: 8443
   WARNINGS:
-    [!] auth HTTPS: HTTP err: error sending request for url (https://auth.diegonmarcos.com/api/health)
-    [!] MCP endpoint: HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)
-    [!] SSH batch oci-apps: SSH FAILED
-    [!] SSH batch gcp-proxy: SSH FAILED
-    [!] mail-mcp: no data
-    [!] Webmail HTTPS: HTTP err: error sending request for url (https://mail.diegonmarcos.com/)
-    [!] Authelia health: no proxy data
-    [!] OIDC bearer -> webmail: HTTP err: error sending request for url (https://mail.diegonmarcos.com/)
-    [!] Stalwart Admin via Bearer: HTTP err: error sending request for url (https://mail.diegonmarcos.com/api/)
-    [!] mcp->DNS resolve: no app data
-    [!] mcp->IMAP TLS: no app data
-    [!] mcp->SMTP TLS: no app data
-    [!] mcp->IMAP WG direct: no app data
-    [!] mcp->IMAP LOGIN: no app data
-    [!] mcp->SMTP AUTH: no app data
-    [!] mail-mcp MCP: HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (alive)
-    [!] admin panel: HTTP 000
-    [!] User accounts: unknown ()
+    ⚠️  MCP endpoint: HTTP 502
+    ⚠️  SSH batch oci-apps: mail-mcp: 
+    ⚠️  SSH batch gcp-proxy: SSH FAILED
+    ⚠️  mail-mcp: 
+    ⚠️  Authelia health: no proxy data
+    ⚠️  mcp->DNS resolve: Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running
+    ⚠️  mcp->IMAP TLS: Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running
+    ⚠️  mcp->SMTP TLS: Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running
+    ⚠️  mcp->IMAP WG direct: 10.0.0.3:993 Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running
+    ⚠️  mcp->IMAP LOGIN: Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running
+    ⚠️  mcp->SMTP AUTH: Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running
+    ⚠️  mail-mcp MCP: HTTP 502 (alive)
+    ⚠️  admin panel: HTTP 000
+    ⚠️  User accounts: unknown ()
   INFO:
-    [-] GHA health: 2 failing: Health → Mail (Full Check), Health → Mail (Full Check)
-    [-] Admin API accounts: 
-    [-] Admin API domains: 
-    [-] Resend API key: not set (set RESEND_API_KEY to enable E2E)
+    ℹ️  GHA health: 2 failing: Health → Mail (Full Check), Health → Mail (Full Check)
+    ℹ️  Admin API accounts: 
+    ℹ️  Admin API domains: 
+    ℹ️  Resend API key: not set (set RESEND_API_KEY to enable E2E)
 
 
 0. INSTANT KPIs
 ──────────────────────────────────────────────────────────────
-  ✗ HTTP err: error sending request for url (https://mail.diegonmarcos.com/) (0.2s) [CRITICAL]
-  ✗ HTTP err: error sending request for url (https://webmail.diegonmarcos.com/) (0.2s) [CRITICAL]
-  ! HTTP err: error sending request for url (https://auth.diegonmarcos.com/api/health) (0.2s) [WARNING]
-  ! HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (0.2s) [WARNING]
-  ✗ FAIL (0.2s) [CRITICAL]
-  ✗ FAIL (0.2s) [CRITICAL]
-  ✗ FAIL (0.2s) [CRITICAL]
-  ✓ 22 route1.mx.cloudflare.net. (0.1s)
-  ✓ present (0.1s)
-  - 2 failing: Health → Mail (Full Check), Health → Mail (Full Check) (1.0s) [INFO]
+  ✅ HTTP 302 (0.5s)
+  ✅ HTTP 200 (0.5s)
+  ✅ HTTP 200 (0.5s)
+  ⚠️  HTTP 502 (0.6s) [WARNING]
+  ✅ TLS OK (0.8s)
+  ✅ TLS OK (1.1s)
+  ✅ TLS OK (1.7s)
+  ✅ 22 route1.mx.cloudflare.net. (0.0s)
+  ✅ present (0.1s)
+  ℹ️  2 failing: Health → Mail (Full Check), Health → Mail (Full Check) (0.7s) [INFO]
 
-  Summary: 2/10 passed, 8 failed
+  Summary: 8/10 passed, 2 failed
 
 1. PRE-FLIGHT
 ──────────────────────────────────────────────────────────────
-  ✓ 10.0.0.3:22 OK (0.3s)
-  ✗ WG DOWN (3.0s) [CRITICAL]
-  ✓ 10.0.0.1:22 OK (0.2s)
-  ✓ Docker 27.5.1
-  ! SSH FAILED [WARNING]
-  ! SSH FAILED [WARNING]
-  ✓ 68% used
-  ✓ 667/954MB (70%)
-  ✓ load: 2.16 2.04 1.99 WARNING
+  ✅ 10.0.0.3:22 OK (0.3s)
+  ✅ 10.0.0.6:22 OK (0.3s)
+  ✅ 10.0.0.1:22 OK (0.1s)
+  ✅ Docker 27.5.1
+  ⚠️  mail-mcp:  [WARNING]
+  ⚠️  SSH FAILED [WARNING]
+  ✅ 68% used
+  ✅ 667/954MB (70%)
+  ✅ load: 0.37 0.64 1.13
 
-  Summary: 6/9 passed, 3 failed
+  Summary: 7/9 passed, 2 failed
 
 2. CONTAINERS
 ──────────────────────────────────────────────────────────────
-  ✓ Up 39 minutes
-  ✓ Up 40 minutes
-  ✓ Up 40 minutes
-  ! no data [WARNING]
+  ✅ Up 54 minutes
+  ✅ Up 54 minutes
+  ✅ Up 54 minutes
+  ⚠️   [WARNING]
 
   Summary: 3/4 passed, 1 failed
 
 3. NETWORK + AUTH
 ──────────────────────────────────────────────────────────────
-  ✗ Caddy DOWN (3.2s) [CRITICAL]
-  ✗ FAIL: no response (3.0s) [CRITICAL]
-  ✓ 993 OK 465 OK 587 OK (0.6s)
-  ✗ no proxy data [CRITICAL]
-  ✗ no proxy data [CRITICAL]
-  ✗ no proxy data [CRITICAL]
-  ✗ FAIL (0.2s) [CRITICAL]
-  ✗ FAIL (0.2s) [CRITICAL]
-  ✗ FAIL (0.2s) [CRITICAL]
-  ✓ 220 mail.diegonmarcos.com Stalwart ESMTP at your service
-  ✓ STARTTLS OK
-  ! HTTP err: error sending request for url (https://mail.diegonmarcos.com/) (0.2s) [WARNING]
-  ✓ HTTP 200
-  ✓ HTTP 200
-  ✓ ManageSieve OK
-  ! no proxy data [WARNING]
-  ! HTTP err: error sending request for url (https://mail.diegonmarcos.com/) (0.2s) [WARNING]
-  ! HTTP err: error sending request for url (https://mail.diegonmarcos.com/api/) (0.2s) [WARNING]
-  ! no app data [WARNING]
-  ! no app data [WARNING]
-  ! no app data [WARNING]
-  ! no app data [WARNING]
-  ! no app data [WARNING]
-  ! no app data [WARNING]
-  ! HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (alive) (0.2s) [WARNING]
-  ✗ missing: 8443 [CRITICAL]
+  ✅ HTTPS OK (10.0.0.1) (0.6s)
+  ✅ stalwart.app -> 10.0.0.3 (0.1s)
+  ✅ 993 OK 465 OK 587 OK (1.3s)
+  ❌ no proxy data [CRITICAL]
+  ❌ no proxy data [CRITICAL]
+  ❌ no proxy data [CRITICAL]
+  ✅ TLS OK (1.2s)
+  ✅ TLS OK (0.9s)
+  ✅ TLS OK (2.2s)
+  ✅ 220 mail.diegonmarcos.com Stalwart ESMTP at your service
+  ✅ STARTTLS OK
+  ✅ HTTP 302 (0.5s)
+  ✅ HTTP 200
+  ✅ HTTP 200
+  ✅ ManageSieve OK
+  ⚠️  no proxy data [WARNING]
+  ✅ Bearer auth -> 200 OK (full chain) (0.7s)
+  ✅ HTTP 401 (1.0s)
+  ⚠️  Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running [WARNING]
+  ⚠️  Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running [WARNING]
+  ⚠️  Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running [WARNING]
+  ⚠️  10.0.0.3:993 Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running [WARNING]
+  ⚠️  Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running [WARNING]
+  ⚠️  Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running [WARNING]
+  ⚠️  HTTP 502 (alive) (0.6s) [WARNING]
+  ❌ missing: 8443 [CRITICAL]
 
-  Summary: 6/26 passed, 20 failed
+  Summary: 14/26 passed, 12 failed
 
 4. DNS AUTH
 ──────────────────────────────────────────────────────────────
-  ✓ 22 route1.mx.cloudflare.net. (0.0s)
-  ✓ present (0.0s)
-  ✓ v=spf1 (0.0s)
-  ✓ v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.0s)
+  ✅ 22 route1.mx.cloudflare.net. (0.1s)
+  ✅ present (0.0s)
+  ✅ v=spf1 (0.0s)
+  ✅ v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.0s)
 
   Summary: 4/4 passed, 0 failed
 
 5. MAIL INTERNALS
 ──────────────────────────────────────────────────────────────
-  ✓ Stalwart IMAP responding
-  ✓ IMAP4rev1
-  ✓ Stalwart built-in
-  ✓ RocksDB
-  ! HTTP 000 [WARNING]
-  ✓ Stalwart ManageSieve
-  ✓ stalwart-builtin-quota
-  -  [INFO]
-  -  [INFO]
-  ✓ 
-  ! unknown () [WARNING]
+  ✅ Stalwart IMAP responding
+  ✅ IMAP4rev1
+  ✅ Stalwart built-in
+  ✅ RocksDB
+  ⚠️  HTTP 000 [WARNING]
+  ✅ Stalwart ManageSieve
+  ✅ stalwart-builtin-quota
+  ℹ️   [INFO]
+  ℹ️   [INFO]
+  ✅ 
+  ⚠️  unknown () [WARNING]
 
   Summary: 7/11 passed, 4 failed
 
 6. E2E DELIVERY
 ──────────────────────────────────────────────────────────────
-  - not set (set RESEND_API_KEY to enable E2E) [INFO]
+  ℹ️  not set (set RESEND_API_KEY to enable E2E) [INFO]
 
   Summary: 0/1 passed, 1 failed
 
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    42.4s
-  P1_preflight             38.0s
-  P3_network               3.2s
-  P2-P5_parallel           3.2s
-  P4_dns_auth              3.2s
-  P0_instant_kpis          1.2s
-  P6_e2e_delivery          0.0s
+  TOTAL                    40.0s
+  P1_preflight             35.3s
+  P0_instant_kpis          2.5s
+  P3_network               2.2s
+  P4_dns_auth              2.2s
+  P2-P5_parallel           2.2s
   P2_containers            0.0s
+  P6_e2e_delivery          0.0s
   P5_internals             0.0s
 
-  Total: 42.4s | Engine: Rust (native async tokio)
+  Total: 40.0s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════
-RESULT: CRITICAL -- 28/65 passed, 15 critical, 18 warnings
+RESULT: CRITICAL -- 43/65 passed, 4 critical, 14 warnings
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────

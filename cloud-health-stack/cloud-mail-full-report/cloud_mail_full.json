@@ -1,68 +1,68 @@
 {
-  "generated": "2026-03-29T21:01:48.553348040+00:00",
-  "duration_ms": 42395,
+  "generated": "2026-03-29T21:16:09.232200026+00:00",
+  "duration_ms": 39968,
   "instant_kpis": [
     {
       "name": "mail.* HTTPS",
-      "passed": false,
-      "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/)",
-      "duration_ms": 188,
-      "error": "err: error sending request for url (https://mail.diegonmarcos.com/)",
+      "passed": true,
+      "details": "HTTP 302",
+      "duration_ms": 467,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "webmail HTTPS",
-      "passed": false,
-      "details": "HTTP err: error sending request for url (https://webmail.diegonmarcos.com/)",
-      "duration_ms": 224,
-      "error": "err: error sending request for url (https://webmail.diegonmarcos.com/)",
+      "passed": true,
+      "details": "HTTP 200",
+      "duration_ms": 539,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "auth HTTPS",
-      "passed": false,
-      "details": "HTTP err: error sending request for url (https://auth.diegonmarcos.com/api/health)",
-      "duration_ms": 189,
-      "error": "err: error sending request for url (https://auth.diegonmarcos.com/api/health)",
+      "passed": true,
+      "details": "HTTP 200",
+      "duration_ms": 470,
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "MCP endpoint",
       "passed": false,
-      "details": "HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
-      "duration_ms": 196,
-      "error": "err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
+      "details": "HTTP 502",
+      "duration_ms": 646,
+      "error": "502",
       "severity": "Warning"
     },
     {
       "name": "mail:993 TLS",
-      "passed": false,
-      "details": "FAIL",
-      "duration_ms": 218,
-      "error": "FAIL",
+      "passed": true,
+      "details": "TLS OK",
+      "duration_ms": 807,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "mail:465 TLS",
-      "passed": false,
-      "details": "FAIL",
-      "duration_ms": 219,
-      "error": "FAIL",
+      "passed": true,
+      "details": "TLS OK",
+      "duration_ms": 1051,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "mail:587 STARTTLS",
-      "passed": false,
-      "details": "FAIL",
-      "duration_ms": 177,
-      "error": "FAIL",
+      "passed": true,
+      "details": "TLS OK",
+      "duration_ms": 1711,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "MX record",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 68,
+      "duration_ms": 27,
       "error": null,
       "severity": "Critical"
     },
@@ -70,7 +70,7 @@
       "name": "DKIM record",
       "passed": true,
       "details": "present",
-      "duration_ms": 68,
+      "duration_ms": 75,
       "error": null,
       "severity": "Critical"
     },
@@ -78,7 +78,7 @@
       "name": "GHA health",
       "passed": false,
       "details": "2 failing: Health → Mail (Full Check), Health → Mail (Full Check)",
-      "duration_ms": 971,
+      "duration_ms": 749,
       "error": "2 failing: Health → Mail (Full Check), Health → Mail (Full Check)",
       "severity": "Info"
     }
@@ -88,23 +88,23 @@
       "name": "WG oci-mail",
       "passed": true,
       "details": "10.0.0.3:22 OK",
-      "duration_ms": 251,
+      "duration_ms": 294,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "WG oci-apps",
-      "passed": false,
-      "details": "WG DOWN",
-      "duration_ms": 3000,
-      "error": "WG DOWN",
+      "passed": true,
+      "details": "10.0.0.6:22 OK",
+      "duration_ms": 253,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "WG gcp-proxy",
       "passed": true,
       "details": "10.0.0.1:22 OK",
-      "duration_ms": 185,
+      "duration_ms": 143,
       "error": null,
       "severity": "Critical"
     },
@@ -119,9 +119,9 @@
     {
       "name": "SSH batch oci-apps",
       "passed": false,
-      "details": "SSH FAILED",
+      "details": "mail-mcp: ",
       "duration_ms": 0,
-      "error": "SSH FAILED",
+      "error": "mail-mcp: ",
       "severity": "Warning"
     },
     {
@@ -151,7 +151,7 @@
     {
       "name": "Load",
       "passed": true,
-      "details": "load: 2.16 2.04 1.99 WARNING",
+      "details": "load: 0.37 0.64 1.13",
       "duration_ms": 0,
       "error": null,
       "severity": "Info"
@@ -161,7 +161,7 @@
     {
       "name": "stalwart",
       "passed": true,
-      "details": "Up 39 minutes",
+      "details": "Up 54 minutes",
       "duration_ms": 0,
       "error": null,
       "severity": "Info"
@@ -169,7 +169,7 @@
     {
       "name": "smtp-proxy",
       "passed": true,
-      "details": "Up 40 minutes",
+      "details": "Up 54 minutes",
       "duration_ms": 0,
       "error": null,
       "severity": "Info"
@@ -177,7 +177,7 @@
     {
       "name": "snappymail",
       "passed": true,
-      "details": "Up 40 minutes",
+      "details": "Up 54 minutes",
       "duration_ms": 0,
       "error": null,
       "severity": "Info"
@@ -185,34 +185,34 @@
     {
       "name": "mail-mcp",
       "passed": false,
-      "details": "no data",
+      "details": "",
       "duration_ms": 0,
-      "error": "no data",
+      "error": "",
       "severity": "Warning"
     }
   ],
   "network": [
     {
       "name": "Caddy (gcp-proxy)",
-      "passed": false,
-      "details": "Caddy DOWN",
-      "duration_ms": 3198,
-      "error": "Caddy DOWN",
+      "passed": true,
+      "details": "HTTPS OK (10.0.0.1)",
+      "duration_ms": 612,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "Hickory DNS",
-      "passed": false,
-      "details": "FAIL: no response",
-      "duration_ms": 3002,
-      "error": "FAIL: no response",
+      "passed": true,
+      "details": "stalwart.app -> 10.0.0.3",
+      "duration_ms": 144,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "TLS WG direct",
       "passed": true,
       "details": "993 OK 465 OK 587 OK",
-      "duration_ms": 591,
+      "duration_ms": 1337,
       "error": null,
       "severity": "Critical"
     },
@@ -242,26 +242,26 @@
     },
     {
       "name": "mail:993 (IMAP)",
-      "passed": false,
-      "details": "FAIL",
-      "duration_ms": 181,
-      "error": "FAIL",
+      "passed": true,
+      "details": "TLS OK",
+      "duration_ms": 1199,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "mail:465 (SMTPS)",
-      "passed": false,
-      "details": "FAIL",
-      "duration_ms": 181,
-      "error": "FAIL",
+      "passed": true,
+      "details": "TLS OK",
+      "duration_ms": 915,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "mail:587 (SMTP Sub)",
-      "passed": false,
-      "details": "FAIL",
-      "duration_ms": 191,
-      "error": "FAIL",
+      "passed": true,
+      "details": "TLS OK",
+      "duration_ms": 2207,
+      "error": null,
       "severity": "Critical"
     },
     {
@@ -282,10 +282,10 @@
     },
     {
       "name": "Webmail HTTPS",
-      "passed": false,
-      "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/)",
-      "duration_ms": 159,
-      "error": "err: error sending request for url (https://mail.diegonmarcos.com/)",
+      "passed": true,
+      "details": "HTTP 302",
+      "duration_ms": 458,
+      "error": null,
       "severity": "Warning"
     },
     {
@@ -322,74 +322,74 @@
     },
     {
       "name": "OIDC bearer -> webmail",
-      "passed": false,
-      "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/)",
-      "duration_ms": 154,
-      "error": "HTTP 0",
+      "passed": true,
+      "details": "Bearer auth -> 200 OK (full chain)",
+      "duration_ms": 694,
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "Stalwart Admin via Bearer",
-      "passed": false,
-      "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/api/)",
-      "duration_ms": 168,
-      "error": "HTTP 0",
+      "passed": true,
+      "details": "HTTP 401",
+      "duration_ms": 993,
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "mcp->DNS resolve",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP TLS",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "severity": "Warning"
     },
     {
       "name": "mcp->SMTP TLS",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP WG direct",
       "passed": false,
-      "details": "no app data",
+      "details": "10.0.0.3:993 Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "10.0.0.3:993 Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP LOGIN",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "severity": "Warning"
     },
     {
       "name": "mcp->SMTP AUTH",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
       "severity": "Warning"
     },
     {
       "name": "mail-mcp MCP",
       "passed": false,
-      "details": "HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (alive)",
-      "duration_ms": 154,
-      "error": "err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
+      "details": "HTTP 502 (alive)",
+      "duration_ms": 569,
+      "error": "502",
       "severity": "Warning"
     },
     {
@@ -406,7 +406,7 @@
       "name": "MX",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 19,
+      "duration_ms": 71,
       "error": null,
       "severity": "Critical"
     },
@@ -414,7 +414,7 @@
       "name": "DKIM",
       "passed": true,
       "details": "present",
-      "duration_ms": 20,
+      "duration_ms": 24,
       "error": null,
       "severity": "Critical"
     },
@@ -422,7 +422,7 @@
       "name": "SPF",
       "passed": true,
       "details": "v=spf1",
-      "duration_ms": 17,
+      "duration_ms": 21,
       "error": null,
       "severity": "Critical"
     },
@@ -430,7 +430,7 @@
       "name": "DMARC",
       "passed": true,
       "details": "v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 19,
+      "duration_ms": 21,
       "error": null,
       "severity": "Critical"
     }
@@ -537,20 +537,20 @@
   ],
   "summary": {
     "total_checks": 65,
-    "passed": 28,
-    "failed": 37,
-    "warnings": 18,
-    "critical": 15
+    "passed": 43,
+    "failed": 22,
+    "warnings": 14,
+    "critical": 4
   },
   "timers": {
-    "P3_network": 3198,
-    "P2-P5_parallel": 3198,
-    "P4_dns_auth": 3198,
-    "P6_e2e_delivery": 0,
+    "P0_instant_kpis": 2462,
+    "P3_network": 2209,
+    "TOTAL": 39968,
+    "P4_dns_auth": 2209,
     "P2_containers": 0,
+    "P2-P5_parallel": 2209,
+    "P6_e2e_delivery": 0,
     "P5_internals": 0,
-    "P1_preflight": 38003,
-    "P0_instant_kpis": 1192,
-    "TOTAL": 42395
+    "P1_preflight": 35296
   }
 }
