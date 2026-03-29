@@ -42,21 +42,31 @@ resolve_vm() {
 
 install_dev_fedora() {
   echo "=== Fedora/RHEL: Full Dev Toolchain ==="
-  dnf install -y \
+  dnf install -y --skip-unavailable \
     fish git curl wget htop btop vim nano neovim \
     gcc gcc-c++ make cmake rust cargo golang \
     python3 python3-pip python3-virtualenv \
     nodejs npm \
     docker docker-compose \
-    jq ripgrep fd-find bat eza tree fzf zoxide duf ncdu \
+    jq ripgrep fd-find bat tree fzf zoxide duf ncdu \
     rsync openssh-server wireguard-tools \
     tmux screen strace lsof bind-utils net-tools iproute nmap ncat \
     zip unzip p7zip tar gzip \
     man-db less which file \
     gnupg2 openssl \
     sqlite sqlite-devel postgresql-devel \
-    starship gh terraform \
-    rclone
+    gh rclone
+  # Extras not in Fedora repos — install via cargo/curl
+  echo "Installing extras (eza, starship, terraform)..."
+  command -v eza >/dev/null 2>&1 || cargo install eza 2>/dev/null || true
+  command -v starship >/dev/null 2>&1 || curl -sS https://starship.rs/install.sh | sh -s -- -y 2>/dev/null || true
+  if ! command -v terraform >/dev/null 2>&1; then
+    dnf config-manager addrepo --from-repofile=https://rpm.releases.hashicorp.com/fedora/hashicorp.repo 2>/dev/null || true
+    dnf install -y terraform 2>/dev/null || true
+  fi
+  # sops/age
+  command -v sops >/dev/null 2>&1 || { curl -sLo /usr/local/bin/sops https://github.com/getsops/sops/releases/latest/download/sops-v3.9.4.linux.amd64 && chmod +x /usr/local/bin/sops; } 2>/dev/null || true
+  command -v age >/dev/null 2>&1 || dnf install -y age 2>/dev/null || true
   install_cloud_clis
   install_extras
 }
