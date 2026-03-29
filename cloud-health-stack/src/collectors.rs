@@ -157,9 +157,12 @@ async fn collect_private(ctx: &Context, client: &Client, resolver: &trust_dns_re
 
 async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
     let t = Instant::now();
-    // SSH collection — run ssh commands via tokio::process::Command (async)
+    // Try rsync from /opt/health/latest.json first (fast, via Dropbear if needed)
+    // Fallback to SSH commands if rsync fails
     let futs: Vec<_> = ctx.vms.iter().map(|vm| {
         let alias = vm.alias.clone();
+        let pub_ip = vm.pub_ip.clone();
+        let rescue_port = vm.rescue_port;
         let dns_entries: Vec<_> = ctx.private_dns.iter().filter(|d| d.vm == alias).cloned().collect();
         async move {
             let mut data = VmLiveData {
@@ -170,7 +173,67 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                 containers: vec![], containers_running: 0, containers_total: 0,
             };
 
-            // SSH all-in-one command
+            // Strategy 1: rsync /opt/health/latest.json (fast, works via Dropbear too)
+            let cache_dir = format!("cache/{}", alias);
+            let _ = std::fs::create_dir_all(&cache_dir);
+            let cache_file = format!("{}/latest.json", cache_dir);
+
+            // Try normal SSH first, then Dropbear port
+            let rsync_ok = {
+                let out = tokio::process::Command::new("rsync")
+                    .args(["-az", "-e", "ssh -o ConnectTimeout=5 -o ControlPath=none -o BatchMode=yes",
+                           &format!("{}@{}:/opt/health/latest.json", "ubuntu", pub_ip), &cache_file])
+                    .output().await;
+                out.map(|o| o.status.success()).unwrap_or(false)
+            } || {
+                // Fallback: Dropbear port
+                let out = tokio::process::Command::new("rsync")
+                    .args(["-az", "-e", &format!("ssh -p {} -o ConnectTimeout=5 -o ControlPath=none -o BatchMode=yes", rescue_port),
+                           &format!("{}@{}:/opt/health/latest.json", "ubuntu", pub_ip), &cache_file])
+                    .output().await;
+                out.map(|o| o.status.success()).unwrap_or(false)
+            };
+
+            if rsync_ok {
+                // Parse cached JSON
+                if let Ok(raw) = std::fs::read_to_string(&cache_file) {
+                    if let Ok(j) = serde_json::from_str::<serde_json::Value>(&raw) {
+                        data.reachable = true;
+                        data.mem_used = format!("{}M", j["mem"]["used"].as_u64().unwrap_or(0));
+                        data.mem_total = format!("{}M", j["mem"]["total"].as_u64().unwrap_or(0));
+                        data.mem_pct = j["mem"]["pct"].as_u64().unwrap_or(0) as u32;
+                        data.swap = j["swap"].as_str().map(|s| s.to_string()).unwrap_or_else(||
+                            format!("{}M/{}M", j["swap"]["used"].as_u64().unwrap_or(0), j["swap"]["total"].as_u64().unwrap_or(0)));
+                        data.disk_used = j["disk"]["used"].as_str().unwrap_or("?").to_string();
+                        data.disk_total = j["disk"]["total"].as_str().unwrap_or("?").to_string();
+                        data.disk_pct = j["disk"]["pct"].as_str().unwrap_or("?").to_string();
+                        data.load = j["load"].as_str().unwrap_or("?").to_string();
+                        data.uptime = j["uptime"].as_str().unwrap_or("?").to_string();
+                        data.containers_total = j["containers_total"].as_u64().unwrap_or(0) as u32;
+                        data.containers_running = j["containers_running"].as_u64().unwrap_or(0) as u32;
+                        if let Some(ctrs) = j["containers"].as_array() {
+                            for c in ctrs {
+                                let name = c["name"].as_str().unwrap_or("?").to_string();
+                                let status = c["status"].as_str().unwrap_or("?").to_string();
+                                let health = c["health"].as_str().unwrap_or("none").to_string();
+                                let dns_entry = dns_entries.iter().find(|d| d.container == name);
+                                data.containers.push(ContainerState {
+                                    name, status, health,
+                                    docker_port: dns_entry.map(|d| d.port.to_string()).unwrap_or("—".into()),
+                                    host_port: dns_entry.filter(|d| d.host_port).map(|d| d.port.to_string()).unwrap_or("—".into()),
+                                });
+                            }
+                        }
+                        data.containers.sort_by(|a, b| {
+                            let order = |h: &str| -> u8 { match h { "created" => 0, "exited" => 1, "unhealthy" => 2, "starting" => 3, "none" => 4, "healthy" => 5, _ => 9 } };
+                            order(&a.health).cmp(&order(&b.health))
+                        });
+                        return data;
+                    }
+                }
+            }
+
+            // Strategy 2: SSH all-in-one command (fallback if rsync fails — agent not deployed yet)
             let cmd = r#"echo "MEM:$(free -m | awk '/Mem/{printf "%d %d %d", $3, $2, $3*100/$2}')";echo "SWAP:$(free -m | awk '/Swap/{printf "%dM/%dM", $3, $2}')";echo "DISK:$(df -h / | awk 'NR==2{printf "%s %s %s", $3, $2, $5}')";echo "LOAD:$(cut -d' ' -f1-3 /proc/loadavg)";echo "UPTIME:$(uptime -p 2>/dev/null || awk '{printf "up %dd %dh", $1/86400, ($1%86400)/3600}' /proc/uptime)";docker ps -a --format '{{.Names}}|{{.Status}}' 2>/dev/null | sed 's/^/CTR:/' "#;
 
             let output = tokio::process::Command::new("ssh")
