@@ -97,14 +97,25 @@ detect_system() {
 }
 
 show_banner() {
-  echo "╔══════════════════════════════════════════════════════════╗"
-  echo "║  Diego's Toolkit                                        ║"
-  echo "╠══════════════════════════════════════════════════════════╣"
-  printf "║  %-54s  ║\n" "Host: $SYS_HOSTNAME"
-  printf "║  %-54s  ║\n" "OS:   $SYS_DISTRO ($SYS_ARCH)"
-  printf "║  %-54s  ║\n" "CPU:  ${SYS_CPUS} cores  RAM: ${SYS_RAM_MB}MB  Kernel: ${SYS_KERNEL%%[-+]*}"
-  printf "║  %-54s  ║\n" "Pkg:  $SYS_PKG  Nix: $SYS_HAS_NIX  Docker: $SYS_HAS_DOCKER  Init: $SYS_INIT"
-  echo "╚══════════════════════════════════════════════════════════╝"
+  local R='\033[0m' B='\033[1;34m' C='\033[1;36m' G='\033[1;32m' Y='\033[1;33m' M='\033[1;35m' W='\033[1;37m' D='\033[0;90m'
+  # Status indicators
+  local nix_icon; [ "$SYS_HAS_NIX" = true ] && nix_icon="${G}ON${R}" || nix_icon="${D}off${R}"
+  local docker_icon; [ "$SYS_HAS_DOCKER" = true ] && docker_icon="${G}ON${R}" || docker_icon="${D}off${R}"
+
+  echo ""
+  printf "${C}  ██████╗ ${B}████████╗${M}██╗  ██╗${R}\n"
+  printf "${C}  ██╔══██╗${B}╚══██╔══╝${M}██║ ██╔╝${R}\n"
+  printf "${C}  ██║  ██║${B}   ██║   ${M}█████╔╝ ${R}  ${W}Diego's Toolkit${R}\n"
+  printf "${C}  ██║  ██║${B}   ██║   ${M}██╔═██╗ ${R}  ${D}OS-agnostic VM & container manager${R}\n"
+  printf "${C}  ██████╔╝${B}   ██║   ${M}██║  ██╗${R}\n"
+  printf "${C}  ╚═════╝ ${B}   ╚═╝   ${M}╚═╝  ╚═╝${R}\n"
+  echo ""
+  printf "  ${Y}host${R}  ${W}%-20s${R}  ${Y}os${R}  ${W}%s${R}\n" "$SYS_HOSTNAME" "$SYS_DISTRO"
+  printf "  ${Y}arch${R}  ${W}%-20s${R}  ${Y}kernel${R}  ${W}%s${R}\n" "$SYS_ARCH" "${SYS_KERNEL%%[-+]*}"
+  printf "  ${Y}cpu${R}   ${W}%-20s${R}  ${Y}ram${R}  ${W}%sMB${R}\n" "${SYS_CPUS} cores" "$SYS_RAM_MB"
+  printf "  ${Y}pkg${R}   ${W}%-20s${R}  ${Y}init${R}  ${W}%s${R}\n" "$SYS_PKG" "$SYS_INIT"
+  printf "  ${Y}nix${R}   $nix_icon                     ${Y}docker${R}  $docker_icon\n"
+  printf "  ${D}──────────────────────────────────────────────${R}\n"
   echo ""
 }
 
