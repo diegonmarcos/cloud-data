@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-28T23:59:28.050Z",
+  "generated": "2026-03-29T00:22:02.935Z",
   "wg_peers": [],
   "api_mcp": [],
   "public_urls": [
@@ -670,21 +670,21 @@
       "os": "oci-mail",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "654M",
+      "mem_used": "646M",
       "mem_total": "954M",
-      "mem_pct": 68,
+      "mem_pct": 67,
       "swap": "219M/2559M",
       "disk_used": "28G",
       "disk_total": "45G",
       "disk_pct": "67%",
-      "load": "0.33 0.33 0.38",
-      "uptime": "up 20 hours, 32 minutes",
+      "load": "0.42 0.48 0.42",
+      "uptime": "up 20 hours, 55 minutes",
       "containers_running": 7,
       "containers_total": 7,
       "containers": [
         {
           "name": "stalwart",
-          "status": "Up 17 hours",
+          "status": "Up 18 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -696,7 +696,7 @@
         },
         {
           "name": "dagu",
-          "status": "Up 20 hours",
+          "status": "Up 21 hours",
           "health": "none",
           "icon": "✅"
         },
@@ -732,21 +732,21 @@
       "os": "oci-analytics",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "704M",
+      "mem_used": "721M",
       "mem_total": "954M",
-      "mem_pct": 73,
-      "swap": "268M/2559M",
+      "mem_pct": 75,
+      "swap": "258M/2559M",
       "disk_used": "25G",
       "disk_total": "48G",
       "disk_pct": "56%",
-      "load": "2.02 2.07 2.12",
-      "uptime": "up 19 hours, 57 minutes",
+      "load": "2.19 2.09 2.05",
+      "uptime": "up 20 hours, 20 minutes",
       "containers_running": 7,
       "containers_total": 8,
       "containers": [
         {
           "name": "umami-setup",
-          "status": "Exited (1) 18 hours ago",
+          "status": "Exited (1) 19 hours ago",
           "health": "exited",
           "icon": "❌"
         },
@@ -782,13 +782,13 @@
         },
         {
           "name": "umami",
-          "status": "Up 18 hours (healthy)",
+          "status": "Up 19 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "umami-db",
-          "status": "Up 18 hours (healthy)",
+          "status": "Up 19 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         }
@@ -800,15 +800,15 @@
       "os": "oci-apps",
       "cpus": 4,
       "ram": "24G",
-      "mem_used": "4771M",
+      "mem_used": "4920M",
       "mem_total": "23975M",
-      "mem_pct": 19,
+      "mem_pct": 20,
       "swap": "0M/0M",
       "disk_used": "64.8G",
       "disk_total": "95.8G",
       "disk_pct": "71%",
-      "load": "0.66 0.54 0.55",
-      "uptime": "up 1d 5h",
+      "load": "0.65 0.47 0.46",
+      "uptime": "up 1d 6h",
       "containers_running": 49,
       "containers_total": 54,
       "containers": [
@@ -844,7 +844,7 @@
         },
         {
           "name": "crawlee_db",
-          "status": "Up 59 seconds (unhealthy)",
+          "status": "Up 55 seconds (unhealthy)",
           "health": "unhealthy",
           "icon": "❌"
         },
@@ -856,7 +856,7 @@
         },
         {
           "name": "windmill-worker",
-          "status": "Up 58 minutes",
+          "status": "Up About an hour",
           "health": "none",
           "icon": "✅"
         },
@@ -940,13 +940,13 @@
         },
         {
           "name": "windmill-server",
-          "status": "Up 58 minutes (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "windmill-db",
-          "status": "Up 58 minutes (healthy)",
+          "status": "Up About an hour (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -994,13 +994,13 @@
         },
         {
           "name": "c3-infra-mcp",
-          "status": "Up About an hour (healthy)",
+          "status": "Up 2 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
         {
           "name": "c3-infra-api",
-          "status": "Up About an hour (healthy)",
+          "status": "Up 2 hours (healthy)",
           "health": "healthy",
           "icon": "✅"
         },
@@ -1163,134 +1163,19 @@
       "os": "gcp-proxy",
       "cpus": 1,
       "ram": "1G",
-      "mem_used": "916M",
-      "mem_total": "1952M",
-      "mem_pct": 46,
-      "swap": "132M/3999M",
-      "disk_used": "16G",
-      "disk_total": "31G",
-      "disk_pct": "52%",
-      "load": "2.02 1.16 0.85",
-      "uptime": "up 2 hours, 5 minutes",
-      "containers_running": 19,
-      "containers_total": 19,
-      "containers": [
-        {
-          "name": "hickory-dns",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "caddy",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "postlite-ntfy",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "postlite-authelia",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "postlite-npm",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "postlite-vaultwarden",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "syslog-bridge",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "github-rss",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "ntfy",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "sqlite-authelia",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "sqlite-npm",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "sqlite-vaultwarden",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "sqlite-ntfy",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "fluent-bit",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "authelia-redis",
-          "status": "Up 2 hours",
-          "health": "none",
-          "icon": "✅"
-        },
-        {
-          "name": "redis",
-          "status": "Up 2 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "vaultwarden",
-          "status": "Up 2 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "introspect-proxy",
-          "status": "Up 2 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        },
-        {
-          "name": "authelia",
-          "status": "Up 2 hours (healthy)",
-          "health": "healthy",
-          "icon": "✅"
-        }
-      ],
-      "reachable": true
+      "mem_used": "?",
+      "mem_total": "?",
+      "mem_pct": 0,
+      "swap": "?",
+      "disk_used": "?",
+      "disk_total": "?",
+      "disk_pct": "?",
+      "load": "?",
+      "uptime": "?",
+      "containers_running": 0,
+      "containers_total": 0,
+      "containers": [],
+      "reachable": false
     }
   ],
   "databases": [
