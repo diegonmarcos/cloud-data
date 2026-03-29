@@ -4,7 +4,7 @@
 #        ./alias.sh <cmd> [args]   # direct
 set -euo pipefail
 # Force real system binaries FIRST (bypass nix guardrail wrappers)
-export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:/nix/var/nix/profiles/default/bin:$PATH"
+export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:/nix/var/nix/profiles/default/bin:${HOME:-/root}/.nix-profile/bin:/run/current-system/sw/bin:$PATH"
 
 declare -A VM_MAP=(
   [gcp-proxy]="arch-1:us-central1-a"
