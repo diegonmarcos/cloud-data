@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-29T04:00:25.690Z",
+  "_generated": "2026-03-29T04:34:44.052Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/ntfy-acl",
   "topics": {
     "syslog": {
