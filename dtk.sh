@@ -20,7 +20,7 @@ tee -a "$LOGFILE" < "$_DTK_FIFO" >&2 &
 _DTK_TEE_PID=$!
 exec 2>"$_DTK_FIFO"
 trap 'rm -f "$_DTK_FIFO"; kill "$_DTK_TEE_PID" 2>/dev/null || true' EXIT
-set -x
+# set -x enabled after setup (avoids noisy PATH/detect_system trace)
 
 # Force real system binaries FIRST (bypass nix guardrail wrappers)
 export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:/nix/var/nix/profiles/default/bin:${HOME:-/root}/.nix-profile/bin:/run/current-system/sw/bin:$PATH"
@@ -98,7 +98,7 @@ detect_system() {
   fi
 }
 
-show_banner() {
+show_banner() { set +x 2>/dev/null
   R='\033[0m'; B='\033[1;34m'; C='\033[1;36m'; G='\033[1;32m'
   Y='\033[1;33m'; M='\033[1;35m'; W='\033[1;37m'; D='\033[0;90m'
   nix_icon="$D off$R"; [ "$SYS_HAS_NIX" = true ] && nix_icon="${G}ON${R}"
@@ -120,6 +120,7 @@ show_banner() {
   printf "  ${Y}nix${R}   $nix_icon                     ${Y}docker${R}  $docker_icon\n"
   printf "  ${D}──────────────────────────────────────────────${R}\n"
   printf '\n'
+  set -x 2>/dev/null || true
 }
 
 detect_system
@@ -148,7 +149,7 @@ vault:https://github.com/diegonmarcos/vault.git"
 # POSIX menu picker
 # ═══════════════════════════════════════════════════════════════════
 
-pick() {
+pick() { set +x 2>/dev/null
   _label="$1"; shift
   echo "$_label"
   _i=1
@@ -164,8 +165,9 @@ pick() {
   _c=0
   for _item in "$@"; do
     _c=$((_c + 1))
-    [ "$_c" -eq "$_idx" ] && PICK="$_item" && return 0
+    [ "$_c" -eq "$_idx" ] && PICK="$_item" && set -x 2>/dev/null && return 0
   done
+  set -x 2>/dev/null || true
 }
 
 # ═══════════════════════════════════════════════════════════════════
@@ -643,7 +645,7 @@ do_git_clone() {
 # 5) INFO — show installed tools
 # ═══════════════════════════════════════════════════════════════════
 
-do_info() {
+do_info() { set +x 2>/dev/null
   show_banner
   echo "=== Installed Tools ==="
   for t in fish git node npm python3 rust cargo go docker podman gcloud oci aws \
@@ -666,8 +668,9 @@ do_info() {
 }
 
 # ═══════════════════════════════════════════════════════════════════
-# ENTRY POINT
+# ENTRY POINT — set -x starts here (after quiet setup)
 # ═══════════════════════════════════════════════════════════════════
+set -x
 
 if [ $# -ge 1 ]; then
   case "$1" in
