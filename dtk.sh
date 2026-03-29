@@ -10,8 +10,8 @@ LOGFILE="${HOME:-/tmp}/dtk.log"
 _LOG_USER=$(whoami 2>/dev/null || echo "?")
 _LOG_HOST=$(hostname -s 2>/dev/null || echo "?")
 echo "=== $(date '+%Y-%m-%d %H:%M:%S') ${_LOG_USER}@${_LOG_HOST} === dtk.sh $* ===" >> "$LOGFILE"
-# Trace to log file (POSIX: redirect fd 2 of set -x via subshell in functions)
-# We use explicit logging instead of BASH_XTRACEFD (bash-only)
+# Verbose: every command shown on screen + logged
+set -x
 
 # Force real system binaries FIRST (bypass nix guardrail wrappers)
 export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin:/nix/var/nix/profiles/default/bin:${HOME:-/root}/.nix-profile/bin:/run/current-system/sw/bin:$PATH"
