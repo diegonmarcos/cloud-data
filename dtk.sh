@@ -315,6 +315,9 @@ do_docker_start() {
   local EXTRA_FLAGS="--privileged --network host --pid host"
   [ "$RUNTIME" = "podman" ] && EXTRA_FLAGS="--privileged --network host"
 
+  # Try fish, fall back to bash, then sh
+  local SHELL_CMD='exec fish 2>/dev/null || exec bash 2>/dev/null || exec sh'
+
   exec "$DOCKER" run -it --rm \
     --name diego-env \
     --hostname "${SYS_HOSTNAME}-dev" \
@@ -324,7 +327,9 @@ do_docker_start() {
     -e HOME="$HOME_DIR" \
     -e USER="${USER:-root}" \
     -e TERM="${TERM:-xterm-256color}" \
-    "$IMG"
+    -e PATH="/home/${USER:-root}/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/bin:/sbin" \
+    "$IMG" \
+    bash -c "$SHELL_CMD"
 }
 
 # ═══════════════════════════════════════════════════════════════════
