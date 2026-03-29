@@ -4,26 +4,6 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
 
-usage() {
-  echo "Usage: $0 [command] [project]"
-  echo ""
-  echo "Commands:"
-  echo "  build       Build all (release)"
-  echo "  run         Run all 3 reports"
-  echo "  run-stack   Run cloud-stack-report only"
-  echo "  run-cloud   Run cloud-health-full-report only"
-  echo "  run-mail    Run cloud-mail-full-report only"
-  echo "  clean       Remove target/"
-  echo ""
-  echo "No args = build + run all"
-}
-
-build() {
-  echo "═══ Building all (release) ═══"
-  cargo build --release
-  echo "═══ Build done ═══"
-}
-
 run_one() {
   local dir="$1" bin="$2"
   echo ""
@@ -31,21 +11,29 @@ run_one() {
   (cd "$ROOT/$dir" && "$ROOT/target/release/$bin")
 }
 
-run_all() {
-  run_one cloud-stack-report       health-reporter
-  run_one cloud-health-full-report cloud-health-full
-  run_one cloud-mail-full-report   cloud-mail-full
+build_and_run() {
+  local target="${1:-all}"
+  cargo build --release
+
+  case "$target" in
+    all)
+      run_one cloud-stack-report       health-reporter
+      run_one cloud-health-full-report cloud-health-full
+      run_one cloud-mail-full-report   cloud-mail-full
+      ;;
+    stack) run_one cloud-stack-report       health-reporter ;;
+    cloud) run_one cloud-health-full-report cloud-health-full ;;
+    mail)  run_one cloud-mail-full-report   cloud-mail-full ;;
+    *)
+      echo "Usage: $0 [all|stack|cloud|mail]"
+      echo ""
+      echo "  all    Run all 3 reports (default)"
+      echo "  stack  Cloud stack report"
+      echo "  cloud  Cloud health full (10-layer)"
+      echo "  mail   Cloud mail full (6-phase)"
+      exit 1
+      ;;
+  esac
 }
 
-CMD="${1:-all}"
-
-case "$CMD" in
-  build)     build ;;
-  run)       run_all ;;
-  run-stack) build; run_one cloud-stack-report       health-reporter ;;
-  run-cloud) build; run_one cloud-health-full-report cloud-health-full ;;
-  run-mail)  build; run_one cloud-mail-full-report   cloud-mail-full ;;
-  clean)     rm -rf target/ */target/ ; echo "Cleaned." ;;
-  all)       build; run_all ;;
-  *)         usage; exit 1 ;;
-esac
+build_and_run "${1:-all}"
