@@ -301,6 +301,16 @@
       "provider": "oci",
       "name": "each.value.name",
       "tier": "each.value.storage_tier"
+    },
+    {
+      "provider": "oci",
+      "name": "archlinux-images",
+      "tier": "Standard"
+    },
+    {
+      "provider": "oci",
+      "name": "my-photos",
+      "tier": "Standard"
     }
   ],
   "firewalls": {

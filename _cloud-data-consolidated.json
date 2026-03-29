@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-03-28T20:37:27.337Z",
+    "generated_at": "2026-03-29T00:37:10.246Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -5037,6 +5037,16 @@
       "provider": "oci",
       "name": "each.value.name",
       "tier": "each.value.storage_tier"
+    },
+    {
+      "provider": "oci",
+      "name": "archlinux-images",
+      "tier": "Standard"
+    },
+    {
+      "provider": "oci",
+      "name": "my-photos",
+      "tier": "Standard"
     }
   ],
   "dns": {
