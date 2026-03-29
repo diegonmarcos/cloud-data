@@ -64,12 +64,15 @@ do_docker_start() {
     fi
   fi
 
+  # Find docker binary (may be in Nix store)
+  DOCKER="$(command -v docker 2>/dev/null || find /nix/store -maxdepth 3 -name docker -type f 2>/dev/null | head -1 || echo docker)"
+
   # Ensure Docker daemon is running
-  if ! docker info >/dev/null 2>&1; then
+  if ! "$DOCKER" info >/dev/null 2>&1; then
     echo "Docker daemon not running — starting..."
     systemctl enable --now docker 2>/dev/null || service docker start 2>/dev/null || true
-    sleep 2
-    if ! docker info >/dev/null 2>&1; then
+    sleep 3
+    if ! "$DOCKER" info >/dev/null 2>&1; then
       echo "ERROR: Docker daemon failed to start"
       exit 1
     fi
@@ -77,9 +80,9 @@ do_docker_start() {
 
   echo "=== Docker Start: $IMG ==="
   echo "Pulling latest image..."
-  docker pull "$IMG"
+  "$DOCKER" pull "$IMG"
   echo "Starting container (root, home mounted at $HOME_DIR)..."
-  exec docker run -it --rm \
+  exec "$DOCKER" run -it --rm \
     --name diego-env \
     --hostname "$(hostname)-dev" \
     --privileged \
