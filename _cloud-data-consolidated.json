@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-03-29T00:46:49.290Z",
+    "generated_at": "2026-03-29T00:46:06.176Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -907,7 +907,7 @@
           "image": "postgres:16-alpine",
           "port": 5436,
           "port_env": "PGPORT",
-          "dns": null,
+          "dns": "etherpad-db.app",
           "public": false,
           "proxy": null,
           "healthcheck": "cmd",
@@ -932,7 +932,8 @@
         "5436"
       ],
       "all_dns": [
-        "etherpad.app"
+        "etherpad.app",
+        "etherpad-db.app"
       ],
       "compose": {
         "containers": [
@@ -1232,7 +1233,7 @@
           "image": "postgres:16-alpine",
           "port": 5439,
           "port_env": "PGPORT",
-          "dns": null,
+          "dns": "hedgedoc-db.app",
           "public": false,
           "proxy": null,
           "healthcheck": "cmd",
@@ -1257,7 +1258,8 @@
         "5439"
       ],
       "all_dns": [
-        "hedgedoc.app"
+        "hedgedoc.app",
+        "hedgedoc-db.app"
       ],
       "compose": {
         "containers": [
@@ -1304,7 +1306,7 @@
           "container_name": "mail-mcp",
           "image": "ghcr.io/diegonmarcos/mail-mcp:latest",
           "port": 3103,
-          "port_env": null,
+          "port_env": "PORT",
           "dns": "mail-mcp.app",
           "public": true,
           "proxy": {
@@ -1364,7 +1366,7 @@
           "container_name": "mattermost",
           "image": "ngrie/mattermost-team-edition-arm:10.11",
           "port": 8065,
-          "port_env": null,
+          "port_env": "MM_SERVICESETTINGS_LISTENADDRESS",
           "dns": "mattermost.app",
           "public": true,
           "proxy": {
@@ -1387,7 +1389,8 @@
             "db"
           ],
           "resources": null,
-          "read_only": false
+          "read_only": false,
+          "port_format": "colon"
         },
         "db": {
           "container_name": "mattermost-postgres",
@@ -1486,7 +1489,7 @@
           "container_name": "mattermost-mcp",
           "image": "ghcr.io/diegonmarcos/mattermost-mcp:latest",
           "port": 3102,
-          "port_env": null,
+          "port_env": "MCP_HTTP_PORT",
           "dns": "mattermost-mcp.app",
           "public": true,
           "proxy": {
@@ -2295,7 +2298,7 @@
           "image": "quay.io/jupyter/scipy-notebook:latest",
           "port": 8890,
           "port_env": null,
-          "dns": null,
+          "dns": "quant-full-research.app",
           "public": false,
           "proxy": null,
           "healthcheck": "curl -sf http://localhost:8890/api || exit 1",
@@ -2384,8 +2387,8 @@
           "container_name": "quant_full_db",
           "image": "postgres:16-alpine",
           "port": 5437,
-          "port_env": null,
-          "dns": null,
+          "port_env": "PGPORT",
+          "dns": "quant-full-db.app",
           "public": false,
           "proxy": null,
           "healthcheck": "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB",
@@ -2410,7 +2413,10 @@
         "8890",
         "5437"
       ],
-      "all_dns": [],
+      "all_dns": [
+        "quant-full-research.app",
+        "quant-full-db.app"
+      ],
       "compose": {
         "containers": [
           "quant_full_analytics",
@@ -2439,7 +2445,7 @@
           "image": "quay.io/jupyter/scipy-notebook:latest",
           "port": 8889,
           "port_env": null,
-          "dns": null,
+          "dns": "quant-light-research.app",
           "public": false,
           "proxy": null,
           "healthcheck": "curl -sf http://localhost:8889/api || exit 1",
@@ -2457,7 +2463,7 @@
           "image": "python:3.12-slim",
           "port": 5001,
           "port_env": null,
-          "dns": null,
+          "dns": "quant-light-engine.app",
           "public": false,
           "proxy": null,
           "healthcheck": null,
@@ -2477,7 +2483,7 @@
           "image": "postgres:16-alpine",
           "port": 5434,
           "port_env": "PGPORT",
-          "dns": null,
+          "dns": "quant-light-db.app",
           "public": false,
           "proxy": null,
           "healthcheck": "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB",
@@ -2502,7 +2508,11 @@
         "5001",
         "5434"
       ],
-      "all_dns": [],
+      "all_dns": [
+        "quant-light-research.app",
+        "quant-light-engine.app",
+        "quant-light-db.app"
+      ],
       "compose": {
         "containers": [
           "quant_light_db",
@@ -2534,7 +2544,7 @@
           "container_name": "ollama",
           "image": "ollama/ollama:latest",
           "port": 11434,
-          "port_env": null,
+          "port_env": "OLLAMA_HOST",
           "dns": "ollama.app",
           "public": false,
           "proxy": null,
@@ -2554,7 +2564,8 @@
               ]
             }
           },
-          "read_only": false
+          "read_only": false,
+          "port_format": "host"
         }
       },
       "container_names": [
@@ -2622,7 +2633,7 @@
           "container_name": "ollama-hai",
           "image": "ollama/ollama:latest",
           "port": 11435,
-          "port_env": null,
+          "port_env": "OLLAMA_HOST",
           "dns": "ollama-hai.app",
           "public": false,
           "proxy": null,
@@ -2637,7 +2648,8 @@
               "memory": "6G"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "port_format": "host"
         }
       },
       "container_names": [
@@ -2970,7 +2982,7 @@
           "image": "introspect-proxy:latest",
           "port": 4182,
           "port_env": null,
-          "dns": null,
+          "dns": "introspect-proxy.app",
           "public": false,
           "proxy": null,
           "healthcheck": "/health",
@@ -2994,7 +3006,8 @@
         "4182"
       ],
       "all_dns": [
-        "caddy.app"
+        "caddy.app",
+        "introspect-proxy.app"
       ],
       "compose": {
         "containers": [
@@ -3564,7 +3577,7 @@
           "container_name": "dagu",
           "image": "ghcr.io/diegonmarcos/dagu:latest",
           "port": 8070,
-          "port_env": null,
+          "port_env": "DAGU_PORT",
           "dns": "dagu.app",
           "public": true,
           "proxy": {
@@ -3659,7 +3672,8 @@
           "resources": {
             "mem_limit": "64m"
           },
-          "read_only": false
+          "read_only": false,
+          "port_format": "colon"
         }
       },
       "container_names": [
@@ -3988,7 +4002,7 @@
           "image": "postgres:16-bookworm",
           "port": 5441,
           "port_env": "PGPORT",
-          "dns": null,
+          "dns": "nocodb-db.app",
           "public": false,
           "proxy": null,
           "healthcheck": "cmd",
@@ -4013,7 +4027,8 @@
         "5441"
       ],
       "all_dns": [
-        "nocodb.app"
+        "nocodb.app",
+        "nocodb-db.app"
       ],
       "compose": {
         "containers": [
@@ -4260,7 +4275,7 @@
           "container_name": "umami",
           "image": "ghcr.io/umami-software/umami:latest",
           "port": 3006,
-          "port_env": null,
+          "port_env": "PORT",
           "dns": "umami.app",
           "public": true,
           "proxy": {
@@ -4291,7 +4306,7 @@
           "container_name": "umami-db",
           "image": "postgres:16-alpine",
           "port": 5442,
-          "port_env": null,
+          "port_env": "PGPORT",
           "dns": "umami-db.app",
           "public": false,
           "healthcheck": "pg_isready -U umami",
@@ -4389,7 +4404,7 @@
           "container_name": "windmill-server",
           "image": "ghcr.io/windmill-labs/windmill:main",
           "port": 8000,
-          "port_env": null,
+          "port_env": "PORT",
           "dns": "windmill-app.app",
           "public": true,
           "proxy": {
@@ -4576,7 +4591,7 @@
           "container_name": "gitea",
           "image": "gitea/gitea:latest",
           "port": 3002,
-          "port_env": null,
+          "port_env": "GITEA__server__HTTP_PORT",
           "dns": "backup-gitea.app",
           "public": true,
           "proxy": {
@@ -5072,6 +5087,12 @@
         "service": "etherpad"
       },
       {
+        "name": "etherpad-db.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "etherpad"
+      },
+      {
         "name": "filebrowser.app",
         "type": "A",
         "value": "10.0.0.6",
@@ -5091,6 +5112,12 @@
       },
       {
         "name": "hedgedoc.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "hedgedoc"
+      },
+      {
+        "name": "hedgedoc-db.app",
         "type": "A",
         "value": "10.0.0.6",
         "service": "hedgedoc"
@@ -5204,6 +5231,36 @@
         "service": "crawlee-cloud"
       },
       {
+        "name": "quant-full-research.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "quant-lab-full"
+      },
+      {
+        "name": "quant-full-db.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "quant-lab-full"
+      },
+      {
+        "name": "quant-light-research.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "quant-lab-light"
+      },
+      {
+        "name": "quant-light-engine.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "quant-lab-light"
+      },
+      {
+        "name": "quant-light-db.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "quant-lab-light"
+      },
+      {
         "name": "ollama.app",
         "type": "A",
         "value": "10.0.0.8",
@@ -5235,6 +5292,12 @@
       },
       {
         "name": "caddy.app",
+        "type": "A",
+        "value": "10.0.0.1",
+        "service": "caddy"
+      },
+      {
+        "name": "introspect-proxy.app",
         "type": "A",
         "value": "10.0.0.1",
         "service": "caddy"
@@ -5325,6 +5388,12 @@
       },
       {
         "name": "nocodb.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "nocodb"
+      },
+      {
+        "name": "nocodb-db.app",
         "type": "A",
         "value": "10.0.0.6",
         "service": "nocodb"
