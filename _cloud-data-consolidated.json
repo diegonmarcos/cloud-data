@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-03-29T04:34:43.737Z",
+    "generated_at": "2026-03-29T05:34:52.475Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -488,6 +488,11 @@
         "termux": {
           "wg_ip": "10.0.0.9",
           "wg_public_key": "Ke/zvGRI4Y5qUwnIyEfzog/UAw1olBUHRtvXZztztVA=",
+          "role": "client"
+        },
+        "gha-runner": {
+          "wg_ip": "10.0.0.200",
+          "wg_public_key": "QEPkGSsJXX39plcG+DwJwkSYgmEn+aMlaOF7gDPPpl8=",
           "role": "client"
         }
       }
@@ -3004,7 +3009,7 @@
           "image": "introspect-proxy:latest",
           "port": 4182,
           "port_env": null,
-          "dns": "introspect-proxy.app",
+          "dns": null,
           "public": false,
           "proxy": null,
           "healthcheck": "/health",
@@ -3028,8 +3033,7 @@
         "4182"
       ],
       "all_dns": [
-        "caddy.app",
-        "introspect-proxy.app"
+        "caddy.app"
       ],
       "compose": {
         "containers": [
@@ -5328,12 +5332,6 @@
         "name": "introspect-proxy.app",
         "type": "A",
         "value": "10.0.0.1",
-        "service": "caddy"
-      },
-      {
-        "name": "introspect-proxy.app",
-        "type": "A",
-        "value": "10.0.0.1",
         "service": "introspect-proxy"
       },
       {
@@ -5493,15 +5491,15 @@
     "caddy": {
       "routes": [
         {
-          "domain": "auth.diegonmarcos.com",
-          "upstream": "authelia.app:9091",
-          "auth": "none",
+          "domain": "ide.diegonmarcos.com",
+          "upstream": "code-server.app:8443",
+          "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
         },
         {
-          "domain": "cal.diegonmarcos.com",
-          "upstream": "radicale.app:5232",
+          "domain": "sheets.diegonmarcos.com",
+          "upstream": "grist.app:3011",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
@@ -5521,15 +5519,43 @@
           "public_paths": []
         },
         {
-          "domain": "mail.diegonmarcos.com",
-          "upstream": "stalwart.app:8443",
+          "domain": "cal.diegonmarcos.com",
+          "upstream": "radicale.app:5232",
           "auth": "authelia+bearer",
-          "tls_skip": true,
+          "tls_skip": false,
           "public_paths": []
         },
         {
           "domain": "webmail.diegonmarcos.com",
           "upstream": "snappymail.app:8888",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "smtp.diegonmarcos.com",
+          "upstream": "smtp-proxy.app:8080",
+          "auth": "none",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "mail.diegonmarcos.com",
+          "upstream": "stalwart.app:443",
+          "auth": "authelia+bearer",
+          "tls_skip": true,
+          "public_paths": []
+        },
+        {
+          "domain": "vault.diegonmarcos.com",
+          "upstream": "vaultwarden.app:8880",
+          "auth": "none",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "auth.diegonmarcos.com",
+          "upstream": "authelia.app:9091",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
@@ -5542,8 +5568,15 @@
           "public_paths": []
         },
         {
-          "domain": "ide.diegonmarcos.com",
-          "upstream": "code-server.app:8443",
+          "domain": "grafana.diegonmarcos.com",
+          "upstream": "grafana.app:3200",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "analytics.diegonmarcos.com",
+          "upstream": "matomo.app:8080",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
@@ -5556,50 +5589,36 @@
           "public_paths": []
         },
         {
-          "domain": "sheets.diegonmarcos.com",
-          "upstream": "grist.app:3011",
+          "domain": "rss.diegonmarcos.com",
+          "upstream": "ntfy.app:8090",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
         },
         {
-          "domain": "vault.diegonmarcos.com",
-          "upstream": "vaultwarden.app:8880",
-          "auth": "none",
-          "tls_skip": false,
-          "public_paths": []
-        },
-        {
-          "domain": "api.diegonmarcos.com/dash",
-          "upstream": "diegonmarcos.github.io",
-          "auth": "none",
-          "tls_skip": false,
-          "public_paths": []
-        },
-        {
-          "domain": "api.diegonmarcos.com/c3-api",
-          "upstream": "c3-infra-api.app:8081",
+          "domain": "analytics.diegonmarcos.com",
+          "upstream": "umami.app:3006",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
         },
         {
-          "domain": "api.diegonmarcos.com/services",
-          "upstream": "c3-services-api.app:8082",
-          "auth": "authelia+bearer",
-          "tls_skip": false,
-          "public_paths": []
-        },
-        {
-          "domain": "api.diegonmarcos.com/crawlee",
-          "upstream": "crawlee.app:3000",
-          "auth": "authelia+bearer",
-          "tls_skip": false,
-          "public_paths": []
-        },
-        {
-          "domain": "app.diegonmarcos.com/windmill",
+          "domain": "windmill.diegonmarcos.com",
           "upstream": "windmill-app.app:8000",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "git.diegonmarcos.com",
+          "upstream": "backup-gitea.app:3002",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "git.diegonmarcos.com",
+          "upstream": "gitea.app:3017",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
@@ -5640,6 +5659,13 @@
           "public_paths": []
         },
         {
+          "domain": "app.diegonmarcos.com/windmill",
+          "upstream": "windmill-app.app:8000",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
           "domain": "app.diegonmarcos.com/grafana",
           "upstream": "grafana.app:3016",
           "auth": "authelia+bearer",
@@ -5661,18 +5687,45 @@
           "public_paths": []
         },
         {
+          "domain": "api.diegonmarcos.com/c3-api",
+          "upstream": "c3-infra-api.app:8081",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "api.diegonmarcos.com/services",
+          "upstream": "c3-services-api.app:8082",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "api.diegonmarcos.com/dash",
+          "upstream": "diegonmarcos.github.io",
+          "auth": "none",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "api.diegonmarcos.com/crawlee",
+          "upstream": "crawlee.app:3000",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
           "domain": "cloud.diegonmarcos.com",
           "upstream": "c3-spec.app:3080",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": [
-            "/spec",
             "/spec/*"
           ]
         },
         {
           "domain": "mcp.diegonmarcos.com",
-          "upstream": "c3-infra-mcp.app:3100",
+          "upstream": "g-workspace-mcp.app:3104",
           "auth": "none",
           "tls_skip": false,
           "public_paths": []

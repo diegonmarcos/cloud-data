@@ -635,6 +635,11 @@
         "wg_ip": "10.0.0.9",
         "wg_public_key": "Ke/zvGRI4Y5qUwnIyEfzog/UAw1olBUHRtvXZztztVA=",
         "role": "client"
+      },
+      "gha-runner": {
+        "wg_ip": "10.0.0.200",
+        "wg_public_key": "QEPkGSsJXX39plcG+DwJwkSYgmEn+aMlaOF7gDPPpl8=",
+        "role": "client"
       }
     }
   },
@@ -865,12 +870,6 @@
       },
       {
         "name": "caddy.app",
-        "type": "A",
-        "value": "10.0.0.1",
-        "service": "caddy"
-      },
-      {
-        "name": "introspect-proxy.app",
         "type": "A",
         "value": "10.0.0.1",
         "service": "caddy"
@@ -3242,7 +3241,7 @@
           "image": "introspect-proxy:latest",
           "port": 4182,
           "port_env": null,
-          "dns": "introspect-proxy.app",
+          "dns": null,
           "public": false,
           "proxy": null,
           "healthcheck": "/health",
@@ -3266,8 +3265,7 @@
         "4182"
       ],
       "all_dns": [
-        "caddy.app",
-        "introspect-proxy.app"
+        "caddy.app"
       ],
       "compose": {
         "containers": [
@@ -5188,6 +5186,11 @@
         "termux": {
           "wg_ip": "10.0.0.9",
           "wg_public_key": "Ke/zvGRI4Y5qUwnIyEfzog/UAw1olBUHRtvXZztztVA=",
+          "role": "client"
+        },
+        "gha-runner": {
+          "wg_ip": "10.0.0.200",
+          "wg_public_key": "QEPkGSsJXX39plcG+DwJwkSYgmEn+aMlaOF7gDPPpl8=",
           "role": "client"
         }
       }
