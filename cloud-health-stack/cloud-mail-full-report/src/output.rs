@@ -30,8 +30,8 @@ pub fn format_checks(checks: &[Check]) -> String {
         };
 
         lines.push(format!(
-            "  {} {}{}{}",
-            icon, c.details, duration, severity_tag,
+            "  {} {:30} {}{}{}",
+            icon, c.name, c.details, duration, severity_tag,
         ));
     }
 
