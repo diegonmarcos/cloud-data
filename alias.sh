@@ -2,6 +2,7 @@
 # Diego's VM toolkit — install, ssh, clone, info
 # Usage: ./alias.sh                # interactive
 #        ./alias.sh <cmd> [args]   # direct
+# OS-agnostic: NixOS, Arch, Debian, Fedora, macOS, Termux
 set -euo pipefail
 
 # Logging — verbose trace to file, clean output to console
@@ -20,6 +21,94 @@ if [ "$(id -u)" = "0" ] 2>/dev/null; then
   systemctl stop systemd-journald-audit.socket 2>/dev/null || true
   echo 0 > /proc/sys/kernel/printk 2>/dev/null || true
 fi
+
+# ═══════════════════════════════════════════════════════════════════
+# SYSTEM DETECTION — populated once, used by all commands
+# ═══════════════════════════════════════════════════════════════════
+
+detect_system() {
+  # OS / Distro
+  SYS_OS="unknown"; SYS_DISTRO="unknown"; SYS_PKG="none"
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    SYS_OS="${ID:-unknown}"
+    SYS_DISTRO="${PRETTY_NAME:-$ID}"
+    case "$ID" in
+      nixos)                         SYS_PKG="nix" ;;
+      arch|manjaro)                  SYS_PKG="pacman" ;;
+      debian|ubuntu|pop|mint)        SYS_PKG="apt" ;;
+      fedora|rhel|centos|rocky|alma) SYS_PKG="dnf" ;;
+    esac
+  elif [ -d /data/data/com.termux ]; then
+    SYS_OS="termux"; SYS_DISTRO="Termux (Android)"; SYS_PKG="pkg"
+  elif command -v sw_vers >/dev/null 2>&1; then
+    SYS_OS="macos"; SYS_DISTRO="macOS $(sw_vers -productVersion 2>/dev/null)"; SYS_PKG="brew"
+  fi
+  # Has nix? (overlay — works on any OS)
+  if command -v nix >/dev/null 2>&1; then
+    SYS_HAS_NIX=true
+    [ "$SYS_PKG" = "none" ] && SYS_PKG="nix"
+  else
+    SYS_HAS_NIX=false
+  fi
+
+  # Architecture
+  SYS_ARCH=$(uname -m 2>/dev/null || echo "unknown")
+  case "$SYS_ARCH" in
+    x86_64|amd64)   SYS_ARCH_SHORT="x86" ;;
+    aarch64|arm64)   SYS_ARCH_SHORT="arm64" ;;
+    armv7l|armhf)    SYS_ARCH_SHORT="arm32" ;;
+    *)               SYS_ARCH_SHORT="$SYS_ARCH" ;;
+  esac
+
+  # Hostname
+  SYS_HOSTNAME=$(hostname -s 2>/dev/null || cat /etc/hostname 2>/dev/null || echo "unknown")
+
+  # CPU / RAM
+  SYS_CPUS=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo "?")
+  if [ -f /proc/meminfo ]; then
+    SYS_RAM_MB=$(awk '/MemTotal/{printf "%d", $2/1024}' /proc/meminfo)
+  elif command -v sysctl >/dev/null 2>&1; then
+    SYS_RAM_MB=$(( $(sysctl -n hw.memsize 2>/dev/null || echo 0) / 1024 / 1024 ))
+  else
+    SYS_RAM_MB="?"
+  fi
+
+  # Kernel
+  SYS_KERNEL=$(uname -r 2>/dev/null || echo "?")
+
+  # Docker
+  if command -v docker >/dev/null 2>&1; then
+    SYS_HAS_DOCKER=true
+    SYS_DOCKER_PATH=$(command -v docker)
+  else
+    SYS_HAS_DOCKER=false
+    SYS_DOCKER_PATH=""
+  fi
+
+  # Init system
+  if command -v systemctl >/dev/null 2>&1; then
+    SYS_INIT="systemd"
+  elif [ -f /sbin/openrc ]; then
+    SYS_INIT="openrc"
+  else
+    SYS_INIT="other"
+  fi
+}
+
+show_banner() {
+  echo "╔══════════════════════════════════════════════════════════╗"
+  echo "║  Diego's Toolkit                                        ║"
+  echo "╠══════════════════════════════════════════════════════════╣"
+  printf "║  %-54s  ║\n" "Host: $SYS_HOSTNAME"
+  printf "║  %-54s  ║\n" "OS:   $SYS_DISTRO ($SYS_ARCH)"
+  printf "║  %-54s  ║\n" "CPU:  ${SYS_CPUS} cores  RAM: ${SYS_RAM_MB}MB  Kernel: ${SYS_KERNEL%%[-+]*}"
+  printf "║  %-54s  ║\n" "Pkg:  $SYS_PKG  Nix: $SYS_HAS_NIX  Docker: $SYS_HAS_DOCKER  Init: $SYS_INIT"
+  echo "╚══════════════════════════════════════════════════════════╝"
+  echo ""
+}
+
+detect_system
 
 declare -A VM_MAP=(
   [gcp-proxy]="arch-1:us-central1-a"
@@ -114,74 +203,119 @@ do_docker_start() {
   local IMG="ghcr.io/diegonmarcos/diego-user-env:latest"
   local HOME_DIR="${HOME:-/root}"
 
-  # Check docker + git, install if missing
-  if ! command -v docker >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
-    echo "Docker or git not found — installing..."
-    if command -v dnf >/dev/null 2>&1; then
-      dnf install -y --skip-unavailable docker git curl
-      systemctl enable --now docker 2>/dev/null || true
-    elif command -v apt-get >/dev/null 2>&1; then
-      apt-get update -qq && apt-get install -y -qq docker.io git curl
-      systemctl enable --now docker 2>/dev/null || true
-    elif command -v pacman >/dev/null 2>&1; then
-      pacman -Sy --noconfirm docker git curl
-      systemctl enable --now docker 2>/dev/null || true
-    elif command -v nix-env >/dev/null 2>&1; then
-      nix-env -iA nixpkgs.docker nixpkgs.git nixpkgs.curl
-    else
-      echo "No package manager found — install docker and git manually"
-      exit 1
-    fi
+  # ── Step 1: Ensure docker CLI is available ─────────────────────────────
+  if [ "$SYS_HAS_DOCKER" = false ]; then
+    echo "Docker not found — installing for $SYS_PKG..."
+    case "$SYS_PKG" in
+      apt)    apt-get update -qq && apt-get install -y -qq docker.io ;;
+      dnf)    dnf install -y --skip-unavailable docker ;;
+      pacman) pacman -Sy --noconfirm docker ;;
+      nix)
+        # NixOS: docker must be in system config. Non-NixOS nix: use nix-shell.
+        if [ "$SYS_OS" = "nixos" ]; then
+          echo "On NixOS, Docker must be enabled in your system flake:"
+          echo "  virtualisation.docker.enable = true;"
+          echo "Then rebuild: sudo nixos-rebuild switch"
+          echo ""
+          echo "Trying nix-shell fallback for docker CLI..."
+          exec nix-shell -p docker --run "bash $0 docker-start"
+        else
+          exec nix-shell -p docker --run "bash $0 docker-start"
+        fi ;;
+      brew)   brew install --cask docker ;;
+      pkg)    echo "Docker not available on Termux"; exit 1 ;;
+      *)      echo "No package manager found — install docker manually"; exit 1 ;;
+    esac
+    # Re-detect after install
+    command -v docker >/dev/null 2>&1 || { echo "ERROR: docker still not found after install"; exit 1; }
   fi
 
-  # Find REAL docker binary — skip guardrail wrappers
+  # ── Step 2: Find container runtime (docker preferred, podman fallback) ─
   DOCKER=""
-  # 1. From systemd service (most reliable on Nix)
-  if [ -z "$DOCKER" ] && [ -f /etc/systemd/system/docker.service ]; then
+  RUNTIME="docker"
+  # From systemd service (most reliable on Nix)
+  if [ -f /etc/systemd/system/docker.service ]; then
     DOCKERD_PATH=$(grep -oP '(?<=ExecStart=)\S+' /etc/systemd/system/docker.service 2>/dev/null || true)
     if [ -n "$DOCKERD_PATH" ]; then
       DOCKER_DIR=$(dirname "$DOCKERD_PATH" 2>/dev/null)
       [ -x "${DOCKER_DIR}/docker" ] && DOCKER="${DOCKER_DIR}/docker"
     fi
   fi
-  # 2. Known paths
+  # Known docker paths
   if [ -z "$DOCKER" ]; then
-    for p in /usr/bin/docker /usr/local/bin/docker /nix/var/nix/profiles/default/bin/docker /run/current-system/sw/bin/docker; do
+    for p in /run/current-system/sw/bin/docker /usr/bin/docker /usr/local/bin/docker \
+             /nix/var/nix/profiles/default/bin/docker "${HOME}/.nix-profile/bin/docker"; do
       [ -x "$p" ] && DOCKER="$p" && break
     done
   fi
-  # 3. Fallback: nix-shell with docker
-  if [ -z "$DOCKER" ] && command -v nix-shell >/dev/null 2>&1; then
-    echo "Docker not found — falling back to nix-shell..."
-    exec nix-shell -p docker --run "bash $0 docker-start"
-  fi
-  [ -z "$DOCKER" ] && { echo "ERROR: docker binary not found"; exit 1; }
-
-  # Ensure Docker daemon is running
-  if ! "$DOCKER" info >/dev/null 2>&1; then
-    echo "Docker daemon not running — starting..."
-    systemctl enable --now docker 2>/dev/null || service docker start 2>/dev/null || true
-    sleep 3
-    if ! "$DOCKER" info >/dev/null 2>&1; then
-      echo "ERROR: Docker daemon failed to start"
-      exit 1
+  # command -v docker
+  [ -z "$DOCKER" ] && DOCKER=$(command -v docker 2>/dev/null || true)
+  # Last resort: podman as drop-in replacement
+  if [ -z "$DOCKER" ] || ! "$DOCKER" info >/dev/null 2>&1; then
+    PODMAN=$(command -v podman 2>/dev/null || true)
+    if [ -n "$PODMAN" ]; then
+      echo "Docker unavailable — falling back to podman"
+      DOCKER="$PODMAN"
+      RUNTIME="podman"
     fi
   fi
+  [ -z "$DOCKER" ] && { echo "ERROR: neither docker nor podman found"; exit 1; }
 
+  # ── Step 3: Ensure container runtime is ready ───────────────────────────
+  if ! "$DOCKER" info >/dev/null 2>&1; then
+    if [ "$RUNTIME" = "podman" ]; then
+      # Podman is daemonless — if info fails, it's a config issue
+      echo "Podman check failed — trying to initialize..."
+      "$DOCKER" system migrate 2>/dev/null || true
+    else
+      echo "Docker daemon not running — starting..."
+      if [ "$SYS_INIT" = "systemd" ]; then
+        systemctl start docker 2>/dev/null || true
+        for i in $(seq 1 15); do "$DOCKER" info >/dev/null 2>&1 && break; sleep 1; done
+      elif command -v service >/dev/null 2>&1; then
+        service docker start 2>/dev/null || true; sleep 3
+      elif [ "$SYS_OS" = "macos" ]; then
+        open -a Docker 2>/dev/null || true
+        echo "Waiting for Docker Desktop..."
+        for i in $(seq 1 30); do "$DOCKER" info >/dev/null 2>&1 && break; sleep 1; done
+      fi
+    fi
+    if ! "$DOCKER" info >/dev/null 2>&1; then
+      # Final fallback: if docker failed, try podman
+      PODMAN=$(command -v podman 2>/dev/null || true)
+      if [ -n "$PODMAN" ] && [ "$RUNTIME" != "podman" ]; then
+        echo "Docker daemon failed — falling back to podman"
+        DOCKER="$PODMAN"; RUNTIME="podman"
+      else
+        echo "ERROR: Container runtime failed to start"
+        echo "  Runtime=$RUNTIME OS=$SYS_OS PKG=$SYS_PKG INIT=$SYS_INIT"
+        echo "  Try: systemctl status docker / journalctl -u docker"
+        exit 1
+      fi
+    fi
+  fi
+  echo "Using: $RUNTIME ($DOCKER)"
+
+  # ── Step 4: Pull and run ───────────────────────────────────────────────
   echo "=== Docker Start: $IMG ==="
   echo "Pulling latest image..."
   "$DOCKER" pull "$IMG"
-  echo "Starting container (root, home mounted at $HOME_DIR)..."
+
+  # Build mount args (only mount paths that exist)
+  local MOUNTS="-v $HOME_DIR:$HOME_DIR"
+  [ -S /var/run/docker.sock ] && MOUNTS="$MOUNTS -v /var/run/docker.sock:/var/run/docker.sock"
+  [ -d /etc/wireguard ]       && MOUNTS="$MOUNTS -v /etc/wireguard:/etc/wireguard:ro"
+  [ -d /opt ]                 && MOUNTS="$MOUNTS -v /opt:/opt"
+
+  echo "Starting container ($RUNTIME, home=$HOME_DIR, arch=$SYS_ARCH)..."
+  local EXTRA_FLAGS="--privileged --network host --pid host"
+  [ "$RUNTIME" = "podman" ] && EXTRA_FLAGS="--privileged --network host"
+
   exec "$DOCKER" run -it --rm \
     --name diego-env \
-    --hostname "$(hostname)-dev" \
-    --privileged \
-    --network host \
-    --pid host \
-    -v "$HOME_DIR":"$HOME_DIR" \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    -v /etc/wireguard:/etc/wireguard:ro \
-    -v /opt:/opt \
+    --hostname "${SYS_HOSTNAME}-dev" \
+    $EXTRA_FLAGS \
+    $MOUNTS \
     -w "$HOME_DIR" \
     -e HOME="$HOME_DIR" \
     -e USER="${USER:-root}" \
@@ -403,18 +537,15 @@ FISHCONF
 }
 
 detect_distro() {
-  if [ -f /etc/os-release ]; then
-    . /etc/os-release
-    case "$ID" in
-      fedora|rhel|centos|rocky|alma) echo "fedora" ;;
-      arch|manjaro)                  echo "arch" ;;
-      debian|ubuntu|pop|mint)        echo "debian" ;;
-      nixos)                         echo "nix" ;;
-      *)                             echo "" ;;
-    esac
-  else
-    echo ""
-  fi
+  # Reuse system detection (already ran at startup)
+  case "$SYS_PKG" in
+    dnf)    echo "fedora" ;;
+    pacman) echo "arch" ;;
+    apt)    echo "debian" ;;
+    nix)    echo "nix" ;;
+    brew)   echo "macos" ;;
+    *)      echo "" ;;
+  esac
 }
 
 do_install() {
@@ -540,6 +671,7 @@ if [[ $# -ge 1 ]]; then
     *)              echo "Usage: $0 {fix-journal|docker-start|install|ssh|git-clone|info}"; exit 1 ;;
   esac
 elif [[ $# -eq 0 ]]; then
+  show_banner
   pick "What do you need?" "${MAIN_COMMANDS[@]}"
   case "$PICK" in
     commands)       do_commands ;;
