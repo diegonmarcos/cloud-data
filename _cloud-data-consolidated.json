@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-03-29T02:23:27.107Z",
+    "generated_at": "2026-03-29T03:25:20.869Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -1903,26 +1903,48 @@
       "category": "app",
       "vm": "oci-E2-f_0",
       "folder": "aa-sui_tools-smtp-proxy",
-      "description": "",
+      "description": "HTTP-to-SMTP bridge for CF Email Routing (smtp.diegonmarcos.com)",
+      "domain": "smtp.diegonmarcos.com",
       "flake": "tools-smtp-proxy",
+      "port": 8080,
+      "dns": "smtp-proxy.app",
+      "upstream": "smtp-proxy.app:8080",
       "containers": {
         "app": {
           "container_name": "smtp-proxy",
-          "image": "",
-          "public": false
+          "port": 8080,
+          "dns": "smtp-proxy.app",
+          "public": true,
+          "proxy": {
+            "domain": "smtp.diegonmarcos.com",
+            "auth": "none"
+          }
         }
       },
       "container_names": [
         "smtp-proxy"
       ],
-      "all_ports": [],
-      "all_dns": [],
+      "all_ports": [
+        "8080"
+      ],
+      "all_dns": [
+        "smtp-proxy.app"
+      ],
       "compose": {
         "containers": [
           "smtp-proxy"
         ],
         "ports": [],
         "networks": []
+      },
+      "proxy": {
+        "primary": {
+          "domain": "smtp.diegonmarcos.com",
+          "auth": "none"
+        }
+      },
+      "declared_ports": {
+        "app": 8080
       }
     },
     "stalwart": {
@@ -5175,6 +5197,12 @@
         "type": "A",
         "value": "10.0.0.3",
         "service": "snappymail"
+      },
+      {
+        "name": "smtp-proxy.app",
+        "type": "A",
+        "value": "10.0.0.3",
+        "service": "smtp-proxy"
       },
       {
         "name": "stalwart.app",

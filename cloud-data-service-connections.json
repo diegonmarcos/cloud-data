@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-29T02:23:27.422Z",
+  "_generated": "2026-03-29T03:25:21.183Z",
   "services": {
     "code-server": {
       "ip": "10.0.0.6",
@@ -102,7 +102,9 @@
     },
     "smtp-proxy": {
       "ip": "10.0.0.3",
-      "ports": {},
+      "ports": {
+        "app": 8080
+      },
       "vm": "oci-mail"
     },
     "stalwart": {

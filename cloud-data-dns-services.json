@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-29T02:23:27.422Z",
+  "_generated": "2026-03-29T03:25:21.183Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/dns-services",
   "suffix": "app",
   "services": {
@@ -70,6 +70,10 @@
     "snappymail": {
       "ip": "10.0.0.3",
       "desc": "SnappyMail webmail client (mail.diegonmarcos.com/webmail)"
+    },
+    "smtp-proxy": {
+      "ip": "10.0.0.3",
+      "desc": "HTTP-to-SMTP bridge for CF Email Routing (smtp.diegonmarcos.com)"
     },
     "stalwart": {
       "ip": "10.0.0.3",
