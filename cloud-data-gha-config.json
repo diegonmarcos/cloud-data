@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-29T05:54:29.202Z",
+  "_generated": "2026-03-29T09:40:42.626Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/gha-config",
   "vms": {
     "oci-mail": {
@@ -28,9 +28,9 @@
     },
     "gcp-proxy": {
       "ssh_secret": "GCP_PROXY_SSH_KEY",
-      "host": "35.226.147.64",
       "host_secret": "GCP_PROXY_HOST",
-      "user_secret": "GCP_PROXY_USER"
+      "user_secret": "GCP_PROXY_USER",
+      "host": "35.226.147.64"
     }
   },
   "services": {
