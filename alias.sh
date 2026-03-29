@@ -27,7 +27,7 @@ REPOS=(
   "vault:https://github.com/diegonmarcos/vault.git"
 )
 
-MAIN_COMMANDS=(fix-journal docker-start install ssh git-clone info)
+MAIN_COMMANDS=(commands fix-journal docker-start install ssh git-clone info)
 
 pick() {
   local label="$1"; shift; local -a items=("$@")
@@ -44,7 +44,45 @@ resolve_vm() {
 }
 
 # ═══════════════════════════════════════════════════════════════════
-# 0) FIX JOURNAL — stop systemd spam on console
+# 0) COMMANDS — quick commands to run on this machine
+# ═══════════════════════════════════════════════════════════════════
+
+do_commands() {
+  local cmds=(
+    "flush-iptables:iptables -F INPUT; iptables -P INPUT ACCEPT; echo iptables flushed"
+    "restart-sshd:systemctl restart sshd 2>/dev/null || systemctl restart ssh 2>/dev/null; echo sshd restarted"
+    "restart-wg:systemctl restart wg-quick@wg0; echo wg restarted"
+    "restart-docker:systemctl restart docker; echo docker restarted"
+    "stop-docker:systemctl stop docker; echo docker stopped"
+    "start-docker:systemctl start docker; echo docker started"
+    "docker-ps:docker ps --format '{{.Names}}: {{.Status}}' | sort"
+    "wg-status:wg show wg0"
+    "iptables-show:iptables -L INPUT -n --line-numbers"
+    "free-mem:free -m"
+    "disk-usage:df -h / /var /opt 2>/dev/null"
+    "kill-watchdog:systemctl stop watchdog-petter.timer watchdog-petter.service 2>/dev/null; systemctl disable watchdog-petter.timer 2>/dev/null; echo watchdog killed"
+    "journal-silence:echo 0 > /proc/sys/kernel/printk; dmesg -n 1; echo journal silenced"
+    "full-rescue:iptables -F INPUT; iptables -P INPUT ACCEPT; systemctl restart sshd 2>/dev/null || systemctl restart ssh 2>/dev/null; systemctl restart wg-quick@wg0 2>/dev/null; echo full rescue done"
+  )
+
+  echo "Commands (runs locally on this machine):"
+  for i in "${!cmds[@]}"; do
+    local name="${cmds[$i]%%:*}"
+    printf "  %d) %s\n" $((i+1)) "$name"
+  done
+  read -rp "> " idx
+  ((idx--))
+  [[ $idx -ge 0 && $idx -lt ${#cmds[@]} ]] || { echo "Invalid"; exit 1; }
+
+  local selected="${cmds[$idx]}"
+  local name="${selected%%:*}"
+  local cmd="${selected#*:}"
+  echo "=== Running: $name ==="
+  eval "$cmd"
+}
+
+# ═══════════════════════════════════════════════════════════════════
+# 0b) FIX JOURNAL — stop systemd spam on console
 # ═══════════════════════════════════════════════════════════════════
 
 do_fix_journal() {
@@ -482,6 +520,7 @@ do_info() {
 
 if [[ $# -ge 1 ]]; then
   case "$1" in
+    commands)       do_commands ;;
     fix-journal)    do_fix_journal ;;
     docker-start)   do_docker_start ;;
     install)        do_install ;;
@@ -493,6 +532,7 @@ if [[ $# -ge 1 ]]; then
 elif [[ $# -eq 0 ]]; then
   pick "What do you need?" "${MAIN_COMMANDS[@]}"
   case "$PICK" in
+    commands)       do_commands ;;
     fix-journal)    do_fix_journal ;;
     docker-start)   do_docker_start ;;
     install)        do_install ;;
