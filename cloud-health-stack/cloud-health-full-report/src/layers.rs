@@ -629,7 +629,7 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
 
                 // Step 3: HTTP
                 let (http_ok, http_code, http_detail) = if tcp_ok && !is_non_http {
-                    http_get(&cl, &format!("http://{}:{}", ip, port)).await
+                    http_get(&cl, &format!("{}://{}:{}", if port == 443 { "https" } else { "http" }, ip, port)).await
                 } else if tcp_ok && is_non_http {
                     (true, 0, "n/a".to_string())
                 } else {
