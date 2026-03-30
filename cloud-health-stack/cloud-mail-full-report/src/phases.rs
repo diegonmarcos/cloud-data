@@ -202,6 +202,24 @@ pub async fn preflight() -> (
 ) {
     let mut checks = Vec::new();
 
+    // ── Tier 0: Cloud API VM status (no SSH, fast) ──────────────────────
+    let (mail_cloud, apps_cloud, proxy_cloud) = tokio::join!(
+        ssh::cloud_vm_status("oci-mail"),
+        ssh::cloud_vm_status("oci-apps"),
+        ssh::cloud_vm_status("gcp-proxy"),
+    );
+    for (alias, status) in [("oci-mail", &mail_cloud), ("oci-apps", &apps_cloud), ("gcp-proxy", &proxy_cloud)] {
+        let ok = status.eq_ignore_ascii_case("RUNNING");
+        checks.push(Check {
+            name: format!("Cloud API {}", alias),
+            passed: ok,
+            details: format!("{}: {}", alias, status),
+            duration_ms: 0,
+            error: if ok { None } else { Some(format!("VM not running: {}", status)) },
+            severity: if ok { Severity::Info } else { Severity::Critical },
+        });
+    }
+
     // WG probes to all 3 VMs in parallel
     let (wg_mail, wg_apps, wg_proxy) = tokio::join!(
         async {

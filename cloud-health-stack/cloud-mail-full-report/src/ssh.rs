@@ -61,6 +61,49 @@ pub async fn ssh_exec(vm_alias: &str, command: &str, timeout_secs: u64) -> Resul
     }
 }
 
+/// Cloud API VM status — fast, no SSH, works even when VM is frozen
+pub async fn cloud_vm_status(vm_alias: &str) -> String {
+    let is_gcp = vm_alias.starts_with("gcp-");
+
+    if is_gcp {
+        let gcloud_name = match vm_alias {
+            "gcp-proxy" => "arch-1",
+            "gcp-t4" => "ollama-spot-gpu",
+            _ => vm_alias,
+        };
+        let result = timeout(
+            Duration::from_secs(8),
+            tokio::process::Command::new("gcloud")
+                .args(["compute", "instances", "describe", gcloud_name,
+                       "--zone=us-central1-a", "--format=value(status)"])
+                .output(),
+        ).await;
+        result.ok().and_then(|r| r.ok())
+            .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string())
+            .filter(|s| !s.is_empty())
+            .unwrap_or("API_FAIL".into())
+    } else {
+        // OCI
+        let instance_id = match vm_alias {
+            "oci-mail" => "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacbwylmkqr253ay7binepapgsyopllfayovkzaky6oigbq",
+            "oci-apps" => "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacj7dfxl7uifar574je7fzlvtdjp4ghljdwuwdemsdbiva",
+            "oci-analytics" => "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacgwg5rkrjyomuxvjtvtuk5xrbmy7hmslwn4pse4kw5jkq",
+            _ => return "unknown instance".into(),
+        };
+        let result = timeout(
+            Duration::from_secs(10),
+            tokio::process::Command::new("oci")
+                .args(["compute", "instance", "get", "--instance-id", instance_id,
+                       "--query", "data.\"lifecycle-state\"", "--raw-output"])
+                .output(),
+        ).await;
+        result.ok().and_then(|r| r.ok())
+            .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string())
+            .filter(|s| !s.is_empty())
+            .unwrap_or("API_FAIL".into())
+    }
+}
+
 /// Dropbear liveness check on port 2200 — lightweight SSH, survives OOM
 async fn dropbear_alive(vm_alias: &str) -> bool {
     let result = timeout(
