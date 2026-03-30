@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-30T14:33:48.894Z",
+  "_generated": "2026-03-30T14:41:19.408Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/cloudflare-dns",
   "zone": "diegonmarcos.com",
   "records": [

@@ -736,6 +736,12 @@
         "service": "photoprism"
       },
       {
+        "name": "photos-webhook.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "photos-webhook"
+      },
+      {
         "name": "radicale.app",
         "type": "A",
         "value": "10.0.0.6",
@@ -856,6 +862,12 @@
         "service": "ollama-hai"
       },
       {
+        "name": "rig-agentic-sonn-14bq8.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "rig-agentic-sonn-14bq8"
+      },
+      {
         "name": "hickory-dns.app",
         "type": "A",
         "value": "10.0.0.1",
@@ -884,6 +896,12 @@
         "type": "A",
         "value": "10.0.0.1",
         "service": "introspect-proxy"
+      },
+      {
+        "name": "alerts-api.app",
+        "type": "A",
+        "value": "10.0.0.4",
+        "service": "alerts-api"
       },
       {
         "name": "c3-infra-api.app",
@@ -980,6 +998,18 @@
         "type": "A",
         "value": "10.0.0.1",
         "service": "ntfy"
+      },
+      {
+        "name": "sauron-forwarder.app",
+        "type": "A",
+        "value": "10.0.0.4",
+        "service": "sauron-forwarder"
+      },
+      {
+        "name": "syslog-forwarder.app",
+        "type": "A",
+        "value": "10.0.0.3",
+        "service": "syslog-forwarder"
       },
       {
         "name": "umami.app",
@@ -1912,18 +1942,27 @@
       "vm": "oci-A1-f_0",
       "folder": "aa-sui_photos-webhook",
       "description": "PhotoPrism Webhook + S3 Processor",
+      "port": 5002,
+      "dns": "photos-webhook.app",
+      "upstream": "photos-webhook.app:5002",
       "containers": {
         "app": {
           "container_name": "photos-webhook",
           "image": "",
-          "public": false
+          "public": false,
+          "port": 5002,
+          "dns": "photos-webhook.app"
         }
       },
       "container_names": [
         "photos-webhook"
       ],
-      "all_ports": [],
-      "all_dns": [],
+      "all_ports": [
+        "5002"
+      ],
+      "all_dns": [
+        "photos-webhook.app"
+      ],
       "compose": {
         "containers": [
           "photos-db",
@@ -2966,18 +3005,27 @@
       "vm": "oci-A1-f_0",
       "folder": "ad-agi_rig-agentic-sonn-14bq8",
       "description": "Rig Agentic AI (Heavy) — DeepSeek R1 14B Q8 agent with tool calling via C3 MCP",
+      "port": 8090,
+      "dns": "rig-agentic-sonn-14bq8.app",
+      "upstream": "rig-agentic-sonn-14bq8.app:8090",
       "containers": {
         "app": {
           "container_name": "rig-agentic-sonn-14bq8",
           "image": "",
-          "public": false
+          "public": false,
+          "port": 8090,
+          "dns": "rig-agentic-sonn-14bq8.app"
         }
       },
       "container_names": [
         "rig-agentic-sonn-14bq8"
       ],
-      "all_ports": [],
-      "all_dns": [],
+      "all_ports": [
+        "8090"
+      ],
+      "all_dns": [
+        "rig-agentic-sonn-14bq8.app"
+      ],
       "compose": {
         "containers": [
           "rig-agentic-sonn-14bq8"
@@ -3396,18 +3444,27 @@
       "vm": "oci-E2-f_1",
       "folder": "bc-obs_alerts-api",
       "description": "Security Alert Aggregation API",
+      "port": 5050,
+      "dns": "alerts-api.app",
+      "upstream": "alerts-api.app:5050",
       "containers": {
         "app": {
           "container_name": "alerts-api",
           "image": "",
-          "public": false
+          "public": false,
+          "port": 5050,
+          "dns": "alerts-api.app"
         }
       },
       "container_names": [
         "alerts-api"
       ],
-      "all_ports": [],
-      "all_dns": [],
+      "all_ports": [
+        "5050"
+      ],
+      "all_dns": [
+        "alerts-api.app"
+      ],
       "compose": {
         "containers": [
           "alerts-api"
@@ -3972,6 +4029,9 @@
       "vm": "oci-E2-f_1",
       "folder": "bc-obs_fluent-bit",
       "description": "Log processor and forwarder",
+      "port": 2020,
+      "dns": "fluent-bit.app",
+      "upstream": "fluent-bit.app:2020",
       "containers": {
         "app": {
           "container_name": "fluent-bit",
@@ -4453,18 +4513,22 @@
       "vm": "oci-E2-f_1",
       "folder": "bc-obs_sauron-forwarder",
       "description": "Alert forwarding to central sauron",
+      "dns": "sauron-forwarder.app",
       "containers": {
         "app": {
           "container_name": "sauron-forwarder",
           "image": "",
-          "public": false
+          "public": false,
+          "dns": "sauron-forwarder.app"
         }
       },
       "container_names": [
         "sauron-forwarder"
       ],
       "all_ports": [],
-      "all_dns": [],
+      "all_dns": [
+        "sauron-forwarder.app"
+      ],
       "compose": {
         "containers": [
           "sauron-forwarder"
@@ -4504,18 +4568,22 @@
       "vm": "oci-E2-f_0",
       "folder": "bc-obs_syslog-forwarder",
       "description": "",
+      "dns": "syslog-forwarder.app",
       "containers": {
         "app": {
           "container_name": "syslog-forwarder",
           "image": "",
-          "public": false
+          "public": false,
+          "dns": "syslog-forwarder.app"
         }
       },
       "container_names": [
         "syslog-forwarder"
       ],
       "all_ports": [],
-      "all_dns": [],
+      "all_dns": [
+        "syslog-forwarder.app"
+      ],
       "compose": {
         "containers": [
           "syslog-forwarder"
