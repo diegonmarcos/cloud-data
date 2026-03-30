@@ -11,7 +11,7 @@ const SSH_TIMEOUT: Duration = Duration::from_secs(10);
 fn ssh_args(alias: &str, cmd: &str) -> Vec<String> {
     vec![
         "-o".into(),
-        "ConnectTimeout=5".into(),
+        "ConnectTimeout=10".into(),
         "-o".into(),
         "BatchMode=yes".into(),
         "-o".into(),

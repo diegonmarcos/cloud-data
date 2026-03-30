@@ -1,12 +1,12 @@
 {
-  "generated": "2026-03-29T21:16:09.232200026+00:00",
-  "duration_ms": 39968,
+  "generated": "2026-03-30T00:19:36.237191290+00:00",
+  "duration_ms": 27250,
   "instant_kpis": [
     {
       "name": "mail.* HTTPS",
       "passed": true,
       "details": "HTTP 302",
-      "duration_ms": 467,
+      "duration_ms": 438,
       "error": null,
       "severity": "Critical"
     },
@@ -14,7 +14,7 @@
       "name": "webmail HTTPS",
       "passed": true,
       "details": "HTTP 200",
-      "duration_ms": 539,
+      "duration_ms": 472,
       "error": null,
       "severity": "Critical"
     },
@@ -22,23 +22,23 @@
       "name": "auth HTTPS",
       "passed": true,
       "details": "HTTP 200",
-      "duration_ms": 470,
+      "duration_ms": 469,
       "error": null,
       "severity": "Warning"
     },
     {
       "name": "MCP endpoint",
-      "passed": false,
-      "details": "HTTP 502",
-      "duration_ms": 646,
-      "error": "502",
+      "passed": true,
+      "details": "HTTP 400",
+      "duration_ms": 660,
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "mail:993 TLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 807,
+      "duration_ms": 531,
       "error": null,
       "severity": "Critical"
     },
@@ -46,7 +46,7 @@
       "name": "mail:465 TLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 1051,
+      "duration_ms": 531,
       "error": null,
       "severity": "Critical"
     },
@@ -54,7 +54,7 @@
       "name": "mail:587 STARTTLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 1711,
+      "duration_ms": 531,
       "error": null,
       "severity": "Critical"
     },
@@ -62,7 +62,7 @@
       "name": "MX record",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 27,
+      "duration_ms": 16,
       "error": null,
       "severity": "Critical"
     },
@@ -70,16 +70,16 @@
       "name": "DKIM record",
       "passed": true,
       "details": "present",
-      "duration_ms": 75,
+      "duration_ms": 65,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "GHA health",
       "passed": false,
-      "details": "2 failing: Health → Mail (Full Check), Health → Mail (Full Check)",
-      "duration_ms": 749,
-      "error": "2 failing: Health → Mail (Full Check), Health → Mail (Full Check)",
+      "details": "3 failing: Health → Mail (Full Check), Health → VMs",
+      "duration_ms": 685,
+      "error": "3 failing: Health → Mail (Full Check), Health → VMs",
       "severity": "Info"
     }
   ],
@@ -88,7 +88,7 @@
       "name": "WG oci-mail",
       "passed": true,
       "details": "10.0.0.3:22 OK",
-      "duration_ms": 294,
+      "duration_ms": 257,
       "error": null,
       "severity": "Critical"
     },
@@ -96,7 +96,7 @@
       "name": "WG oci-apps",
       "passed": true,
       "details": "10.0.0.6:22 OK",
-      "duration_ms": 253,
+      "duration_ms": 257,
       "error": null,
       "severity": "Critical"
     },
@@ -104,91 +104,43 @@
       "name": "WG gcp-proxy",
       "passed": true,
       "details": "10.0.0.1:22 OK",
-      "duration_ms": 143,
+      "duration_ms": 141,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "SSH batch oci-mail",
-      "passed": true,
-      "details": "Docker 27.5.1",
+      "passed": false,
+      "details": "SSH FAILED",
       "duration_ms": 0,
-      "error": null,
+      "error": "SSH FAILED",
       "severity": "Critical"
     },
     {
       "name": "SSH batch oci-apps",
-      "passed": false,
-      "details": "mail-mcp: ",
+      "passed": true,
+      "details": "mail-mcp: Up 3 hours",
       "duration_ms": 0,
-      "error": "mail-mcp: ",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "SSH batch gcp-proxy",
-      "passed": false,
-      "details": "SSH FAILED",
+      "passed": true,
+      "details": "Authelia OK",
       "duration_ms": 0,
-      "error": "SSH or Authelia FAILED",
+      "error": null,
       "severity": "Warning"
-    },
-    {
-      "name": "Disk space",
-      "passed": true,
-      "details": "68% used",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Memory",
-      "passed": true,
-      "details": "667/954MB (70%)",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Load",
-      "passed": true,
-      "details": "load: 0.37 0.64 1.13",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
     }
   ],
   "containers": [
     {
-      "name": "stalwart",
-      "passed": true,
-      "details": "Up 54 minutes",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "smtp-proxy",
-      "passed": true,
-      "details": "Up 54 minutes",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "snappymail",
-      "passed": true,
-      "details": "Up 54 minutes",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "mail-mcp",
+      "name": "skipped",
       "passed": false,
-      "details": "",
+      "details": "SSH unreachable",
       "duration_ms": 0,
-      "error": "",
-      "severity": "Warning"
+      "error": "SSH to oci-mail failed",
+      "severity": "Critical"
     }
   ],
   "network": [
@@ -196,7 +148,7 @@
       "name": "Caddy (gcp-proxy)",
       "passed": true,
       "details": "HTTPS OK (10.0.0.1)",
-      "duration_ms": 612,
+      "duration_ms": 774,
       "error": null,
       "severity": "Critical"
     },
@@ -204,47 +156,47 @@
       "name": "Hickory DNS",
       "passed": true,
       "details": "stalwart.app -> 10.0.0.3",
-      "duration_ms": 144,
+      "duration_ms": 221,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "TLS WG direct",
-      "passed": true,
-      "details": "993 OK 465 OK 587 OK",
-      "duration_ms": 1337,
-      "error": null,
+      "passed": false,
+      "details": "SSH down",
+      "duration_ms": 0,
+      "error": "SSH down",
       "severity": "Critical"
     },
     {
       "name": "Caddy L4 -> IMAP",
-      "passed": false,
-      "details": "no proxy data",
+      "passed": true,
+      "details": "993 forwarding OK",
       "duration_ms": 0,
-      "error": "no proxy data",
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "Caddy L4 -> SMTPS",
-      "passed": false,
-      "details": "no proxy data",
+      "passed": true,
+      "details": "465 forwarding OK",
       "duration_ms": 0,
-      "error": "no proxy data",
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "Caddy L4 -> SMTP",
-      "passed": false,
-      "details": "no proxy data",
+      "passed": true,
+      "details": "587 forwarding OK",
       "duration_ms": 0,
-      "error": "no proxy data",
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "mail:993 (IMAP)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 1199,
+      "duration_ms": 650,
       "error": null,
       "severity": "Critical"
     },
@@ -252,7 +204,7 @@
       "name": "mail:465 (SMTPS)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 915,
+      "duration_ms": 651,
       "error": null,
       "severity": "Critical"
     },
@@ -260,144 +212,144 @@
       "name": "mail:587 (SMTP Sub)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 2207,
+      "duration_ms": 652,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "SMTP :25 relay",
-      "passed": true,
-      "details": "220 mail.diegonmarcos.com Stalwart ESMTP at your service",
+      "passed": false,
+      "details": "no data",
       "duration_ms": 0,
-      "error": null,
+      "error": "no data",
       "severity": "Warning"
     },
     {
       "name": "SMTP :587 local TLS",
-      "passed": true,
-      "details": "STARTTLS OK",
+      "passed": false,
+      "details": "no data",
       "duration_ms": 0,
-      "error": null,
+      "error": "no data",
       "severity": "Warning"
     },
     {
       "name": "Webmail HTTPS",
       "passed": true,
-      "details": "HTTP 302",
-      "duration_ms": 458,
+      "details": "HTTP 429",
+      "duration_ms": 630,
       "error": null,
       "severity": "Warning"
     },
     {
       "name": "Webmail internal",
-      "passed": true,
-      "details": "HTTP 200",
+      "passed": false,
+      "details": "no data",
       "duration_ms": 0,
-      "error": null,
+      "error": "no data",
       "severity": "Warning"
     },
     {
       "name": "SnappyMail internal",
-      "passed": true,
-      "details": "HTTP 200",
+      "passed": false,
+      "details": "no data",
       "duration_ms": 0,
-      "error": null,
+      "error": "no data",
       "severity": "Warning"
     },
     {
       "name": "ManageSieve :4190",
-      "passed": true,
-      "details": "ManageSieve OK",
+      "passed": false,
+      "details": "no data",
       "duration_ms": 0,
-      "error": null,
+      "error": "no data",
       "severity": "Warning"
     },
     {
       "name": "Authelia health",
-      "passed": false,
-      "details": "no proxy data",
+      "passed": true,
+      "details": "Authelia OK",
       "duration_ms": 0,
-      "error": "no proxy data",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "OIDC bearer -> webmail",
-      "passed": true,
-      "details": "Bearer auth -> 200 OK (full chain)",
-      "duration_ms": 694,
-      "error": null,
+      "passed": false,
+      "details": "HTTP 429",
+      "duration_ms": 630,
+      "error": "HTTP 429",
       "severity": "Warning"
     },
     {
       "name": "Stalwart Admin via Bearer",
-      "passed": true,
-      "details": "HTTP 401",
-      "duration_ms": 993,
-      "error": null,
+      "passed": false,
+      "details": "HTTP 429",
+      "duration_ms": 630,
+      "error": "HTTP 429",
       "severity": "Warning"
     },
     {
       "name": "mcp->DNS resolve",
-      "passed": false,
-      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "passed": true,
+      "details": "-> 35.226.147.64",
       "duration_ms": 0,
-      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP TLS",
       "passed": false,
-      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "details": "ERR:ECONNRESET Client network socket disconnected before secure TLS connection was established",
       "duration_ms": 0,
-      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "error": "ERR:ECONNRESET Client network socket disconnected before secure TLS connection was established",
       "severity": "Warning"
     },
     {
       "name": "mcp->SMTP TLS",
       "passed": false,
-      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "details": "ERR:ECONNRESET Client network socket disconnected before secure TLS connection was established",
       "duration_ms": 0,
-      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "error": "ERR:ECONNRESET Client network socket disconnected before secure TLS connection was established",
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP WG direct",
-      "passed": false,
-      "details": "10.0.0.3:993 Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "passed": true,
+      "details": "10.0.0.3:993 OK proto=TLSv1.3",
       "duration_ms": 0,
-      "error": "10.0.0.3:993 Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP LOGIN",
       "passed": false,
-      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "details": "ERR:Client network socket disconnected before secure TLS connection was established\nTIMEOUT",
       "duration_ms": 0,
-      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "error": "ERR:Client network socket disconnected before secure TLS connection was established\nTIMEOUT",
       "severity": "Warning"
     },
     {
       "name": "mcp->SMTP AUTH",
       "passed": false,
-      "details": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "details": "ERR:Client network socket disconnected before secure TLS connection was established\nTIMEOUT",
       "duration_ms": 0,
-      "error": "Error response from daemon: container 8c7c0c47d5bd305730a8cf5b6ed63092a040f07a82742de52df26662fed2e1c7 is not running",
+      "error": "ERR:Client network socket disconnected before secure TLS connection was established\nTIMEOUT",
       "severity": "Warning"
     },
     {
       "name": "mail-mcp MCP",
       "passed": false,
-      "details": "HTTP 502 (alive)",
-      "duration_ms": 569,
-      "error": "502",
+      "details": "HTTP 429 (alive)",
+      "duration_ms": 630,
+      "error": "429",
       "severity": "Warning"
     },
     {
       "name": "All ports bound",
       "passed": false,
-      "details": "missing: 8443",
+      "details": "no data",
       "duration_ms": 0,
-      "error": "missing: 8443",
+      "error": "no data",
       "severity": "Critical"
     }
   ],
@@ -406,7 +358,7 @@
       "name": "MX",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 71,
+      "duration_ms": 17,
       "error": null,
       "severity": "Critical"
     },
@@ -414,7 +366,7 @@
       "name": "DKIM",
       "passed": true,
       "details": "present",
-      "duration_ms": 24,
+      "duration_ms": 19,
       "error": null,
       "severity": "Critical"
     },
@@ -422,7 +374,7 @@
       "name": "SPF",
       "passed": true,
       "details": "v=spf1",
-      "duration_ms": 21,
+      "duration_ms": 17,
       "error": null,
       "severity": "Critical"
     },
@@ -430,99 +382,19 @@
       "name": "DMARC",
       "passed": true,
       "details": "v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 21,
+      "duration_ms": 17,
       "error": null,
       "severity": "Critical"
     }
   ],
   "internals": [
     {
-      "name": "IMAP auth",
-      "passed": true,
-      "details": "Stalwart IMAP responding",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "IMAP protocol",
-      "passed": true,
-      "details": "IMAP4rev1",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "spam filter",
-      "passed": true,
-      "details": "Stalwart built-in",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "data store",
-      "passed": true,
-      "details": "RocksDB",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "admin panel",
+      "name": "skipped",
       "passed": false,
-      "details": "HTTP 000",
+      "details": "SSH unreachable",
       "duration_ms": 0,
-      "error": "admin panel down",
-      "severity": "Warning"
-    },
-    {
-      "name": "sieve filter",
-      "passed": true,
-      "details": "Stalwart ManageSieve",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "mailbox quota",
-      "passed": true,
-      "details": "stalwart-builtin-quota",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Admin API accounts",
-      "passed": false,
-      "details": "",
-      "duration_ms": 0,
-      "error": "parse failed",
-      "severity": "Info"
-    },
-    {
-      "name": "Admin API domains",
-      "passed": false,
-      "details": "",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Mail queue",
-      "passed": true,
-      "details": "",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "User accounts",
-      "passed": false,
-      "details": "unknown ()",
-      "duration_ms": 0,
-      "error": "no users found",
-      "severity": "Warning"
+      "error": "SSH to oci-mail failed",
+      "severity": "Critical"
     }
   ],
   "e2e_delivery": [
@@ -536,21 +408,21 @@
     }
   ],
   "summary": {
-    "total_checks": 65,
-    "passed": 43,
-    "failed": 22,
-    "warnings": 14,
-    "critical": 4
+    "total_checks": 49,
+    "passed": 30,
+    "failed": 19,
+    "warnings": 12,
+    "critical": 5
   },
   "timers": {
-    "P0_instant_kpis": 2462,
-    "P3_network": 2209,
-    "TOTAL": 39968,
-    "P4_dns_auth": 2209,
+    "TOTAL": 27250,
     "P2_containers": 0,
-    "P2-P5_parallel": 2209,
+    "P3_network": 774,
+    "P1_preflight": 25257,
     "P6_e2e_delivery": 0,
     "P5_internals": 0,
-    "P1_preflight": 35296
+    "P0_instant_kpis": 1217,
+    "P4_dns_auth": 774,
+    "P2-P5_parallel": 774
   }
 }
