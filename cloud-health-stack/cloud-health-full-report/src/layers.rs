@@ -531,17 +531,18 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
     let client = http_client();
     let resolver = hickory_resolver();
 
-    // Test if Hickory is up
+    // Test if Hickory is up (warn but don't bail — fallback to WG IPs)
     let hickory_up = dns_resolve(&resolver, "caddy.app").await.is_some();
+    let mut checks = Vec::new();
     if !hickory_up {
-        return vec![Check {
+        checks.push(Check {
             name: "Private URLs (Hickory)".into(),
             passed: false,
-            details: "Hickory DNS at 10.0.0.1 is down — cannot resolve .app domains".into(),
+            details: "Hickory DNS at 10.0.0.1 is down — falling back to WG IPs".into(),
             duration_ms: 0,
-            error: Some("Hickory DNS unreachable".into()),
-            severity: Severity::Critical,
-        }];
+            error: Some("Hickory DNS unreachable, using WG IP fallback".into()),
+            severity: Severity::Warning,
+        });
     }
 
     let futs: Vec<_> = ctx
@@ -617,7 +618,8 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
         })
         .collect();
 
-    futures::future::join_all(futs).await
+    checks.extend(futures::future::join_all(futs).await);
+    checks
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

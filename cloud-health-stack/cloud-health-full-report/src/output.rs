@@ -61,13 +61,16 @@ pub fn build_template_vars(results: &LayerResults) -> HashMap<String, String> {
     // Issues summary
     vars.insert("ISSUES_SUMMARY".into(), build_issues_summary(results));
 
+    // Tier 0 summary dashboard
+    vars.insert("TIER_CHECKS".into(), build_tier_checks(results));
+
     // Layer sections
     vars.insert("SELF_CHECK".into(), format_checks(&results.self_check));
     vars.insert("WG_MESH".into(), format_checks(&results.wg_mesh));
     vars.insert("PLATFORM".into(), format_checks(&results.platform));
     vars.insert("CONTAINERS".into(), format_checks(&results.containers));
-    vars.insert("PUBLIC_URLS".into(), format_checks(&results.public_urls));
     vars.insert("PRIVATE_URLS".into(), format_checks(&results.private_urls));
+    vars.insert("PUBLIC_URLS".into(), format_checks(&results.public_urls));
     vars.insert("CROSS_CHECKS".into(), format_checks(&results.cross_checks));
     vars.insert("EXTERNAL".into(), format_checks(&results.external));
     vars.insert("DRIFT".into(), format_checks(&results.drift));
@@ -83,6 +86,75 @@ pub fn build_template_vars(results: &LayerResults) -> HashMap<String, String> {
     vars
 }
 
+fn tier_score(checks: &[Check], filter: impl Fn(&str) -> bool) -> (usize, usize) {
+    let matching: Vec<_> = checks.iter().filter(|c| filter(&c.name) || filter(&c.details)).collect();
+    let passed = matching.iter().filter(|c| c.passed).count();
+    (passed, matching.len())
+}
+
+fn tier_icon(passed: usize, total: usize) -> String {
+    if total == 0 { return "—".into(); }
+    let icon = if passed == total { "✅" } else if passed > 0 { "⚠️" } else { "❌" };
+    format!("{} {}/{}", icon, passed, total)
+}
+
+fn build_tier_checks(results: &LayerResults) -> String {
+    let mut lines = Vec::new();
+    lines.push(format!("    {:20} {:16} {:16} {:16} {:16}", "Layer", "gcp-proxy", "oci-mail", "oci-apps", "oci-analytics"));
+    lines.push(format!("    {:20} {:16} {:16} {:16} {:16}", "", "(front door)", "(mail)", "(apps)", "(analytics)"));
+    lines.push(format!("    {}", "─".repeat(84)));
+
+    // Self-check — single overall score
+    let sc = tier_score(&results.self_check, |_| true);
+    lines.push(format!("    {:20} {:48}", "1. Self-check", tier_icon(sc.0, sc.1)));
+
+    // WG Mesh — gcp-proxy (hub) vs peers
+    let wg_gcp = tier_score(&results.wg_mesh, |n| n.contains("gcp-proxy"));
+    let wg_mail = tier_score(&results.wg_mesh, |n| n.contains("oci-mail"));
+    let wg_apps = tier_score(&results.wg_mesh, |n| n.contains("oci-apps"));
+    let wg_ana = tier_score(&results.wg_mesh, |n| n.contains("oci-analytics"));
+    lines.push(format!("    {:20} {:16} {:16} {:16} {:16}",
+        "2. WG Mesh", tier_icon(wg_gcp.0, wg_gcp.1), tier_icon(wg_mail.0, wg_mail.1),
+        tier_icon(wg_apps.0, wg_apps.1), tier_icon(wg_ana.0, wg_ana.1)));
+
+    // Platform — per VM
+    let pl_gcp = tier_score(&results.platform, |n| n.contains("gcp-proxy"));
+    let pl_mail = tier_score(&results.platform, |n| n.contains("oci-mail"));
+    let pl_apps = tier_score(&results.platform, |n| n.contains("oci-apps"));
+    let pl_ana = tier_score(&results.platform, |n| n.contains("oci-analytics"));
+    lines.push(format!("    {:20} {:16} {:16} {:16} {:16}",
+        "3. Platform", tier_icon(pl_gcp.0, pl_gcp.1), tier_icon(pl_mail.0, pl_mail.1),
+        tier_icon(pl_apps.0, pl_apps.1), tier_icon(pl_ana.0, pl_ana.1)));
+
+    // Containers — per VM
+    let ct_gcp = tier_score(&results.containers, |n| n.contains("gcp-proxy"));
+    let ct_mail = tier_score(&results.containers, |n| n.contains("oci-mail"));
+    let ct_apps = tier_score(&results.containers, |n| n.contains("oci-apps"));
+    let ct_ana = tier_score(&results.containers, |n| n.contains("oci-analytics"));
+    lines.push(format!("    {:20} {:16} {:16} {:16} {:16}",
+        "4. Containers", tier_icon(ct_gcp.0, ct_gcp.1), tier_icon(ct_mail.0, ct_mail.1),
+        tier_icon(ct_apps.0, ct_apps.1), tier_icon(ct_ana.0, ct_ana.1)));
+
+    // Private URLs — per VM (details contain WG IPs)
+    let pv_gcp = tier_score(&results.private_urls, |n| n.contains("10.0.0.1"));
+    let pv_mail = tier_score(&results.private_urls, |n| n.contains("10.0.0.3"));
+    let pv_apps = tier_score(&results.private_urls, |n| n.contains("10.0.0.6"));
+    let pv_ana = tier_score(&results.private_urls, |n| n.contains("10.0.0.4"));
+    lines.push(format!("    {:20} {:16} {:16} {:16} {:16}",
+        "5. Private URLs", tier_icon(pv_gcp.0, pv_gcp.1), tier_icon(pv_mail.0, pv_mail.1),
+        tier_icon(pv_apps.0, pv_apps.1), tier_icon(pv_ana.0, pv_ana.1)));
+
+    // Public URLs — overall (all go through gcp-proxy/Caddy)
+    let pu = tier_score(&results.public_urls, |_| true);
+    lines.push(format!("    {:20} {:48}", "6. Public URLs", tier_icon(pu.0, pu.1)));
+
+    // Security — overall
+    let sec = tier_score(&results.security, |_| true);
+    lines.push(format!("    {:20} {:48}", "10. Security", tier_icon(sec.0, sec.1)));
+
+    lines.join("\n")
+}
+
 fn build_issues_summary(results: &LayerResults) -> String {
     let all_checks: Vec<&Check> = results
         .self_check
@@ -90,8 +162,8 @@ fn build_issues_summary(results: &LayerResults) -> String {
         .chain(&results.wg_mesh)
         .chain(&results.platform)
         .chain(&results.containers)
-        .chain(&results.public_urls)
         .chain(&results.private_urls)
+        .chain(&results.public_urls)
         .chain(&results.cross_checks)
         .chain(&results.external)
         .chain(&results.drift)

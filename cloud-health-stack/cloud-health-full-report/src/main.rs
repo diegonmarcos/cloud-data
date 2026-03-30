@@ -2,7 +2,7 @@
 //! Native async: TCP, HTTP, DNS, SSH/rsync — no shell subprocesses (except SSH)
 //!
 //! Layers: L1 Self-Check, L2 WG Mesh, L3 Platform, L4 Containers,
-//!         L5 Public URLs, L6 Private URLs, L7 Cross-Checks,
+//!         L5 Private URLs, L6 Public URLs, L7 Cross-Checks,
 //!         L8 External, L9 Drift, L10 Security, L11 E2E Email
 //!
 //! Usage: cargo run --release (from cloud-health-full-report/)
@@ -108,8 +108,8 @@ async fn main() -> Result<()> {
 
     let par_ms = t_par.elapsed().as_millis() as u64;
     timers.insert("L4_containers".into(), 0);
-    timers.insert("L5_public_urls".into(), par_ms);
-    timers.insert("L6_private_urls".into(), par_ms);
+    timers.insert("L5_private_urls".into(), par_ms);
+    timers.insert("L6_public_urls".into(), par_ms);
     timers.insert("L7_cross_checks".into(), 0);
     timers.insert("L8_external".into(), par_ms);
     timers.insert("L9_drift".into(), 0);
@@ -135,8 +135,8 @@ async fn main() -> Result<()> {
         .chain(&wg_mesh)
         .chain(&platform)
         .chain(&containers)
-        .chain(&public_urls)
         .chain(&private_urls)
+        .chain(&public_urls)
         .chain(&cross_checks)
         .chain(&external)
         .chain(&drift)
