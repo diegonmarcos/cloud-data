@@ -599,52 +599,70 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
 
             Some(async move {
                 let t = Instant::now();
-                // Non-HTTP protocol ports: use TCP-only check
+
                 const NON_HTTP_PORTS: &[u16] = &[
-                    53,    // DNS
-                    25, 465, 587, 993, // SMTP/IMAP
-                    5432, 5433, 5434, 5435, 5436, 5437, 5438, 5439, 5440, 5441, 5442, // Postgres
-                    6379, 6380, 6381, // Redis
+                    53, 25, 465, 587, 993,
+                    5432, 5433, 5434, 5435, 5436, 5437, 5438, 5439, 5440, 5441, 5442, 5443,
+                    6379, 6380, 6381,
                 ];
                 let is_non_http = NON_HTTP_PORTS.contains(&port);
 
-                // Try DNS resolution first
-                let resolved = dns_resolve(&r, &dns).await;
-                let target_ip = resolved.as_deref().unwrap_or(&wg_ip);
-                let url = format!("http://{}:{}", target_ip, port);
-                let tcp_ok = tcp(target_ip, port).await;
-                let (http_ok, _code, detail) = if tcp_ok && !is_non_http {
-                    http_get(&cl, &url).await
-                } else if tcp_ok && is_non_http {
-                    (true, 0, "tcp-only (non-HTTP protocol)".to_string())
+                // Step 1: DNS — try system resolver first (should hit Hickory via /etc/resolv.conf)
+                let sys_resolve = tokio::net::lookup_host(format!("{}:{}", dns, port)).await.ok()
+                    .and_then(|mut addrs| addrs.next().map(|a| a.ip().to_string()));
+                let dns_ok = sys_resolve.is_some();
+
+                // Fallback: if system DNS fails, try Hickory directly
+                let (ip, used_fallback) = if let Some(ref ip) = sys_resolve {
+                    (ip.clone(), false)
                 } else {
-                    (false, 0, "tcp-fail".to_string())
+                    let hickory = dns_resolve(&r, &dns).await;
+                    if let Some(ip) = hickory {
+                        (ip, true)
+                    } else {
+                        (wg_ip.clone(), true)
+                    }
                 };
+
+                // Step 2: TCP
+                let tcp_ok = tcp(&ip, port).await;
+
+                // Step 3: HTTP
+                let (http_ok, http_code, http_detail) = if tcp_ok && !is_non_http {
+                    http_get(&cl, &format!("http://{}:{}", ip, port)).await
+                } else if tcp_ok && is_non_http {
+                    (true, 0, "n/a".to_string())
+                } else {
+                    (false, 0, "skip".to_string())
+                };
+
                 let passed = if is_non_http { tcp_ok } else { tcp_ok && http_ok };
+
+                let dns_status = if dns_ok {
+                    format!("ok({})", ip)
+                } else if used_fallback {
+                    format!("SYS-FAIL→hickory({})", ip)
+                } else {
+                    "FAIL".to_string()
+                };
+
+                let detail = format!(
+                    "{}:{} DNS={} TCP={} HTTP={}",
+                    dns, port, dns_status,
+                    if tcp_ok { "ok" } else { "FAIL" },
+                    if !tcp_ok { "skip".to_string() }
+                    else if is_non_http { "n/a".to_string() }
+                    else if http_ok { format!("{}", http_code) }
+                    else { http_detail.clone() }
+                );
+
                 Check {
-                    name: format!("Private {}", name),
+                    name: format!("{}.app:{}", name, port),
                     passed,
-                    details: format!(
-                        "{} ({}:{}) TCP={} {}={} [{}]",
-                        dns,
-                        target_ip,
-                        port,
-                        if tcp_ok { "ok" } else { "fail" },
-                        if is_non_http { "TCP-ONLY" } else { "HTTP" },
-                        if http_ok { "ok" } else { "fail" },
-                        detail
-                    ),
+                    details: detail.clone(),
                     duration_ms: t.elapsed().as_millis() as u64,
-                    error: if passed {
-                        None
-                    } else {
-                        Some(format!("TCP={} HTTP={}", tcp_ok, detail))
-                    },
-                    severity: if passed {
-                        Severity::Info
-                    } else {
-                        Severity::Warning
-                    },
+                    error: if passed { None } else { Some(detail) },
+                    severity: if passed { Severity::Info } else { Severity::Warning },
                 }
             })
         })
