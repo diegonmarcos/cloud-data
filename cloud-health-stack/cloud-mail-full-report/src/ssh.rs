@@ -25,22 +25,62 @@ fn ssh_args(alias: &str, cmd: &str) -> Vec<String> {
     ]
 }
 
-/// Execute a command on a remote VM via SSH
+/// Execute a command on a remote VM via SSH (port 22), with Dropbear :2200 fallback diagnostic
 pub async fn ssh_exec(vm_alias: &str, command: &str, timeout_secs: u64) -> Result<String> {
-    let output = timeout(
+    let result = timeout(
         Duration::from_secs(timeout_secs),
         tokio::process::Command::new("ssh")
             .args(ssh_args(vm_alias, command))
             .output(),
     )
-    .await??;
+    .await;
 
-    if output.status.success() {
-        Ok(String::from_utf8_lossy(&output.stdout).to_string())
-    } else {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        anyhow::bail!("SSH to {} failed: {}", vm_alias, stderr.trim())
+    match result {
+        Ok(Ok(output)) if output.status.success() => {
+            Ok(String::from_utf8_lossy(&output.stdout).to_string())
+        }
+        Ok(Ok(output)) => {
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            anyhow::bail!("SSH to {} failed: {}", vm_alias, stderr.trim())
+        }
+        Ok(Err(e)) => {
+            anyhow::bail!("SSH to {} failed: {}", vm_alias, e)
+        }
+        Err(_) => {
+            // SSH :22 timed out — try Dropbear :2200 as liveness check
+            let db_alive = dropbear_alive(vm_alias).await;
+            if db_alive {
+                eprintln!("[mail-health] SSH :22 timeout on {} — Dropbear :2200 ALIVE (VM under load)", vm_alias);
+                anyhow::bail!("SSH :22 timeout (Dropbear :2200 alive — VM under load, not down)")
+            } else {
+                eprintln!("[mail-health] SSH :22 timeout on {} — Dropbear :2200 ALSO DOWN (VM frozen)", vm_alias);
+                anyhow::bail!("SSH :22 timeout + Dropbear :2200 down — VM frozen/unreachable")
+            }
+        }
     }
+}
+
+/// Dropbear liveness check on port 2200 — lightweight SSH, survives OOM
+async fn dropbear_alive(vm_alias: &str) -> bool {
+    let result = timeout(
+        Duration::from_secs(8),
+        tokio::process::Command::new("ssh")
+            .args([
+                "-o", "ConnectTimeout=5",
+                "-o", "BatchMode=yes",
+                "-o", "ControlPath=none",
+                "-p", "2200",
+                vm_alias,
+                "echo OK",
+            ])
+            .output(),
+    )
+    .await;
+    result
+        .ok()
+        .and_then(|r| r.ok())
+        .map(|o| o.status.success() && String::from_utf8_lossy(&o.stdout).contains("OK"))
+        .unwrap_or(false)
 }
 
 /// SSH echo test -- verifies SSH auth works
@@ -78,7 +118,8 @@ pub fn parse_section(output: &str, name: &str) -> String {
 }
 
 /// Big batch SSH to oci-mail -- collects all data in one round-trip
-pub async fn ssh_batch_mail() -> Option<RemoteData> {
+/// Returns Err(diagnostic) with Dropbear liveness info on failure
+pub async fn ssh_batch_mail() -> Result<RemoteData, String> {
     let script = r#"
 ADMIN_CREDS=$(grep ADMIN_PASSWORD /opt/stalwart/.secrets 2>/dev/null | head -1 | cut -d= -f2-)
 T=3
@@ -152,11 +193,11 @@ cat /etc/resolv.conf 2>/dev/null || true
         Ok(o) => o,
         Err(e) => {
             eprintln!("[mail-health] SSH batch oci-mail FAILED: {}", e);
-            return None;
+            return Err(e.to_string());
         }
     };
 
-    Some(RemoteData {
+    Ok(RemoteData {
         containers: parse_section(&output, "containers"),
         restarts: parse_section(&output, "restarts"),
         disk: parse_section(&output, "disk"),
@@ -186,7 +227,7 @@ cat /etc/resolv.conf 2>/dev/null || true
 }
 
 /// Batch SSH to oci-apps -- mail-mcp container tests via node
-pub async fn ssh_batch_apps() -> Option<RemoteDataApps> {
+pub async fn ssh_batch_apps() -> Result<RemoteDataApps, String> {
     // Node scripts run inside mail-mcp container
     let node_script = |code: &str| -> String {
         let escaped = code.replace('"', r#"\""#).replace('\n', "");
@@ -239,11 +280,11 @@ echo "===smtpAuth==="
         Ok(o) => o,
         Err(e) => {
             eprintln!("[mail-health] SSH batch oci-apps FAILED: {}", e);
-            return None;
+            return Err(e.to_string());
         }
     };
 
-    Some(RemoteDataApps {
+    Ok(RemoteDataApps {
         mail_mcp_status: parse_section(&output, "mailMcpStatus"),
         dns_resolve: parse_section(&output, "dnsResolve"),
         imap_tls: parse_section(&output, "imapTls"),
@@ -255,7 +296,7 @@ echo "===smtpAuth==="
 }
 
 /// Batch SSH to gcp-proxy -- Caddy L4 + Authelia
-pub async fn ssh_batch_proxy() -> Option<RemoteDataProxy> {
+pub async fn ssh_batch_proxy() -> Result<RemoteDataProxy, String> {
     let script = format!(
         r#"echo "===caddyL4_993==="
 echo Q | timeout 8 openssl s_client -connect {mail_wg}:993 -servername {mail_domain} 2>&1 | grep -c CONNECTED
@@ -274,11 +315,11 @@ curl -skf http://localhost:9091/api/health 2>/dev/null || curl -skf http://authe
         Ok(o) => o,
         Err(e) => {
             eprintln!("[mail-health] SSH batch gcp-proxy FAILED: {}", e);
-            return None;
+            return Err(e.to_string());
         }
     };
 
-    Some(RemoteDataProxy {
+    Ok(RemoteDataProxy {
         caddy_l4_993: parse_section(&output, "caddyL4_993"),
         caddy_l4_465: parse_section(&output, "caddyL4_465"),
         caddy_l4_587: parse_section(&output, "caddyL4_587"),

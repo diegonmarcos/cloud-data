@@ -247,20 +247,23 @@ pub async fn preflight() -> (
     checks.push(wg_proxy);
 
     // Batch SSH to all 3 VMs in parallel
-    let (mail_data, apps_data, proxy_data) = tokio::join!(
+    let (mail_result, apps_result, proxy_result) = tokio::join!(
         ssh::ssh_batch_mail(),
         ssh::ssh_batch_apps(),
         ssh::ssh_batch_proxy(),
     );
+    // Keep Results for check reporting, convert to Options for data access
+    let mail_data = mail_result.as_ref().ok().cloned();
+    let apps_data = apps_result.as_ref().ok().cloned();
+    let proxy_data = proxy_result.as_ref().ok().cloned();
 
     // SSH batch oci-mail check
     {
         let t = Instant::now();
-        let ok = mail_data.as_ref().map(|d| !d.docker_version.is_empty()).unwrap_or(false);
-        let detail = if let Some(ref d) = mail_data {
-            format!("Docker {}", d.docker_version)
-        } else {
-            "SSH FAILED".to_string()
+        let (ok, detail) = match &mail_result {
+            Ok(d) if !d.docker_version.is_empty() => (true, format!("Docker {}", d.docker_version)),
+            Ok(d) => (false, format!("Docker version empty: {}", d.docker_version)),
+            Err(e) => (false, e.clone()),
         };
         checks.push(Check {
             name: "SSH batch oci-mail".into(),
@@ -268,21 +271,17 @@ pub async fn preflight() -> (
             details: detail.clone(),
             duration_ms: t.elapsed().as_millis() as u64,
             error: if ok { None } else { Some(detail) },
-            severity: Severity::Critical,
+            severity: if ok { Severity::Info } else { Severity::Critical },
         });
     }
 
     // SSH batch oci-apps check
     {
         let t = Instant::now();
-        let ok = apps_data
-            .as_ref()
-            .map(|d| d.mail_mcp_status.contains("Up"))
-            .unwrap_or(false);
-        let detail = if let Some(ref d) = apps_data {
-            format!("mail-mcp: {}", &d.mail_mcp_status[..d.mail_mcp_status.len().min(30)])
-        } else {
-            "SSH FAILED".to_string()
+        let (ok, detail) = match &apps_result {
+            Ok(d) if d.mail_mcp_status.contains("Up") => (true, format!("mail-mcp: {}", &d.mail_mcp_status[..d.mail_mcp_status.len().min(30)])),
+            Ok(d) => (false, format!("mail-mcp: {}", &d.mail_mcp_status[..d.mail_mcp_status.len().min(30)])),
+            Err(e) => (false, e.clone()),
         };
         checks.push(Check {
             name: "SSH batch oci-apps".into(),
@@ -297,16 +296,17 @@ pub async fn preflight() -> (
     // SSH batch gcp-proxy check
     {
         let t = Instant::now();
-        let ok = proxy_data
-            .as_ref()
-            .map(|d| !d.authelia_health.contains("FAIL"))
-            .unwrap_or(false);
+        let (ok, detail) = match &proxy_result {
+            Ok(d) if !d.authelia_health.contains("FAIL") => (true, "Authelia OK".to_string()),
+            Ok(_) => (false, "Authelia FAILED".to_string()),
+            Err(e) => (false, e.clone()),
+        };
         checks.push(Check {
             name: "SSH batch gcp-proxy".into(),
             passed: ok,
-            details: if ok { "Authelia OK".into() } else { "SSH FAILED".into() },
+            details: detail.clone(),
             duration_ms: t.elapsed().as_millis() as u64,
-            error: if ok { None } else { Some("SSH or Authelia FAILED".into()) },
+            error: if ok { None } else { Some(detail) },
             severity: Severity::Warning,
         });
     }
