@@ -148,7 +148,7 @@ cat /etc/resolv.conf 2>/dev/null || true
 "#;
 
     eprintln!("[mail-health] SSH batch oci-mail: connecting...");
-    let output = match ssh_exec(MAIL_ALIAS, script.trim(), 25).await {
+    let output = match ssh_exec(MAIL_ALIAS, script.trim(), 45).await {
         Ok(o) => o,
         Err(e) => {
             eprintln!("[mail-health] SSH batch oci-mail FAILED: {}", e);
