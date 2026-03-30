@@ -3005,15 +3005,15 @@
       "vm": "oci-A1-f_0",
       "folder": "ad-agi_rig-agentic-sonn-14bq8",
       "description": "Rig Agentic AI (Heavy) — DeepSeek R1 14B Q8 agent with tool calling via C3 MCP",
-      "port": 8090,
+      "port": 8091,
       "dns": "rig-agentic-sonn-14bq8.app",
-      "upstream": "rig-agentic-sonn-14bq8.app:8090",
+      "upstream": "rig-agentic-sonn-14bq8.app:8091",
       "containers": {
         "app": {
           "container_name": "rig-agentic-sonn-14bq8",
           "image": "",
           "public": false,
-          "port": 8090,
+          "port": 8091,
           "dns": "rig-agentic-sonn-14bq8.app"
         }
       },
@@ -3021,7 +3021,7 @@
         "rig-agentic-sonn-14bq8"
       ],
       "all_ports": [
-        "8090"
+        "8091"
       ],
       "all_dns": [
         "rig-agentic-sonn-14bq8.app"
@@ -4206,14 +4206,14 @@
       "folder": "bc-obs_matomo",
       "description": "Matomo hybrid analytics (oci-analytics)",
       "domain": "analytics.diegonmarcos.com",
-      "port": 8080,
+      "port": 8084,
       "dns": "matomo.app",
-      "upstream": "matomo.app:8080",
+      "upstream": "matomo.app:8084",
       "containers": {
         "app": {
           "container_name": "matomo-hybrid",
           "image": null,
-          "port": 8080,
+          "port": 8084,
           "port_env": null,
           "dns": "matomo.app",
           "public": true,
@@ -4247,7 +4247,7 @@
         "matomo-hybrid"
       ],
       "all_ports": [
-        "8080"
+        "8084"
       ],
       "all_dns": [
         "matomo.app"
@@ -4266,7 +4266,7 @@
         }
       },
       "declared_ports": {
-        "app": 8080,
+        "app": 8084,
         "db": 3306
       },
       "health": {

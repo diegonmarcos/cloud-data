@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-03-30T14:40:34.019Z",
+    "generated_at": "2026-03-30T14:48:59.158Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -30,7 +30,7 @@
       },
       "description": "Oracle Free - E2 Micro 0 - Mail Server",
       "wg_ip": "10.0.0.3",
-      "wg_public_key": "8Fqo4ct/jR2D3ZJ4AT8AVxiemuRSFk9LriBJhK7ukQs=",
+      "wg_public_key": null,
       "wg_port": 51820,
       "wg_role": "spoke",
       "user": "ubuntu",
@@ -111,7 +111,7 @@
       },
       "description": "Oracle Free - E2 Micro 1 - Analytics + Workflows",
       "wg_ip": "10.0.0.4",
-      "wg_public_key": "ugc3YpOgw9DokiM8yqT0uADF8UUkSTGad9WSODX1kC0=",
+      "wg_public_key": null,
       "wg_port": 51820,
       "wg_role": "spoke",
       "user": "ubuntu",
@@ -147,7 +147,7 @@
       },
       "description": "Oracle Free - A1 Flex 0 (4 OCPUs / 24GB / 100GB) — Consolidated",
       "wg_ip": "10.0.0.6",
-      "wg_public_key": "+LHoOzNYA92eJalYEQDzbEDDEi0FfT2jYhBUpz7RxHQ=",
+      "wg_public_key": null,
       "wg_port": 51820,
       "wg_role": "spoke",
       "user": "ubuntu",
@@ -299,7 +299,7 @@
       },
       "description": "GCloud Free - E2 Micro 0 - Central Proxy + Control",
       "wg_ip": "10.0.0.1",
-      "wg_public_key": "vV/phXUwnCjxACQ5Df11Uw47BzJaK4r85jPYMu2HmDc=",
+      "wg_public_key": null,
       "wg_port": 51820,
       "wg_role": "hub",
       "user": "diego",
@@ -451,21 +451,21 @@
         {
           "name": "oci-mail",
           "wg_ip": "10.0.0.3",
-          "wg_public_key": "8Fqo4ct/jR2D3ZJ4AT8AVxiemuRSFk9LriBJhK7ukQs=",
+          "wg_public_key": null,
           "endpoint": "130.110.251.193:51820",
           "role": "spoke"
         },
         {
           "name": "oci-analytics",
           "wg_ip": "10.0.0.4",
-          "wg_public_key": "ugc3YpOgw9DokiM8yqT0uADF8UUkSTGad9WSODX1kC0=",
+          "wg_public_key": null,
           "endpoint": "129.151.228.66:51820",
           "role": "spoke"
         },
         {
           "name": "oci-apps",
           "wg_ip": "10.0.0.6",
-          "wg_public_key": "+LHoOzNYA92eJalYEQDzbEDDEi0FfT2jYhBUpz7RxHQ=",
+          "wg_public_key": null,
           "endpoint": "82.70.229.129:51820",
           "role": "spoke"
         },
@@ -479,7 +479,7 @@
         {
           "name": "gcp-proxy",
           "wg_ip": "10.0.0.1",
-          "wg_public_key": "vV/phXUwnCjxACQ5Df11Uw47BzJaK4r85jPYMu2HmDc=",
+          "wg_public_key": null,
           "endpoint": "35.226.147.64:51820",
           "role": "hub"
         }
@@ -488,17 +488,17 @@
         "surface": {
           "wg_ip": "10.0.0.5",
           "role": "client",
-          "wg_public_key": "ii4FHxUbHiW9TOcNNlgiqHJXt3NMhe10W3dCdD6SRCY="
+          "wg_public_key": null
         },
         "termux": {
           "wg_ip": "10.0.0.9",
           "role": "client",
-          "wg_public_key": "Ke/zvGRI4Y5qUwnIyEfzog/UAw1olBUHRtvXZztztVA="
+          "wg_public_key": null
         },
         "gha-runner": {
           "wg_ip": "10.0.0.200",
           "role": "client",
-          "wg_public_key": "QEPkGSsJXX39plcG+DwJwkSYgmEn+aMlaOF7gDPPpl8="
+          "wg_public_key": null
         }
       }
     },
@@ -2768,15 +2768,15 @@
       "folder": "ad-agi_rig-agentic-sonn-14bq8",
       "description": "Rig Agentic AI (Heavy) — DeepSeek R1 14B Q8 agent with tool calling via C3 MCP",
       "enabled": true,
-      "port": 8090,
+      "port": 8091,
       "dns": "rig-agentic-sonn-14bq8.app",
-      "upstream": "rig-agentic-sonn-14bq8.app:8090",
+      "upstream": "rig-agentic-sonn-14bq8.app:8091",
       "containers": {
         "app": {
           "container_name": "rig-agentic-sonn-14bq8",
           "image": "",
           "public": false,
-          "port": 8090,
+          "port": 8091,
           "dns": "rig-agentic-sonn-14bq8.app"
         }
       },
@@ -2784,7 +2784,7 @@
         "rig-agentic-sonn-14bq8"
       ],
       "all_ports": [
-        "8090"
+        "8091"
       ],
       "all_dns": [
         "rig-agentic-sonn-14bq8.app"
@@ -3990,14 +3990,14 @@
       "description": "Matomo hybrid analytics (oci-analytics)",
       "enabled": true,
       "domain": "analytics.diegonmarcos.com",
-      "port": 8080,
+      "port": 8084,
       "dns": "matomo.app",
-      "upstream": "matomo.app:8080",
+      "upstream": "matomo.app:8084",
       "containers": {
         "app": {
           "container_name": "matomo-hybrid",
           "image": null,
-          "port": 8080,
+          "port": 8084,
           "port_env": null,
           "dns": "matomo.app",
           "public": true,
@@ -4031,7 +4031,7 @@
         "matomo-hybrid"
       ],
       "all_ports": [
-        "8080"
+        "8084"
       ],
       "all_dns": [
         "matomo.app"
@@ -4050,7 +4050,7 @@
         }
       },
       "declared_ports": {
-        "app": 8080,
+        "app": 8084,
         "db": 3306
       },
       "health": {
@@ -5710,8 +5710,29 @@
           "public_paths": []
         },
         {
+          "domain": "analytics.diegonmarcos.com",
+          "upstream": "matomo.app:8080",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
           "domain": "db.diegonmarcos.com",
           "upstream": "nocodb.app:8085",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "rss.diegonmarcos.com",
+          "upstream": "ntfy.app:8090",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "analytics.diegonmarcos.com",
+          "upstream": "umami.app:3006",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
@@ -5726,6 +5747,13 @@
         {
           "domain": "git.diegonmarcos.com",
           "upstream": "backup-gitea.app:3002",
+          "auth": "authelia+bearer",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "git.diegonmarcos.com",
+          "upstream": "gitea.app:3017",
           "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
@@ -5794,13 +5822,6 @@
           "public_paths": []
         },
         {
-          "domain": "api.diegonmarcos.com/crawlee",
-          "upstream": "crawlee.app:3000",
-          "auth": "authelia+bearer",
-          "tls_skip": false,
-          "public_paths": []
-        },
-        {
           "domain": "api.diegonmarcos.com/c3-api",
           "upstream": "c3-infra-api.app:8081",
           "auth": "authelia+bearer",
@@ -5818,6 +5839,13 @@
           "domain": "api.diegonmarcos.com/dash",
           "upstream": "diegonmarcos.github.io",
           "auth": "none",
+          "tls_skip": false,
+          "public_paths": []
+        },
+        {
+          "domain": "api.diegonmarcos.com/crawlee",
+          "upstream": "crawlee.app:3000",
+          "auth": "authelia+bearer",
           "tls_skip": false,
           "public_paths": []
         },
@@ -5909,7 +5937,7 @@
         "vm_id": "oci-E2-f_0",
         "ip": "130.110.251.193",
         "wg_ip": "10.0.0.3",
-        "wg_public_key": "8Fqo4ct/jR2D3ZJ4AT8AVxiemuRSFk9LriBJhK7ukQs=",
+        "wg_public_key": null,
         "wg_port": 51820,
         "wg_role": "spoke",
         "user": "ubuntu",
@@ -5989,7 +6017,7 @@
         "vm_id": "oci-E2-f_1",
         "ip": "129.151.228.66",
         "wg_ip": "10.0.0.4",
-        "wg_public_key": "ugc3YpOgw9DokiM8yqT0uADF8UUkSTGad9WSODX1kC0=",
+        "wg_public_key": null,
         "wg_port": 51820,
         "wg_role": "spoke",
         "user": "ubuntu",
@@ -6024,7 +6052,7 @@
         "vm_id": "oci-A1-f_0",
         "ip": "82.70.229.129",
         "wg_ip": "10.0.0.6",
-        "wg_public_key": "+LHoOzNYA92eJalYEQDzbEDDEi0FfT2jYhBUpz7RxHQ=",
+        "wg_public_key": null,
         "wg_port": 51820,
         "wg_role": "spoke",
         "user": "ubuntu",
@@ -6168,7 +6196,7 @@
         "vm_id": "gcp-E2-f_0",
         "ip": "35.226.147.64",
         "wg_ip": "10.0.0.1",
-        "wg_public_key": "vV/phXUwnCjxACQ5Df11Uw47BzJaK4r85jPYMu2HmDc=",
+        "wg_public_key": null,
         "wg_port": 51820,
         "wg_role": "hub",
         "user": "diego",
