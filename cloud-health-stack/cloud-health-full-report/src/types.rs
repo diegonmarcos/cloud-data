@@ -163,6 +163,7 @@ pub struct LayerResults {
     pub external: Vec<Check>,
     pub drift: Vec<Check>,
     pub security: Vec<Check>,
+    pub email_e2e: Vec<Check>,
     pub summary: Summary,
     pub timers: HashMap<String, u64>,
 }

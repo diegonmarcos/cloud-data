@@ -1,9 +1,9 @@
-//! Cloud Health Full Report — 10-Layer Diagnostic
+//! Cloud Health Full Report — 11-Layer Diagnostic
 //! Native async: TCP, HTTP, DNS, SSH/rsync — no shell subprocesses (except SSH)
 //!
 //! Layers: L1 Self-Check, L2 WG Mesh, L3 Platform, L4 Containers,
 //!         L5 Public URLs, L6 Private URLs, L7 Cross-Checks,
-//!         L8 External, L9 Drift, L10 Security
+//!         L8 External, L9 Drift, L10 Security, L11 E2E Email
 //!
 //! Usage: cargo run --release (from cloud-health-full-report/)
 
@@ -24,7 +24,7 @@ use types::*;
 #[tokio::main]
 async fn main() -> Result<()> {
     let start = Instant::now();
-    println!("=== Cloud Health Full Report (10-Layer) ===");
+    println!("=== Cloud Health Full Report (11-Layer) ===");
 
     // 1. Load context from cloud-data JSONs
     let ctx = context::load_context()?;
@@ -82,7 +82,7 @@ async fn main() -> Result<()> {
     );
 
     // ════════════════════════════════════════════════════════════
-    // PARALLEL: L4-L10 (all read cached data from L3)
+    // PARALLEL: L4-L11 (all read cached data from L3)
     // ════════════════════════════════════════════════════════════
 
     let t_par = Instant::now();
@@ -90,12 +90,13 @@ async fn main() -> Result<()> {
     // L4 is sync (reads vm_batch), run it first
     let containers = layers::layer_containers(&ctx, &vm_batch);
 
-    // L5, L6, L8, L10 are async — run them in parallel
-    let (public_urls, private_urls, external, security) = tokio::join!(
+    // L5, L6, L8, L10, L11 are async — run them in parallel
+    let (public_urls, private_urls, external, security, email_e2e) = tokio::join!(
         layers::layer_public_urls(&ctx),
         layers::layer_private_urls(&ctx),
         layers::layer_external(&ctx),
         layers::layer_security(&ctx),
+        layers::layer_email_e2e(&ctx, &reachable_vms),
     );
 
     // L7 cross-checks (needs L4, L5, L6 results)
@@ -113,10 +114,11 @@ async fn main() -> Result<()> {
     timers.insert("L8_external".into(), par_ms);
     timers.insert("L9_drift".into(), 0);
     timers.insert("L10_security".into(), par_ms);
-    timers.insert("L4-L10_parallel".into(), par_ms);
+    timers.insert("L11_email_e2e".into(), par_ms);
+    timers.insert("L4-L11_parallel".into(), par_ms);
 
     println!(
-        "  L4-L10 parallel: {:.1}s",
+        "  L4-L11 parallel: {:.1}s",
         par_ms as f64 / 1000.0
     );
 
@@ -139,6 +141,7 @@ async fn main() -> Result<()> {
         .chain(&external)
         .chain(&drift)
         .chain(&security)
+        .chain(&email_e2e)
         .collect();
 
     let total_count = all_checks.len();
@@ -166,6 +169,7 @@ async fn main() -> Result<()> {
         external,
         drift,
         security,
+        email_e2e,
         summary: Summary {
             total_checks: total_count,
             passed: passed_count,

@@ -1507,6 +1507,173 @@ pub async fn layer_security(ctx: &Context) -> Vec<Check> {
     checks
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// LAYER 11: E2E EMAIL DELIVERY
+// ═══════════════════════════════════════════════════════════════════════════
+
+pub async fn layer_email_e2e(_ctx: &Context, reachable_vms: &[String]) -> Vec<Check> {
+    let mut checks = Vec::new();
+    let t = std::time::Instant::now();
+
+    // Check for RESEND_API_KEY
+    let api_key = match std::env::var("RESEND_API_KEY") {
+        Ok(key) if !key.is_empty() => key,
+        _ => {
+            checks.push(Check {
+                name: "Resend API key".into(),
+                passed: true,
+                details: "not set (set RESEND_API_KEY to enable E2E email test)".into(),
+                duration_ms: 0,
+                error: None,
+                severity: Severity::Info,
+            });
+            return checks;
+        }
+    };
+
+    // 1. Send test email via Resend API
+    let send_body = serde_json::json!({
+        "from": "health@mails.diegonmarcos.com",
+        "to": ["me@diegonmarcos.com"],
+        "subject": format!("Health check {}", chrono::Utc::now().format("%H:%M:%S")),
+        "text": "E2E email delivery test from cloud-health-full-report"
+    });
+
+    let send_result = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(10))
+        .build()
+        .unwrap()
+        .post("https://api.resend.com/emails")
+        .header("Authorization", format!("Bearer {}", api_key))
+        .header("Content-Type", "application/json")
+        .body(send_body.to_string())
+        .send()
+        .await;
+
+    let email_id = match send_result {
+        Ok(resp) => {
+            let status = resp.status().as_u16();
+            let body = resp.text().await.unwrap_or_default();
+            if status == 200 {
+                let id = serde_json::from_str::<serde_json::Value>(&body)
+                    .ok()
+                    .and_then(|v| v["id"].as_str().map(|s| s.to_string()));
+                checks.push(Check {
+                    name: "Resend send".into(),
+                    passed: true,
+                    details: format!("sent (id: {})", id.as_deref().unwrap_or("?")),
+                    duration_ms: t.elapsed().as_millis() as u64,
+                    error: None,
+                    severity: Severity::Info,
+                });
+                id
+            } else {
+                checks.push(Check {
+                    name: "Resend send".into(),
+                    passed: false,
+                    details: format!("HTTP {} — {}", status, &body[..body.len().min(100)]),
+                    duration_ms: t.elapsed().as_millis() as u64,
+                    error: Some(format!("Resend API returned {}", status)),
+                    severity: Severity::Warning,
+                });
+                None
+            }
+        }
+        Err(e) => {
+            checks.push(Check {
+                name: "Resend send".into(),
+                passed: false,
+                details: format!("error: {}", e),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: Some(e.to_string()),
+                severity: Severity::Warning,
+            });
+            None
+        }
+    };
+
+    // 2. Poll delivery status if we got an email ID
+    if let Some(id) = &email_id {
+        tokio::time::sleep(std::time::Duration::from_millis(2000)).await;
+        let mut delivered = false;
+        for attempt in 1..=3 {
+            let url = format!("https://api.resend.com/emails/{}", id);
+            if let Ok(resp) = reqwest::Client::new()
+                .get(&url)
+                .header("Authorization", format!("Bearer {}", api_key))
+                .timeout(std::time::Duration::from_secs(5))
+                .send()
+                .await
+            {
+                if let Ok(body) = resp.text().await {
+                    if let Ok(v) = serde_json::from_str::<serde_json::Value>(&body) {
+                        let status = v["last_event"].as_str().unwrap_or("unknown");
+                        if status == "delivered" || status == "opened" {
+                            delivered = true;
+                            checks.push(Check {
+                                name: "Resend delivery".into(),
+                                passed: true,
+                                details: format!("status={} (poll #{})", status, attempt),
+                                duration_ms: t.elapsed().as_millis() as u64,
+                                error: None,
+                                severity: Severity::Info,
+                            });
+                            break;
+                        }
+                    }
+                }
+            }
+            if attempt < 3 {
+                tokio::time::sleep(std::time::Duration::from_millis(2000)).await;
+            }
+        }
+        if !delivered {
+            checks.push(Check {
+                name: "Resend delivery".into(),
+                passed: false,
+                details: "not delivered after 3 polls (may still be in transit)".into(),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: Some("delivery not confirmed".into()),
+                severity: Severity::Warning,
+            });
+        }
+    }
+
+    // 3. Check stalwart ingestion via SSH (if oci-mail reachable)
+    if reachable_vms.contains(&"oci-mail".to_string()) {
+        let ssh_result = ssh::ssh_exec(
+            "oci-mail",
+            "docker logs stalwart --since 2m 2>&1 | grep -c 'Message ingested' || echo 0",
+            10,
+        ).await;
+        match ssh_result {
+            Ok(output) => {
+                let count: u32 = output.trim().parse().unwrap_or(0);
+                checks.push(Check {
+                    name: "Stalwart ingestion".into(),
+                    passed: count > 0,
+                    details: format!("{} messages ingested (last 2min)", count),
+                    duration_ms: t.elapsed().as_millis() as u64,
+                    error: if count == 0 { Some("no messages ingested".into()) } else { None },
+                    severity: if count > 0 { Severity::Info } else { Severity::Warning },
+                });
+            }
+            Err(e) => {
+                checks.push(Check {
+                    name: "Stalwart ingestion".into(),
+                    passed: false,
+                    details: format!("SSH failed: {}", e),
+                    duration_ms: t.elapsed().as_millis() as u64,
+                    error: Some(e.to_string()),
+                    severity: Severity::Warning,
+                });
+            }
+        }
+    }
+
+    checks
+}
+
 /// Parse openssl date format "Mar 29 12:00:00 2026 GMT"
 fn parse_openssl_date(s: &str) -> Option<chrono::DateTime<chrono::Utc>> {
     // Try common openssl date formats

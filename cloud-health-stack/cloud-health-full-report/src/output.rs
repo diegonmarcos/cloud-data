@@ -72,6 +72,7 @@ pub fn build_template_vars(results: &LayerResults) -> HashMap<String, String> {
     vars.insert("EXTERNAL".into(), format_checks(&results.external));
     vars.insert("DRIFT".into(), format_checks(&results.drift));
     vars.insert("SECURITY".into(), format_checks(&results.security));
+    vars.insert("EMAIL_E2E".into(), format_checks(&results.email_e2e));
 
     // Performance
     vars.insert("PERFORMANCE".into(), build_performance(results));
@@ -95,6 +96,7 @@ fn build_issues_summary(results: &LayerResults) -> String {
         .chain(&results.external)
         .chain(&results.drift)
         .chain(&results.security)
+        .chain(&results.email_e2e)
         .collect();
 
     let failed: Vec<&&Check> = all_checks.iter().filter(|c| !c.passed).collect();
