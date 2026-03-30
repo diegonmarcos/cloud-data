@@ -40,25 +40,36 @@ pub async fn ssh_exec(vm_alias: &str, command: &str, timeout_secs: u64) -> Resul
             Ok(String::from_utf8_lossy(&output.stdout).to_string())
         }
         Ok(Ok(output)) => {
-            let stderr = String::from_utf8_lossy(&output.stderr);
-            anyhow::bail!("SSH to {} failed: {}", vm_alias, stderr.trim())
+            let stderr = String::from_utf8_lossy(&output.stderr).trim().to_string();
+            let is_timeout = stderr.contains("timed out") || stderr.contains("Connection refused")
+                || stderr.contains("banner exchange") || stderr.contains("No route to host");
+            if is_timeout {
+                // SSH returned but with a timeout/connection error — run Dropbear + serial fallback
+                return ssh_failure_diagnostic(vm_alias, &stderr).await;
+            }
+            anyhow::bail!("SSH to {} failed: {}", vm_alias, stderr)
         }
         Ok(Err(e)) => {
             anyhow::bail!("SSH to {} failed: {}", vm_alias, e)
         }
         Err(_) => {
-            // Tier 2: Dropbear :2200 liveness check
-            let db_alive = dropbear_alive(vm_alias).await;
-            if db_alive {
-                eprintln!("[mail-health] SSH :22 timeout on {} — Dropbear :2200 ALIVE (VM under load)", vm_alias);
-                anyhow::bail!("SSH :22 timeout (Dropbear :2200 alive — VM under load, not down)")
-            }
-            // Tier 3: Cloud API + serial console (both SSH dead)
-            eprintln!("[mail-health] SSH :22 + Dropbear :2200 BOTH DOWN on {} — checking cloud API + serial", vm_alias);
-            let serial_diag = cloud_serial_diagnostic(vm_alias).await;
-            anyhow::bail!("SSH :22 + Dropbear :2200 down — {}", serial_diag)
+            return ssh_failure_diagnostic(vm_alias, "tokio timeout").await;
         }
     }
+}
+
+/// Shared SSH failure diagnostic — Tier 2 (Dropbear) + Tier 3 (Cloud API + serial)
+async fn ssh_failure_diagnostic(vm_alias: &str, initial_error: &str) -> Result<String> {
+    // Tier 2: Dropbear :2200 liveness check
+    let db_alive = dropbear_alive(vm_alias).await;
+    if db_alive {
+        eprintln!("[mail-health] SSH :22 failed on {} — Dropbear :2200 ALIVE (VM under load)", vm_alias);
+        anyhow::bail!("SSH :22 failed (Dropbear :2200 alive — VM under load, not down)")
+    }
+    // Tier 3: Cloud API + serial console (both SSH dead)
+    eprintln!("[mail-health] SSH :22 + Dropbear :2200 BOTH DOWN on {} — checking cloud API + serial", vm_alias);
+    let serial_diag = cloud_serial_diagnostic(vm_alias).await;
+    anyhow::bail!("SSH :22 failed ({}) + Dropbear :2200 down — {}", initial_error, serial_diag)
 }
 
 /// Cloud API VM status — fast, no SSH, works even when VM is frozen
