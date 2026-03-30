@@ -182,6 +182,7 @@ pub async fn layer_wg_mesh(ctx: &Context) -> (Vec<Check>, Vec<String>) {
         .map(|vm| {
             let alias = vm.alias.clone();
             let wg_ip = vm.wg_ip.clone();
+            let is_spot = vm.cost.to_lowercase() == "spot";
             async move {
                 let t = Instant::now();
                 // TCP probe port 22 via WG IP
@@ -192,14 +193,21 @@ pub async fn layer_wg_mesh(ctx: &Context) -> (Vec<Check>, Vec<String>) {
                 } else {
                     false
                 };
-                let passed = tcp_ok && ssh_ok;
+                let raw_passed = tcp_ok && ssh_ok;
                 let detail = format!(
-                    "{} ({}): TCP={} SSH={}",
+                    "{} ({}): TCP={} SSH={}{}",
                     alias,
                     wg_ip,
                     if tcp_ok { "ok" } else { "fail" },
-                    if ssh_ok { "ok" } else { "fail" }
+                    if ssh_ok { "ok" } else { "fail" },
+                    if is_spot && !raw_passed { " [spot instance]" } else { "" }
                 );
+                // Spot instances that are unreachable are Info, not Critical
+                let (passed, severity) = if !raw_passed && is_spot {
+                    (true, Severity::Info)
+                } else {
+                    (raw_passed, Severity::Critical)
+                };
                 (
                     Check {
                         name: format!("WG {}", alias),
@@ -207,10 +215,10 @@ pub async fn layer_wg_mesh(ctx: &Context) -> (Vec<Check>, Vec<String>) {
                         details: detail.clone(),
                         duration_ms: t.elapsed().as_millis() as u64,
                         error: if passed { None } else { Some(detail) },
-                        severity: Severity::Critical,
+                        severity,
                     },
                     alias,
-                    passed,
+                    raw_passed,
                 )
             }
         })
@@ -336,13 +344,23 @@ pub async fn layer_platform(
     // Add checks for unreachable VMs
     for vm in &ctx.vms {
         if !reachable_vms.contains(&vm.alias) {
+            let is_spot = vm.cost.to_lowercase() == "spot";
+            let (passed, severity) = if is_spot {
+                (true, Severity::Info)
+            } else {
+                (false, Severity::Critical)
+            };
             checks.push(Check {
                 name: format!("Platform {}", vm.alias),
-                passed: false,
-                details: format!("{}: unreachable (WG down)", vm.alias),
+                passed,
+                details: format!(
+                    "{}: unreachable (WG down){}",
+                    vm.alias,
+                    if is_spot { " [spot instance]" } else { "" }
+                ),
                 duration_ms: 0,
-                error: Some("VM not reachable via WireGuard".into()),
-                severity: Severity::Critical,
+                error: if passed { None } else { Some("VM not reachable via WireGuard".into()) },
+                severity,
             });
         }
     }
@@ -357,7 +375,17 @@ pub async fn layer_platform(
 pub fn layer_containers(ctx: &Context, vm_batch: &HashMap<String, VmBatchData>) -> Vec<Check> {
     let mut checks = Vec::new();
 
+    // Collect valid VM aliases for filtering
+    let valid_vm_aliases: HashSet<String> = ctx.vms.iter().map(|vm| vm.alias.clone()).collect();
+
     for svc in &ctx.services {
+        if !svc.enabled { continue; }
+        // Skip non-remote targets: "local", "all", or non-existent VM aliases
+        if svc.vm_alias == "local" || svc.vm_alias == "all"
+            || !valid_vm_aliases.contains(&svc.vm_alias)
+        {
+            continue;
+        }
         for ct in &svc.containers {
             let vm_data = vm_batch.get(&svc.vm_alias);
             let container_found = vm_data.and_then(|vd| {
@@ -368,9 +396,17 @@ pub fn layer_containers(ctx: &Context, vm_batch: &HashMap<String, VmBatchData>) 
 
             match container_found {
                 Some(live_ct) => {
-                    let passed = live_ct.up;
+                    let is_init_job = ct.container_name.contains("_init")
+                        || ct.container_name.contains("-setup")
+                        || ct.container_name.contains("_setup");
+                    let is_successful_init = is_init_job
+                        && live_ct.status.contains("Exited")
+                        && live_ct.status.contains("Exited (0)");
+                    let passed = live_ct.up || is_successful_init;
                     let healthy = live_ct.healthy;
-                    let severity = if !passed {
+                    let severity = if is_successful_init {
+                        Severity::Info
+                    } else if !passed {
                         Severity::Critical
                     } else if !healthy && ct.healthcheck.is_some() {
                         Severity::Warning
@@ -381,8 +417,9 @@ pub fn layer_containers(ctx: &Context, vm_batch: &HashMap<String, VmBatchData>) 
                         name: format!("Container {}/{}", svc.name, ct.container_name),
                         passed,
                         details: format!(
-                            "{} on {}: {} ({})",
-                            ct.container_name, svc.vm_alias, live_ct.status, live_ct.health_state
+                            "{} on {}: {} ({}){}",
+                            ct.container_name, svc.vm_alias, live_ct.status, live_ct.health_state,
+                            if is_successful_init { " [completed init job]" } else { "" }
                         ),
                         duration_ms: 0,
                         error: if passed {
@@ -529,26 +566,38 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
 
             Some(async move {
                 let t = Instant::now();
+                // Non-HTTP protocol ports: use TCP-only check
+                const NON_HTTP_PORTS: &[u16] = &[
+                    53,    // DNS
+                    25, 465, 587, 993, // SMTP/IMAP
+                    5432, 5433, 5434, 5435, 5436, 5437, 5438, 5439, 5440, 5441, 5442, // Postgres
+                    6379, 6380, 6381, // Redis
+                ];
+                let is_non_http = NON_HTTP_PORTS.contains(&port);
+
                 // Try DNS resolution first
                 let resolved = dns_resolve(&r, &dns).await;
                 let target_ip = resolved.as_deref().unwrap_or(&wg_ip);
                 let url = format!("http://{}:{}", target_ip, port);
                 let tcp_ok = tcp(target_ip, port).await;
-                let (http_ok, _code, detail) = if tcp_ok {
+                let (http_ok, _code, detail) = if tcp_ok && !is_non_http {
                     http_get(&cl, &url).await
+                } else if tcp_ok && is_non_http {
+                    (true, 0, "tcp-only (non-HTTP protocol)".to_string())
                 } else {
                     (false, 0, "tcp-fail".to_string())
                 };
-                let passed = tcp_ok && http_ok;
+                let passed = if is_non_http { tcp_ok } else { tcp_ok && http_ok };
                 Check {
                     name: format!("Private {}", name),
                     passed,
                     details: format!(
-                        "{} ({}:{}) TCP={} HTTP={} [{}]",
+                        "{} ({}:{}) TCP={} {}={} [{}]",
                         dns,
                         target_ip,
                         port,
                         if tcp_ok { "ok" } else { "fail" },
+                        if is_non_http { "TCP-ONLY" } else { "HTTP" },
                         if http_ok { "ok" } else { "fail" },
                         detail
                     ),
@@ -951,9 +1000,10 @@ pub fn layer_drift(
 ) -> Vec<Check> {
     let mut checks = Vec::new();
 
-    // Collect all declared container names by VM
+    // Collect all declared container names by VM (skip disabled services)
     let mut declared_by_vm: HashMap<String, HashSet<String>> = HashMap::new();
     for svc in &ctx.services {
+        if !svc.enabled { continue; }
         let entry = declared_by_vm
             .entry(svc.vm_alias.clone())
             .or_default();
@@ -1002,6 +1052,12 @@ pub fn layer_drift(
     }
 
     // Unmanaged containers: in docker but not in topology
+    const INFRA_ALLOWLIST: &[&str] = &[
+        "fluent-bit", "sqlite-", "postlite-", "introspect-proxy",
+        "palantir-cron", "borg-server", "bup-server", "syslog-central",
+        "siem-api", "crawlee_minio_init", "photos-db", "rig",
+        "rig-agentic", "surrealdb",
+    ];
     for (vm_alias, running) in &running_by_vm {
         let declared = declared_by_vm.get(vm_alias);
         for name in running {
@@ -1009,6 +1065,13 @@ pub fn layer_drift(
                 .map(|d| d.contains(name))
                 .unwrap_or(false);
             if !in_topology {
+                // Skip known infrastructure/sidecar containers
+                let is_infra = INFRA_ALLOWLIST.iter().any(|prefix| {
+                    name.starts_with(prefix) || name == *prefix
+                });
+                if is_infra {
+                    continue;
+                }
                 checks.push(Check {
                     name: format!("Drift unmanaged: {}/{}", vm_alias, name),
                     passed: false,
@@ -1063,17 +1126,35 @@ pub fn layer_drift(
     for (vm_alias, batch) in vm_batch {
         for ct in &batch.containers {
             if ct.health_state == "exited" {
-                checks.push(Check {
-                    name: format!("Drift exited: {}/{}", vm_alias, ct.name),
-                    passed: false,
-                    details: format!(
-                        "{} on {} is exited: {}",
-                        ct.name, vm_alias, ct.status
-                    ),
-                    duration_ms: 0,
-                    error: Some("container exited".into()),
-                    severity: Severity::Warning,
-                });
+                let is_init_job = ct.name.contains("_init")
+                    || ct.name.contains("-setup")
+                    || ct.name.contains("_setup");
+                let is_clean_exit = ct.status.contains("Exited (0)");
+                if is_init_job && is_clean_exit {
+                    checks.push(Check {
+                        name: format!("Drift exited: {}/{}", vm_alias, ct.name),
+                        passed: true,
+                        details: format!(
+                            "{} on {} exited cleanly [completed init job]",
+                            ct.name, vm_alias
+                        ),
+                        duration_ms: 0,
+                        error: None,
+                        severity: Severity::Info,
+                    });
+                } else {
+                    checks.push(Check {
+                        name: format!("Drift exited: {}/{}", vm_alias, ct.name),
+                        passed: false,
+                        details: format!(
+                            "{} on {} is exited: {}",
+                            ct.name, vm_alias, ct.status
+                        ),
+                        duration_ms: 0,
+                        error: Some("container exited".into()),
+                        severity: Severity::Warning,
+                    });
+                }
             }
         }
     }
@@ -1322,17 +1403,23 @@ pub async fn layer_security(ctx: &Context) -> Vec<Check> {
             let alias = vm.alias.clone();
             let ip = vm.pub_ip.clone();
             let ports = dangerous_ports.clone();
+            let declared_ports: HashSet<u16> = vm.public_ports.iter().map(|p| p.port).collect();
             async move {
                 let t = Instant::now();
                 let open = tcp_scan(&ip, &ports).await;
-                let ok = open.is_empty();
+                // Filter out ports that are declared in public_ports (expected)
+                let unexpected: Vec<u16> = open.iter()
+                    .filter(|p| !declared_ports.contains(p))
+                    .copied()
+                    .collect();
+                let ok = unexpected.is_empty();
                 let detail = if ok {
-                    format!("{}: no dangerous ports exposed", alias)
+                    format!("{}: no unexpected dangerous ports exposed", alias)
                 } else {
                     format!(
                         "{}: DANGEROUS ports open: {}",
                         alias,
-                        open.iter()
+                        unexpected.iter()
                             .map(|p| p.to_string())
                             .collect::<Vec<_>>()
                             .join(", ")
@@ -1365,27 +1452,36 @@ pub async fn layer_security(ctx: &Context) -> Vec<Check> {
         let t = Instant::now();
         let ssh_ok = tcp(&vm.pub_ip, 22).await;
         let dropbear_ok = tcp(&vm.pub_ip, vm.rescue_port).await;
+        let ssh_declared = vm.public_ports.iter().any(|p| p.port == 22);
+        let is_wg_only = !ssh_declared;
+        // If VM doesn't declare port 22 in public_ports, it's WG-only SSH.
+        // SSH being closed on the public IP is CORRECT behavior.
+        let (passed, severity) = if is_wg_only && !ssh_ok && !dropbear_ok {
+            (true, Severity::Info)
+        } else {
+            (
+                ssh_ok || dropbear_ok,
+                if ssh_ok || dropbear_ok {
+                    Severity::Info
+                } else {
+                    Severity::Critical
+                },
+            )
+        };
         checks.push(Check {
             name: format!("SSH ports {}", vm.alias),
-            passed: ssh_ok || dropbear_ok,
+            passed,
             details: format!(
-                "{}: SSH:22={} Dropbear:{}={}",
+                "{}: SSH:22={} Dropbear:{}={}{}",
                 vm.alias,
                 if ssh_ok { "open" } else { "closed" },
                 vm.rescue_port,
-                if dropbear_ok { "open" } else { "closed" }
+                if dropbear_ok { "open" } else { "closed" },
+                if is_wg_only && !ssh_ok { " [WG-only SSH - expected]" } else { "" }
             ),
             duration_ms: t.elapsed().as_millis() as u64,
-            error: if ssh_ok || dropbear_ok {
-                None
-            } else {
-                Some("no SSH access".into())
-            },
-            severity: if ssh_ok || dropbear_ok {
-                Severity::Info
-            } else {
-                Severity::Critical
-            },
+            error: if passed { None } else { Some("no SSH access".into()) },
+            severity,
         });
     }
 

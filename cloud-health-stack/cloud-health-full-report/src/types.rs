@@ -83,6 +83,7 @@ pub struct ServiceInfo {
     pub dns: Option<String>,
     pub upstream: Option<String>,
     pub containers: Vec<ContainerDecl>,
+    pub enabled: bool,
 }
 
 #[derive(Clone, Debug)]

@@ -144,6 +144,7 @@ pub fn load_context() -> Result<Context> {
                 dns: svc["dns"].as_str().map(|s| s.to_string()),
                 upstream: svc["upstream"].as_str().map(|s| s.to_string()),
                 containers,
+                enabled: svc["enabled"].as_bool().unwrap_or(true),
             }
         })
         .collect();
