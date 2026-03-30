@@ -172,3 +172,35 @@ pub fn gcloud_status(cloud_name: &str) -> Option<String> {
         Some(s)
     }
 }
+
+/// Check OCI instance status by display name (blocking)
+pub fn oci_status(display_name: &str) -> Option<String> {
+    // Get tenancy from OCI config
+    let home = std::env::var("HOME").unwrap_or_default();
+    let config = std::fs::read_to_string(format!("{}/.oci/config", home)).ok()?;
+    let tenancy = config.lines()
+        .find(|l| l.starts_with("tenancy="))
+        .and_then(|l| l.strip_prefix("tenancy="))
+        .map(|s| s.to_string())?;
+    let output = std::process::Command::new("oci")
+        .args([
+            "compute", "instance", "list",
+            "--compartment-id", &tenancy,
+            "--display-name", display_name,
+            "--query", "data[0].\"lifecycle-state\"",
+            "--raw-output",
+        ])
+        .output()
+        .ok()?;
+    let s = String::from_utf8_lossy(&output.stdout).trim().to_string();
+    if s.is_empty() || s == "null" { None } else { Some(s) }
+}
+
+/// Cloud-agnostic VM status check
+pub fn cloud_vm_status(vm_id: &str, cloud_name: &str, provider: &str) -> Option<String> {
+    match provider.to_lowercase().as_str() {
+        "gcp" => gcloud_status(cloud_name),
+        "oci" => oci_status(cloud_name),
+        _ => None,
+    }
+}

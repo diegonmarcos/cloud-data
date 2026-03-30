@@ -182,31 +182,56 @@ pub async fn layer_wg_mesh(ctx: &Context) -> (Vec<Check>, Vec<String>) {
         .map(|vm| {
             let alias = vm.alias.clone();
             let wg_ip = vm.wg_ip.clone();
+            let pub_ip = vm.pub_ip.clone();
+            let cloud_name = vm.cloud_name.clone();
+            let rescue_port = vm.rescue_port;
             let is_spot = vm.cost.to_lowercase() == "spot";
+            let provider = vm.provider.clone();
+            let vm_id = vm.vm_id.clone();
             async move {
                 let t = Instant::now();
-                // TCP probe port 22 via WG IP
+
+                // ── Tier 1: Cloud API (gcloud/oci CLI) ──
+                let cloud_status = cloud_vm_status(&vm_id, &cloud_name, &provider);
+                let cloud_ok = cloud_status.as_deref() == Some("RUNNING");
+
+                // ── Tier 2: Dropbear rescue SSH ──
+                let dropbear_ok = if !pub_ip.is_empty() && pub_ip != "?" && pub_ip != "dynamic" {
+                    tcp(&pub_ip, rescue_port).await
+                } else {
+                    false
+                };
+
+                // ── Tier 3: SSH via WG ──
                 let tcp_ok = tcp(&wg_ip, 22).await;
-                // SSH echo test if TCP works
                 let ssh_ok = if tcp_ok {
                     ssh::ssh_echo_test(&alias).await
                 } else {
                     false
                 };
+
                 let raw_passed = tcp_ok && ssh_ok;
+
+                // Build diagnostic detail with all tiers
                 let detail = format!(
-                    "{} ({}): TCP={} SSH={}{}",
-                    alias,
-                    wg_ip,
+                    "{} ({}): VPS={} Dropbear={} WG:TCP={} SSH={}{}",
+                    alias, wg_ip,
+                    cloud_status.as_deref().unwrap_or("?"),
+                    if dropbear_ok { "ok" } else { "fail" },
                     if tcp_ok { "ok" } else { "fail" },
                     if ssh_ok { "ok" } else { "fail" },
                     if is_spot && !raw_passed { " [spot instance]" } else { "" }
                 );
-                // Spot instances that are unreachable are Info, not Critical
+
+                // Severity: spot→Info, cloud dead→Critical, SSH fail only→Warning
                 let (passed, severity) = if !raw_passed && is_spot {
                     (true, Severity::Info)
+                } else if !cloud_ok && !raw_passed {
+                    (false, Severity::Critical) // VM itself is down
+                } else if cloud_ok && !raw_passed {
+                    (false, Severity::Warning) // VM alive but SSH unreachable
                 } else {
-                    (raw_passed, Severity::Critical)
+                    (raw_passed, Severity::Info)
                 };
                 (
                     Check {
