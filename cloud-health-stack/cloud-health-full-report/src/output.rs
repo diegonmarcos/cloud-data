@@ -148,9 +148,25 @@ fn build_tier_checks(results: &LayerResults) -> String {
     let pu = tier_score(&results.public_urls, |_| true);
     lines.push(format!("    {:20} {:48}", "6. Public URLs", tier_icon(pu.0, pu.1)));
 
+    // Cross-checks — overall
+    let cc = tier_score(&results.cross_checks, |_| true);
+    lines.push(format!("    {:20} {:48}", "7. Cross-checks", tier_icon(cc.0, cc.1)));
+
+    // External — overall
+    let ext = tier_score(&results.external, |_| true);
+    lines.push(format!("    {:20} {:48}", "8. External", tier_icon(ext.0, ext.1)));
+
+    // Drift — overall
+    let dr = tier_score(&results.drift, |_| true);
+    lines.push(format!("    {:20} {:48}", "9. Drift", tier_icon(dr.0, dr.1)));
+
     // Security — overall
     let sec = tier_score(&results.security, |_| true);
     lines.push(format!("    {:20} {:48}", "10. Security", tier_icon(sec.0, sec.1)));
+
+    // E2E Email — overall
+    let em = tier_score(&results.email_e2e, |_| true);
+    lines.push(format!("    {:20} {:48}", "11. E2E Email", tier_icon(em.0, em.1)));
 
     lines.join("\n")
 }
