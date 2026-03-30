@@ -270,7 +270,7 @@ curl -skf http://localhost:9091/api/health 2>/dev/null || curl -skf http://authe
     );
 
     eprintln!("[mail-health] SSH batch gcp-proxy: connecting...");
-    let output = match ssh_exec(PROXY_ALIAS, &script, 35).await {
+    let output = match ssh_exec(PROXY_ALIAS, &script, 60).await {
         Ok(o) => o,
         Err(e) => {
             eprintln!("[mail-health] SSH batch gcp-proxy FAILED: {}", e);

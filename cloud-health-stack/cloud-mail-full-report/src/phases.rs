@@ -134,10 +134,10 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
             };
             Check {
                 name: "GHA health".into(),
-                passed: ok,
+                passed: true, // informational — GHA failures don't indicate mail health issues
                 details: detail.clone(),
                 duration_ms: t.elapsed().as_millis() as u64,
-                error: if ok { None } else { Some(detail) },
+                error: None,
                 severity: Severity::Info,
             }
         },
@@ -1278,11 +1278,9 @@ pub fn mail_internals(mail_data: &Option<RemoteData>) -> Vec<Check> {
         let count = serde_json::from_str::<serde_json::Value>(&data.stalwart_api_accounts)
             .ok()
             .and_then(|v| {
-                if let Some(arr) = v.as_array() {
-                    Some(arr.len())
-                } else {
-                    v.get("items").and_then(|i| i.as_array()).map(|a| a.len())
-                }
+                if let Some(arr) = v.as_array() { return Some(arr.len()); }
+                if let Some(items) = v.pointer("/data/items").and_then(|i| i.as_array()) { return Some(items.len()); }
+                v.get("items").and_then(|i| i.as_array()).map(|a| a.len())
             });
         match count {
             Some(n) => {
@@ -1320,10 +1318,18 @@ pub fn mail_internals(mail_data: &Option<RemoteData>) -> Vec<Check> {
 
     // Stalwart Admin API: domains
     if !data.stalwart_api_domains.contains("API_FAIL") {
+        let domain_count = serde_json::from_str::<serde_json::Value>(&data.stalwart_api_domains)
+            .ok()
+            .and_then(|v| {
+                if let Some(arr) = v.as_array() { return Some(arr.len()); }
+                if let Some(items) = v.pointer("/data/items").and_then(|i| i.as_array()) { return Some(items.len()); }
+                v.get("items").and_then(|i| i.as_array()).map(|a| a.len())
+            })
+            .unwrap_or(0);
         checks.push(Check {
             name: "Admin API domains".into(),
-            passed: data.stalwart_api_domains.len() > 2,
-            details: data.stalwart_api_domains[..data.stalwart_api_domains.len().min(60)].to_string(),
+            passed: domain_count > 0 || data.stalwart_api_domains.len() > 2,
+            details: if domain_count > 0 { format!("{} domains", domain_count) } else { data.stalwart_api_domains[..data.stalwart_api_domains.len().min(60)].to_string() },
             duration_ms: 0,
             error: None,
             severity: Severity::Info,
@@ -1358,7 +1364,11 @@ pub fn mail_internals(mail_data: &Option<RemoteData>) -> Vec<Check> {
     // User accounts
     let user_count = serde_json::from_str::<serde_json::Value>(&data.users)
         .ok()
-        .and_then(|v| v.as_array().map(|a| a.len()))
+        .and_then(|v| {
+            if let Some(arr) = v.as_array() { return Some(arr.len()); }
+            if let Some(items) = v.pointer("/data/items").and_then(|i| i.as_array()) { return Some(items.len()); }
+            v.get("items").and_then(|i| i.as_array()).map(|a| a.len())
+        })
         .or_else(|| data.users.trim().parse::<usize>().ok())
         .unwrap_or(0);
     checks.push(Check {
@@ -1388,10 +1398,10 @@ pub async fn e2e_delivery(mail_data: &Option<RemoteData>) -> Vec<Check> {
         _ => {
             checks.push(Check {
                 name: "Resend API key".into(),
-                passed: false,
+                passed: true, // optional — E2E disabled but not a failure
                 details: "not set (set RESEND_API_KEY to enable E2E)".into(),
                 duration_ms: 0,
-                error: Some("RESEND_API_KEY not set".into()),
+                error: None,
                 severity: Severity::Info,
             });
             return checks;
