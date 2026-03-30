@@ -601,7 +601,9 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
                 let t = Instant::now();
 
                 const NON_HTTP_PORTS: &[u16] = &[
-                    53, 25, 465, 587, 993,
+                    443,   // TLS reverse proxy (no SNI match on bare IP)
+                    53,    // DNS
+                    25, 465, 587, 993, // SMTP/IMAP
                     5432, 5433, 5434, 5435, 5436, 5437, 5438, 5439, 5440, 5441, 5442, 5443,
                     6379, 6380, 6381,
                 ];
