@@ -26,7 +26,7 @@ pub const TEST_FROM: &str = "health@mails.diegonmarcos.com";
 pub const TEST_TO: &str = "me@diegonmarcos.com";
 
 // Ports to verify bound on oci-mail
-pub const EXPECTED_PORTS: &[u16] = &[25, 465, 587, 993, 4190, 8443, 8888];
+pub const EXPECTED_PORTS: &[u16] = &[25, 443, 465, 587, 993, 4190, 8888];
 
 // Bearer token path (relative to $HOME)
 pub const BEARER_TOKEN_PATH: &str =

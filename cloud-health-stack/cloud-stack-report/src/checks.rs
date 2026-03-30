@@ -29,9 +29,11 @@ pub async fn http_get(client: &Client, url: &str) -> (bool, String) {
     match timeout(HTTP_TIMEOUT, client.get(url).send()).await {
         Ok(Ok(resp)) => {
             let code = resp.status().as_u16();
-            (code != 0 && code != 502, code.to_string())
+            let ok = code >= 200 && code < 500 && code != 502;
+            (ok, code.to_string())
         }
-        _ => (false, "---".to_string()),
+        Ok(Err(e)) => (false, format!("err: {}", e)),
+        Err(_) => (false, "timeout".to_string()),
     }
 }
 
