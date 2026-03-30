@@ -47,15 +47,16 @@ pub async fn ssh_exec(vm_alias: &str, command: &str, timeout_secs: u64) -> Resul
             anyhow::bail!("SSH to {} failed: {}", vm_alias, e)
         }
         Err(_) => {
-            // SSH :22 timed out — try Dropbear :2200 as liveness check
+            // Tier 2: Dropbear :2200 liveness check
             let db_alive = dropbear_alive(vm_alias).await;
             if db_alive {
                 eprintln!("[mail-health] SSH :22 timeout on {} — Dropbear :2200 ALIVE (VM under load)", vm_alias);
                 anyhow::bail!("SSH :22 timeout (Dropbear :2200 alive — VM under load, not down)")
-            } else {
-                eprintln!("[mail-health] SSH :22 timeout on {} — Dropbear :2200 ALSO DOWN (VM frozen)", vm_alias);
-                anyhow::bail!("SSH :22 timeout + Dropbear :2200 down — VM frozen/unreachable")
             }
+            // Tier 3: Cloud API + serial console (both SSH dead)
+            eprintln!("[mail-health] SSH :22 + Dropbear :2200 BOTH DOWN on {} — checking cloud API + serial", vm_alias);
+            let serial_diag = cloud_serial_diagnostic(vm_alias).await;
+            anyhow::bail!("SSH :22 + Dropbear :2200 down — {}", serial_diag)
         }
     }
 }
@@ -81,6 +82,142 @@ async fn dropbear_alive(vm_alias: &str) -> bool {
         .and_then(|r| r.ok())
         .map(|o| o.status.success() && String::from_utf8_lossy(&o.stdout).contains("OK"))
         .unwrap_or(false)
+}
+
+/// Tier 3: Cloud API status + serial console tail when both SSH and Dropbear are dead
+async fn cloud_serial_diagnostic(vm_alias: &str) -> String {
+    let mut parts: Vec<String> = vec![];
+
+    // Determine provider from alias
+    let is_gcp = vm_alias.starts_with("gcp-");
+    let is_oci = vm_alias.starts_with("oci-");
+
+    if is_gcp {
+        // GCP: check instance status via gcloud
+        let gcloud_name = match vm_alias {
+            "gcp-proxy" => "arch-1",
+            "gcp-t4" => "ollama-spot-gpu",
+            _ => vm_alias,
+        };
+
+        // Instance status
+        let status = timeout(
+            Duration::from_secs(10),
+            tokio::process::Command::new("gcloud")
+                .args(["compute", "instances", "describe", gcloud_name,
+                       "--zone=us-central1-a", "--format=value(status)"])
+                .output(),
+        ).await;
+        let vm_status = status.ok().and_then(|r| r.ok())
+            .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string())
+            .unwrap_or("API_FAIL".into());
+        parts.push(format!("GCP status: {}", vm_status));
+
+        // Serial console last 20 lines — look for OOM, panic, boot
+        let serial = timeout(
+            Duration::from_secs(15),
+            tokio::process::Command::new("gcloud")
+                .args(["compute", "instances", "get-serial-port-output", gcloud_name,
+                       "--zone=us-central1-a", "--start=-8192"])
+                .output(),
+        ).await;
+        if let Ok(Ok(out)) = serial {
+            let text = String::from_utf8_lossy(&out.stdout);
+            let lines: Vec<&str> = text.lines().collect();
+            let tail: Vec<&str> = lines.iter().rev().take(30).copied().collect();
+
+            // Scan for diagnostic keywords
+            let has_oom = tail.iter().any(|l| l.contains("Out of memory") || l.contains("oom-kill") || l.contains("Killed process"));
+            let has_panic = tail.iter().any(|l| l.contains("Kernel panic") || l.contains("kernel BUG"));
+            let has_boot = tail.iter().any(|l| l.contains("Linux version") || l.contains("systemd[1]: Started"));
+            let has_login = tail.iter().any(|l| l.contains("login:"));
+
+            if has_oom { parts.push("SERIAL: OOM killer active".into()); }
+            if has_panic { parts.push("SERIAL: kernel panic detected".into()); }
+            if has_boot && !has_login { parts.push("SERIAL: booting (no login prompt yet)".into()); }
+            if has_login { parts.push("SERIAL: login prompt present (SSH daemon issue)".into()); }
+            if !has_oom && !has_panic && !has_boot && !has_login {
+                // Show last 3 lines for context
+                let last3: Vec<&str> = tail.iter().take(3).copied().collect();
+                parts.push(format!("SERIAL tail: {}", last3.join(" | ")));
+            }
+        } else {
+            parts.push("SERIAL: gcloud timeout".into());
+        }
+    } else if is_oci {
+        // OCI: check instance status via oci cli
+        let instance_id = match vm_alias {
+            "oci-mail" => "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacbwylmkqr253ay7binepapgsyopllfayovkzaky6oigbq",
+            "oci-apps" => "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacj7dfxl7uifar574je7fzlvtdjp4ghljdwuwdemsdbiva",
+            "oci-analytics" => "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacgwg5rkrjyomuxvjtvtuk5xrbmy7hmslwn4pse4kw5jkq",
+            _ => "",
+        };
+
+        if !instance_id.is_empty() {
+            // Instance lifecycle state
+            let status = timeout(
+                Duration::from_secs(10),
+                tokio::process::Command::new("oci")
+                    .args(["compute", "instance", "get", "--instance-id", instance_id,
+                           "--query", "data.\"lifecycle-state\"", "--raw-output"])
+                    .output(),
+            ).await;
+            let vm_status = status.ok().and_then(|r| r.ok())
+                .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string())
+                .unwrap_or("API_FAIL".into());
+            parts.push(format!("OCI status: {}", vm_status));
+
+            // OCI serial console: get-instance-console-history (last chunk)
+            let serial = timeout(
+                Duration::from_secs(12),
+                tokio::process::Command::new("oci")
+                    .args(["compute", "instance-console-history", "list",
+                           "--instance-id", instance_id,
+                           "--query", "data[0].id", "--raw-output"])
+                    .output(),
+            ).await;
+            if let Ok(Ok(out)) = serial {
+                let history_id = String::from_utf8_lossy(&out.stdout).trim().to_string();
+                if !history_id.is_empty() && history_id.starts_with("ocid1") {
+                    let content = timeout(
+                        Duration::from_secs(12),
+                        tokio::process::Command::new("oci")
+                            .args(["compute", "instance-console-history", "get-content",
+                                   "--instance-console-history-id", &history_id,
+                                   "--length", "4096"])
+                            .output(),
+                    ).await;
+                    if let Ok(Ok(out)) = content {
+                        let text = String::from_utf8_lossy(&out.stdout);
+                        let lines: Vec<&str> = text.lines().collect();
+                        let tail: Vec<&str> = lines.iter().rev().take(30).copied().collect();
+
+                        let has_oom = tail.iter().any(|l| l.contains("Out of memory") || l.contains("oom-kill"));
+                        let has_panic = tail.iter().any(|l| l.contains("Kernel panic"));
+                        let has_login = tail.iter().any(|l| l.contains("login:"));
+
+                        if has_oom { parts.push("SERIAL: OOM killer active".into()); }
+                        if has_panic { parts.push("SERIAL: kernel panic".into()); }
+                        if has_login { parts.push("SERIAL: login prompt (SSH issue)".into()); }
+                        if !has_oom && !has_panic && !has_login {
+                            let last3: Vec<&str> = tail.iter().take(3).copied().collect();
+                            parts.push(format!("SERIAL tail: {}", last3.join(" | ")));
+                        }
+                    }
+                }
+            }
+        } else {
+            parts.push("OCI: unknown instance".into());
+        }
+    } else {
+        parts.push("unknown provider".into());
+    }
+
+    if parts.is_empty() {
+        "VM frozen/unreachable (no cloud API data)".into()
+    } else {
+        parts.join(" | ")
+    }
 }
 
 /// SSH echo test -- verifies SSH auth works
