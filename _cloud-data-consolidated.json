@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-03-30T14:48:59.158Z",
+    "generated_at": "2026-03-30T16:13:04.588Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -4824,14 +4824,14 @@
       "description": "Self-hosted Git service",
       "enabled": true,
       "domain": "git.diegonmarcos.com",
-      "port": 3017,
+      "port": 3002,
       "dns": "gitea.app",
-      "upstream": "gitea.app:3017",
+      "upstream": "gitea.app:3002",
       "containers": {
         "app": {
           "container_name": "gitea",
           "image": "gitea/gitea:latest",
-          "port": 3017,
+          "port": 3002,
           "port_env": "GITEA__server__HTTP_PORT",
           "dns": "gitea.app",
           "public": true,
@@ -4839,7 +4839,7 @@
             "domain": "git.diegonmarcos.com",
             "auth": "two_factor"
           },
-          "healthcheck": "curl -f http://localhost:3017/",
+          "healthcheck": "curl -f http://localhost:3002/",
           "monitoring": {
             "tls_check": true
           },
@@ -4858,7 +4858,7 @@
         "gitea"
       ],
       "all_ports": [
-        "3017"
+        "3002"
       ],
       "all_dns": [
         "gitea.app"
@@ -4877,10 +4877,10 @@
         }
       },
       "declared_ports": {
-        "app": 3017
+        "app": 3002
       },
       "health": {
-        "path": "curl -f http://localhost:3017/"
+        "path": "curl -f http://localhost:3002/"
       },
       "monitoring": {
         "tls_check": true
