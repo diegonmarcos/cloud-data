@@ -2750,7 +2750,7 @@
         "db": {
           "container_name": "quant_light_db",
           "image": "postgres:16-alpine",
-          "port": 5434,
+          "port": 5443,
           "port_env": "PGPORT",
           "dns": "quant-light-db.app",
           "public": false,
@@ -2775,7 +2775,7 @@
       "all_ports": [
         "8889",
         "5001",
-        "5434"
+        "5443"
       ],
       "all_dns": [
         "quant-light-research.app",
@@ -2794,7 +2794,7 @@
       "declared_ports": {
         "app": 8889,
         "engine": 5001,
-        "db": 5434
+        "db": 5443
       },
       "backup": {
         "enabled": true
