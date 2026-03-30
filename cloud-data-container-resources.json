@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-30T16:13:04.886Z",
+  "_generated": "2026-03-30T18:17:05.901Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/container-resources",
   "services": {
     "code-server": {

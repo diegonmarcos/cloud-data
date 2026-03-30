@@ -1,4 +1,10 @@
 {
+  "owner": {
+    "name": "Diego Marcos",
+    "email": "diegonmarcos@gmail.com",
+    "domain": "diegonmarcos.com",
+    "github": "diegonmarcos"
+  },
   "ssh_key": "/home/diego/git/vault/A0_keys/ssh/id_rsa",
   "remote_base": "/opt/containers",
   "vms": {
@@ -8,6 +14,7 @@
       "user": "ubuntu",
       "method": "key",
       "ssh_alias": "oci-mail",
+      "instance_id": "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacbwylmkqr253ay7binepapgsyopllfayovkzaky6oigbq",
       "description": "Oracle Free - E2 Micro 0 - Mail Server",
       "gha": {
         "ssh_secret": "OCI_SSH_KEY",
@@ -35,6 +42,7 @@
       "user": "ubuntu",
       "method": "key",
       "ssh_alias": "oci-analytics",
+      "instance_id": "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacgwg5rkrjyomuxvjtvtuk5xrbmy7hmslwn4pse4kw5jkq",
       "description": "Oracle Free - E2 Micro 1 - Analytics + Workflows",
       "gha": {
         "ssh_secret": "OCI_SSH_KEY",
@@ -65,6 +73,7 @@
       "user": "ubuntu",
       "method": "key",
       "ssh_alias": "oci-apps",
+      "instance_id": "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacj7dfxl7uifar574je7fzlvtdjp4ghljdwuwdemsdbiva",
       "description": "Oracle Free - A1 Flex 0 (4 OCPUs / 24GB / 100GB) — Consolidated",
       "gha": {
         "ssh_secret": "OCI_SSH_KEY",
@@ -153,6 +162,7 @@
       "ssh_alias": "gcp-t4",
       "gcloud_instance": "ollama-spot-gpu",
       "gcloud_zone": "us-central1-a",
+      "instance_id": "projects/diegonmarcos-infra-prod/zones/us-central1-a/instances/ollama-spot-gpu",
       "description": "GCloud Paid - N1 Std 4 + T4 GPU (Spot) - Ollama LLM",
       "provider": "gcp",
       "gpu": "NVIDIA T4",
@@ -178,7 +188,7 @@
       "specs": {
         "cpu": 4,
         "ram_gb": 15,
-        "disk_gb": 0,
+        "disk_gb": 50,
         "shape": "n1-standard-4",
         "machine_type": "n1-standard-4"
       }
@@ -191,6 +201,7 @@
       "ssh_alias": "gcp-proxy",
       "gcloud_instance": "arch-1",
       "gcloud_zone": "us-central1-a",
+      "instance_id": "projects/diegonmarcos-infra-prod/zones/us-central1-a/instances/arch-1",
       "description": "GCloud Free - E2 Micro 0 - Central Proxy + Control",
       "gha": {
         "ssh_secret": "GCP_PROXY_SSH_KEY",
@@ -218,7 +229,7 @@
       "specs": {
         "cpu": 2,
         "ram_gb": 2,
-        "disk_gb": 0,
+        "disk_gb": 32,
         "shape": "e2-small",
         "machine_type": "e2-small"
       }
