@@ -1,14 +1,13 @@
 {
   "vm": "arch-1",
-  "timestamp": "2026-03-29T20:59:34Z",
-  "mem": {"used":739,"total":1952,"pct":37},
-  "swap": {"used":0,"total":3999},
+  "timestamp": "2026-03-30T00:30:37Z",
+  "mem": {"used":1012,"total":1952,"pct":51},
+  "swap": {"used":76,"total":3999},
   "disk": {"used":"19G","total":"31G","pct":"61%"},
-  "load": "1.99 0.63 0.22",
+  "load": "0.17 0.25 0.59",
   "uptime": "0d 0h",
   "wg_up": true,
-  "containers_running": 0
-0,
-  "containers_total": 0,
-  "containers": []
+  "containers_running": 19,
+  "containers_total": 19,
+  "containers": [{"name":"caddy","status":"Up 23 minutes","health":"none"},{"name":"introspect-proxy","status":"Up 24 minutes (healthy)","health":"healthy"},{"name":"hickory-dns","status":"Up 23 minutes","health":"none"},{"name":"authelia","status":"Up 24 minutes (healthy)","health":"healthy"},{"name":"authelia-redis","status":"Up 24 minutes","health":"none"},{"name":"redis","status":"Up 22 minutes (healthy)","health":"healthy"},{"name":"vaultwarden","status":"Up 22 minutes (healthy)","health":"healthy"},{"name":"postlite-ntfy","status":"Up 22 minutes","health":"none"},{"name":"postlite-authelia","status":"Up 22 minutes","health":"none"},{"name":"postlite-npm","status":"Up 22 minutes","health":"none"},{"name":"postlite-vaultwarden","status":"Up 22 minutes","health":"none"},{"name":"syslog-bridge","status":"Up 23 minutes","health":"none"},{"name":"github-rss","status":"Up 23 minutes","health":"none"},{"name":"ntfy","status":"Up 23 minutes","health":"none"},{"name":"sqlite-authelia","status":"Up 22 minutes","health":"none"},{"name":"sqlite-npm","status":"Up 22 minutes","health":"none"},{"name":"sqlite-vaultwarden","status":"Up 22 minutes","health":"none"},{"name":"sqlite-ntfy","status":"Up 22 minutes","health":"none"},{"name":"fluent-bit","status":"Up 30 minutes","health":"none"}]
 }

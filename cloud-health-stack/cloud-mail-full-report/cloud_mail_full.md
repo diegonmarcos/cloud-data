@@ -6,15 +6,14 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-03-30T14:37:26.995834081+00:00
+  CLOUD MAIL FULL — 2026-03-30T14:39:39.934207595+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-  13 issues: 7 critical, 6 warnings, 0 info
+  12 issues: 6 critical, 6 warnings, 0 info
 
   CRITICAL:
-    ❌ MX record: NONE
     ❌ SSH batch oci-mail: SSH FAILED
     ❌ skipped: SSH unreachable
     ❌ TLS WG direct: SSH down
@@ -34,20 +33,20 @@
 ──────────────────────────────────────────────────────────────
   ✅ mail.* HTTPS                   HTTP 302 (0.5s)
   ✅ webmail HTTPS                  HTTP 200 (0.5s)
-  ✅ auth HTTPS                     HTTP 200 (0.4s)
-  ✅ MCP endpoint                   HTTP 400 (5.8s)
+  ✅ auth HTTPS                     HTTP 200 (0.5s)
+  ✅ MCP endpoint                   HTTP 400 (0.7s)
   ✅ mail:993 TLS                   TLS OK (0.9s)
   ✅ mail:465 TLS                   TLS OK (0.9s)
   ✅ mail:587 STARTTLS              TLS OK (1.8s)
-  ❌ MX record                      NONE (5.0s) [CRITICAL]
+  ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
   ✅ DKIM record                    present (0.0s)
-  ✅ GHA health                     all green (1.0s)
+  ✅ GHA health                     all green (0.9s)
 
-  Summary: 9/10 passed, 1 failed
+  Summary: 10/10 passed, 0 failed
 
 1. PRE-FLIGHT
 ──────────────────────────────────────────────────────────────
-  ✅ WG oci-mail                    10.0.0.3:22 OK (0.3s)
+  ✅ WG oci-mail                    10.0.0.3:22 OK (0.2s)
   ✅ WG oci-apps                    10.0.0.6:22 OK (0.2s)
   ✅ WG gcp-proxy                   10.0.0.1:22 OK (0.2s)
   ❌ SSH batch oci-mail             SSH FAILED [CRITICAL]
@@ -64,15 +63,15 @@
 
 3. NETWORK + AUTH
 ──────────────────────────────────────────────────────────────
-  ✅ Caddy (gcp-proxy)              HTTPS OK (10.0.0.1) (0.7s)
-  ✅ Hickory DNS                    stalwart.app -> 10.0.0.3 (0.2s)
+  ✅ Caddy (gcp-proxy)              HTTPS OK (10.0.0.1) (0.6s)
+  ✅ Hickory DNS                    stalwart.app -> 10.0.0.3 (0.1s)
   ❌ TLS WG direct                  SSH down [CRITICAL]
   ✅ Caddy L4 -> IMAP               993 forwarding OK
   ✅ Caddy L4 -> SMTPS              465 forwarding OK
   ✅ Caddy L4 -> SMTP               587 forwarding OK
-  ✅ mail:993 (IMAP)                TLS OK (0.9s)
-  ✅ mail:465 (SMTPS)               TLS OK (0.9s)
-  ✅ mail:587 (SMTP Sub)            TLS OK (1.8s)
+  ✅ mail:993 (IMAP)                TLS OK (1.9s)
+  ✅ mail:465 (SMTPS)               TLS OK (1.9s)
+  ✅ mail:587 (SMTP Sub)            TLS OK (3.3s)
   ⚠️  SMTP :25 relay                 no data [WARNING]
   ⚠️  SMTP :587 local TLS            no data [WARNING]
   ✅ Webmail HTTPS                  HTTP 302 (0.5s)
@@ -80,8 +79,8 @@
   ⚠️  SnappyMail internal            no data [WARNING]
   ⚠️  ManageSieve :4190              no data [WARNING]
   ✅ Authelia health                Authelia OK
-  ✅ OIDC bearer -> webmail         Bearer auth -> 200 OK (full chain) (0.7s)
-  ✅ Stalwart Admin via Bearer      HTTP 401 (0.7s)
+  ✅ OIDC bearer -> webmail         Bearer auth -> 200 OK (full chain) (3.0s)
+  ✅ Stalwart Admin via Bearer      HTTP 401 (2.7s)
   ✅ mcp->DNS resolve               -> 35.226.147.64
   ✅ mcp->IMAP TLS                  OK proto=TLSv1.3 cn=mail.diegonmarcos.com
   ✅ mcp->SMTP TLS                  OK proto=TLSv1.3
@@ -115,8 +114,8 @@ TIMEOUT
 6. E2E DELIVERY
 ──────────────────────────────────────────────────────────────
   ✅ Resend API key                 found
-  ✅ Send via Resend                id=299be2bb-d46f-4b9c-adea-43e97948118c (0.4s)
-  ✅ Resend status                  sent (IMAP is truth) (4.4s)
+  ✅ Send via Resend                id=867339e8-4201-4827-870d-c3e5652b85c1 (0.3s)
+  ✅ Resend status                  sent (IMAP is truth) (3.6s)
   ❌ IMAP arrival                   SSH down [CRITICAL]
   ⚠️  smtp-proxy logs                SSH down [WARNING]
   ✅ CF Worker                      info: no CF creds
@@ -126,21 +125,21 @@ TIMEOUT
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    39.4s
-  P1_preflight             25.3s
-  P0_instant_kpis          7.6s
-  P6_e2e_delivery          4.8s
-  P3_network               1.8s
-  P2-P5_parallel           1.8s
-  P4_dns_auth              1.8s
-  P2_containers            0.0s
+  TOTAL                    55.2s
+  P1_preflight             45.3s
+  P6_e2e_delivery          3.9s
+  P2-P5_parallel           3.3s
+  P3_network               3.3s
+  P4_dns_auth              3.3s
+  P0_instant_kpis          2.7s
   P5_internals             0.0s
+  P2_containers            0.0s
 
-  Total: 39.4s | Engine: Rust (native async tokio)
+  Total: 55.2s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════
-RESULT: CRITICAL -- 41/54 passed, 7 critical, 6 warnings
+RESULT: CRITICAL -- 42/54 passed, 6 critical, 6 warnings
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────

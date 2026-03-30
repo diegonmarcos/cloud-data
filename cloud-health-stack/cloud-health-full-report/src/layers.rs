@@ -480,8 +480,14 @@ pub async fn layer_public_urls(ctx: &Context) -> Vec<Check> {
     let futs: Vec<_> = ctx
         .services
         .iter()
+        .filter(|svc| svc.enabled)
         .filter_map(|svc| {
-            svc.domain.as_ref().map(|domain| {
+            // Skip internal-only domains (not routable via public HTTPS)
+            let domain = svc.domain.as_ref()?;
+            if !domain.contains('.') || domain.ends_with(".internal") || domain.ends_with(".local") {
+                return None;
+            }
+            Some({
                 let _name = svc.name.clone();
                 let domain = domain.clone();
                 let cl = client.clone();
@@ -548,6 +554,7 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
     let futs: Vec<_> = ctx
         .services
         .iter()
+        .filter(|svc| svc.enabled)
         .filter_map(|svc| {
             // Get port from service_ports (build.json) or from consolidated
             let port = ctx

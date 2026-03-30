@@ -6,60 +6,59 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-03-29T21:02:33.879448856+00:00
+         CONTAINER HEALTH — 2026-03-30T14:26:10.673622143+00:00
 ════════════════════════════════════════════════════════════
 
 
 ══════════════════════════════════════════════════════════════
   ⚠️  ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-45 critical, 0 warnings — 45 total
+44 critical, 0 warnings — 44 total
 
     ❌ A3       VM gcp-proxy — UNREACHABLE
-    ❌ A3       VM oci-apps — UNREACHABLE
+    ❌ A3       oci-apps/crawlee_minio — exited
+    ❌ A3       oci-apps/rig — exited
+    ❌ A3       oci-apps/rig-agentic — exited
+    ❌ A3       oci-apps/surrealdb — exited
     ❌ A3       oci-mail/introspect-proxy — exited
     ❌ A3       oci-analytics/umami-setup — exited
-    ❌ A1       auth.diegonmarcos.com — [---]
-    ❌ A1       git.diegonmarcos.com — [---]
-    ❌ A1       api.diegonmarcos.com/c3-api — [---]
-    ❌ A1       mcp.diegonmarcos.com/c3-infra-mcp — [---]
-    ❌ A1       api.diegonmarcos.com/services — [---]
-    ❌ A1       proxy.diegonmarcos.com — [---]
-    ❌ A1       ide.diegonmarcos.com — [---]
-    ❌ A1       api.diegonmarcos.com — [---]
-    ❌ A1       workflows.diegonmarcos.com — [---]
-    ❌ A1       logs.diegonmarcos.com — [---]
-    ❌ A1       pad.diegonmarcos.com — [---]
-    ❌ A1       files.diegonmarcos.com — [---]
-    ❌ A1       sheets.diegonmarcos.com — [---]
-    ❌ A1       doc.diegonmarcos.com — [---]
-    ❌ A1       dns.internal — [---]
-    ❌ A1       grafana.diegonmarcos.com — [---]
-    ❌ A1       analytics.diegonmarcos.com — [---]
-    ❌ A1       chat.diegonmarcos.com — [---]
-    ❌ A1       db.diegonmarcos.com — [---]
-    ❌ A1       rss.diegonmarcos.com — [---]
-    ❌ A1       photos.diegonmarcos.com — [---]
-    ❌ A1       cal.diegonmarcos.com — [---]
-    ❌ A1       slides.diegonmarcos.com — [---]
-    ❌ A1       smtp.diegonmarcos.com — [---]
-    ❌ A1       webmail.diegonmarcos.com — [---]
-    ❌ A1       mail.diegonmarcos.com — [---]
-    ❌ A1       vault.diegonmarcos.com — [---]
-    ❌ A1       windmill.diegonmarcos.com — [---]
-    ❌ A1       app.diegonmarcos.com/etherpad — [---]
-    ❌ A1       app.diegonmarcos.com/filebrowser — [---]
-    ❌ A1       app.diegonmarcos.com/hedgedoc — [---]
-    ❌ A1       app.diegonmarcos.com/revealmd — [---]
-    ❌ A1       app.diegonmarcos.com/dozzle — [---]
-    ❌ A1       app.diegonmarcos.com/windmill — [---]
-    ❌ A1       app.diegonmarcos.com/grafana — [---]
-    ❌ A1       app.diegonmarcos.com/gitea — [---]
-    ❌ A1       app.diegonmarcos.com/crawlee — [---]
-    ❌ A1       api.diegonmarcos.com/dash — [---]
-    ❌ A1       api.diegonmarcos.com/crawlee — [---]
-    ❌ A1       cloud.diegonmarcos.com — [---]
-    ❌ A1       mcp.diegonmarcos.com — [---]
+    ❌ A1       auth.diegonmarcos.com — [308]
+    ❌ A1       git.diegonmarcos.com — [308]
+    ❌ A1       api.diegonmarcos.com/c3-api — [308]
+    ❌ A1       api.diegonmarcos.com/services — [308]
+    ❌ A1       proxy.diegonmarcos.com — [308]
+    ❌ A1       ide.diegonmarcos.com — [308]
+    ❌ A1       api.diegonmarcos.com — [308]
+    ❌ A1       workflows.diegonmarcos.com — [308]
+    ❌ A1       pad.diegonmarcos.com — [308]
+    ❌ A1       files.diegonmarcos.com — [308]
+    ❌ A1       sheets.diegonmarcos.com — [308]
+    ❌ A1       dns.internal — [err: error sending request for url (http://dns.internal/)]
+    ❌ A1       grafana.diegonmarcos.com — [308]
+    ❌ A1       analytics.diegonmarcos.com — [308]
+    ❌ A1       chat.diegonmarcos.com — [308]
+    ❌ A1       db.diegonmarcos.com — [308]
+    ❌ A1       rss.diegonmarcos.com — [308]
+    ❌ A1       photos.diegonmarcos.com — [308]
+    ❌ A1       cal.diegonmarcos.com — [308]
+    ❌ A1       slides.diegonmarcos.com — [308]
+    ❌ A1       smtp.diegonmarcos.com — [308]
+    ❌ A1       webmail.diegonmarcos.com — [308]
+    ❌ A1       mail.diegonmarcos.com — [308]
+    ❌ A1       vault.diegonmarcos.com — [308]
+    ❌ A1       windmill.diegonmarcos.com — [308]
+    ❌ A1       app.diegonmarcos.com/filebrowser — [308]
+    ❌ A1       app.diegonmarcos.com/hedgedoc — [308]
+    ❌ A1       app.diegonmarcos.com/revealmd — [308]
+    ❌ A1       app.diegonmarcos.com/dozzle — [308]
+    ❌ A1       app.diegonmarcos.com/windmill — [308]
+    ❌ A1       app.diegonmarcos.com/grafana — [308]
+    ❌ A1       app.diegonmarcos.com/gitea — [308]
+    ❌ A1       app.diegonmarcos.com/crawlee — [308]
+    ❌ A1       api.diegonmarcos.com/crawlee — [308]
+    ❌ A1       api.diegonmarcos.com/dash — [308]
+    ❌ A1       cloud.diegonmarcos.com — [308]
+    ❌ A1       mcp.diegonmarcos.com — [308]
 
 
 ══════════════════════════════════════════════════════════════
@@ -87,47 +86,47 @@ PUBLIC URLs (Caddy routes)
 ────────────────────────────────────────────────────────────
     URL                              📡TCP 🌐HTTP 🔒HTTPS 🔐AUTH Upstream                  Code
 ────────────────────────────────────────────────────────────
-❌ auth.diegonmarcos.com            ❌  ❌  ❌  —  authelia.app:9091      [---] 
-❌ git.diegonmarcos.com             ❌  ❌  ❌  —  backup-gitea.app:3002  [---] 
-❌ api.diegonmarcos.com/c3-api      ❌  ❌  ❌  —  c3-infra-api.app:8081  [---] 
-❌ mcp.diegonmarcos.com/c3-infra-mcp ❌  ❌  ❌  —  c3-infra-mcp.app:3100  [---] 
-❌ api.diegonmarcos.com/services    ❌  ❌  ❌  —  c3-services-api.app:8082 [---] 
-❌ proxy.diegonmarcos.com           ❌  ❌  ❌  —  caddy.app:443          [---] 
-❌ ide.diegonmarcos.com             ❌  ❌  ❌  —  code-server.app:8443   [---] 
-❌ api.diegonmarcos.com             ❌  ❌  ❌  —  crawlee.app:3000       [---] 
-❌ workflows.diegonmarcos.com       ❌  ❌  ❌  —  dagu.app:8070          [---] 
-❌ logs.diegonmarcos.com            ❌  ❌  ❌  —  dozzle.app:9999        [---] 
-❌ pad.diegonmarcos.com             ❌  ❌  ❌  —  etherpad.app:3012      [---] 
-❌ files.diegonmarcos.com           ❌  ❌  ❌  —  filebrowser.app:3015   [---] 
-❌ sheets.diegonmarcos.com          ❌  ❌  ❌  —  grist.app:3011         [---] 
-❌ doc.diegonmarcos.com             ❌  ❌  ❌  —  hedgedoc.app:3018      [---] 
-❌ dns.internal                     ❌  ❌  ❌  —  hickory-dns.app:53     [---] 
-❌ grafana.diegonmarcos.com         ❌  ❌  ❌  —  grafana.app:3200       [---] 
-❌ analytics.diegonmarcos.com       ❌  ❌  ❌  —  matomo.app:8080        [---] 
-❌ chat.diegonmarcos.com            ❌  ❌  ❌  —  mattermost.app:8065    [---] 
-❌ db.diegonmarcos.com              ❌  ❌  ❌  —  nocodb.app:8085        [---] 
-❌ rss.diegonmarcos.com             ❌  ❌  ❌  —  ntfy.app:8090          [---] 
-❌ photos.diegonmarcos.com          ❌  ❌  ❌  —  photoprism.app:3013    [---] 
-❌ cal.diegonmarcos.com             ❌  ❌  ❌  —  radicale.app:5232      [---] 
-❌ slides.diegonmarcos.com          ❌  ❌  ❌  —  revealmd.app:3014      [---] 
-❌ smtp.diegonmarcos.com            ❌  ❌  ❌  —  smtp-proxy.app:8080    [---] 
-❌ webmail.diegonmarcos.com         ❌  ❌  ❌  —  snappymail.app:8888    [---] 
-❌ mail.diegonmarcos.com            ❌  ❌  ❌  —  stalwart.app:443       [---] 
-❌ vault.diegonmarcos.com           ❌  ❌  ❌  —  vaultwarden.app:8880   [---] 
-❌ windmill.diegonmarcos.com        ❌  ❌  ❌  —  windmill-app.app:8000  [---] 
-❌ app.diegonmarcos.com/etherpad    ❌  ❌  ❌  —  etherpad.app:3012      [---] 
-❌ app.diegonmarcos.com/filebrowser ❌  ❌  ❌  —  filebrowser.app:3015   [---] 
-❌ app.diegonmarcos.com/hedgedoc    ❌  ❌  ❌  —  hedgedoc.app:3018      [---] 
-❌ app.diegonmarcos.com/revealmd    ❌  ❌  ❌  —  revealmd.app:3014      [---] 
-❌ app.diegonmarcos.com/dozzle      ❌  ❌  ❌  —  dozzle.app:9999        [---] 
-❌ app.diegonmarcos.com/windmill    ❌  ❌  ❌  —  windmill-app.app:8000  [---] 
-❌ app.diegonmarcos.com/grafana     ❌  ❌  ❌  —  grafana.app:3016       [---] 
-❌ app.diegonmarcos.com/gitea       ❌  ❌  ❌  —  gitea.app:3017         [---] 
-❌ app.diegonmarcos.com/crawlee     ❌  ❌  ❌  —  crawlee.app:3001       [---] 
-❌ api.diegonmarcos.com/dash        ❌  ❌  ❌  —  diegonmarcos.github.io [---] 
-❌ api.diegonmarcos.com/crawlee     ❌  ❌  ❌  —  crawlee.app:3000       [---] 
-❌ cloud.diegonmarcos.com           ❌  ❌  ❌  —  c3-spec.app:3080       [---] 
-❌ mcp.diegonmarcos.com             ❌  ❌  ❌  —  g-workspace-mcp.app:3104 [---] 
+⚠️ auth.diegonmarcos.com            ✅  ✅  ❌  ❌  authelia.app:9091      [308] auth:[err: error sending request for url (https://auth.diegonmarcos.com/)]
+⚠️ git.diegonmarcos.com             ✅  ✅  ❌  ❌  backup-gitea.app:3002  [308] auth:[err: error sending request for url (https://git.diegonmarcos.com/)]
+⚠️ api.diegonmarcos.com/c3-api      ❌  ✅  ❌  ❌  c3-infra-api.app:8081  [308] auth:[err: error sending request for url (https://api.diegonmarcos.com/c3-api)]
+⚠️ mcp.diegonmarcos.com/c3-infra-mcp ❌  ✅  ✅  ❌  c3-infra-mcp.app:3100  [200] auth:[err: error sending request for url (https://mcp.diegonmarcos.com/c3-infra-mcp)]
+⚠️ api.diegonmarcos.com/services    ❌  ✅  ❌  ❌  c3-services-api.app:8082 [308] auth:[502]
+⚠️ proxy.diegonmarcos.com           ✅  ✅  ❌  ❌  caddy.app:443          [308] auth:[err: error sending request for url (https://proxy.diegonmarcos.com/)]
+⚠️ ide.diegonmarcos.com             ✅  ✅  ❌  ❌  code-server.app:8443   [308] auth:[err: error sending request for url (https://ide.diegonmarcos.com/)]
+⚠️ api.diegonmarcos.com             ✅  ✅  ❌  ❌  crawlee.app:3000       [308] auth:[502]
+⚠️ workflows.diegonmarcos.com       ✅  ✅  ❌  ❌  dagu.app:8070          [308] auth:[502]
+⚠️ logs.diegonmarcos.com            ✅  ✅  ✅  ❌  dozzle.app:9999        [200] auth:[err: error sending request for url (https://logs.diegonmarcos.com/)]
+⚠️ pad.diegonmarcos.com             ✅  ✅  ❌  ✅  etherpad.app:3012      [308] 
+⚠️ files.diegonmarcos.com           ✅  ✅  ❌  ✅  filebrowser.app:3015   [308] 
+⚠️ sheets.diegonmarcos.com          ✅  ✅  ❌  ❌  grist.app:3011         [308] auth:[err: error sending request for url (https://sheets.diegonmarcos.com/)]
+⚠️ doc.diegonmarcos.com             ✅  ✅  ✅  ❌  hedgedoc.app:3018      [200] auth:[err: error sending request for url (https://doc.diegonmarcos.com/)]
+❌ dns.internal                     ❌  ❌  ❌  ❌  hickory-dns.app:53     [err: error sending request for url (http://dns.internal/)] auth:[err: error sending request for url (https://dns.internal/)]
+⚠️ grafana.diegonmarcos.com         ✅  ✅  ❌  ❌  grafana.app:3200       [308] auth:[err: error sending request for url (https://grafana.diegonmarcos.com/)]
+⚠️ analytics.diegonmarcos.com       ✅  ✅  ❌  ❌  matomo.app:8080        [308] auth:[err: error sending request for url (https://analytics.diegonmarcos.com/)]
+⚠️ chat.diegonmarcos.com            ✅  ✅  ❌  ❌  mattermost.app:8065    [308] auth:[502]
+⚠️ db.diegonmarcos.com              ✅  ✅  ❌  ❌  nocodb.app:8085        [308] auth:[err: error sending request for url (https://db.diegonmarcos.com/)]
+⚠️ rss.diegonmarcos.com             ✅  ✅  ❌  ❌  ntfy.app:8090          [308] auth:[err: error sending request for url (https://rss.diegonmarcos.com/)]
+⚠️ photos.diegonmarcos.com          ✅  ✅  ❌  ❌  photoprism.app:3013    [308] auth:[502]
+⚠️ cal.diegonmarcos.com             ✅  ✅  ❌  ❌  radicale.app:5232      [308] auth:[err: error sending request for url (https://cal.diegonmarcos.com/)]
+⚠️ slides.diegonmarcos.com          ✅  ✅  ❌  ❌  revealmd.app:3014      [308] auth:[err: error sending request for url (https://slides.diegonmarcos.com/)]
+⚠️ smtp.diegonmarcos.com            ✅  ✅  ❌  ❌  smtp-proxy.app:8080    [308] auth:[err: error sending request for url (https://smtp.diegonmarcos.com/)]
+⚠️ webmail.diegonmarcos.com         ✅  ✅  ❌  ❌  snappymail.app:8888    [308] auth:[err: error sending request for url (https://webmail.diegonmarcos.com/)]
+⚠️ mail.diegonmarcos.com            ✅  ✅  ❌  ❌  stalwart.app:443       [308] auth:[err: error sending request for url (https://mail.diegonmarcos.com/)]
+⚠️ vault.diegonmarcos.com           ✅  ✅  ❌  ❌  vaultwarden.app:8880   [308] auth:[err: error sending request for url (https://vault.diegonmarcos.com/)]
+⚠️ windmill.diegonmarcos.com        ✅  ✅  ❌  ❌  windmill-app.app:8000  [308] auth:[err: error sending request for url (https://windmill.diegonmarcos.com/)]
+⚠️ app.diegonmarcos.com/etherpad    ❌  ✅  ✅  ❌  etherpad.app:3012      [404] auth:[err: error sending request for url (https://app.diegonmarcos.com/etherpad)]
+⚠️ app.diegonmarcos.com/filebrowser ❌  ✅  ❌  ❌  filebrowser.app:3015   [308] auth:[err: error sending request for url (https://app.diegonmarcos.com/filebrowser)]
+⚠️ app.diegonmarcos.com/hedgedoc    ❌  ✅  ❌  ❌  hedgedoc.app:3018      [308] auth:[err: error sending request for url (https://app.diegonmarcos.com/hedgedoc)]
+⚠️ app.diegonmarcos.com/revealmd    ❌  ✅  ❌  ❌  revealmd.app:3014      [308] auth:[err: error sending request for url (https://app.diegonmarcos.com/revealmd)]
+⚠️ app.diegonmarcos.com/dozzle      ❌  ✅  ❌  ❌  dozzle.app:9999        [308] auth:[err: error sending request for url (https://app.diegonmarcos.com/dozzle)]
+⚠️ app.diegonmarcos.com/windmill    ❌  ✅  ❌  ❌  windmill-app.app:8000  [308] auth:[err: error sending request for url (https://app.diegonmarcos.com/windmill)]
+⚠️ app.diegonmarcos.com/grafana     ❌  ✅  ❌  ❌  grafana.app:3016       [308] auth:[err: error sending request for url (https://app.diegonmarcos.com/grafana)]
+⚠️ app.diegonmarcos.com/gitea       ❌  ✅  ❌  ❌  gitea.app:3017         [308] auth:[err: error sending request for url (https://app.diegonmarcos.com/gitea)]
+⚠️ app.diegonmarcos.com/crawlee     ❌  ✅  ❌  ❌  crawlee.app:3001       [308] auth:[err: error sending request for url (https://app.diegonmarcos.com/crawlee)]
+⚠️ api.diegonmarcos.com/crawlee     ❌  ✅  ❌  ❌  crawlee.app:3000       [308] auth:[err: error sending request for url (https://api.diegonmarcos.com/crawlee)]
+⚠️ api.diegonmarcos.com/dash        ❌  ✅  ❌  ❌  diegonmarcos.github.io [308] auth:[err: error sending request for url (https://api.diegonmarcos.com/dash)]
+⚠️ cloud.diegonmarcos.com           ✅  ✅  ❌  ❌  c3-spec.app:3080       [308] auth:[err: error sending request for url (https://cloud.diegonmarcos.com/)]
+⚠️ mcp.diegonmarcos.com             ✅  ✅  ❌  ❌  g-workspace-mcp.app:3104 [308] auth:[err: error sending request for url (https://mcp.diegonmarcos.com/)]
 
 API / MCP ENDPOINTS
 ────────────────────────────────────────────────────────────
@@ -224,8 +223,64 @@ REPOS & REGISTRIES
 gcp-proxy ❌ — 2C/2G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
 ────────────────────────────────────────────────────────────
 
-oci-apps ❌ — 4C/24G — mem ?/? (0%) — disk ? — swap ? — load ? — 0/0 ctrs — ?
+oci-apps ✅ — 4C/24G — mem 4174M/23975M (17%) — disk 76% — swap 0M/0M — load 0.55 0.71 0.76 — 48/56 ctrs — 1d 0h
 ────────────────────────────────────────────────────────────
+  ❌ crawlee_runner            —      —      DOWN(?)        Created
+  ❌ crawlee_dashboard         3001   3001   DOWN(?)        Created
+  ❌ crawlee_api               3000   3000   DOWN(?)        Created
+  ❌ crawlee_minio_init        —      —      DOWN(?)        Created
+  ❌ crawlee_minio             —      9000   DOWN(0)        Exited (0) 5 minutes ago
+  ❌ rig                       —      —      DOWN(101)      Exited (101) 17 hours ago
+  ❌ rig-agentic               —      —      DOWN(101)      Exited (101) 17 hours ago
+  ❌ surrealdb                 —      —      DOWN(2)        Exited (2) 17 hours ago
+  ⚠️ photoprism_app            —      3013   STARTING       Up 1 second (health: starting)
+  ⚠️ crawlee_scheduler         —      —      UP (no hc)     Up 5 minutes
+  ⚠️ quant_light_engine        —      5001   UP (no hc)     Up About an hour
+  ⚠️ windmill-worker           —      —      UP (no hc)     Up 17 hours
+  ⚠️ mattermost-bots           —      —      UP (no hc)     Up 17 hours
+  ⚠️ lgtm_mimir                —      9009   UP (no hc)     Up 17 hours
+  ⚠️ lgtm_tempo                —      3210   UP (no hc)     Up 17 hours
+  ⚠️ mattermost-mcp            —      3102   UP (no hc)     Up 17 hours
+  ⚠️ mail-mcp                  —      3103   UP (no hc)     Up 14 hours
+  ⚠️ gitea                     —      3002   UP (no hc)     Up 17 hours
+  ⚠️ bup-server                —      —      UP (no hc)     Up 17 hours
+  ⚠️ borg-server               —      —      UP (no hc)     Up 17 hours
+  ⚠️ cloud-spec                —      3080   UP (no hc)     Up 17 hours
+  ⚠️ siem-api                  —      —      UP (no hc)     Up 17 hours
+  ⚠️ code-server               —      8443   UP (no hc)     Up 17 hours
+  ✅ crawlee_db                —      5433   HEALTHY        Up 5 minutes (healthy)
+  ✅ crawlee_redis             —      6381   HEALTHY        Up 5 minutes (healthy)
+  ✅ quant_light_research      —      8889   HEALTHY        Up About an hour (healthy)
+  ✅ quant_light_db            —      5434   HEALTHY        Up About an hour (healthy)
+  ✅ c3-infra-mcp              —      3100   HEALTHY        Up About an hour (healthy)
+  ✅ c3-infra-api              8081   8081   HEALTHY        Up 17 hours (healthy)
+  ✅ windmill-server           —      8000   HEALTHY        Up 17 hours (healthy)
+  ✅ windmill-db               —      5440   HEALTHY        Up 17 hours (healthy)
+  ✅ photoprism_mariadb        —      —      HEALTHY        Up 17 hours (healthy)
+  ✅ photoprism_rclone         —      —      HEALTHY        Up 17 hours (healthy)
+  ✅ lgtm_grafana              —      3200   HEALTHY        Up 17 hours (healthy)
+  ✅ lgtm_loki                 —      3110   HEALTHY        Up 17 hours (healthy)
+  ✅ c3-services-mcp           —      3101   HEALTHY        Up 17 hours (healthy)
+  ✅ ollama-hai                —      11435  HEALTHY        Up 17 hours (healthy)
+  ✅ mattermost                —      8065   HEALTHY        Up 17 hours (healthy)
+  ✅ mattermost-postgres       —      5435   HEALTHY        Up 17 hours (healthy)
+  ✅ hedgedoc_app              —      3018   HEALTHY        Up 17 hours (healthy)
+  ✅ hedgedoc_postgres         —      5439   HEALTHY        Up 17 hours (healthy)
+  ✅ etherpad_app              —      3012   HEALTHY        Up 17 hours (healthy)
+  ✅ etherpad_postgres         —      5436   HEALTHY        Up 17 hours (healthy)
+  ✅ google-workspace-mcp      —      3104   HEALTHY        Up 17 hours (healthy)
+  ✅ nocodb                    —      8085   HEALTHY        Up 17 hours (healthy)
+  ✅ nocodb-db                 —      5441   HEALTHY        Up 17 hours (healthy)
+  ✅ cloud-cgc-mcp             —      3105   HEALTHY        Up 17 hours (healthy)
+  ✅ syslog-central            —      —      HEALTHY        Up 17 hours (healthy)
+  ✅ rig-agentic-sonn-14bq8    —      —      HEALTHY        Up 17 hours (healthy)
+  ✅ rig-agentic-hai           —      —      HEALTHY        Up 17 hours (healthy)
+  ✅ photos-webhook            —      —      HEALTHY        Up 17 hours (healthy)
+  ✅ photos-db                 —      —      HEALTHY        Up 17 hours (healthy)
+  ✅ revealmd_app              —      3014   HEALTHY        Up 17 hours (healthy)
+  ✅ radicale                  —      5232   HEALTHY        Up 17 hours (healthy)
+  ✅ grist_app                 —      3011   HEALTHY        Up 17 hours (healthy)
+  ✅ filebrowser_app           —      3015   HEALTHY        Up 17 hours (healthy)
 
 oci-mail ✅ — 1C/1G — mem 629M/954M (65%) — disk 68% — swap 115M/2559M — load 0.97 0.98 1.00 — 6/8 ctrs — 0d 1h
 ────────────────────────────────────────────────────────────
@@ -323,15 +378,15 @@ RESOURCES (live)
 ────────────────────────────────────────────────────────────
 gcp-proxy      oci-apps       oci-mail       oci-analytics 
 ────────────────────────────────────────────────────────────
-CPU                ? cores       ? cores       65 cores      73 cores      
-RAM                ?/?           ?/?           629M/954M     703M/954M     
-RAM %              0%            0%            65%           73%           
-Swap               ?             ?             115M/2559M    232M/2559M    
-Disk               ?/?           ?/?           29G/45G       25G/48G       
-Disk %             ?             ?             68%           56%           
-Load               ?             ?             0.97 0.98 1.002.08 2.12 2.09
-Containers         0/0           0/0           6/8           7/8           
-Uptime             ?             ?             0d 1h         0d 1h         
+CPU                ? cores       17 cores      65 cores      73 cores      
+RAM                ?/?           4174M/23975M  629M/954M     703M/954M     
+RAM %              0%            17%           65%           73%           
+Swap               ?             0M/0M         115M/2559M    232M/2559M    
+Disk               ?/?           69.1G/95.8G   29G/45G       25G/48G       
+Disk %             ?             76%           68%           56%           
+Load               ?             0.55 0.71 0.760.97 0.98 1.002.08 2.12 2.09
+Containers         0/0           48/56         6/8           7/8           
+Uptime             ?             1d 0h         0d 1h         0d 1h         
 
 STORAGE
 ────────────────────────────────────────────────────────────
@@ -365,15 +420,15 @@ NETWORK SECURITY AUDIT
     Check                         gcp-proxy           oci-mail      oci-analytics           oci-apps
     ────────────────────────────────────────────────────────────────────────────────────────────────
     Declared ports       80,443,465,587,993 25,465,587,993,4190,8080,8443,21027,22000               none 2222,2223,2224,3000,3001,3010,8081,8099
-    Scanned (public)                     22 25,465,587,993,8080             🔒 none                 22
-    Docker host ports                  none               8080               none               none
+    Scanned (public)     22,80,443,465,587,993 25,465,587,993,8080             🔒 none                 22
+    Docker host ports                  none               8080               none     3000,3001,8081
     Undeclared leaks                ✅ clean            ✅ clean            ✅ clean            ✅ clean
-    WG reachable                     ❌ down               ✅ up               ✅ up             ❌ down
-    Containers (up/total)                0/0                6/8                7/8                0/0
+    WG reachable                     ❌ down               ✅ up               ✅ up               ✅ up
+    Containers (up/total)                0/0                6/8                7/8              48/56
 
 OPEN PORTS by Public IP
 ────────────────────────────────────────────────────────────
-🔓 gcp-proxy          35.226.147.64      ports: 22
+🔓 gcp-proxy          35.226.147.64      ports: 22, 80, 443, 465, 587, 993
 🔒 gcp-t4             34.173.227.250     ports: none reachable
 🔓 oci-apps           82.70.229.129      ports: 22
 🔓 oci-mail           130.110.251.193    ports: 25, 465, 587, 993, 8080
@@ -450,18 +505,18 @@ FRAMEWORK — Key Paths
 
 PERFORMANCE
 ────────────────────────────────────────────────────────────
-  TOTAL                66.6s
-  vm_ssh               63.5s
+  TOTAL                60.7s
   mail_dns             55.0s
-  public_urls          7.9s
-  mesh                 7.8s
-  port_scan            4.5s
+  vm_ssh               22.0s
+  public_urls          8.0s
+  mesh                 7.7s
+  port_scan            5.0s
   private              0.0s
 
 SCRIPT INFO
 ────────────────────────────────────────────────────────────
   Engine:    Rust (native async tokio)
-  Duration:  66.6s
+  Duration:  60.7s
   Checks:    TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(rsync)
 
 ────────────────────────────────────────────────────────────

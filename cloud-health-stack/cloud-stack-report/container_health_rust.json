@@ -1,6 +1,6 @@
 {
-  "generated": "2026-03-29T21:02:33.879448856+00:00",
-  "duration_ms": 66551,
+  "generated": "2026-03-30T14:26:10.673622143+00:00",
+  "duration_ms": 60682,
   "mesh": [
     {
       "name": "oci-mail",
@@ -111,142 +111,142 @@
     {
       "url": "auth.diegonmarcos.com",
       "upstream": "authelia.app:9091",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://auth.diegonmarcos.com/)"
     },
     {
       "url": "git.diegonmarcos.com",
       "upstream": "backup-gitea.app:3002",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://git.diegonmarcos.com/)"
     },
     {
       "url": "api.diegonmarcos.com/c3-api",
       "upstream": "c3-infra-api.app:8081",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://api.diegonmarcos.com/c3-api)"
     },
     {
       "url": "mcp.diegonmarcos.com/c3-infra-mcp",
       "upstream": "c3-infra-mcp.app:3100",
       "tcp": false,
-      "http": false,
-      "https": false,
+      "http": true,
+      "https": true,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "200",
+      "auth_code": "err: error sending request for url (https://mcp.diegonmarcos.com/c3-infra-mcp)"
     },
     {
       "url": "api.diegonmarcos.com/services",
       "upstream": "c3-services-api.app:8082",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "502"
     },
     {
       "url": "proxy.diegonmarcos.com",
       "upstream": "caddy.app:443",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://proxy.diegonmarcos.com/)"
     },
     {
       "url": "ide.diegonmarcos.com",
       "upstream": "code-server.app:8443",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://ide.diegonmarcos.com/)"
     },
     {
       "url": "api.diegonmarcos.com",
       "upstream": "crawlee.app:3000",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "502"
     },
     {
       "url": "workflows.diegonmarcos.com",
       "upstream": "dagu.app:8070",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "502"
     },
     {
       "url": "logs.diegonmarcos.com",
       "upstream": "dozzle.app:9999",
-      "tcp": false,
-      "http": false,
-      "https": false,
+      "tcp": true,
+      "http": true,
+      "https": true,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "200",
+      "auth_code": "err: error sending request for url (https://logs.diegonmarcos.com/)"
     },
     {
       "url": "pad.diegonmarcos.com",
       "upstream": "etherpad.app:3012",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
-      "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "auth": true,
+      "code": "308",
+      "auth_code": "200"
     },
     {
       "url": "files.diegonmarcos.com",
       "upstream": "filebrowser.app:3015",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
-      "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "auth": true,
+      "code": "308",
+      "auth_code": "200"
     },
     {
       "url": "sheets.diegonmarcos.com",
       "upstream": "grist.app:3011",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://sheets.diegonmarcos.com/)"
     },
     {
       "url": "doc.diegonmarcos.com",
       "upstream": "hedgedoc.app:3018",
-      "tcp": false,
-      "http": false,
-      "https": false,
+      "tcp": true,
+      "http": true,
+      "https": true,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "200",
+      "auth_code": "err: error sending request for url (https://doc.diegonmarcos.com/)"
     },
     {
       "url": "dns.internal",
@@ -255,268 +255,268 @@
       "http": false,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "err: error sending request for url (http://dns.internal/)",
+      "auth_code": "err: error sending request for url (https://dns.internal/)"
     },
     {
       "url": "grafana.diegonmarcos.com",
       "upstream": "grafana.app:3200",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://grafana.diegonmarcos.com/)"
     },
     {
       "url": "analytics.diegonmarcos.com",
       "upstream": "matomo.app:8080",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://analytics.diegonmarcos.com/)"
     },
     {
       "url": "chat.diegonmarcos.com",
       "upstream": "mattermost.app:8065",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "502"
     },
     {
       "url": "db.diegonmarcos.com",
       "upstream": "nocodb.app:8085",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://db.diegonmarcos.com/)"
     },
     {
       "url": "rss.diegonmarcos.com",
       "upstream": "ntfy.app:8090",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://rss.diegonmarcos.com/)"
     },
     {
       "url": "photos.diegonmarcos.com",
       "upstream": "photoprism.app:3013",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "502"
     },
     {
       "url": "cal.diegonmarcos.com",
       "upstream": "radicale.app:5232",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://cal.diegonmarcos.com/)"
     },
     {
       "url": "slides.diegonmarcos.com",
       "upstream": "revealmd.app:3014",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://slides.diegonmarcos.com/)"
     },
     {
       "url": "smtp.diegonmarcos.com",
       "upstream": "smtp-proxy.app:8080",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://smtp.diegonmarcos.com/)"
     },
     {
       "url": "webmail.diegonmarcos.com",
       "upstream": "snappymail.app:8888",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://webmail.diegonmarcos.com/)"
     },
     {
       "url": "mail.diegonmarcos.com",
       "upstream": "stalwart.app:443",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://mail.diegonmarcos.com/)"
     },
     {
       "url": "vault.diegonmarcos.com",
       "upstream": "vaultwarden.app:8880",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://vault.diegonmarcos.com/)"
     },
     {
       "url": "windmill.diegonmarcos.com",
       "upstream": "windmill-app.app:8000",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://windmill.diegonmarcos.com/)"
     },
     {
       "url": "app.diegonmarcos.com/etherpad",
       "upstream": "etherpad.app:3012",
       "tcp": false,
-      "http": false,
-      "https": false,
+      "http": true,
+      "https": true,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "404",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/etherpad)"
     },
     {
       "url": "app.diegonmarcos.com/filebrowser",
       "upstream": "filebrowser.app:3015",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/filebrowser)"
     },
     {
       "url": "app.diegonmarcos.com/hedgedoc",
       "upstream": "hedgedoc.app:3018",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/hedgedoc)"
     },
     {
       "url": "app.diegonmarcos.com/revealmd",
       "upstream": "revealmd.app:3014",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/revealmd)"
     },
     {
       "url": "app.diegonmarcos.com/dozzle",
       "upstream": "dozzle.app:9999",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/dozzle)"
     },
     {
       "url": "app.diegonmarcos.com/windmill",
       "upstream": "windmill-app.app:8000",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/windmill)"
     },
     {
       "url": "app.diegonmarcos.com/grafana",
       "upstream": "grafana.app:3016",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/grafana)"
     },
     {
       "url": "app.diegonmarcos.com/gitea",
       "upstream": "gitea.app:3017",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/gitea)"
     },
     {
       "url": "app.diegonmarcos.com/crawlee",
       "upstream": "crawlee.app:3001",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
-    },
-    {
-      "url": "api.diegonmarcos.com/dash",
-      "upstream": "diegonmarcos.github.io",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/crawlee)"
     },
     {
       "url": "api.diegonmarcos.com/crawlee",
       "upstream": "crawlee.app:3000",
       "tcp": false,
-      "http": false,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://api.diegonmarcos.com/crawlee)"
+    },
+    {
+      "url": "api.diegonmarcos.com/dash",
+      "upstream": "diegonmarcos.github.io",
+      "tcp": false,
+      "http": true,
+      "https": false,
+      "auth": false,
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://api.diegonmarcos.com/dash)"
     },
     {
       "url": "cloud.diegonmarcos.com",
       "upstream": "c3-spec.app:3080",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://cloud.diegonmarcos.com/)"
     },
     {
       "url": "mcp.diegonmarcos.com",
       "upstream": "g-workspace-mcp.app:3104",
-      "tcp": false,
-      "http": false,
+      "tcp": true,
+      "http": true,
       "https": false,
       "auth": false,
-      "code": "---",
-      "auth_code": "---"
+      "code": "308",
+      "auth_code": "err: error sending request for url (https://mcp.diegonmarcos.com/)"
     }
   ],
   "private_endpoints": [
@@ -1130,19 +1130,412 @@
     },
     {
       "alias": "oci-apps",
-      "reachable": false,
-      "mem_used": "?",
-      "mem_total": "?",
-      "mem_pct": 0,
-      "swap": "?",
-      "disk_used": "?",
-      "disk_total": "?",
-      "disk_pct": "?",
-      "load": "?",
-      "uptime": "?",
-      "containers": [],
-      "containers_running": 0,
-      "containers_total": 0
+      "reachable": true,
+      "mem_used": "4174M",
+      "mem_total": "23975M",
+      "mem_pct": 17,
+      "swap": "0M/0M",
+      "disk_used": "69.1G",
+      "disk_total": "95.8G",
+      "disk_pct": "76%",
+      "load": "0.55 0.71 0.76",
+      "uptime": "1d 0h",
+      "containers": [
+        {
+          "name": "crawlee_runner",
+          "status": "Created",
+          "health": "created",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_dashboard",
+          "status": "Created",
+          "health": "created",
+          "docker_port": "3001",
+          "host_port": "3001"
+        },
+        {
+          "name": "crawlee_api",
+          "status": "Created",
+          "health": "created",
+          "docker_port": "3000",
+          "host_port": "3000"
+        },
+        {
+          "name": "crawlee_minio_init",
+          "status": "Created",
+          "health": "created",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_minio",
+          "status": "Exited (0) 5 minutes ago",
+          "health": "exited",
+          "docker_port": "9000",
+          "host_port": "—"
+        },
+        {
+          "name": "rig",
+          "status": "Exited (101) 17 hours ago",
+          "health": "exited",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "rig-agentic",
+          "status": "Exited (101) 17 hours ago",
+          "health": "exited",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "surrealdb",
+          "status": "Exited (2) 17 hours ago",
+          "health": "exited",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "photoprism_app",
+          "status": "Up 1 second (health: starting)",
+          "health": "starting",
+          "docker_port": "3013",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_scheduler",
+          "status": "Up 5 minutes",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "quant_light_engine",
+          "status": "Up About an hour",
+          "health": "none",
+          "docker_port": "5001",
+          "host_port": "—"
+        },
+        {
+          "name": "windmill-worker",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "mattermost-bots",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "lgtm_mimir",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "9009",
+          "host_port": "—"
+        },
+        {
+          "name": "lgtm_tempo",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "3210",
+          "host_port": "—"
+        },
+        {
+          "name": "mattermost-mcp",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "3102",
+          "host_port": "—"
+        },
+        {
+          "name": "mail-mcp",
+          "status": "Up 14 hours",
+          "health": "none",
+          "docker_port": "3103",
+          "host_port": "—"
+        },
+        {
+          "name": "gitea",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "3002",
+          "host_port": "—"
+        },
+        {
+          "name": "bup-server",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "borg-server",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "cloud-spec",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "3080",
+          "host_port": "—"
+        },
+        {
+          "name": "siem-api",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "code-server",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "8443",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_db",
+          "status": "Up 5 minutes (healthy)",
+          "health": "healthy",
+          "docker_port": "5433",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_redis",
+          "status": "Up 5 minutes (healthy)",
+          "health": "healthy",
+          "docker_port": "6381",
+          "host_port": "—"
+        },
+        {
+          "name": "quant_light_research",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "docker_port": "8889",
+          "host_port": "—"
+        },
+        {
+          "name": "quant_light_db",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "docker_port": "5434",
+          "host_port": "—"
+        },
+        {
+          "name": "c3-infra-mcp",
+          "status": "Up About an hour (healthy)",
+          "health": "healthy",
+          "docker_port": "3100",
+          "host_port": "—"
+        },
+        {
+          "name": "c3-infra-api",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "8081",
+          "host_port": "8081"
+        },
+        {
+          "name": "windmill-server",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "8000",
+          "host_port": "—"
+        },
+        {
+          "name": "windmill-db",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "5440",
+          "host_port": "—"
+        },
+        {
+          "name": "photoprism_mariadb",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "photoprism_rclone",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "lgtm_grafana",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3200",
+          "host_port": "—"
+        },
+        {
+          "name": "lgtm_loki",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3110",
+          "host_port": "—"
+        },
+        {
+          "name": "c3-services-mcp",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3101",
+          "host_port": "—"
+        },
+        {
+          "name": "ollama-hai",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "11435",
+          "host_port": "—"
+        },
+        {
+          "name": "mattermost",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "8065",
+          "host_port": "—"
+        },
+        {
+          "name": "mattermost-postgres",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "5435",
+          "host_port": "—"
+        },
+        {
+          "name": "hedgedoc_app",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3018",
+          "host_port": "—"
+        },
+        {
+          "name": "hedgedoc_postgres",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "5439",
+          "host_port": "—"
+        },
+        {
+          "name": "etherpad_app",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3012",
+          "host_port": "—"
+        },
+        {
+          "name": "etherpad_postgres",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "5436",
+          "host_port": "—"
+        },
+        {
+          "name": "google-workspace-mcp",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3104",
+          "host_port": "—"
+        },
+        {
+          "name": "nocodb",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "8085",
+          "host_port": "—"
+        },
+        {
+          "name": "nocodb-db",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "5441",
+          "host_port": "—"
+        },
+        {
+          "name": "cloud-cgc-mcp",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3105",
+          "host_port": "—"
+        },
+        {
+          "name": "syslog-central",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "rig-agentic-sonn-14bq8",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "rig-agentic-hai",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "photos-webhook",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "photos-db",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "revealmd_app",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3014",
+          "host_port": "—"
+        },
+        {
+          "name": "radicale",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "5232",
+          "host_port": "—"
+        },
+        {
+          "name": "grist_app",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3011",
+          "host_port": "—"
+        },
+        {
+          "name": "filebrowser_app",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3015",
+          "host_port": "—"
+        }
+      ],
+      "containers_running": 48,
+      "containers_total": 56
     },
     {
       "alias": "oci-mail",
@@ -1357,7 +1750,12 @@
       "name": "gcp-proxy",
       "ip": "35.226.147.64",
       "open_ports": [
-        22
+        22,
+        80,
+        443,
+        465,
+        587,
+        993
       ]
     },
     {
@@ -1390,12 +1788,12 @@
     }
   ],
   "timers": {
-    "public_urls": 7899,
-    "vm_ssh": 63545,
-    "port_scan": 4546,
-    "mesh": 7756,
+    "public_urls": 8009,
+    "mesh": 7667,
     "private": 0,
-    "mail_dns": 55016,
-    "TOTAL": 66551
+    "vm_ssh": 21972,
+    "mail_dns": 55031,
+    "TOTAL": 60682,
+    "port_scan": 5018
   }
 }

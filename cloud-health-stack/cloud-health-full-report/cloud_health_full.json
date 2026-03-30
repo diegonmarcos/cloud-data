@@ -1,20 +1,20 @@
 {
-  "generated": "2026-03-29T21:16:14.711171775+00:00",
-  "duration_ms": 46149,
+  "generated": "2026-03-30T14:43:04.000855307+00:00",
+  "duration_ms": 41478,
   "self_check": [
     {
       "name": "C3 API (mesh)",
-      "passed": false,
-      "details": "http://10.0.0.6:8081/health -> err: error sending request for url (http://10.0.0.6:8081/health)",
-      "duration_ms": 266,
-      "error": "err: error sending request for url (http://10.0.0.6:8081/health)",
+      "passed": true,
+      "details": "http://10.0.0.6:8081/health -> 200",
+      "duration_ms": 614,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "C3 API (public)",
       "passed": true,
       "details": "https://api.diegonmarcos.com/c3-api/health -> 302",
-      "duration_ms": 457,
+      "duration_ms": 500,
       "error": null,
       "severity": "Warning"
     },
@@ -22,7 +22,7 @@
       "name": "WireGuard interface",
       "passed": true,
       "details": "TCP 10.0.0.1:22 -> open",
-      "duration_ms": 143,
+      "duration_ms": 141,
       "error": null,
       "severity": "Critical"
     },
@@ -30,7 +30,7 @@
       "name": "Local docker",
       "passed": true,
       "details": "Docker 27.5.1",
-      "duration_ms": 226,
+      "duration_ms": 177,
       "error": null,
       "severity": "Info"
     },
@@ -38,14 +38,14 @@
       "name": "SSH agent",
       "passed": false,
       "details": "no SSH agent or no keys",
-      "duration_ms": 4,
+      "duration_ms": 3,
       "error": "no SSH agent or no keys",
       "severity": "Warning"
     },
     {
       "name": "cloud-data freshness",
       "passed": true,
-      "details": "generated 2026-03-29T16:34:30.987Z (4h ago)",
+      "details": "generated 2026-03-30T14:40:34.019Z (0h ago)",
       "duration_ms": 0,
       "error": null,
       "severity": "Warning"
@@ -54,7 +54,7 @@
       "name": "Hickory DNS resolver",
       "passed": true,
       "details": "dig caddy.app @10.0.0.1 -> 10.0.0.1",
-      "duration_ms": 141,
+      "duration_ms": 202,
       "error": null,
       "severity": "Critical"
     }
@@ -62,59 +62,59 @@
   "wg_mesh": [
     {
       "name": "WG gcp-proxy",
-      "passed": false,
-      "details": "gcp-proxy (10.0.0.1): TCP=ok SSH=fail",
-      "duration_ms": 10141,
-      "error": "gcp-proxy (10.0.0.1): TCP=ok SSH=fail",
+      "passed": true,
+      "details": "gcp-proxy (10.0.0.1): TCP=ok SSH=ok",
+      "duration_ms": 2457,
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "WG gcp-t4",
-      "passed": false,
-      "details": "gcp-t4 (10.0.0.8): TCP=fail SSH=fail",
+      "passed": true,
+      "details": "gcp-t4 (10.0.0.8): TCP=fail SSH=fail [spot instance]",
       "duration_ms": 3000,
-      "error": "gcp-t4 (10.0.0.8): TCP=fail SSH=fail",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "WG oci-apps",
       "passed": true,
       "details": "oci-apps (10.0.0.6): TCP=ok SSH=ok",
-      "duration_ms": 3508,
+      "duration_ms": 3789,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "WG oci-mail",
-      "passed": true,
-      "details": "oci-mail (10.0.0.3): TCP=ok SSH=ok",
-      "duration_ms": 4149,
-      "error": null,
+      "passed": false,
+      "details": "oci-mail (10.0.0.3): TCP=ok SSH=fail",
+      "duration_ms": 6444,
+      "error": "oci-mail (10.0.0.3): TCP=ok SSH=fail",
       "severity": "Critical"
     },
     {
       "name": "WG oci-analytics",
       "passed": true,
       "details": "oci-analytics (10.0.0.4): TCP=ok SSH=ok",
-      "duration_ms": 5556,
+      "duration_ms": 9933,
       "error": null,
       "severity": "Critical"
     }
   ],
   "platform": [
     {
-      "name": "Platform oci-apps",
+      "name": "Platform gcp-proxy",
       "passed": true,
-      "details": "oci-apps: mem 3%, disk 76%, load 0.00 0.02 0.00, 1/56 containers, up 0d 7h",
-      "duration_ms": 2652,
+      "details": "gcp-proxy: mem 53%, disk 61%, load 0.20 0.42 0.62, 19/19 containers, up 0d 0h",
+      "duration_ms": 1581,
       "error": null,
       "severity": "Info"
     },
     {
-      "name": "Platform oci-mail",
+      "name": "Platform oci-apps",
       "passed": true,
-      "details": "oci-mail: mem 65%, disk 68%, load 0.97 0.98 1.00, 6/8 containers, up 0d 1h",
-      "duration_ms": 2394,
+      "details": "oci-apps: mem 18%, disk 76%, load 0.58 0.56 0.65, 52/56 containers, up 1d 0h",
+      "duration_ms": 2766,
       "error": null,
       "severity": "Info"
     },
@@ -122,22 +122,22 @@
       "name": "Platform oci-analytics",
       "passed": true,
       "details": "oci-analytics: mem 73%, disk 56%, load 2.08 2.12 2.09, 7/8 containers, up 0d 1h",
-      "duration_ms": 3328,
+      "duration_ms": 3626,
       "error": null,
       "severity": "Info"
     },
     {
-      "name": "Platform gcp-proxy",
-      "passed": false,
-      "details": "gcp-proxy: unreachable (WG down)",
+      "name": "Platform gcp-t4",
+      "passed": true,
+      "details": "gcp-t4: unreachable (WG down) [spot instance]",
       "duration_ms": 0,
-      "error": "VM not reachable via WireGuard",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
-      "name": "Platform gcp-t4",
+      "name": "Platform oci-mail",
       "passed": false,
-      "details": "gcp-t4: unreachable (WG down)",
+      "details": "oci-mail: unreachable (WG down)",
       "duration_ms": 0,
       "error": "VM not reachable via WireGuard",
       "severity": "Critical"
@@ -154,216 +154,152 @@
     },
     {
       "name": "Container authelia/authelia",
-      "passed": false,
-      "details": "authelia on gcp-proxy: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
-      "name": "Container authelia/authelia-redis",
-      "passed": false,
-      "details": "authelia-redis on gcp-proxy: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
-      "name": "Container backup-borg/backup-borg",
-      "passed": false,
-      "details": "backup-borg on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container backup-bup/backup-bup",
-      "passed": false,
-      "details": "backup-bup on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container backup-gitea/gitea",
-      "passed": false,
-      "details": "gitea on oci-apps: Exited (255) 7 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container c3-diego-personal-data-mcp/c3-diego-personal-data-mcp",
-      "passed": false,
-      "details": "c3-diego-personal-data-mcp on local: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
-      "name": "Container c3-infra-api/c3-infra-api",
-      "passed": false,
-      "details": "c3-infra-api on oci-apps: Exited (255) 7 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container c3-infra-mcp/c3-infra-mcp",
       "passed": true,
-      "details": "c3-infra-mcp on oci-apps: Up 5 hours (healthy) (healthy)",
+      "details": "authelia on gcp-proxy: Up 21 minutes (healthy) (healthy)",
       "duration_ms": 0,
       "error": null,
       "severity": "Info"
     },
     {
-      "name": "Container c3-services-api/c3-services-api",
-      "passed": false,
-      "details": "c3-services-api on oci-apps: NOT FOUND in docker ps",
+      "name": "Container authelia/authelia-redis",
+      "passed": true,
+      "details": "authelia-redis on gcp-proxy: Up 21 minutes (none)",
       "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container backup-gitea/gitea",
+      "passed": true,
+      "details": "gitea on oci-apps: Up 17 hours (none)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container c3-infra-api/c3-infra-api",
+      "passed": true,
+      "details": "c3-infra-api on oci-apps: Up 17 hours (healthy) (healthy)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container c3-infra-mcp/c3-infra-mcp",
+      "passed": true,
+      "details": "c3-infra-mcp on oci-apps: Up About an hour (healthy) (healthy)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container c3-services-mcp/c3-services-mcp",
-      "passed": false,
-      "details": "c3-services-mcp on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "c3-services-mcp on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container caddy/caddy",
-      "passed": false,
-      "details": "caddy on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "caddy on gcp-proxy: Up 19 minutes (none)",
       "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container caddy/introspect-proxy",
-      "passed": false,
-      "details": "introspect-proxy on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "introspect-proxy on gcp-proxy: Up 21 minutes (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
-      "name": "Container caddy-l4-image/caddy-l4-image",
-      "passed": false,
-      "details": "caddy-l4-image on local: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container cloud-cgc-mcp/cloud-cgc-mcp",
-      "passed": false,
-      "details": "cloud-cgc-mcp on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "cloud-cgc-mcp on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container cloud-spec/cloud-spec",
-      "passed": false,
-      "details": "cloud-spec on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "cloud-spec on oci-apps: Up 17 hours (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container cloudflare/cloudflare",
-      "passed": false,
-      "details": "cloudflare on local: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
-      "name": "Container cloudflare-worker/cloudflare-worker",
-      "passed": false,
-      "details": "cloudflare-worker on local: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container code-server/code-server",
-      "passed": false,
-      "details": "code-server on oci-apps: Exited (255) 7 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container crawlee-cloud/crawlee_api",
-      "passed": false,
-      "details": "crawlee_api on oci-apps: Exited (1) 18 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (1) 18 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container crawlee-cloud/crawlee_dashboard",
-      "passed": false,
-      "details": "crawlee_dashboard on oci-apps: Exited (255) 16 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (255) 16 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container crawlee-cloud/crawlee_db",
-      "passed": false,
-      "details": "crawlee_db on oci-apps: Exited (255) 7 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container crawlee-cloud/crawlee_minio",
-      "passed": false,
-      "details": "crawlee_minio on oci-apps: Exited (255) 7 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container crawlee-cloud/crawlee_redis",
-      "passed": false,
-      "details": "crawlee_redis on oci-apps: Exited (255) 7 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container crawlee-cloud/crawlee_runner",
-      "passed": false,
-      "details": "crawlee_runner on oci-apps: Exited (1) 18 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (1) 18 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container crawlee-cloud/crawlee_scheduler",
-      "passed": false,
-      "details": "crawlee_scheduler on oci-apps: Exited (255) 7 hours ago (exited)",
-      "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container dagu/dagu",
       "passed": true,
-      "details": "dagu on oci-mail: Up 2 hours (none)",
+      "details": "code-server on oci-apps: Up 17 hours (none)",
       "duration_ms": 0,
       "error": null,
       "severity": "Warning"
     },
     {
-      "name": "Container db-agent/db-agent",
+      "name": "Container crawlee-cloud/crawlee_api",
+      "passed": true,
+      "details": "crawlee_api on oci-apps: Up 41 seconds (healthy) (healthy)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container crawlee-cloud/crawlee_dashboard",
+      "passed": true,
+      "details": "crawlee_dashboard on oci-apps: Up 35 seconds (none)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container crawlee-cloud/crawlee_db",
+      "passed": true,
+      "details": "crawlee_db on oci-apps: Up 47 seconds (healthy) (healthy)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container crawlee-cloud/crawlee_minio",
+      "passed": true,
+      "details": "crawlee_minio on oci-apps: Up 47 seconds (healthy) (healthy)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container crawlee-cloud/crawlee_redis",
+      "passed": true,
+      "details": "crawlee_redis on oci-apps: Up 47 seconds (healthy) (healthy)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container crawlee-cloud/crawlee_runner",
+      "passed": true,
+      "details": "crawlee_runner on oci-apps: Up 35 seconds (none)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container crawlee-cloud/crawlee_scheduler",
+      "passed": true,
+      "details": "crawlee_scheduler on oci-apps: Up 47 seconds (none)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Container dagu/dagu",
       "passed": false,
-      "details": "db-agent on all: VM unreachable",
+      "details": "dagu on oci-mail: VM unreachable",
       "duration_ms": 0,
       "error": "VM unreachable",
       "severity": "Warning"
@@ -378,27 +314,27 @@
     },
     {
       "name": "Container etherpad/etherpad_app",
-      "passed": false,
-      "details": "etherpad_app on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "etherpad_app on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container etherpad/etherpad_postgres",
-      "passed": false,
-      "details": "etherpad_postgres on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "etherpad_postgres on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container filebrowser/filebrowser_app",
-      "passed": false,
-      "details": "filebrowser_app on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "filebrowser_app on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container fluent-bit/fluent-bit",
@@ -409,116 +345,100 @@
       "severity": "Info"
     },
     {
-      "name": "Container gcloud/gcloud",
-      "passed": false,
-      "details": "gcloud on local: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
       "name": "Container gitea/gitea",
-      "passed": false,
-      "details": "gitea on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "gitea on oci-apps: Up 17 hours (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Warning"
     },
     {
       "name": "Container google-workspace-mcp/google-workspace-mcp",
-      "passed": false,
-      "details": "google-workspace-mcp on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "google-workspace-mcp on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container grist/grist_app",
-      "passed": false,
-      "details": "grist_app on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "grist_app on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container hedgedoc/hedgedoc_app",
-      "passed": false,
-      "details": "hedgedoc_app on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "hedgedoc_app on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container hedgedoc/hedgedoc_postgres",
-      "passed": false,
-      "details": "hedgedoc_postgres on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "hedgedoc_postgres on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container hickory-dns/hickory-dns",
-      "passed": false,
-      "details": "hickory-dns on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "hickory-dns on gcp-proxy: Up 11 minutes (none)",
       "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container introspect-proxy/introspect-proxy",
-      "passed": false,
-      "details": "introspect-proxy on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "introspect-proxy on gcp-proxy: Up 21 minutes (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
-      "name": "Container kg-graph/kg-graph",
-      "passed": false,
-      "details": "kg-graph on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container lgtm/lgtm_grafana",
-      "passed": false,
-      "details": "lgtm_grafana on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "lgtm_grafana on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container lgtm/lgtm_loki",
-      "passed": false,
-      "details": "lgtm_loki on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "lgtm_loki on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container lgtm/lgtm_mimir",
-      "passed": false,
-      "details": "lgtm_mimir on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "lgtm_mimir on oci-apps: Up 17 hours (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container lgtm/lgtm_tempo",
-      "passed": false,
-      "details": "lgtm_tempo on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "lgtm_tempo on oci-apps: Up 17 hours (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container mail-mcp/mail-mcp",
-      "passed": false,
-      "details": "mail-mcp on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "mail-mcp on oci-apps: Up 14 hours (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container matomo/matomo-hybrid",
@@ -530,75 +450,75 @@
     },
     {
       "name": "Container mattermost-bots/mattermost",
-      "passed": false,
-      "details": "mattermost on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "mattermost on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container mattermost-bots/mattermost-bots",
-      "passed": false,
-      "details": "mattermost-bots on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "mattermost-bots on oci-apps: Up 17 hours (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container mattermost-bots/mattermost-postgres",
-      "passed": false,
-      "details": "mattermost-postgres on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "mattermost-postgres on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container mattermost-mcp/mattermost-mcp",
-      "passed": false,
-      "details": "mattermost-mcp on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "mattermost-mcp on oci-apps: Up 17 hours (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container nocodb/nocodb",
-      "passed": false,
-      "details": "nocodb on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "nocodb on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container nocodb/nocodb-db",
-      "passed": false,
-      "details": "nocodb-db on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "nocodb-db on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container ntfy/ntfy",
-      "passed": false,
-      "details": "ntfy on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "ntfy on gcp-proxy: Up 20 minutes (none)",
       "duration_ms": 0,
-      "error": "VM unreachable",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "Container ntfy/github-rss",
-      "passed": false,
-      "details": "github-rss on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "github-rss on gcp-proxy: Up 20 minutes (none)",
       "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container ntfy/syslog-bridge",
-      "passed": false,
-      "details": "syslog-bridge on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "syslog-bridge on gcp-proxy: Up 20 minutes (none)",
       "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container ollama/ollama",
@@ -609,180 +529,100 @@
       "severity": "Warning"
     },
     {
-      "name": "Container ollama-arm/ollama-arm",
-      "passed": false,
-      "details": "ollama-arm on oci-apps-2: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
       "name": "Container ollama-hai/ollama-hai",
-      "passed": false,
-      "details": "ollama-hai on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "ollama-hai on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container photoprism/photoprism_app",
-      "passed": false,
-      "details": "photoprism_app on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "photoprism_app on oci-apps: Up About a minute (health: starting) (starting)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Warning"
     },
     {
       "name": "Container photoprism/photoprism_mariadb",
-      "passed": false,
-      "details": "photoprism_mariadb on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "photoprism_mariadb on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container photoprism/photoprism_rclone",
-      "passed": false,
-      "details": "photoprism_rclone on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "photoprism_rclone on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container photos-webhook/photos-webhook",
-      "passed": false,
-      "details": "photos-webhook on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "photos-webhook on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container postlite/postlite",
-      "passed": false,
-      "details": "postlite on gcp-proxy: VM unreachable",
-      "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
-    },
-    {
-      "name": "Container quant-lab-full/quant_full_analytics",
-      "passed": false,
-      "details": "quant_full_analytics on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container quant-lab-full/quant_full_db",
-      "passed": false,
-      "details": "quant_full_db on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container quant-lab-full/quant_full_engine",
-      "passed": false,
-      "details": "quant_full_engine on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container quant-lab-full/quant_full_ml",
-      "passed": false,
-      "details": "quant_full_ml on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container quant-lab-full/quant_full_research",
-      "passed": false,
-      "details": "quant_full_research on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container quant-lab-full/quant_full_risk",
-      "passed": false,
-      "details": "quant_full_risk on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container quant-lab-light/quant_light_db",
-      "passed": false,
-      "details": "quant_light_db on oci-apps: Exited (1) 10 hours ago (exited)",
+      "passed": true,
+      "details": "quant_light_db on oci-apps: Up About an hour (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (1) 10 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container quant-lab-light/quant_light_engine",
-      "passed": false,
-      "details": "quant_light_engine on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "quant_light_engine on oci-apps: Up About an hour (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container quant-lab-light/quant_light_research",
-      "passed": false,
-      "details": "quant_light_research on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "quant_light_research on oci-apps: Up About an hour (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container radicale/radicale",
-      "passed": false,
-      "details": "radicale on oci-apps: Exited (255) 16 hours ago (exited)",
+      "passed": true,
+      "details": "radicale on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 16 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container redis/redis",
-      "passed": false,
-      "details": "redis on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "redis on gcp-proxy: Up 19 minutes (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container revealmd/revealmd_app",
-      "passed": false,
-      "details": "revealmd_app on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "revealmd_app on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container rig-agentic-hai-1.5bq4/rig-agentic-hai-1.5bq4",
-      "passed": false,
-      "details": "rig-agentic-hai-1.5bq4 on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container rig-agentic-sonn-14bq8/rig-agentic-sonn-14bq8",
-      "passed": false,
-      "details": "rig-agentic-sonn-14bq8 on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "rig-agentic-sonn-14bq8 on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    },
-    {
-      "name": "Container sauron-central/sauron-central",
-      "passed": false,
-      "details": "sauron-central on oci-apps: NOT FOUND in docker ps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container sauron-forwarder/sauron-forwarder",
@@ -793,44 +633,36 @@
       "severity": "Info"
     },
     {
-      "name": "Container sauron-lite/sauron-lite",
+      "name": "Container smtp-proxy/smtp-proxy",
       "passed": false,
-      "details": "sauron-lite on all: VM unreachable",
+      "details": "smtp-proxy on oci-mail: VM unreachable",
       "duration_ms": 0,
       "error": "VM unreachable",
       "severity": "Warning"
     },
     {
-      "name": "Container smtp-proxy/smtp-proxy",
-      "passed": true,
-      "details": "smtp-proxy on oci-mail: Up 2 hours (none)",
-      "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
-    },
-    {
       "name": "Container snappymail/snappymail",
-      "passed": true,
-      "details": "snappymail on oci-mail: Up 2 hours (healthy) (healthy)",
+      "passed": false,
+      "details": "snappymail on oci-mail: VM unreachable",
       "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
+      "error": "VM unreachable",
+      "severity": "Warning"
     },
     {
       "name": "Container stalwart/stalwart",
-      "passed": true,
-      "details": "stalwart on oci-mail: Up 2 hours (none)",
+      "passed": false,
+      "details": "stalwart on oci-mail: VM unreachable",
       "duration_ms": 0,
-      "error": null,
+      "error": "VM unreachable",
       "severity": "Warning"
     },
     {
       "name": "Container syslog-forwarder/syslog-forwarder",
-      "passed": true,
-      "details": "syslog-forwarder on oci-mail: Up 2 hours (healthy) (healthy)",
+      "passed": false,
+      "details": "syslog-forwarder on oci-mail: VM unreachable",
       "duration_ms": 0,
-      "error": null,
-      "severity": "Info"
+      "error": "VM unreachable",
+      "severity": "Warning"
     },
     {
       "name": "Container umami/umami",
@@ -858,285 +690,51 @@
     },
     {
       "name": "Container vaultwarden/vaultwarden",
-      "passed": false,
-      "details": "vaultwarden on gcp-proxy: VM unreachable",
+      "passed": true,
+      "details": "vaultwarden on gcp-proxy: Up 18 minutes (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "VM unreachable",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container windmill/windmill-server",
-      "passed": false,
-      "details": "windmill-server on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "windmill-server on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container windmill/windmill-db",
-      "passed": false,
-      "details": "windmill-db on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "windmill-db on oci-apps: Up 17 hours (healthy) (healthy)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Container windmill/windmill-worker",
-      "passed": false,
-      "details": "windmill-worker on oci-apps: Exited (255) 7 hours ago (exited)",
+      "passed": true,
+      "details": "windmill-worker on oci-apps: Up 17 hours (none)",
       "duration_ms": 0,
-      "error": "container down: Exited (255) 7 hours ago",
-      "severity": "Critical"
-    }
-  ],
-  "public_urls": [
-    {
-      "name": "Public auth.diegonmarcos.com",
-      "passed": true,
-      "details": "auth.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 9510,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public git.diegonmarcos.com",
-      "passed": true,
-      "details": "git.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
-      "duration_ms": 9653,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public api.diegonmarcos.com/c3-api",
-      "passed": true,
-      "details": "api.diegonmarcos.com/c3-api: HTTPS=404 AUTH=404 (no-auth=404, auth=404)",
-      "duration_ms": 3850,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public mcp.diegonmarcos.com/c3-infra-mcp",
-      "passed": true,
-      "details": "mcp.diegonmarcos.com/c3-infra-mcp: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3514,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public api.diegonmarcos.com/services",
-      "passed": true,
-      "details": "api.diegonmarcos.com/services: HTTPS=404 AUTH=404 (no-auth=404, auth=404)",
-      "duration_ms": 3830,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public proxy.diegonmarcos.com",
-      "passed": true,
-      "details": "proxy.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
-      "duration_ms": 10620,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public ide.diegonmarcos.com",
-      "passed": true,
-      "details": "ide.diegonmarcos.com: HTTPS=302 AUTH=502 (no-auth=302, auth=502)",
-      "duration_ms": 9562,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public api.diegonmarcos.com",
-      "passed": true,
-      "details": "api.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3875,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public workflows.diegonmarcos.com",
-      "passed": true,
-      "details": "workflows.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
-      "duration_ms": 9659,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public logs.diegonmarcos.com",
-      "passed": true,
-      "details": "logs.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3855,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public pad.diegonmarcos.com",
-      "passed": true,
-      "details": "pad.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3516,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public files.diegonmarcos.com",
-      "passed": true,
-      "details": "files.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3512,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public git.diegonmarcos.com",
-      "passed": true,
-      "details": "git.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
-      "duration_ms": 9663,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public sheets.diegonmarcos.com",
-      "passed": true,
-      "details": "sheets.diegonmarcos.com: HTTPS=302 AUTH=502 (no-auth=302, auth=502)",
-      "duration_ms": 9594,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public doc.diegonmarcos.com",
-      "passed": true,
-      "details": "doc.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3516,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public dns.internal",
-      "passed": false,
-      "details": "dns.internal: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://dns.internal/), auth=0)",
-      "duration_ms": 89,
-      "error": "HTTPS err: error sending request for url (https://dns.internal/) auth 0",
-      "severity": "Warning"
-    },
-    {
-      "name": "Public grafana.diegonmarcos.com",
-      "passed": true,
-      "details": "grafana.diegonmarcos.com: HTTPS=302 AUTH=502 (no-auth=302, auth=502)",
-      "duration_ms": 9564,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public analytics.diegonmarcos.com",
-      "passed": true,
-      "details": "analytics.diegonmarcos.com: HTTPS=302 AUTH=503 (no-auth=302, auth=503)",
-      "duration_ms": 9710,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public chat.diegonmarcos.com",
-      "passed": true,
-      "details": "chat.diegonmarcos.com: HTTPS=302 AUTH=502 (no-auth=302, auth=502)",
-      "duration_ms": 9579,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public db.diegonmarcos.com",
-      "passed": true,
-      "details": "db.diegonmarcos.com: HTTPS=302 AUTH=502 (no-auth=302, auth=502)",
-      "duration_ms": 9585,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public rss.diegonmarcos.com",
-      "passed": true,
-      "details": "rss.diegonmarcos.com: HTTPS=302 AUTH=401 (no-auth=302, auth=401)",
-      "duration_ms": 9506,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public photos.diegonmarcos.com",
-      "passed": true,
-      "details": "photos.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3895,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public cal.diegonmarcos.com",
-      "passed": true,
-      "details": "cal.diegonmarcos.com: HTTPS=302 AUTH=502 (no-auth=302, auth=502)",
-      "duration_ms": 9601,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public slides.diegonmarcos.com",
-      "passed": true,
-      "details": "slides.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3811,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public smtp.diegonmarcos.com",
-      "passed": true,
-      "details": "smtp.diegonmarcos.com: HTTPS=404 AUTH=404 (no-auth=404, auth=404)",
-      "duration_ms": 4198,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public webmail.diegonmarcos.com",
-      "passed": true,
-      "details": "webmail.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 3851,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public mail.diegonmarcos.com",
-      "passed": true,
-      "details": "mail.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
-      "duration_ms": 9792,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public analytics.diegonmarcos.com",
-      "passed": true,
-      "details": "analytics.diegonmarcos.com: HTTPS=302 AUTH=503 (no-auth=302, auth=503)",
-      "duration_ms": 9685,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public vault.diegonmarcos.com",
-      "passed": true,
-      "details": "vault.diegonmarcos.com: HTTPS=0 AUTH=200 (no-auth=err: error sending request for url (https://vault.diegonmarcos.com/), auth=200)",
-      "duration_ms": 12373,
-      "error": null,
-      "severity": "Info"
-    },
-    {
-      "name": "Public windmill.diegonmarcos.com",
-      "passed": true,
-      "details": "windmill.diegonmarcos.com: HTTPS=302 AUTH=502 (no-auth=302, auth=502)",
-      "duration_ms": 9606,
       "error": null,
       "severity": "Info"
     }
   ],
   "private_urls": [
     {
+      "name": "Private alerts-api",
+      "passed": false,
+      "details": "alerts-api.app (10.0.0.4:5050) TCP=fail HTTP=fail [tcp-fail]",
+      "duration_ms": 544,
+      "error": "TCP=false HTTP=tcp-fail",
+      "severity": "Warning"
+    },
+    {
       "name": "Private authelia",
       "passed": true,
       "details": "authelia.app (10.0.0.1:9091) TCP=ok HTTP=ok [200]",
-      "duration_ms": 562,
+      "duration_ms": 555,
       "error": null,
       "severity": "Info"
     },
@@ -1144,23 +742,23 @@
       "name": "Private backup-gitea",
       "passed": true,
       "details": "backup-gitea.app (10.0.0.6:3002) TCP=ok HTTP=ok [200]",
-      "duration_ms": 895,
+      "duration_ms": 889,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "Private c3-infra-api",
-      "passed": false,
-      "details": "c3-infra-api.app (10.0.0.6:8081) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "c3-infra-api.app (10.0.0.6:8081) TCP=ok HTTP=ok [404]",
+      "duration_ms": 886,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private c3-infra-mcp",
       "passed": true,
       "details": "c3-infra-mcp.app (10.0.0.6:3100) TCP=ok HTTP=ok [404]",
-      "duration_ms": 897,
+      "duration_ms": 886,
       "error": null,
       "severity": "Info"
     },
@@ -1168,63 +766,63 @@
       "name": "Private c3-services-api",
       "passed": false,
       "details": "c3-services-api.app (10.0.0.6:8082) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
+      "duration_ms": 392,
       "error": "TCP=false HTTP=tcp-fail",
       "severity": "Warning"
     },
     {
       "name": "Private c3-services-mcp",
-      "passed": false,
-      "details": "c3-services-mcp.app (10.0.0.6:3101) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "c3-services-mcp.app (10.0.0.6:3101) TCP=ok HTTP=ok [404]",
+      "duration_ms": 896,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private caddy",
       "passed": true,
       "details": "caddy.app (10.0.0.1:443) TCP=ok HTTP=ok [400]",
-      "duration_ms": 3221,
+      "duration_ms": 420,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "Private cloud-cgc-mcp",
-      "passed": false,
-      "details": "cloud-cgc-mcp.app (10.0.0.6:3105) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "cloud-cgc-mcp.app (10.0.0.6:3105) TCP=ok HTTP=ok [404]",
+      "duration_ms": 894,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private cloud-spec",
-      "passed": false,
-      "details": "c3-spec.app (10.0.0.6:3080) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "c3-spec.app (10.0.0.6:3080) TCP=ok HTTP=ok [200]",
+      "duration_ms": 896,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private code-server",
-      "passed": false,
-      "details": "code-server.app (10.0.0.6:8443) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "code-server.app (10.0.0.6:8443) TCP=ok HTTP=ok [302]",
+      "duration_ms": 909,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private crawlee-cloud",
-      "passed": false,
-      "details": "crawlee.app (10.0.0.6:3000) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "crawlee.app (10.0.0.6:3000) TCP=ok HTTP=ok [404]",
+      "duration_ms": 905,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private dagu",
       "passed": true,
       "details": "dagu.app (10.0.0.3:8070) TCP=ok HTTP=ok [200]",
-      "duration_ms": 1107,
+      "duration_ms": 1018,
       "error": null,
       "severity": "Info"
     },
@@ -1232,23 +830,31 @@
       "name": "Private dozzle",
       "passed": true,
       "details": "dozzle.app (10.0.0.4:9999) TCP=ok HTTP=ok [200]",
-      "duration_ms": 3329,
+      "duration_ms": 884,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "Private etherpad",
-      "passed": false,
-      "details": "etherpad.app (10.0.0.6:3012) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "etherpad.app (10.0.0.6:3012) TCP=ok HTTP=ok [200]",
+      "duration_ms": 909,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private filebrowser",
+      "passed": true,
+      "details": "filebrowser.app (10.0.0.6:3015) TCP=ok HTTP=ok [200]",
+      "duration_ms": 902,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Private fluent-bit",
       "passed": false,
-      "details": "filebrowser.app (10.0.0.6:3015) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
+      "details": "fluent-bit.app (10.0.0.4:2020) TCP=fail HTTP=fail [tcp-fail]",
+      "duration_ms": 573,
       "error": "TCP=false HTTP=tcp-fail",
       "severity": "Warning"
     },
@@ -1256,103 +862,103 @@
       "name": "Private gitea",
       "passed": false,
       "details": "gitea.app (10.0.0.6:3017) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
+      "duration_ms": 392,
       "error": "TCP=false HTTP=tcp-fail",
       "severity": "Warning"
     },
     {
       "name": "Private google-workspace-mcp",
-      "passed": false,
-      "details": "g-workspace-mcp.app (10.0.0.6:3104) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "g-workspace-mcp.app (10.0.0.6:3104) TCP=ok HTTP=ok [200]",
+      "duration_ms": 909,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private grist",
-      "passed": false,
-      "details": "grist.app (10.0.0.6:3011) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "grist.app (10.0.0.6:3011) TCP=ok HTTP=ok [200]",
+      "duration_ms": 906,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private hedgedoc",
-      "passed": false,
-      "details": "hedgedoc.app (10.0.0.6:3018) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 397,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "hedgedoc.app (10.0.0.6:3018) TCP=ok HTTP=ok [200]",
+      "duration_ms": 887,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private hickory-dns",
-      "passed": false,
-      "details": "hickory-dns.app (10.0.0.1:53) TCP=ok HTTP=fail [err: error sending request for url (http://10.0.0.1:53/)]",
-      "duration_ms": 5676,
-      "error": "TCP=true HTTP=err: error sending request for url (http://10.0.0.1:53/)",
-      "severity": "Warning"
+      "passed": true,
+      "details": "hickory-dns.app (10.0.0.1:53) TCP=ok TCP-ONLY=ok [tcp-only (non-HTTP protocol)]",
+      "duration_ms": 281,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private introspect-proxy",
       "passed": true,
       "details": "introspect-proxy.app (10.0.0.1:4182) TCP=ok HTTP=ok [404]",
-      "duration_ms": 570,
+      "duration_ms": 560,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "Private lgtm",
-      "passed": false,
-      "details": "grafana.app (10.0.0.6:3200) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 396,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "grafana.app (10.0.0.6:3200) TCP=ok HTTP=ok [302]",
+      "duration_ms": 902,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private mail-mcp",
-      "passed": false,
-      "details": "mail-mcp.app (10.0.0.6:3103) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 396,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "mail-mcp.app (10.0.0.6:3103) TCP=ok HTTP=ok [404]",
+      "duration_ms": 902,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private matomo",
       "passed": false,
       "details": "matomo.app (10.0.0.4:8080) TCP=ok HTTP=fail [503]",
-      "duration_ms": 1785,
+      "duration_ms": 914,
       "error": "TCP=true HTTP=503",
       "severity": "Warning"
     },
     {
       "name": "Private mattermost-bots",
-      "passed": false,
-      "details": "mattermost.app (10.0.0.6:8065) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 396,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "mattermost.app (10.0.0.6:8065) TCP=ok HTTP=ok [200]",
+      "duration_ms": 898,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private mattermost-mcp",
-      "passed": false,
-      "details": "mattermost-mcp.app (10.0.0.6:3102) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 396,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "mattermost-mcp.app (10.0.0.6:3102) TCP=ok HTTP=ok [404]",
+      "duration_ms": 905,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private nocodb",
-      "passed": false,
-      "details": "nocodb.app (10.0.0.6:8085) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 396,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "nocodb.app (10.0.0.6:8085) TCP=ok HTTP=ok [200]",
+      "duration_ms": 910,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private ntfy",
       "passed": true,
       "details": "ntfy.app (10.0.0.1:8090) TCP=ok HTTP=ok [200]",
-      "duration_ms": 569,
+      "duration_ms": 568,
       "error": null,
       "severity": "Info"
     },
@@ -1360,55 +966,71 @@
       "name": "Private ollama",
       "passed": false,
       "details": "ollama.app (10.0.0.8:11434) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 3149,
+      "duration_ms": 3152,
       "error": "TCP=false HTTP=tcp-fail",
       "severity": "Warning"
     },
     {
       "name": "Private ollama-hai",
-      "passed": false,
-      "details": "ollama-hai.app (10.0.0.6:11435) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 399,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "ollama-hai.app (10.0.0.6:11435) TCP=ok HTTP=ok [200]",
+      "duration_ms": 902,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private photoprism",
       "passed": false,
       "details": "photoprism.app (10.0.0.6:3013) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 399,
+      "duration_ms": 400,
       "error": "TCP=false HTTP=tcp-fail",
       "severity": "Warning"
+    },
+    {
+      "name": "Private photos-webhook",
+      "passed": true,
+      "details": "photos-webhook.app (10.0.0.6:5002) TCP=ok HTTP=ok [404]",
+      "duration_ms": 1061,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private radicale",
-      "passed": false,
-      "details": "radicale.app (10.0.0.6:5232) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 399,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "radicale.app (10.0.0.6:5232) TCP=ok HTTP=ok [302]",
+      "duration_ms": 908,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private redis",
-      "passed": false,
-      "details": "redis.app (10.0.0.1:6379) TCP=ok HTTP=fail [err: error sending request for url (http://10.0.0.1:6379/)]",
-      "duration_ms": 559,
-      "error": "TCP=true HTTP=err: error sending request for url (http://10.0.0.1:6379/)",
-      "severity": "Warning"
+      "passed": true,
+      "details": "redis.app (10.0.0.1:6379) TCP=ok TCP-ONLY=ok [tcp-only (non-HTTP protocol)]",
+      "duration_ms": 291,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private revealmd",
-      "passed": false,
-      "details": "revealmd.app (10.0.0.6:3014) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 399,
-      "error": "TCP=false HTTP=tcp-fail",
-      "severity": "Warning"
+      "passed": true,
+      "details": "revealmd.app (10.0.0.6:3014) TCP=ok HTTP=ok [200]",
+      "duration_ms": 906,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Private rig-agentic-sonn-14bq8",
+      "passed": true,
+      "details": "rig-agentic-sonn-14bq8.app (10.0.0.6:8090) TCP=ok HTTP=ok [404]",
+      "duration_ms": 1045,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private smtp-proxy",
       "passed": true,
       "details": "smtp-proxy.app (10.0.0.3:8080) TCP=ok HTTP=ok [404]",
-      "duration_ms": 1106,
+      "duration_ms": 1021,
       "error": null,
       "severity": "Info"
     },
@@ -1416,7 +1038,7 @@
       "name": "Private snappymail",
       "passed": true,
       "details": "snappymail.app (10.0.0.3:8888) TCP=ok HTTP=ok [200]",
-      "duration_ms": 1106,
+      "duration_ms": 1027,
       "error": null,
       "severity": "Info"
     },
@@ -1424,7 +1046,7 @@
       "name": "Private stalwart",
       "passed": false,
       "details": "stalwart.app (10.0.0.3:443) TCP=ok HTTP=fail [err: error sending request for url (http://10.0.0.3:443/)]",
-      "duration_ms": 995,
+      "duration_ms": 1017,
       "error": "TCP=true HTTP=err: error sending request for url (http://10.0.0.3:443/)",
       "severity": "Warning"
     },
@@ -1432,51 +1054,293 @@
       "name": "Private umami",
       "passed": true,
       "details": "umami.app (10.0.0.4:3006) TCP=ok HTTP=ok [200]",
-      "duration_ms": 2094,
+      "duration_ms": 914,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "Private vaultwarden",
-      "passed": false,
-      "details": "vaultwarden.app (10.0.0.1:8880) TCP=ok HTTP=fail [err: error sending request for url (http://10.0.0.1:8880/)]",
-      "duration_ms": 8290,
-      "error": "TCP=true HTTP=err: error sending request for url (http://10.0.0.1:8880/)",
-      "severity": "Warning"
+      "passed": true,
+      "details": "vaultwarden.app (10.0.0.1:8880) TCP=ok HTTP=ok [200]",
+      "duration_ms": 567,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Private windmill",
+      "passed": true,
+      "details": "windmill-app.app (10.0.0.6:8000) TCP=ok HTTP=ok [200]",
+      "duration_ms": 897,
+      "error": null,
+      "severity": "Info"
+    }
+  ],
+  "public_urls": [
+    {
+      "name": "Public auth.diegonmarcos.com",
+      "passed": true,
+      "details": "auth.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 1071,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public git.diegonmarcos.com",
+      "passed": true,
+      "details": "git.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1281,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public api.diegonmarcos.com/c3-api",
+      "passed": true,
+      "details": "api.diegonmarcos.com/c3-api: HTTPS=404 AUTH=404 (no-auth=404, auth=404)",
+      "duration_ms": 1135,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public mcp.diegonmarcos.com/c3-infra-mcp",
+      "passed": true,
+      "details": "mcp.diegonmarcos.com/c3-infra-mcp: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 937,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public api.diegonmarcos.com/services",
+      "passed": true,
+      "details": "api.diegonmarcos.com/services: HTTPS=404 AUTH=404 (no-auth=404, auth=404)",
+      "duration_ms": 1031,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public proxy.diegonmarcos.com",
+      "passed": true,
+      "details": "proxy.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1056,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public ide.diegonmarcos.com",
+      "passed": true,
+      "details": "ide.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1534,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public api.diegonmarcos.com",
+      "passed": true,
+      "details": "api.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 1066,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public workflows.diegonmarcos.com",
+      "passed": true,
+      "details": "workflows.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1298,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public logs.diegonmarcos.com",
+      "passed": true,
+      "details": "logs.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 998,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public pad.diegonmarcos.com",
+      "passed": true,
+      "details": "pad.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 971,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public files.diegonmarcos.com",
+      "passed": true,
+      "details": "files.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 1013,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public git.diegonmarcos.com",
+      "passed": true,
+      "details": "git.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1273,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public sheets.diegonmarcos.com",
+      "passed": true,
+      "details": "sheets.diegonmarcos.com: HTTPS=302 AUTH=401 (no-auth=302, auth=401)",
+      "duration_ms": 1297,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public doc.diegonmarcos.com",
+      "passed": true,
+      "details": "doc.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 982,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public dns.internal",
       "passed": false,
-      "details": "windmill-app.app (10.0.0.6:8000) TCP=fail HTTP=fail [tcp-fail]",
-      "duration_ms": 392,
-      "error": "TCP=false HTTP=tcp-fail",
+      "details": "dns.internal: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://dns.internal/), auth=0)",
+      "duration_ms": 187,
+      "error": "HTTPS err: error sending request for url (https://dns.internal/) auth 0",
       "severity": "Warning"
+    },
+    {
+      "name": "Public grafana.diegonmarcos.com",
+      "passed": true,
+      "details": "grafana.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1571,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public analytics.diegonmarcos.com",
+      "passed": true,
+      "details": "analytics.diegonmarcos.com: HTTPS=302 AUTH=503 (no-auth=302, auth=503)",
+      "duration_ms": 1311,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public chat.diegonmarcos.com",
+      "passed": true,
+      "details": "chat.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1321,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public db.diegonmarcos.com",
+      "passed": true,
+      "details": "db.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1323,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public rss.diegonmarcos.com",
+      "passed": true,
+      "details": "rss.diegonmarcos.com: HTTPS=302 AUTH=401 (no-auth=302, auth=401)",
+      "duration_ms": 1103,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public photos.diegonmarcos.com",
+      "passed": true,
+      "details": "photos.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 1139,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public cal.diegonmarcos.com",
+      "passed": true,
+      "details": "cal.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 2506,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public slides.diegonmarcos.com",
+      "passed": true,
+      "details": "slides.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 1057,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public smtp.diegonmarcos.com",
+      "passed": true,
+      "details": "smtp.diegonmarcos.com: HTTPS=404 AUTH=404 (no-auth=404, auth=404)",
+      "duration_ms": 1597,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public webmail.diegonmarcos.com",
+      "passed": true,
+      "details": "webmail.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 1136,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public mail.diegonmarcos.com",
+      "passed": true,
+      "details": "mail.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1498,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public analytics.diegonmarcos.com",
+      "passed": true,
+      "details": "analytics.diegonmarcos.com: HTTPS=302 AUTH=503 (no-auth=302, auth=503)",
+      "duration_ms": 1317,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public vault.diegonmarcos.com",
+      "passed": true,
+      "details": "vault.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
+      "duration_ms": 1071,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Public windmill.diegonmarcos.com",
+      "passed": true,
+      "details": "windmill.diegonmarcos.com: HTTPS=302 AUTH=200 (no-auth=302, auth=200)",
+      "duration_ms": 1340,
+      "error": null,
+      "severity": "Info"
     }
   ],
   "cross_checks": [
     {
-      "name": "Cross authelia: public up, container down",
-      "passed": false,
-      "details": "authelia: public URL responds but container is down — stale cache or wrong routing",
+      "name": "Cross authelia",
+      "passed": true,
+      "details": "authelia: container=ok public=ok private=ok",
       "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
-      "name": "Cross backup-gitea: public up, container down",
-      "passed": false,
-      "details": "backup-gitea: public URL responds but container is down — stale cache or wrong routing",
+      "name": "Cross backup-gitea",
+      "passed": true,
+      "details": "backup-gitea: container=ok public=ok private=ok",
       "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
-      "name": "Cross c3-infra-api: public up, container down",
-      "passed": false,
-      "details": "c3-infra-api: public URL responds but container is down — stale cache or wrong routing",
+      "name": "Cross c3-infra-api",
+      "passed": true,
+      "details": "c3-infra-api: container=ok public=ok private=ok",
       "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Cross c3-infra-mcp",
@@ -1487,44 +1351,36 @@
       "severity": "Info"
     },
     {
-      "name": "Cross c3-services-api: public up, container down",
-      "passed": false,
-      "details": "c3-services-api: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross caddy: public up, container down",
-      "passed": false,
-      "details": "caddy: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross code-server: public up, container down",
-      "passed": false,
-      "details": "code-server: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross crawlee-cloud: public up, container down",
-      "passed": false,
-      "details": "crawlee-cloud: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross dagu",
+      "name": "Cross caddy",
       "passed": true,
-      "details": "dagu: container=ok public=ok private=ok",
+      "details": "caddy: container=ok public=ok private=ok",
       "duration_ms": 0,
       "error": null,
       "severity": "Info"
+    },
+    {
+      "name": "Cross code-server",
+      "passed": true,
+      "details": "code-server: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross crawlee-cloud",
+      "passed": true,
+      "details": "crawlee-cloud: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross dagu: public up, container down",
+      "passed": false,
+      "details": "dagu: public URL responds but container is down — stale cache or wrong routing",
+      "duration_ms": 0,
+      "error": "stale routing: public responds but container down",
+      "severity": "Warning"
     },
     {
       "name": "Cross dozzle",
@@ -1535,116 +1391,124 @@
       "severity": "Info"
     },
     {
-      "name": "Cross etherpad: public up, container down",
-      "passed": false,
-      "details": "etherpad: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross filebrowser: public up, container down",
-      "passed": false,
-      "details": "filebrowser: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross gitea: public up, container down",
-      "passed": false,
-      "details": "gitea: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross grist: public up, container down",
-      "passed": false,
-      "details": "grist: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross hedgedoc: public up, container down",
-      "passed": false,
-      "details": "hedgedoc: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross lgtm: public up, container down",
-      "passed": false,
-      "details": "lgtm: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross mattermost-bots: public up, container down",
-      "passed": false,
-      "details": "mattermost-bots: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross nocodb: public up, container down",
-      "passed": false,
-      "details": "nocodb: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross ntfy: public up, container down",
-      "passed": false,
-      "details": "ntfy: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross photoprism: public up, container down",
-      "passed": false,
-      "details": "photoprism: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross radicale: public up, container down",
-      "passed": false,
-      "details": "radicale: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross revealmd: public up, container down",
-      "passed": false,
-      "details": "revealmd: public URL responds but container is down — stale cache or wrong routing",
-      "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
-    },
-    {
-      "name": "Cross smtp-proxy",
+      "name": "Cross etherpad",
       "passed": true,
-      "details": "smtp-proxy: container=ok public=ok private=ok",
+      "details": "etherpad: container=ok public=ok private=ok",
       "duration_ms": 0,
       "error": null,
       "severity": "Info"
     },
     {
-      "name": "Cross snappymail",
+      "name": "Cross filebrowser",
       "passed": true,
-      "details": "snappymail: container=ok public=ok private=ok",
+      "details": "filebrowser: container=ok public=ok private=ok",
       "duration_ms": 0,
       "error": null,
       "severity": "Info"
+    },
+    {
+      "name": "Cross grist",
+      "passed": true,
+      "details": "grist: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross hedgedoc",
+      "passed": true,
+      "details": "hedgedoc: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross hickory-dns: container up, public down",
+      "passed": false,
+      "details": "hickory-dns: containers healthy but public URL dns.internal unreachable — check Caddy/Cloudflare",
+      "duration_ms": 0,
+      "error": "routing issue: container OK but public URL fails",
+      "severity": "Warning"
+    },
+    {
+      "name": "Cross hickory-dns: private up, public down",
+      "passed": false,
+      "details": "hickory-dns: reachable via WG but public URL fails — Caddy/Cloudflare issue",
+      "duration_ms": 0,
+      "error": "reverse proxy issue",
+      "severity": "Warning"
+    },
+    {
+      "name": "Cross lgtm",
+      "passed": true,
+      "details": "lgtm: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross mattermost-bots",
+      "passed": true,
+      "details": "mattermost-bots: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross nocodb",
+      "passed": true,
+      "details": "nocodb: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross ntfy",
+      "passed": true,
+      "details": "ntfy: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross radicale",
+      "passed": true,
+      "details": "radicale: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross revealmd",
+      "passed": true,
+      "details": "revealmd: container=ok public=ok private=ok",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cross smtp-proxy: public up, container down",
+      "passed": false,
+      "details": "smtp-proxy: public URL responds but container is down — stale cache or wrong routing",
+      "duration_ms": 0,
+      "error": "stale routing: public responds but container down",
+      "severity": "Warning"
+    },
+    {
+      "name": "Cross snappymail: public up, container down",
+      "passed": false,
+      "details": "snappymail: public URL responds but container is down — stale cache or wrong routing",
+      "duration_ms": 0,
+      "error": "stale routing: public responds but container down",
+      "severity": "Warning"
+    },
+    {
+      "name": "Cross stalwart: public up, container down",
+      "passed": false,
+      "details": "stalwart: public URL responds but container is down — stale cache or wrong routing",
+      "duration_ms": 0,
+      "error": "stale routing: public responds but container down",
+      "severity": "Warning"
     },
     {
       "name": "Cross umami: public up, container down",
@@ -1655,20 +1519,20 @@
       "severity": "Warning"
     },
     {
-      "name": "Cross vaultwarden: public up, container down",
-      "passed": false,
-      "details": "vaultwarden: public URL responds but container is down — stale cache or wrong routing",
+      "name": "Cross vaultwarden",
+      "passed": true,
+      "details": "vaultwarden: container=ok public=ok private=ok",
       "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
-      "name": "Cross windmill: public up, container down",
-      "passed": false,
-      "details": "windmill: public URL responds but container is down — stale cache or wrong routing",
+      "name": "Cross windmill",
+      "passed": true,
+      "details": "windmill: container=ok public=ok private=ok",
       "duration_ms": 0,
-      "error": "stale routing: public responds but container down",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     }
   ],
   "external": [
@@ -1676,7 +1540,7 @@
       "name": "Cloudflare DNS A",
       "passed": true,
       "details": "dig diegonmarcos.com @1.1.1.1 -> 35.226.147.64",
-      "duration_ms": 22,
+      "duration_ms": 44,
       "error": null,
       "severity": "Critical"
     },
@@ -1684,23 +1548,23 @@
       "name": "GHCR registry",
       "passed": true,
       "details": "ghcr.io/v2/ -> 401",
-      "duration_ms": 306,
+      "duration_ms": 366,
       "error": null,
       "severity": "Warning"
     },
     {
       "name": "GHA workflows",
-      "passed": false,
-      "details": "5 recent runs, 2 failed",
-      "duration_ms": 704,
-      "error": "5 recent runs, 2 failed",
+      "passed": true,
+      "details": "5 recent runs, 0 failed",
+      "duration_ms": 804,
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "GitHub API",
       "passed": true,
       "details": "api.github.com/zen -> 403",
-      "duration_ms": 152,
+      "duration_ms": 145,
       "error": null,
       "severity": "Info"
     },
@@ -1708,7 +1572,7 @@
       "name": "MX record",
       "passed": true,
       "details": "MX diegonmarcos.com -> 22 route1.mx.cloudflare.net., 85 route2.mx.cloudflare.net., 97 route3.mx.cloudflare.net.",
-      "duration_ms": 16,
+      "duration_ms": 44,
       "error": null,
       "severity": "Warning"
     },
@@ -1724,7 +1588,7 @@
       "name": "DKIM dkim._domainkey",
       "passed": true,
       "details": "DKIM: present",
-      "duration_ms": 20,
+      "duration_ms": 24,
       "error": null,
       "severity": "Warning"
     },
@@ -1732,7 +1596,7 @@
       "name": "SPF record",
       "passed": true,
       "details": "SPF: v=spf1 ip4:130.110.251.193 include:_spf.mx.cloudflare.net include:amazonses.com include:eu.rp.oracleemaildelivery.com -all",
-      "duration_ms": 19,
+      "duration_ms": 16,
       "error": null,
       "severity": "Warning"
     },
@@ -1740,7 +1604,7 @@
       "name": "DMARC record",
       "passed": true,
       "details": "DMARC: v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 24,
+      "duration_ms": 40,
       "error": null,
       "severity": "Warning"
     },
@@ -1748,240 +1612,24 @@
       "name": "Resend API",
       "passed": true,
       "details": "api.resend.com -> 200",
-      "duration_ms": 429,
+      "duration_ms": 203,
       "error": null,
       "severity": "Info"
     }
   ],
   "drift": [
     {
-      "name": "Drift missing: oci-apps/quant_full_db",
-      "passed": false,
-      "details": "quant_full_db declared in topology but not found in docker on oci-apps",
+      "name": "Drift exited: oci-apps/crawlee_minio_init",
+      "passed": true,
+      "details": "crawlee_minio_init on oci-apps exited cleanly [completed init job]",
       "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/backup-bup",
-      "passed": false,
-      "details": "backup-bup declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/sauron-central",
-      "passed": false,
-      "details": "sauron-central declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/kg-graph",
-      "passed": false,
-      "details": "kg-graph declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/rig-agentic-hai-1.5bq4",
-      "passed": false,
-      "details": "rig-agentic-hai-1.5bq4 declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/quant_full_engine",
-      "passed": false,
-      "details": "quant_full_engine declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/quant_full_ml",
-      "passed": false,
-      "details": "quant_full_ml declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/quant_full_analytics",
-      "passed": false,
-      "details": "quant_full_analytics declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/backup-borg",
-      "passed": false,
-      "details": "backup-borg declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/c3-services-api",
-      "passed": false,
-      "details": "c3-services-api declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/quant_full_risk",
-      "passed": false,
-      "details": "quant_full_risk declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift missing: oci-apps/quant_full_research",
-      "passed": false,
-      "details": "quant_full_research declared in topology but not found in docker on oci-apps",
-      "duration_ms": 0,
-      "error": "container missing from VM",
-      "severity": "Critical"
-    },
-    {
-      "name": "Drift unmanaged: oci-mail/introspect-proxy",
-      "passed": false,
-      "details": "introspect-proxy running on oci-mail but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-mail/fluent-bit",
-      "passed": false,
-      "details": "fluent-bit running on oci-mail but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-mail/palantir-cron",
-      "passed": false,
-      "details": "palantir-cron running on oci-mail but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/crawlee_minio_init",
-      "passed": false,
-      "details": "crawlee_minio_init running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/rig-agentic",
-      "passed": false,
-      "details": "rig-agentic running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/rig-agentic-hai",
-      "passed": false,
-      "details": "rig-agentic-hai running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/photos-db",
-      "passed": false,
-      "details": "photos-db running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/bup-server",
-      "passed": false,
-      "details": "bup-server running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/siem-api",
-      "passed": false,
-      "details": "siem-api running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/rig",
-      "passed": false,
-      "details": "rig running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/syslog-central",
-      "passed": false,
-      "details": "syslog-central running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/borg-server",
-      "passed": false,
-      "details": "borg-server running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift unmanaged: oci-apps/surrealdb",
-      "passed": false,
-      "details": "surrealdb running on oci-apps but not declared in topology",
-      "duration_ms": 0,
-      "error": "unmanaged container",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/windmill-worker",
-      "passed": false,
-      "details": "windmill-worker on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/windmill-server",
-      "passed": false,
-      "details": "windmill-server on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/windmill-db",
-      "passed": false,
-      "details": "windmill-db on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Drift exited: oci-apps/rig",
       "passed": false,
-      "details": "rig on oci-apps is exited: Exited (101) 9 hours ago",
+      "details": "rig on oci-apps is exited: Exited (101) 17 hours ago",
       "duration_ms": 0,
       "error": "container exited",
       "severity": "Warning"
@@ -1989,191 +1637,7 @@
     {
       "name": "Drift exited: oci-apps/rig-agentic",
       "passed": false,
-      "details": "rig-agentic on oci-apps is exited: Exited (101) 9 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/photoprism_app",
-      "passed": false,
-      "details": "photoprism_app on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/photoprism_mariadb",
-      "passed": false,
-      "details": "photoprism_mariadb on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/photoprism_rclone",
-      "passed": false,
-      "details": "photoprism_rclone on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/mattermost-bots",
-      "passed": false,
-      "details": "mattermost-bots on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/c3-infra-api",
-      "passed": false,
-      "details": "c3-infra-api on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/lgtm_grafana",
-      "passed": false,
-      "details": "lgtm_grafana on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/lgtm_loki",
-      "passed": false,
-      "details": "lgtm_loki on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/lgtm_mimir",
-      "passed": false,
-      "details": "lgtm_mimir on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/lgtm_tempo",
-      "passed": false,
-      "details": "lgtm_tempo on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/c3-services-mcp",
-      "passed": false,
-      "details": "c3-services-mcp on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/ollama-hai",
-      "passed": false,
-      "details": "ollama-hai on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/mattermost",
-      "passed": false,
-      "details": "mattermost on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/mattermost-postgres",
-      "passed": false,
-      "details": "mattermost-postgres on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/mattermost-mcp",
-      "passed": false,
-      "details": "mattermost-mcp on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/mail-mcp",
-      "passed": false,
-      "details": "mail-mcp on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/hedgedoc_app",
-      "passed": false,
-      "details": "hedgedoc_app on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/hedgedoc_postgres",
-      "passed": false,
-      "details": "hedgedoc_postgres on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/etherpad_app",
-      "passed": false,
-      "details": "etherpad_app on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/etherpad_postgres",
-      "passed": false,
-      "details": "etherpad_postgres on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/google-workspace-mcp",
-      "passed": false,
-      "details": "google-workspace-mcp on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/quant_light_db",
-      "passed": false,
-      "details": "quant_light_db on oci-apps is exited: Exited (1) 10 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/nocodb",
-      "passed": false,
-      "details": "nocodb on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/nocodb-db",
-      "passed": false,
-      "details": "nocodb-db on oci-apps is exited: Exited (255) 7 hours ago",
+      "details": "rig-agentic on oci-apps is exited: Exited (101) 17 hours ago",
       "duration_ms": 0,
       "error": "container exited",
       "severity": "Warning"
@@ -2181,215 +1645,7 @@
     {
       "name": "Drift exited: oci-apps/surrealdb",
       "passed": false,
-      "details": "surrealdb on oci-apps is exited: Exited (2) 10 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/crawlee_runner",
-      "passed": false,
-      "details": "crawlee_runner on oci-apps is exited: Exited (1) 18 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/crawlee_api",
-      "passed": false,
-      "details": "crawlee_api on oci-apps is exited: Exited (1) 18 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/crawlee_minio_init",
-      "passed": false,
-      "details": "crawlee_minio_init on oci-apps is exited: Exited (0) 10 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/crawlee_minio",
-      "passed": false,
-      "details": "crawlee_minio on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/crawlee_db",
-      "passed": false,
-      "details": "crawlee_db on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/crawlee_scheduler",
-      "passed": false,
-      "details": "crawlee_scheduler on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/cloud-cgc-mcp",
-      "passed": false,
-      "details": "cloud-cgc-mcp on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/gitea",
-      "passed": false,
-      "details": "gitea on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/bup-server",
-      "passed": false,
-      "details": "bup-server on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/borg-server",
-      "passed": false,
-      "details": "borg-server on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/cloud-spec",
-      "passed": false,
-      "details": "cloud-spec on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/syslog-central",
-      "passed": false,
-      "details": "syslog-central on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/siem-api",
-      "passed": false,
-      "details": "siem-api on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/crawlee_dashboard",
-      "passed": false,
-      "details": "crawlee_dashboard on oci-apps is exited: Exited (255) 16 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/crawlee_redis",
-      "passed": false,
-      "details": "crawlee_redis on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/rig-agentic-sonn-14bq8",
-      "passed": false,
-      "details": "rig-agentic-sonn-14bq8 on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/rig-agentic-hai",
-      "passed": false,
-      "details": "rig-agentic-hai on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/photos-webhook",
-      "passed": false,
-      "details": "photos-webhook on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/photos-db",
-      "passed": false,
-      "details": "photos-db on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/quant_light_engine",
-      "passed": false,
-      "details": "quant_light_engine on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/quant_light_research",
-      "passed": false,
-      "details": "quant_light_research on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/revealmd_app",
-      "passed": false,
-      "details": "revealmd_app on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/radicale",
-      "passed": false,
-      "details": "radicale on oci-apps is exited: Exited (255) 16 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/grist_app",
-      "passed": false,
-      "details": "grist_app on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/code-server",
-      "passed": false,
-      "details": "code-server on oci-apps is exited: Exited (255) 7 hours ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-apps/filebrowser_app",
-      "passed": false,
-      "details": "filebrowser_app on oci-apps is exited: Exited (255) 7 hours ago",
+      "details": "surrealdb on oci-apps is exited: Exited (2) 17 hours ago",
       "duration_ms": 0,
       "error": "container exited",
       "severity": "Warning"
@@ -2398,14 +1654,6 @@
       "name": "Drift exited: oci-analytics/umami-setup",
       "passed": false,
       "details": "umami-setup on oci-analytics is exited: Exited (1) About an hour ago",
-      "duration_ms": 0,
-      "error": "container exited",
-      "severity": "Warning"
-    },
-    {
-      "name": "Drift exited: oci-mail/introspect-proxy",
-      "passed": false,
-      "details": "introspect-proxy on oci-mail is exited: Exited (255) 2 hours ago",
       "duration_ms": 0,
       "error": "container exited",
       "severity": "Warning"
@@ -2595,6 +1843,22 @@
       "severity": "Info"
     },
     {
+      "name": "Drift no-port-in-build: alerts-api",
+      "passed": false,
+      "details": "alerts-api has port in topology but missing ports.app in build.json",
+      "duration_ms": 0,
+      "error": "build.json missing ports.app",
+      "severity": "Info"
+    },
+    {
+      "name": "Drift no-port-in-build: fluent-bit",
+      "passed": false,
+      "details": "fluent-bit has port in topology but missing ports.app in build.json",
+      "duration_ms": 0,
+      "error": "build.json missing ports.app",
+      "severity": "Info"
+    },
+    {
       "name": "Drift no-port-in-build: hickory-dns",
       "passed": false,
       "details": "hickory-dns has port in topology but missing ports.app in build.json",
@@ -2609,46 +1873,62 @@
       "duration_ms": 0,
       "error": "build.json missing ports.app",
       "severity": "Info"
+    },
+    {
+      "name": "Drift no-port-in-build: photos-webhook",
+      "passed": false,
+      "details": "photos-webhook has port in topology but missing ports.app in build.json",
+      "duration_ms": 0,
+      "error": "build.json missing ports.app",
+      "severity": "Info"
+    },
+    {
+      "name": "Drift no-port-in-build: rig-agentic-sonn-14bq8",
+      "passed": false,
+      "details": "rig-agentic-sonn-14bq8 has port in topology but missing ports.app in build.json",
+      "duration_ms": 0,
+      "error": "build.json missing ports.app",
+      "severity": "Info"
     }
   ],
   "security": [
     {
       "name": "TLS cert diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 23 11:05:14 2026 GMT (85d)",
-      "duration_ms": 874,
+      "details": "expires Jun 23 11:05:14 2026 GMT (84d)",
+      "duration_ms": 638,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "TLS cert api.diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 23 11:05:21 2026 GMT (85d)",
-      "duration_ms": 872,
+      "details": "expires Jun 23 11:05:21 2026 GMT (84d)",
+      "duration_ms": 605,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "TLS cert auth.diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 23 11:05:21 2026 GMT (85d)",
-      "duration_ms": 880,
+      "details": "expires Jun 23 11:05:21 2026 GMT (84d)",
+      "duration_ms": 651,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "TLS cert mail.diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 23 11:05:21 2026 GMT (85d)",
-      "duration_ms": 886,
+      "details": "expires Jun 23 11:05:21 2026 GMT (84d)",
+      "duration_ms": 630,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "TLS cert vault.diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 23 11:05:21 2026 GMT (85d)",
-      "duration_ms": 912,
+      "details": "expires Jun 23 11:05:21 2026 GMT (84d)",
+      "duration_ms": 651,
       "error": null,
       "severity": "Info"
     },
@@ -2656,7 +1936,7 @@
       "name": "DMARC policy",
       "passed": true,
       "details": "DMARC: v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 72,
+      "duration_ms": 41,
       "error": null,
       "severity": "Info"
     },
@@ -2664,7 +1944,7 @@
       "name": "SPF strict (-all)",
       "passed": true,
       "details": "SPF: present (strict=-all)",
-      "duration_ms": 18,
+      "duration_ms": 45,
       "error": null,
       "severity": "Warning"
     },
@@ -2672,46 +1952,46 @@
       "name": "Authelia health",
       "passed": true,
       "details": "auth.diegonmarcos.com/api/health -> 200",
-      "duration_ms": 2515,
+      "duration_ms": 442,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "Firewall gcp-proxy",
       "passed": true,
-      "details": "gcp-proxy: no dangerous ports exposed",
-      "duration_ms": 3001,
+      "details": "gcp-proxy: no unexpected dangerous ports exposed",
+      "duration_ms": 3002,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "Firewall gcp-t4",
       "passed": true,
-      "details": "gcp-t4: no dangerous ports exposed",
-      "duration_ms": 3001,
+      "details": "gcp-t4: no unexpected dangerous ports exposed",
+      "duration_ms": 3002,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "Firewall oci-apps",
       "passed": true,
-      "details": "oci-apps: no dangerous ports exposed",
+      "details": "oci-apps: no unexpected dangerous ports exposed",
       "duration_ms": 3001,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "Firewall oci-mail",
-      "passed": false,
-      "details": "oci-mail: DANGEROUS ports open: 8080",
+      "passed": true,
+      "details": "oci-mail: no unexpected dangerous ports exposed",
       "duration_ms": 3001,
-      "error": "oci-mail: DANGEROUS ports open: 8080",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Firewall oci-analytics",
       "passed": true,
-      "details": "oci-analytics: no dangerous ports exposed",
+      "details": "oci-analytics: no unexpected dangerous ports exposed",
       "duration_ms": 3001,
       "error": null,
       "severity": "Info"
@@ -2720,70 +2000,81 @@
       "name": "SSH ports gcp-proxy",
       "passed": true,
       "details": "gcp-proxy: SSH:22=open Dropbear:2200=closed",
-      "duration_ms": 3220,
+      "duration_ms": 3164,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "SSH ports gcp-t4",
-      "passed": false,
-      "details": "gcp-t4: SSH:22=closed Dropbear:2200=closed",
-      "duration_ms": 6003,
-      "error": "no SSH access",
-      "severity": "Critical"
+      "passed": true,
+      "details": "gcp-t4: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected]",
+      "duration_ms": 3174,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "SSH ports oci-apps",
       "passed": true,
       "details": "oci-apps: SSH:22=open Dropbear:2200=closed",
-      "duration_ms": 3035,
+      "duration_ms": 3040,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "SSH ports oci-mail",
-      "passed": false,
-      "details": "oci-mail: SSH:22=closed Dropbear:2200=closed",
-      "duration_ms": 6002,
-      "error": "no SSH access",
-      "severity": "Critical"
+      "passed": true,
+      "details": "oci-mail: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected]",
+      "duration_ms": 6003,
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "SSH ports oci-analytics",
-      "passed": false,
-      "details": "oci-analytics: SSH:22=closed Dropbear:2200=closed",
+      "passed": true,
+      "details": "oci-analytics: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected]",
       "duration_ms": 6002,
-      "error": "no SSH access",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "Caddy TLS",
       "passed": true,
       "details": "proxy.diegonmarcos.com -> 302",
-      "duration_ms": 632,
+      "duration_ms": 693,
+      "error": null,
+      "severity": "Info"
+    }
+  ],
+  "email_e2e": [
+    {
+      "name": "Resend API key",
+      "passed": true,
+      "details": "not set (set RESEND_API_KEY to enable E2E email test)",
+      "duration_ms": 0,
       "error": null,
       "severity": "Info"
     }
   ],
   "summary": {
-    "total_checks": 343,
-    "passed": 93,
-    "failed": 250,
-    "warnings": 145,
-    "critical": 80
+    "total_checks": 254,
+    "passed": 195,
+    "failed": 59,
+    "warnings": 27,
+    "critical": 3
   },
   "timers": {
-    "L10_security": 31425,
-    "L8_external": 31425,
-    "L3_platform": 3336,
-    "L6_private_urls": 31425,
-    "L4-L10_parallel": 31425,
-    "L7_cross_checks": 0,
+    "L3_platform": 3633,
+    "L10_security": 26267,
+    "L11_email_e2e": 26267,
+    "L4-L11_parallel": 26267,
+    "L8_external": 26267,
     "L9_drift": 0,
-    "L1_self_check": 1239,
-    "L5_public_urls": 31425,
-    "TOTAL": 46149,
-    "L2_wg_mesh": 10141,
-    "L4_containers": 0
+    "L4_containers": 0,
+    "L5_private_urls": 26267,
+    "L6_public_urls": 26267,
+    "TOTAL": 41478,
+    "L7_cross_checks": 0,
+    "L2_wg_mesh": 9933,
+    "L1_self_check": 1639
   }
 }
