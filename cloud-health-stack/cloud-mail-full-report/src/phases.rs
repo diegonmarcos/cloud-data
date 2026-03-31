@@ -5,6 +5,142 @@ use crate::types::*;
 use std::time::Instant;
 
 // ═══════════════════════════════════════════════════════════════════════════
+// TIER 0: PATH CHECKER -- traces outbound + inbound mail paths, <5s
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// OUTBOUND: mail_send → Stalwart :465 → OCI relay :587 → (retry: AWS :587) → dest MX
+// INBOUND:  Resend → CF MX → CF Worker → smtp.diegonmarcos.com (HTTPS)
+//           → Caddy gcp-proxy → smtp-proxy oci-mail :8080 → Stalwart :25 → INBOX
+//
+
+pub async fn path_checker() -> Vec<Check> {
+    let client = http_client();
+    let mut checks = Vec::new();
+
+    // ── OUTBOUND PATH ──────────────────────────────────────────
+    // Step 1: Stalwart SMTPS :465 (submission)
+    let t = Instant::now();
+    let ok = tcp(MAIL_WG_IP, 465).await;
+    checks.push(Check {
+        name: "OUT→1 Stalwart :465 (SMTPS)".into(),
+        passed: ok,
+        details: format!("tcp {}:465 {}", MAIL_WG_IP, if ok { "OPEN" } else { "CLOSED" }),
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if ok { None } else { Some("Stalwart not accepting submissions".into()) },
+        severity: if ok { Severity::Info } else { Severity::Critical },
+    });
+
+    // Step 2: OCI relay :587 (STARTTLS)
+    let t = Instant::now();
+    let ok = tcp(OCI_RELAY_HOST, OCI_RELAY_PORT).await;
+    checks.push(Check {
+        name: "OUT→2 OCI relay :587".into(),
+        passed: ok,
+        details: format!("tcp {}:{} {}", OCI_RELAY_HOST, OCI_RELAY_PORT, if ok { "OPEN" } else { "CLOSED" }),
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if ok { None } else { Some("OCI SMTP relay unreachable".into()) },
+        severity: if ok { Severity::Info } else { Severity::Critical },
+    });
+
+    // Step 3: AWS relay :587 (fallback)
+    let t = Instant::now();
+    let ok = tcp(AWS_RELAY_HOST, AWS_RELAY_PORT).await;
+    checks.push(Check {
+        name: "OUT→3 AWS relay :587 (fallback)".into(),
+        passed: ok,
+        details: format!("tcp {}:{} {}", AWS_RELAY_HOST, AWS_RELAY_PORT, if ok { "OPEN" } else { "CLOSED" }),
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if ok { None } else { Some("AWS SMTP relay unreachable".into()) },
+        severity: if ok { Severity::Info } else { Severity::Warning },
+    });
+
+    // ── INBOUND PATH ───────────────────────────────────────────
+    // Step 1: Cloudflare MX records
+    let t = Instant::now();
+    let resolver = hickory_resolver();
+    let mx_ok = match resolver.mx_lookup(BASE_DOMAIN).await {
+        Ok(mx) => !mx.iter().next().is_none(),
+        Err(_) => false,
+    };
+    checks.push(Check {
+        name: "IN→1 Cloudflare MX".into(),
+        passed: mx_ok,
+        details: if mx_ok { "MX records present".into() } else { "no MX records".into() },
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if mx_ok { None } else { Some("MX DNS missing".into()) },
+        severity: if mx_ok { Severity::Info } else { Severity::Critical },
+    });
+
+    // Step 2: smtp.diegonmarcos.com HTTPS (CF Worker → Caddy)
+    let t = Instant::now();
+    let url = format!("https://{}/", SMTP_PROXY_DOMAIN);
+    let (_, code, detail) = http_get(&client, &url).await;
+    // smtp-proxy returns various codes, any non-timeout means the chain is alive
+    let ok = code > 0;
+    checks.push(Check {
+        name: "IN→2 smtp.diegonmarcos.com HTTPS".into(),
+        passed: ok,
+        details: format!("HTTP {} ({})", code, detail),
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if ok { None } else { Some("Caddy/smtp-proxy unreachable from internet".into()) },
+        severity: if ok { Severity::Info } else { Severity::Critical },
+    });
+
+    // Step 3: Caddy → Hickory DNS resolves smtp-proxy.app
+    let t = Instant::now();
+    let dns_ok = match resolver.lookup_ip("smtp-proxy.app.").await {
+        Ok(ips) => ips.iter().next().is_some(),
+        Err(_) => false,
+    };
+    checks.push(Check {
+        name: "IN→3 Hickory DNS smtp-proxy.app".into(),
+        passed: dns_ok,
+        details: if dns_ok { format!("→ {}", MAIL_WG_IP) } else { "NXDOMAIN".into() },
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if dns_ok { None } else { Some("Hickory DNS not resolving smtp-proxy.app".into()) },
+        severity: if dns_ok { Severity::Info } else { Severity::Critical },
+    });
+
+    // Step 4: smtp-proxy :8080 on oci-mail (via WG)
+    let t = Instant::now();
+    let ok = tcp(MAIL_WG_IP, SMTP_PROXY_PORT).await;
+    checks.push(Check {
+        name: "IN→4 smtp-proxy :8080 (oci-mail)".into(),
+        passed: ok,
+        details: format!("tcp {}:{} {}", MAIL_WG_IP, SMTP_PROXY_PORT, if ok { "OPEN" } else { "CLOSED" }),
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if ok { None } else { Some("smtp-proxy not running on oci-mail".into()) },
+        severity: if ok { Severity::Info } else { Severity::Critical },
+    });
+
+    // Step 5: Stalwart SMTP :25 on oci-mail (localhost relay from smtp-proxy)
+    let t = Instant::now();
+    let ok = tcp(MAIL_WG_IP, 25).await;
+    checks.push(Check {
+        name: "IN→5 Stalwart :25 (oci-mail)".into(),
+        passed: ok,
+        details: format!("tcp {}:25 {}", MAIL_WG_IP, if ok { "OPEN" } else { "CLOSED" }),
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if ok { None } else { Some("Stalwart SMTP not listening".into()) },
+        severity: if ok { Severity::Info } else { Severity::Critical },
+    });
+
+    // Step 6: IMAP :993 (delivery to INBOX)
+    let t = Instant::now();
+    let ok = tcp(MAIL_WG_IP, 993).await;
+    checks.push(Check {
+        name: "IN→6 IMAP :993 (INBOX)".into(),
+        passed: ok,
+        details: format!("tcp {}:993 {}", MAIL_WG_IP, if ok { "OPEN" } else { "CLOSED" }),
+        duration_ms: t.elapsed().as_millis() as u64,
+        error: if ok { None } else { Some("IMAP not accessible".into()) },
+        severity: if ok { Severity::Info } else { Severity::Critical },
+    });
+
+    checks
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // PHASE 0: INSTANT KPIs -- no SSH, <2s
 // ═══════════════════════════════════════════════════════════════════════════
 

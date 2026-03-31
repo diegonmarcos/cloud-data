@@ -49,6 +49,27 @@ async fn main() -> Result<()> {
     let mut timers: HashMap<String, u64> = HashMap::new();
 
     // ════════════════════════════════════════════════════════════
+    // TIER 0: PATH CHECKER (outbound + inbound trace, <5s)
+    // ════════════════════════════════════════════════════════════
+    let tp = Instant::now();
+    println!("\n  Tier 0: Path Checker...");
+    let path_checks = phases::path_checker().await;
+    let tp_ms = tp.elapsed().as_millis() as u64;
+    timers.insert("T0_path_checker".into(), tp_ms);
+    let out_pass = path_checks.iter().filter(|c| c.name.starts_with("OUT") && c.passed).count();
+    let out_total = path_checks.iter().filter(|c| c.name.starts_with("OUT")).count();
+    let in_pass = path_checks.iter().filter(|c| c.name.starts_with("IN") && c.passed).count();
+    let in_total = path_checks.iter().filter(|c| c.name.starts_with("IN")).count();
+    println!(
+        "  Tier 0: OUTBOUND {}/{} | INBOUND {}/{} in {:.1}s",
+        out_pass, out_total, in_pass, in_total, tp_ms as f64 / 1000.0
+    );
+    for c in &path_checks {
+        let icon = if c.passed { "✓" } else { "✗" };
+        println!("    {} {} — {}", icon, c.name, c.details);
+    }
+
+    // ════════════════════════════════════════════════════════════
     // PHASE 0: INSTANT KPIs (no SSH, <2s)
     // ════════════════════════════════════════════════════════════
     let t0 = Instant::now();
@@ -186,8 +207,9 @@ async fn main() -> Result<()> {
     let total_ms = start.elapsed().as_millis() as u64;
     timers.insert("TOTAL".into(), total_ms);
 
-    let all_checks: Vec<&Check> = instant_kpis
+    let all_checks: Vec<&Check> = path_checks
         .iter()
+        .chain(&instant_kpis)
         .chain(&preflight_checks)
         .chain(&containers)
         .chain(&network)
@@ -212,6 +234,7 @@ async fn main() -> Result<()> {
     let results = MailHealthResult {
         generated: Utc::now().to_rfc3339(),
         duration_ms: total_ms,
+        path_checks,
         instant_kpis,
         preflight: preflight_checks,
         containers,

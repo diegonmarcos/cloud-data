@@ -93,6 +93,7 @@ pub struct RemoteDataProxy {
 pub struct MailHealthResult {
     pub generated: String,
     pub duration_ms: u64,
+    pub path_checks: Vec<Check>,
     pub instant_kpis: Vec<Check>,
     pub preflight: Vec<Check>,
     pub containers: Vec<Check>,

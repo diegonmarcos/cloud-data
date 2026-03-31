@@ -31,3 +31,11 @@ pub const EXPECTED_PORTS: &[u16] = &[25, 443, 465, 587, 993, 4190, 8888];
 // Bearer token path (relative to $HOME)
 pub const BEARER_TOKEN_PATH: &str =
     "Mounts/Git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json";
+
+// SMTP relay hosts
+pub const OCI_RELAY_HOST: &str = "smtp.email.eu-marseille-1.oci.oraclecloud.com";
+pub const OCI_RELAY_PORT: u16 = 587;
+pub const AWS_RELAY_HOST: &str = "email-smtp.us-east-1.amazonaws.com";
+pub const AWS_RELAY_PORT: u16 = 587;
+pub const SMTP_PROXY_DOMAIN: &str = "smtp.diegonmarcos.com";
+pub const SMTP_PROXY_PORT: u16 = 8080;
