@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-03-31T22:25:06.395Z",
+  "_generated": "2026-03-31T22:29:34.693Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/authelia-acl",
   "rules": [
     {
