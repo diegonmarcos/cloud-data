@@ -366,6 +366,14 @@ echo "===sieve4190==="
 echo QUIT | timeout $T nc -w3 localhost 4190 2>&1 | head -1
 echo "===allLocalPorts==="
 sudo ss -tlnp 2>/dev/null | grep -E ':(25|443|465|587|993|4190|8888)\s' || ss -tlnp 2>/dev/null | grep -E ':(25|443|465|587|993|4190|8888)\s' || echo "(none)"
+echo "===configGhcrHash==="
+timeout 30 docker run --rm --entrypoint md5sum ghcr.io/diegonmarcos/stalwart:latest /opt/stalwart-mail/etc/config.toml.tpl 2>/dev/null | awk '{print $1}' || echo "GHCR_FAIL"
+echo "===configContainerTplHash==="
+docker exec stalwart md5sum /opt/stalwart-mail/etc/config.toml.tpl 2>/dev/null | awk '{print $1}' || echo "CONTAINER_FAIL"
+echo "===configHostHash==="
+md5sum /opt/stalwart/config.toml.tpl 2>/dev/null | awk '{print $1}' || echo "HOST_FAIL"
+echo "===configRunning==="
+docker exec stalwart grep -E 'next-hop|tls\.implicit|tls\.start-tls|address.*smtp|port.*=.*587|port.*=.*25' /opt/stalwart-mail/etc/config.toml 2>/dev/null || echo "CONFIG_FAIL"
 echo "===debugDump==="
 echo "--- ss listening ports ---"
 sudo ss -tlnp 2>/dev/null || ss -tlnp 2>/dev/null || true
@@ -414,6 +422,12 @@ cat /etc/resolv.conf 2>/dev/null || true
         sieve4190: parse_section(&output, "sieve4190"),
         all_local_ports: parse_section(&output, "allLocalPorts"),
         debug_dump: parse_section(&output, "debugDump"),
+        config_src_hash: String::new(),  // filled locally, not via SSH
+        config_dist_hash: String::new(), // filled locally, not via SSH
+        config_ghcr_hash: parse_section(&output, "configGhcrHash"),
+        config_container_tpl_hash: parse_section(&output, "configContainerTplHash"),
+        config_running: parse_section(&output, "configRunning"),
+        config_host_hash: parse_section(&output, "configHostHash"),
     })
 }
 

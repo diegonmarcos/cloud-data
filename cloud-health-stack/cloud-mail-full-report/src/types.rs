@@ -58,6 +58,13 @@ pub struct RemoteData {
     pub all_local_ports: String,
     #[allow(dead_code)]
     pub debug_dump: String,
+    // Config drift detection (5-layer)
+    pub config_src_hash: String,         // Layer 1: src/config.toml.tpl hash (local git)
+    pub config_dist_hash: String,        // Layer 2: dist/config.toml.tpl hash (local nix output)
+    pub config_ghcr_hash: String,        // Layer 3: GHCR image template hash (on VM)
+    pub config_container_tpl_hash: String, // Layer 4: running container template hash
+    pub config_running: String,          // Layer 5: running config.toml key values
+    pub config_host_hash: String,        // Host deployed config hash
 }
 
 /// Cached SSH batch data from oci-apps (mail-mcp container tests)
@@ -92,6 +99,7 @@ pub struct MailHealthResult {
     pub network: Vec<Check>,
     pub dns_auth: Vec<Check>,
     pub internals: Vec<Check>,
+    pub config_drift: Vec<Check>,
     pub e2e_delivery: Vec<Check>,
     pub summary: Summary,
     pub timers: HashMap<String, u64>,

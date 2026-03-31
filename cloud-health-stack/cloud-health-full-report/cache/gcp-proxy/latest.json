@@ -1,0 +1,13 @@
+{
+  "vm": "arch-1",
+  "timestamp": "2026-03-30T16:15:41Z",
+  "mem": {"used":1049,"total":1952,"pct":53},
+  "swap": {"used":115,"total":3999},
+  "disk": {"used":"19G","total":"31G","pct":"61%"},
+  "load": "0.20 0.07 0.03",
+  "uptime": "0d 2h",
+  "wg_up": true,
+  "containers_running": 19,
+  "containers_total": 19,
+  "containers": [{"name":"caddy","status":"Up 2 hours","health":"none"},{"name":"introspect-proxy","status":"Up 2 hours (healthy)","health":"healthy"},{"name":"hickory-dns","status":"Up 2 hours","health":"none"},{"name":"authelia","status":"Up 2 hours (healthy)","health":"healthy"},{"name":"authelia-redis","status":"Up 2 hours","health":"none"},{"name":"redis","status":"Up 2 hours (healthy)","health":"healthy"},{"name":"vaultwarden","status":"Up 2 hours (healthy)","health":"healthy"},{"name":"postlite-ntfy","status":"Up 2 hours","health":"none"},{"name":"postlite-authelia","status":"Up 2 hours","health":"none"},{"name":"postlite-npm","status":"Up 2 hours","health":"none"},{"name":"postlite-vaultwarden","status":"Up 2 hours","health":"none"},{"name":"syslog-bridge","status":"Up 2 hours","health":"none"},{"name":"github-rss","status":"Up 2 hours","health":"none"},{"name":"ntfy","status":"Up 2 hours","health":"none"},{"name":"sqlite-authelia","status":"Up 2 hours","health":"none"},{"name":"sqlite-npm","status":"Up 2 hours","health":"none"},{"name":"sqlite-vaultwarden","status":"Up 2 hours","health":"none"},{"name":"sqlite-ntfy","status":"Up 2 hours","health":"none"},{"name":"fluent-bit","status":"Up 2 hours","health":"none"}]
+}

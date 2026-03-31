@@ -68,7 +68,7 @@ async fn main() -> Result<()> {
     // ════════════════════════════════════════════════════════════
     let t1 = Instant::now();
     println!("\n  Phase 1: Pre-flight (3-VM parallel)...");
-    let (preflight_checks, mail_data, apps_data, proxy_data) = phases::preflight().await;
+    let (preflight_checks, mut mail_data, apps_data, proxy_data) = phases::preflight().await;
     let p1_ms = t1.elapsed().as_millis() as u64;
     timers.insert("P1_preflight".into(), p1_ms);
     println!(
@@ -155,6 +155,17 @@ async fn main() -> Result<()> {
     );
 
     // ════════════════════════════════════════════════════════════
+    // PHASE 5b: CONFIG DRIFT (5-layer consistency)
+    // ════════════════════════════════════════════════════════════
+    let config_drift = phases::config_drift(&mut mail_data);
+    println!(
+        "    P5b Config Drift: {}/{}{}",
+        config_drift.iter().filter(|c| c.passed).count(),
+        config_drift.len(),
+        if config_drift.iter().all(|c| c.passed) { " ✓" } else { " ← DRIFT DETECTED" }
+    );
+
+    // ════════════════════════════════════════════════════════════
     // PHASE 6: E2E DELIVERY (optional)
     // ════════════════════════════════════════════════════════════
     let t6 = Instant::now();
@@ -182,6 +193,7 @@ async fn main() -> Result<()> {
         .chain(&network)
         .chain(&dns_auth_checks)
         .chain(&internals)
+        .chain(&config_drift)
         .chain(&e2e_delivery)
         .collect();
 
@@ -206,6 +218,7 @@ async fn main() -> Result<()> {
         network,
         dns_auth: dns_auth_checks,
         internals,
+        config_drift,
         e2e_delivery,
         summary: Summary {
             total_checks: total_count,

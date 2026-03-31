@@ -1,12 +1,12 @@
 {
-  "generated": "2026-03-30T14:39:39.934207595+00:00",
-  "duration_ms": 55157,
+  "generated": "2026-03-30T15:07:09.595433086+00:00",
+  "duration_ms": 62903,
   "instant_kpis": [
     {
       "name": "mail.* HTTPS",
       "passed": true,
       "details": "HTTP 302",
-      "duration_ms": 453,
+      "duration_ms": 541,
       "error": null,
       "severity": "Critical"
     },
@@ -14,7 +14,7 @@
       "name": "webmail HTTPS",
       "passed": true,
       "details": "HTTP 200",
-      "duration_ms": 524,
+      "duration_ms": 598,
       "error": null,
       "severity": "Critical"
     },
@@ -22,7 +22,7 @@
       "name": "auth HTTPS",
       "passed": true,
       "details": "HTTP 200",
-      "duration_ms": 453,
+      "duration_ms": 541,
       "error": null,
       "severity": "Warning"
     },
@@ -30,7 +30,7 @@
       "name": "MCP endpoint",
       "passed": true,
       "details": "HTTP 400",
-      "duration_ms": 666,
+      "duration_ms": 670,
       "error": null,
       "severity": "Warning"
     },
@@ -38,7 +38,7 @@
       "name": "mail:993 TLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 867,
+      "duration_ms": 909,
       "error": null,
       "severity": "Critical"
     },
@@ -46,7 +46,7 @@
       "name": "mail:465 TLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 859,
+      "duration_ms": 904,
       "error": null,
       "severity": "Critical"
     },
@@ -54,7 +54,7 @@
       "name": "mail:587 STARTTLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 1777,
+      "duration_ms": 1984,
       "error": null,
       "severity": "Critical"
     },
@@ -62,7 +62,7 @@
       "name": "MX record",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 17,
+      "duration_ms": 47,
       "error": null,
       "severity": "Critical"
     },
@@ -77,18 +77,42 @@
     {
       "name": "GHA health",
       "passed": true,
-      "details": "all green",
-      "duration_ms": 869,
+      "details": "2 failing: Health → HTTP public, Health → Mail (Full Check)",
+      "duration_ms": 912,
       "error": null,
       "severity": "Info"
     }
   ],
   "preflight": [
     {
+      "name": "Cloud API oci-mail",
+      "passed": true,
+      "details": "oci-mail: RUNNING",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cloud API oci-apps",
+      "passed": true,
+      "details": "oci-apps: RUNNING",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Cloud API gcp-proxy",
+      "passed": true,
+      "details": "gcp-proxy: RUNNING",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
       "name": "WG oci-mail",
       "passed": true,
       "details": "10.0.0.3:22 OK",
-      "duration_ms": 248,
+      "duration_ms": 250,
       "error": null,
       "severity": "Critical"
     },
@@ -96,7 +120,7 @@
       "name": "WG oci-apps",
       "passed": true,
       "details": "10.0.0.6:22 OK",
-      "duration_ms": 248,
+      "duration_ms": 250,
       "error": null,
       "severity": "Critical"
     },
@@ -104,16 +128,16 @@
       "name": "WG gcp-proxy",
       "passed": true,
       "details": "10.0.0.1:22 OK",
-      "duration_ms": 155,
+      "duration_ms": 214,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "SSH batch oci-mail",
       "passed": false,
-      "details": "SSH FAILED",
+      "details": "SSH to oci-mail failed: Connection timed out during banner exchange\r\nConnection to 10.0.0.3 port 22 timed out",
       "duration_ms": 0,
-      "error": "SSH FAILED",
+      "error": "SSH to oci-mail failed: Connection timed out during banner exchange\r\nConnection to 10.0.0.3 port 22 timed out",
       "severity": "Critical"
     },
     {
@@ -148,7 +172,7 @@
       "name": "Caddy (gcp-proxy)",
       "passed": true,
       "details": "HTTPS OK (10.0.0.1)",
-      "duration_ms": 607,
+      "duration_ms": 736,
       "error": null,
       "severity": "Critical"
     },
@@ -156,7 +180,7 @@
       "name": "Hickory DNS",
       "passed": true,
       "details": "stalwart.app -> 10.0.0.3",
-      "duration_ms": 139,
+      "duration_ms": 137,
       "error": null,
       "severity": "Critical"
     },
@@ -196,7 +220,7 @@
       "name": "mail:993 (IMAP)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 1882,
+      "duration_ms": 919,
       "error": null,
       "severity": "Critical"
     },
@@ -204,7 +228,7 @@
       "name": "mail:465 (SMTPS)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 1881,
+      "duration_ms": 918,
       "error": null,
       "severity": "Critical"
     },
@@ -212,7 +236,7 @@
       "name": "mail:587 (SMTP Sub)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 3307,
+      "duration_ms": 1832,
       "error": null,
       "severity": "Critical"
     },
@@ -236,7 +260,7 @@
       "name": "Webmail HTTPS",
       "passed": true,
       "details": "HTTP 302",
-      "duration_ms": 474,
+      "duration_ms": 600,
       "error": null,
       "severity": "Warning"
     },
@@ -276,7 +300,7 @@
       "name": "OIDC bearer -> webmail",
       "passed": true,
       "details": "Bearer auth -> 200 OK (full chain)",
-      "duration_ms": 3006,
+      "duration_ms": 1419,
       "error": null,
       "severity": "Warning"
     },
@@ -284,7 +308,7 @@
       "name": "Stalwart Admin via Bearer",
       "passed": true,
       "details": "HTTP 401",
-      "duration_ms": 2707,
+      "duration_ms": 1419,
       "error": null,
       "severity": "Warning"
     },
@@ -340,7 +364,7 @@
       "name": "mail-mcp MCP",
       "passed": true,
       "details": "HTTP 400 (alive)",
-      "duration_ms": 682,
+      "duration_ms": 764,
       "error": null,
       "severity": "Warning"
     },
@@ -358,7 +382,7 @@
       "name": "MX",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 20,
+      "duration_ms": 18,
       "error": null,
       "severity": "Critical"
     },
@@ -366,7 +390,7 @@
       "name": "DKIM",
       "passed": true,
       "details": "present",
-      "duration_ms": 20,
+      "duration_ms": 16,
       "error": null,
       "severity": "Critical"
     },
@@ -374,7 +398,7 @@
       "name": "SPF",
       "passed": true,
       "details": "v=spf1",
-      "duration_ms": 24,
+      "duration_ms": 18,
       "error": null,
       "severity": "Critical"
     },
@@ -382,7 +406,7 @@
       "name": "DMARC",
       "passed": true,
       "details": "v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 24,
+      "duration_ms": 15,
       "error": null,
       "severity": "Critical"
     }
@@ -409,8 +433,8 @@
     {
       "name": "Send via Resend",
       "passed": true,
-      "details": "id=867339e8-4201-4827-870d-c3e5652b85c1",
-      "duration_ms": 306,
+      "details": "id=dfe155f3-1c0e-47c6-934d-9c0430d145f8",
+      "duration_ms": 510,
       "error": null,
       "severity": "Info"
     },
@@ -418,7 +442,7 @@
       "name": "Resend status",
       "passed": true,
       "details": "sent (IMAP is truth)",
-      "duration_ms": 3616,
+      "duration_ms": 6041,
       "error": null,
       "severity": "Info"
     },
@@ -448,21 +472,21 @@
     }
   ],
   "summary": {
-    "total_checks": 54,
-    "passed": 42,
+    "total_checks": 57,
+    "passed": 45,
     "failed": 12,
     "warnings": 6,
     "critical": 6
   },
   "timers": {
-    "P6_e2e_delivery": 3922,
-    "TOTAL": 55157,
-    "P2-P5_parallel": 3310,
+    "P4_dns_auth": 1834,
+    "P3_network": 1834,
     "P5_internals": 0,
-    "P0_instant_kpis": 2654,
-    "P1_preflight": 45269,
+    "P0_instant_kpis": 2899,
+    "P1_preflight": 51616,
     "P2_containers": 0,
-    "P3_network": 3310,
-    "P4_dns_auth": 3310
+    "P2-P5_parallel": 1834,
+    "TOTAL": 62903,
+    "P6_e2e_delivery": 6551
   }
 }
