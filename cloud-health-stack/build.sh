@@ -3,40 +3,30 @@ set -eu
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
-build_one() {
-  echo "═══ Building $2 ═══"
-  cargo build --release --manifest-path "$ROOT/$1/Cargo.toml"
-}
-
-run_one() {
-  echo ""
-  echo "═══ Running $2 ═══"
-  (cd "$ROOT/$1" && "$ROOT/$1/target/release/$2")
-}
-
-do_project() {
-  build_one "$1" "$2"
-  run_one "$1" "$2"
-}
-
 target="${1:-all}"
 
 case "$target" in
   all)
-    do_project cloud-stack-report       health-reporter
-    do_project cloud-health-full-report cloud-health-full
-    do_project cloud-mail-full-report   cloud-mail-full
+    sh "$ROOT/cloud-stack-report/build.sh" all
+    sh "$ROOT/cloud-health-full-report/build.sh" all
+    sh "$ROOT/cloud-mail-full-report/build.sh" all
     ;;
-  stack) do_project cloud-stack-report       health-reporter ;;
-  cloud) do_project cloud-health-full-report cloud-health-full ;;
-  mail)  do_project cloud-mail-full-report   cloud-mail-full ;;
+  stack)  sh "$ROOT/cloud-stack-report/build.sh" all ;;
+  cloud)  sh "$ROOT/cloud-health-full-report/build.sh" all ;;
+  mail)   sh "$ROOT/cloud-mail-full-report/build.sh" all ;;
+  build)
+    sh "$ROOT/cloud-stack-report/build.sh" build
+    sh "$ROOT/cloud-health-full-report/build.sh" build
+    sh "$ROOT/cloud-mail-full-report/build.sh" build
+    ;;
   *)
-    echo "Usage: $0 [all|stack|cloud|mail]"
+    echo "Usage: $0 [all|stack|cloud|mail|build]"
     echo ""
-    echo "  all    Run all 3 reports (default)"
+    echo "  all    Build + run all 3 reports (default)"
     echo "  stack  Cloud stack report"
     echo "  cloud  Cloud health full (10-layer)"
     echo "  mail   Cloud mail full (6-phase)"
+    echo "  build  Build all without running"
     exit 1
     ;;
 esac
