@@ -3,7 +3,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 1
   },
-  "_generated": "2026-04-01T14:15:05.033Z",
+  "_generated": "2026-04-01T14:20:04.719Z",
   "_source": "build.json proxy fields via /cloud-data/caddy-routes",
   "l4_routes": [
     {
