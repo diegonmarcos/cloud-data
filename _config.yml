@@ -1,2 +1,4 @@
+include:
+  - _cloud-data-consolidated.json
 exclude:
   - reports/cloud-stack-report/dist
