@@ -366,5 +366,43 @@ tbody tr.row-copied {
   border-color: var(--accent);
 }
 
+/* ── Menu toggle ── */
+#menu-toggle {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 20px;
+  padding: 4px 10px;
+  cursor: pointer;
+  line-height: 1;
+  transition: left 0.2s;
+}
+
+#menu-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+body:not(.sidebar-collapsed) #menu-toggle {
+  left: 248px;
+}
+
+#sidebar {
+  transition: transform 0.2s;
+}
+
+.sidebar-collapsed #sidebar {
+  transform: translateX(-240px);
+}
+
+.sidebar-collapsed #main {
+  margin-left: 0;
+}
+
 /* Force desktop layout on all viewports — horizontal scroll on mobile */
 html { min-width: 900px; }
