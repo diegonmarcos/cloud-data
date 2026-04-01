@@ -1,6 +1,6 @@
 {
-  "_generated": "2026-04-01T15:07:26.648Z",
-  "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/ntfy-acl",
+  "_generated": "2026-04-01T15:13:42.522Z",
+  "_source": "cloud-data-topology.json via /cloud-data/ntfy-acl",
   "topics": {
     "syslog": {
       "publishers": [
