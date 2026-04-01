@@ -368,43 +368,36 @@ tbody tr.row-copied {
 
 /* ── Menu toggle ── */
 #menu-toggle {
-  background: none;
-  border: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 200;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border);
+  border-radius: 4px;
   color: var(--accent);
-  font-size: 18px;
+  font-size: 20px;
+  padding: 4px 10px;
   cursor: pointer;
-  padding: 0;
   line-height: 1;
-  vertical-align: middle;
+  transition: background 0.15s;
 }
 
 #menu-toggle:hover {
+  background: var(--bg-card);
   color: var(--text);
 }
 
 #sidebar {
-  transition: width 0.2s, min-width 0.2s;
+  transition: transform 0.2s;
 }
 
 .sidebar-collapsed #sidebar {
-  width: 48px;
-  min-width: 48px;
-  overflow: hidden;
-}
-
-.sidebar-collapsed #sidebar h1 {
-  white-space: nowrap;
-}
-
-.sidebar-collapsed #sidebar nav,
-.sidebar-collapsed #sidebar .search-box,
-.sidebar-collapsed #sidebar .nav-section-label,
-.sidebar-collapsed #sidebar .meta {
-  display: none;
+  transform: translateX(-100%);
 }
 
 .sidebar-collapsed #main {
-  margin-left: 48px;
+  margin-left: 0;
 }
 
 /* Force desktop layout on all viewports — horizontal scroll on mobile */
