@@ -1,25 +1,7 @@
 {
-  "_generated": "2026-04-01T09:10:50.752Z",
-  "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/authelia-acl",
+  "_generated": "2026-04-01T13:30:14.389Z",
+  "_source": "cloud-data-topology.json via /cloud-data/authelia-acl",
   "rules": [
-    {
-      "domain": "auth.diegonmarcos.com",
-      "policy": "bypass",
-      "service": "_default"
-    },
-    {
-      "domain": "db.diegonmarcos.com",
-      "policy": "bypass",
-      "resources": [
-        "^/api/.*"
-      ],
-      "service": "_default"
-    },
-    {
-      "domain": "db.diegonmarcos.com",
-      "policy": "two_factor",
-      "service": "_default"
-    },
     {
       "domain": "*.diegonmarcos.com",
       "policy": "two_factor",
