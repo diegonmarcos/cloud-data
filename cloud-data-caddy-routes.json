@@ -3,7 +3,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 2
   },
-  "_generated": "2026-04-01T14:55:02.658Z",
+  "_generated": "2026-04-01T15:07:26.644Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/caddy-routes",
   "l4_routes": [
     {
@@ -151,31 +151,6 @@
         {
           "base_path": "/crawlee",
           "upstream": "10.0.0.6:3001",
-          "comment": ""
-        },
-        {
-          "base_path": "/dash-gcp-proxy",
-          "upstream": "10.0.0.1:7681",
-          "comment": ""
-        },
-        {
-          "base_path": "/dash-oci-mail",
-          "upstream": "10.0.0.3:7681",
-          "comment": ""
-        },
-        {
-          "base_path": "/dash-oci-analytics",
-          "upstream": "10.0.0.4:7681",
-          "comment": ""
-        },
-        {
-          "base_path": "/dash-oci-apps",
-          "upstream": "10.0.0.6:7681",
-          "comment": ""
-        },
-        {
-          "base_path": "/dash-gcp-t4",
-          "upstream": "10.0.0.8:7681",
           "comment": ""
         }
       ],

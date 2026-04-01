@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-04-01T14:55:02.659Z",
+  "_generated": "2026-04-01T15:07:26.645Z",
   "_source": "_cloud-data-consolidated.json via derive-cloud-data.ts/firewall-rules",
   "vms": {
     "oci-mail": {
