@@ -1,0 +1,2 @@
+exclude:
+  - cloud-health-stack/cloud-stack-report/dist
