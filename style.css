@@ -28,7 +28,7 @@ body {
   min-width: 240px;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
-  padding: 44px 0 20px;
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -374,7 +374,7 @@ tbody tr.row-copied {
 #menu-toggle {
   position: fixed;
   top: 10px;
-  left: 10px;
+  left: 244px;
   z-index: 200;
   background: var(--bg-sidebar);
   border: 1px solid var(--border);
@@ -384,12 +384,16 @@ tbody tr.row-copied {
   padding: 4px 10px;
   cursor: pointer;
   line-height: 1;
-  transition: background 0.15s;
+  transition: left 0.2s, background 0.15s;
 }
 
 #menu-toggle:hover {
   background: var(--bg-card);
   color: var(--text);
+}
+
+.sidebar-collapsed #menu-toggle {
+  left: 10px;
 }
 
 #sidebar {
@@ -404,32 +408,5 @@ tbody tr.row-copied {
   margin-left: 0;
 }
 
-/* Desktop: force minimum width for tables */
-@media (min-width: 901px) {
-  html { min-width: 900px; }
-}
-
-/* Mobile: stack sidebar on top, full width */
-@media (max-width: 900px) {
-  #sidebar {
-    width: 100%;
-    min-width: 100%;
-    height: auto;
-    max-height: 100vh;
-    position: fixed;
-    z-index: 100;
-  }
-
-  #main {
-    margin-left: 0;
-    padding: 16px;
-  }
-
-  body:not(.sidebar-collapsed) #main {
-    display: none;
-  }
-
-  .sidebar-collapsed #sidebar {
-    transform: translateX(-100%);
-  }
-}
+/* Force desktop layout on all viewports — horizontal scroll on mobile */
+html { min-width: 900px; }
