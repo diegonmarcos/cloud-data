@@ -28,7 +28,7 @@ body {
   min-width: 240px;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
-  padding: 20px 0;
+  padding: 44px 0 20px;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -36,6 +36,7 @@ body {
   left: 0;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #sidebar h1 {
@@ -59,6 +60,9 @@ body {
   font-size: 13px;
   border-left: 3px solid transparent;
   transition: all 0.15s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #sidebar a:hover {
