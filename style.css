@@ -368,40 +368,43 @@ tbody tr.row-copied {
 
 /* ── Menu toggle ── */
 #menu-toggle {
-  position: fixed;
-  top: 8px;
-  left: 8px;
-  z-index: 100;
-  background: var(--bg-sidebar);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  color: var(--text);
-  font-size: 20px;
-  padding: 4px 10px;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 18px;
   cursor: pointer;
+  padding: 0;
   line-height: 1;
-  transition: left 0.2s;
+  vertical-align: middle;
 }
 
 #menu-toggle:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
-body:not(.sidebar-collapsed) #menu-toggle {
-  left: 248px;
+  color: var(--text);
 }
 
 #sidebar {
-  transition: transform 0.2s;
+  transition: width 0.2s, min-width 0.2s;
 }
 
 .sidebar-collapsed #sidebar {
-  transform: translateX(-240px);
+  width: 48px;
+  min-width: 48px;
+  overflow: hidden;
+}
+
+.sidebar-collapsed #sidebar h1 {
+  white-space: nowrap;
+}
+
+.sidebar-collapsed #sidebar nav,
+.sidebar-collapsed #sidebar .search-box,
+.sidebar-collapsed #sidebar .nav-section-label,
+.sidebar-collapsed #sidebar .meta {
+  display: none;
 }
 
 .sidebar-collapsed #main {
-  margin-left: 0;
+  margin-left: 48px;
 }
 
 /* Force desktop layout on all viewports — horizontal scroll on mobile */
