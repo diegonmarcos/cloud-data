@@ -404,5 +404,32 @@ tbody tr.row-copied {
   margin-left: 0;
 }
 
-/* Force desktop layout on all viewports — horizontal scroll on mobile */
-html { min-width: 900px; }
+/* Desktop: force minimum width for tables */
+@media (min-width: 901px) {
+  html { min-width: 900px; }
+}
+
+/* Mobile: stack sidebar on top, full width */
+@media (max-width: 900px) {
+  #sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    max-height: 100vh;
+    position: fixed;
+    z-index: 100;
+  }
+
+  #main {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  body:not(.sidebar-collapsed) #main {
+    display: none;
+  }
+
+  .sidebar-collapsed #sidebar {
+    transform: translateX(-100%);
+  }
+}
