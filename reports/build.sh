@@ -3,6 +3,21 @@ set -eu
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
+# Generate reports/manifest.json from .md symlinks
+generate_manifest() {
+    printf '[\n' > "$ROOT/manifest.json"
+    first=true
+    for md in "$ROOT"/*.md; do
+        [ -f "$md" ] || continue
+        name=$(basename "$md" .md | tr '_' ' ')
+        file="reports/$(basename "$md")"
+        if [ "$first" = true ]; then first=false; else printf ',\n' >> "$ROOT/manifest.json"; fi
+        printf '  {"file": "%s", "name": "%s"}' "$file" "$name" >> "$ROOT/manifest.json"
+    done
+    printf '\n]\n' >> "$ROOT/manifest.json"
+    echo "Generated reports/manifest.json"
+}
+
 target="${1:-all}"
 
 case "$target" in
@@ -10,6 +25,7 @@ case "$target" in
     sh "$ROOT/cloud-stack-report/build.sh" all
     sh "$ROOT/cloud-health-full-report/build.sh" all
     sh "$ROOT/cloud-mail-full-report/build.sh" all
+    generate_manifest
     ;;
   stack)  sh "$ROOT/cloud-stack-report/build.sh" all ;;
   cloud)  sh "$ROOT/cloud-health-full-report/build.sh" all ;;
@@ -18,15 +34,18 @@ case "$target" in
     sh "$ROOT/cloud-stack-report/build.sh" build
     sh "$ROOT/cloud-health-full-report/build.sh" build
     sh "$ROOT/cloud-mail-full-report/build.sh" build
+    generate_manifest
     ;;
+  manifest) generate_manifest ;;
   *)
-    echo "Usage: $0 [all|stack|cloud|mail|build]"
+    echo "Usage: $0 [all|stack|cloud|mail|build|manifest]"
     echo ""
-    echo "  all    Build + run all 3 reports (default)"
-    echo "  stack  Cloud stack report"
-    echo "  cloud  Cloud health full (10-layer)"
-    echo "  mail   Cloud mail full (6-phase)"
-    echo "  build  Build all without running"
+    echo "  all       Build + run all 3 reports (default)"
+    echo "  stack     Cloud stack report"
+    echo "  cloud     Cloud health full (10-layer)"
+    echo "  mail      Cloud mail full (6-phase)"
+    echo "  build     Build all without running"
+    echo "  manifest  Regenerate reports/manifest.json"
     exit 1
     ;;
 esac

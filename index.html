@@ -17,6 +17,8 @@
       <label><input type="radio" name="search-mode" value="content"> Content</label>
     </div>
   </div>
+  <div class="nav-section-label reports-label">Cloud Reports</div>
+  <nav id="nav-reports"></nav>
   <div class="nav-section-label">Cloud Data</div>
   <nav id="nav-data"></nav>
   <div class="nav-section-label secrets-label">Secrets (Decrypted)</div>
@@ -30,12 +32,20 @@
 
 <script>
 const REFRESH_MS = 300000;
+let reportsManifest = [];
 let dataManifest = [];
 let secretsManifest = [];
 let currentPage = null;
 let isSecretPage = false;
+let isReportPage = false;
 
 async function init() {
+  // ── Discover reports (markdown) ──
+  try {
+    const res = await fetch('reports/manifest.json?t=' + Date.now());
+    reportsManifest = await res.json();
+  } catch { reportsManifest = []; }
+
   // ── Discover cloud data JSONs ──
   try {
     const res = await fetch('manifest.json?t=' + Date.now());
@@ -48,8 +58,8 @@ async function init() {
     secretsManifest = await res.json();
   } catch { secretsManifest = []; }
 
-  if (!dataManifest.length && !secretsManifest.length) {
-    document.getElementById('main').innerHTML = '<div class="error">No data found (manifest.json + secrets/manifest.json)</div>';
+  if (!reportsManifest.length && !dataManifest.length && !secretsManifest.length) {
+    document.getElementById('main').innerHTML = '<div class="error">No data found</div>';
     return;
   }
 
@@ -61,6 +71,11 @@ async function init() {
 }
 
 function buildSidebar() {
+  const navReports = document.getElementById('nav-reports');
+  navReports.innerHTML = reportsManifest.map(p =>
+    '<a href="#' + slug(p.file) + '" class="report-link">' + p.name + '</a>'
+  ).join('');
+
   const navData = document.getElementById('nav-data');
   navData.innerHTML = dataManifest.map(p =>
     '<a href="#' + slug(p.file) + '">' + p.name + '</a>'
@@ -73,17 +88,17 @@ function buildSidebar() {
 }
 
 function slug(file) {
-  return file.replace(/\//g, '_').replace('.json', '').replace('.secrets', '');
+  return file.replace(/\//g, '_').replace('.json', '').replace('.md', '').replace('.secrets', '');
 }
 
 function setActive(file) {
-  document.querySelectorAll('#nav-data a, #nav-secrets a').forEach(a => {
+  document.querySelectorAll('#nav-reports a, #nav-data a, #nav-secrets a').forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === '#' + slug(file));
   });
 }
 
 function allPages() {
-  return [...dataManifest, ...secretsManifest];
+  return [...reportsManifest, ...dataManifest, ...secretsManifest];
 }
 
 function onHashChange() {
@@ -102,11 +117,32 @@ async function loadPage(page, silent) {
   setActive(page.file);
   const main = document.getElementById('main');
   isSecretPage = page.file.startsWith('secrets/');
+  isReportPage = page.file.startsWith('reports/') && page.file.endsWith('.md');
 
   if (!silent) main.innerHTML = '<div class="loading">Loading ' + page.name + '...</div>';
 
   try {
     const res = await fetch(page.file + '?t=' + Date.now());
+
+    if (isReportPage) {
+      const md = await res.text();
+      main.innerHTML = '';
+      const h2 = document.createElement('h2');
+      h2.textContent = page.name;
+      const badge = document.createElement('span');
+      badge.className = 'report-badge';
+      badge.textContent = 'REPORT';
+      h2.appendChild(document.createTextNode(' '));
+      h2.appendChild(badge);
+      main.appendChild(h2);
+      const pre = document.createElement('pre');
+      pre.className = 'report-content';
+      pre.textContent = md;
+      main.appendChild(pre);
+      document.getElementById('meta').textContent = 'Updated: ' + new Date().toLocaleTimeString();
+      return;
+    }
+
     const data = await res.json();
     main.innerHTML = '';
 
@@ -332,7 +368,12 @@ async function runSearch(query) {
   const q = query.toLowerCase();
   const mode = getSearchMode();
 
+  const navReports = document.getElementById('nav-reports');
+
   if (mode === 'filename') {
+    navReports.innerHTML = reportsManifest
+      .filter(p => p.name.toLowerCase().includes(q) || p.file.toLowerCase().includes(q))
+      .map(p => '<a href="#' + slug(p.file) + '" class="report-link">' + p.name + '</a>').join('');
     navData.innerHTML = dataManifest
       .filter(p => p.name.toLowerCase().includes(q) || p.file.toLowerCase().includes(q))
       .map(p => '<a href="#' + slug(p.file) + '">' + p.name + '</a>').join('');
@@ -353,8 +394,11 @@ async function runSearch(query) {
         results.push(p);
       }
     }
-    const dataResults = results.filter(p => !p.file.startsWith('secrets/'));
+    const reportResults = results.filter(p => p.file.startsWith('reports/'));
+    const dataResults = results.filter(p => !p.file.startsWith('secrets/') && !p.file.startsWith('reports/'));
     const secretResults = results.filter(p => p.file.startsWith('secrets/'));
+    navReports.innerHTML = reportResults
+      .map(p => '<a href="#' + slug(p.file) + '" class="report-link">' + p.name + '</a>').join('');
     navData.innerHTML = dataResults
       .map(p => '<a href="#' + slug(p.file) + '">' + p.name + '</a>').join('');
     navSecrets.innerHTML = secretResults

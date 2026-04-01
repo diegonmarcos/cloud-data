@@ -1,0 +1,5 @@
+[
+  {"file": "reports/cloud_health_full.md", "name": "cloud health full"},
+  {"file": "reports/cloud_mail_full.md", "name": "cloud mail full"},
+  {"file": "reports/container_health.md", "name": "container health"}
+]

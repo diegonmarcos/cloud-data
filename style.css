@@ -128,6 +128,48 @@ body {
   margin-top: 0;
 }
 
+.reports-label {
+  color: #5bc0eb;
+}
+
+#sidebar a.report-link {
+  color: #4a90a8;
+}
+
+#sidebar a.report-link:hover {
+  color: #5bc0eb;
+}
+
+#sidebar a.report-link.active {
+  color: #5bc0eb;
+  border-left-color: #5bc0eb;
+  background: rgba(91,192,235,0.05);
+}
+
+.report-badge {
+  font-size: 10px;
+  color: #5bc0eb;
+  background: rgba(91,192,235,0.15);
+  border: 1px solid rgba(91,192,235,0.3);
+  border-radius: 3px;
+  padding: 2px 6px;
+  vertical-align: middle;
+  letter-spacing: 1px;
+}
+
+.report-content {
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: var(--text);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px 24px;
+  overflow-x: auto;
+}
+
 .secrets-label {
   color: #ff6b6b;
 }
