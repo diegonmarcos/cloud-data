@@ -1,2 +1,2 @@
 exclude:
-  - cloud-health-stack/cloud-stack-report/dist
+  - reports/cloud-stack-report/dist
