@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-04-02T03:40:10.162Z",
+  "_generated": "2026-04-02T03:45:09.952Z",
   "_source": "cloud-data-topology.json via /cloud-data/ntfy-acl",
   "topics": {
     "syslog": {
