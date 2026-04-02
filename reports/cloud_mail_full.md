@@ -1,1 +1,0 @@
-cloud-mail-full-report/cloud_mail_full.md
