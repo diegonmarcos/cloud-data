@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-04-02T18:12:40.293Z",
+    "generated_at": "2026-04-02T18:16:09.760Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -6483,7 +6483,7 @@
       "snappymail": {
         "dir": "aa-sui_snappymail",
         "vm": "oci-mail",
-        "has_docker": false
+        "has_docker": true
       },
       "smtp-proxy": {
         "dir": "aa-sui_tools-smtp-proxy",
@@ -6493,7 +6493,7 @@
       "stalwart": {
         "dir": "aa-sui_tools-stalwart",
         "vm": "oci-mail",
-        "has_docker": false
+        "has_docker": true
       },
       "vaultwarden": {
         "dir": "ab-mic_vaultwarden",
@@ -6598,12 +6598,12 @@
       "dozzle": {
         "dir": "bc-obs_dozzle",
         "vm": "oci-analytics",
-        "has_docker": false
+        "has_docker": true
       },
       "fluent-bit": {
         "dir": "bc-obs_fluent-bit",
         "vm": "oci-analytics",
-        "has_docker": false
+        "has_docker": true
       },
       "lgtm": {
         "dir": "bc-obs_lgtm",
@@ -6628,17 +6628,17 @@
       "sauron-forwarder": {
         "dir": "bc-obs_sauron-forwarder",
         "vm": "oci-analytics",
-        "has_docker": false
+        "has_docker": true
       },
       "syslog-forwarder": {
         "dir": "bc-obs_syslog-forwarder",
         "vm": "oci-mail",
-        "has_docker": false
+        "has_docker": true
       },
       "umami": {
         "dir": "bc-obs_umami",
         "vm": "oci-analytics",
-        "has_docker": false
+        "has_docker": true
       },
       "windmill": {
         "dir": "bc-obs_windmill",
