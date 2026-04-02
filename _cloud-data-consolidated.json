@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-04-01T19:03:40.313Z",
+    "generated_at": "2026-04-02T11:17:21.753Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -543,6 +543,11 @@
         "nix": "openssh",
         "apt": "openssh-client",
         "desc": "SSH for VM deploy"
+      },
+      "sudo": {
+        "nix": "sudo",
+        "apt": "sudo",
+        "desc": "Privilege escalation for build steps"
       },
       "jq": {
         "nix": "jq",
@@ -3290,7 +3295,7 @@
           "volumes": [
             "/opt/ssh-keys/c3-infra-api:/root/.ssh:ro",
             "/nix/store:/nix/store:ro",
-            "~/.nix-profile/bin:/usr/local/nix-bin:ro",
+            "/home/ubuntu/.nix-profile/bin:/usr/local/nix-bin:ro",
             "~/.config/gcloud:/root/.config/gcloud",
             "c3_git_repos:/root/git"
           ],
@@ -3366,7 +3371,7 @@
           "volumes": [
             "/opt/ssh-keys/c3-infra-mcp:/root/.ssh:ro",
             "/nix/store:/nix/store:ro",
-            "~/.nix-profile/bin:/usr/local/nix-bin:ro",
+            "/home/ubuntu/.nix-profile/bin:/usr/local/nix-bin:ro",
             "~/.config/gcloud:/root/.config/gcloud",
             "c3_git_repos:/root/git"
           ],

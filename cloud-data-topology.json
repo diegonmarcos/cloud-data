@@ -3517,7 +3517,7 @@
           "volumes": [
             "/opt/ssh-keys/c3-infra-api:/root/.ssh:ro",
             "/nix/store:/nix/store:ro",
-            "~/.nix-profile/bin:/usr/local/nix-bin:ro",
+            "/home/ubuntu/.nix-profile/bin:/usr/local/nix-bin:ro",
             "~/.config/gcloud:/root/.config/gcloud",
             "c3_git_repos:/root/git"
           ],
@@ -3592,7 +3592,7 @@
           "volumes": [
             "/opt/ssh-keys/c3-infra-mcp:/root/.ssh:ro",
             "/nix/store:/nix/store:ro",
-            "~/.nix-profile/bin:/usr/local/nix-bin:ro",
+            "/home/ubuntu/.nix-profile/bin:/usr/local/nix-bin:ro",
             "~/.config/gcloud:/root/.config/gcloud",
             "c3_git_repos:/root/git"
           ],
@@ -5316,6 +5316,11 @@
         "nix": "openssh",
         "apt": "openssh-client",
         "desc": "SSH for VM deploy"
+      },
+      "sudo": {
+        "nix": "sudo",
+        "apt": "sudo",
+        "desc": "Privilege escalation for build steps"
       },
       "jq": {
         "nix": "jq",

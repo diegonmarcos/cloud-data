@@ -3,7 +3,7 @@
   "_meta": {
     "generated_by": "derive-cloud-data.ts",
     "api_route": "GET /c3-api/cloud-data/deps",
-    "generated_at": "2026-04-01T19:03:40.629Z",
+    "generated_at": "2026-04-02T11:17:22.087Z",
     "total_services": 8,
     "total_packages": 23
   },
@@ -22,6 +22,11 @@
       "nix": "openssh",
       "apt": "openssh-client",
       "desc": "SSH for VM deploy"
+    },
+    "sudo": {
+      "nix": "sudo",
+      "apt": "sudo",
+      "desc": "Privilege escalation for build steps"
     },
     "jq": {
       "nix": "jq",
