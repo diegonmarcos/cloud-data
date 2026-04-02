@@ -234,5 +234,57 @@
         "duration_s": 414
       }
     ]
+  },
+  {
+    "vm": "oci-analytics",
+    "run_id": "23915505916",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23915505916",
+    "sha": "76d3dd8d4ef3f28a8f2d327b2b8d900c69722494",
+    "trigger": "workflow_dispatch",
+    "ts": "2026-04-02T18:50:39Z",
+    "duration_s": 968,
+    "total": 6,
+    "ok": 0,
+    "fail": 6,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "alerts-api",
+        "dir": "bc-obs_alerts-api",
+        "status": "fail",
+        "duration_s": 413
+      },
+      {
+        "name": "dozzle",
+        "dir": "bc-obs_dozzle",
+        "status": "fail",
+        "duration_s": 413
+      },
+      {
+        "name": "fluent-bit",
+        "dir": "bc-obs_fluent-bit",
+        "status": "fail",
+        "duration_s": 417
+      },
+      {
+        "name": "matomo",
+        "dir": "bc-obs_matomo",
+        "status": "fail",
+        "duration_s": 413
+      },
+      {
+        "name": "sauron-forwarder",
+        "dir": "bc-obs_sauron-forwarder",
+        "status": "fail",
+        "duration_s": 413
+      },
+      {
+        "name": "umami",
+        "dir": "bc-obs_umami",
+        "status": "fail",
+        "duration_s": 413
+      }
+    ]
   }
 ]
