@@ -4,7 +4,7 @@
     "generated_by": "derive-cloud-data.ts",
     "api_route": "GET /c3-api/cloud-data/configs",
     "source": "_cloud-data-consolidated.json",
-    "generated_at": "2026-04-02T16:08:13.278Z"
+    "generated_at": "2026-04-03T12:05:20.948Z"
   },
   "services": [
     {
@@ -404,7 +404,7 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "kg-graph"
+        "surrealdb"
       ]
     },
     {
@@ -560,6 +560,7 @@
       "ports": [],
       "networks": [],
       "containers": [
+        "photos-db",
         "photos-webhook"
       ]
     },
@@ -1059,7 +1060,7 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "kg-graph"
+        "surrealdb"
       ]
     },
     {
@@ -1413,6 +1414,7 @@
       "ports": [],
       "networks": [],
       "containers": [
+        "photos-db",
         "photos-webhook"
       ]
     },

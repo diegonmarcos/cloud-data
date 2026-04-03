@@ -97,6 +97,7 @@
         "photoprism_app",
         "photoprism_mariadb",
         "photoprism_rclone",
+        "photos-db",
         "photos-webhook",
         "radicale",
         "revealmd_app",
@@ -139,7 +140,7 @@
         "backup-bup",
         "gitea",
         "gitea",
-        "kg-graph"
+        "surrealdb"
       ],
       "ports": [
         "10.0.0.6:3015:8080"
@@ -609,21 +610,21 @@
       {
         "name": "oci-mail",
         "wg_ip": "10.0.0.3",
-        "wg_public_key": null,
+        "wg_public_key": "8Fqo4ct/jR2D3ZJ4AT8AVxiemuRSFk9LriBJhK7ukQs=",
         "endpoint": "130.110.251.193:51820",
         "role": "spoke"
       },
       {
         "name": "oci-analytics",
         "wg_ip": "10.0.0.4",
-        "wg_public_key": null,
+        "wg_public_key": "ugc3YpOgw9DokiM8yqT0uADF8UUkSTGad9WSODX1kC0=",
         "endpoint": "129.151.228.66:51820",
         "role": "spoke"
       },
       {
         "name": "oci-apps",
         "wg_ip": "10.0.0.6",
-        "wg_public_key": null,
+        "wg_public_key": "+LHoOzNYA92eJalYEQDzbEDDEi0FfT2jYhBUpz7RxHQ=",
         "endpoint": "82.70.229.129:51820",
         "role": "spoke"
       },
@@ -637,7 +638,7 @@
       {
         "name": "gcp-proxy",
         "wg_ip": "10.0.0.1",
-        "wg_public_key": null,
+        "wg_public_key": "vV/phXUwnCjxACQ5Df11Uw47BzJaK4r85jPYMu2HmDc=",
         "endpoint": "35.226.147.64:51820",
         "role": "hub"
       }
@@ -746,12 +747,6 @@
         "type": "A",
         "value": "10.0.0.6",
         "service": "photoprism"
-      },
-      {
-        "name": "photos-webhook.app",
-        "type": "A",
-        "value": "10.0.0.6",
-        "service": "photos-webhook"
       },
       {
         "name": "radicale.app",
@@ -1957,24 +1952,13 @@
       "port": 5002,
       "dns": "photos-webhook.app",
       "upstream": "10.0.0.6:5002",
-      "containers": {
-        "app": {
-          "container_name": "photos-webhook",
-          "image": "",
-          "public": false,
-          "port": 5002,
-          "dns": "photos-webhook.app"
-        }
-      },
+      "containers": {},
       "container_names": [
+        "photos-db",
         "photos-webhook"
       ],
-      "all_ports": [
-        "5002"
-      ],
-      "all_dns": [
-        "photos-webhook.app"
-      ],
+      "all_ports": [],
+      "all_dns": [],
       "compose": {
         "containers": [
           "photos-db",
@@ -1982,6 +1966,9 @@
         ],
         "ports": [],
         "networks": []
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "radicale": {
@@ -4868,6 +4855,9 @@
       },
       "monitoring": {
         "tls_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "backup-borg": {
@@ -5112,15 +5102,9 @@
       "vm": "oci-A1-f_0",
       "folder": "ca-dat_kg-graph",
       "description": "SurrealDB Hybrid Knowledge Graph - Infrastructure topology + vector search",
-      "containers": {
-        "app": {
-          "container_name": "kg-graph",
-          "image": "",
-          "public": false
-        }
-      },
+      "containers": {},
       "container_names": [
-        "kg-graph"
+        "surrealdb"
       ],
       "all_ports": [],
       "all_dns": [],
@@ -5130,6 +5114,9 @@
         ],
         "ports": [],
         "networks": []
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "postlite": {
@@ -5234,21 +5221,21 @@
         {
           "name": "oci-mail",
           "wg_ip": "10.0.0.3",
-          "wg_public_key": null,
+          "wg_public_key": "8Fqo4ct/jR2D3ZJ4AT8AVxiemuRSFk9LriBJhK7ukQs=",
           "endpoint": "130.110.251.193:51820",
           "role": "spoke"
         },
         {
           "name": "oci-analytics",
           "wg_ip": "10.0.0.4",
-          "wg_public_key": null,
+          "wg_public_key": "ugc3YpOgw9DokiM8yqT0uADF8UUkSTGad9WSODX1kC0=",
           "endpoint": "129.151.228.66:51820",
           "role": "spoke"
         },
         {
           "name": "oci-apps",
           "wg_ip": "10.0.0.6",
-          "wg_public_key": null,
+          "wg_public_key": "+LHoOzNYA92eJalYEQDzbEDDEi0FfT2jYhBUpz7RxHQ=",
           "endpoint": "82.70.229.129:51820",
           "role": "spoke"
         },
@@ -5262,7 +5249,7 @@
         {
           "name": "gcp-proxy",
           "wg_ip": "10.0.0.1",
-          "wg_public_key": null,
+          "wg_public_key": "vV/phXUwnCjxACQ5Df11Uw47BzJaK4r85jPYMu2HmDc=",
           "endpoint": "35.226.147.64:51820",
           "role": "hub"
         }
