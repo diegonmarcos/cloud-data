@@ -1850,5 +1850,69 @@
         "duration_s": 14
       }
     ]
+  },
+  {
+    "vm": "gcp-proxy",
+    "run_id": "23947881633",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23947881633",
+    "sha": "9c49b12e721e4b88ae45423dbf7e5d942abf8d84",
+    "trigger": "push",
+    "ts": "2026-04-03T13:32:39Z",
+    "duration_s": 58,
+    "total": 8,
+    "ok": 0,
+    "fail": 1,
+    "skip": 7,
+    "status": "failure",
+    "services": [
+      {
+        "name": "vaultwarden",
+        "dir": "ab-mic_vaultwarden",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "hickory-dns",
+        "dir": "ba-clo_hickory-dns",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "authelia",
+        "dir": "bb-sec_authelia",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "caddy",
+        "dir": "bb-sec_caddy",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "introspect-proxy",
+        "dir": "bb-sec_introspect-proxy",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "ntfy",
+        "dir": "bc-obs_ntfy",
+        "status": "fail",
+        "duration_s": 54
+      },
+      {
+        "name": "postlite",
+        "dir": "ca-dat_postlite",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "redis",
+        "dir": "ca-dat_redis",
+        "status": "skip",
+        "duration_s": 0
+      }
+    ]
   }
 ]
