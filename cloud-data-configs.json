@@ -4,7 +4,7 @@
     "generated_by": "derive-cloud-data.ts",
     "api_route": "GET /c3-api/cloud-data/configs",
     "source": "_cloud-data-consolidated.json",
-    "generated_at": "2026-04-02T16:08:13.278Z"
+    "generated_at": "2026-04-04T09:27:33.159Z"
   },
   "services": [
     {
@@ -420,6 +420,18 @@
         "lgtm_loki",
         "lgtm_tempo",
         "lgtm_mimir"
+      ]
+    },
+    {
+      "name": "maddy",
+      "category": "app",
+      "vm": "oci-E2-f_0",
+      "description": "Maddy Mail Server (mail.diegonmarcos.com)",
+      "domain": "mail.diegonmarcos.com",
+      "ports": [],
+      "networks": [],
+      "containers": [
+        "maddy"
       ]
     },
     {
@@ -1312,6 +1324,18 @@
       "containers": [
         "hedgedoc_app",
         "hedgedoc_postgres"
+      ]
+    },
+    {
+      "name": "maddy",
+      "category": "app",
+      "vm": "oci-E2-f_0",
+      "description": "Maddy Mail Server (mail.diegonmarcos.com)",
+      "domain": "mail.diegonmarcos.com",
+      "ports": [],
+      "networks": [],
+      "containers": [
+        "maddy"
       ]
     },
     {
