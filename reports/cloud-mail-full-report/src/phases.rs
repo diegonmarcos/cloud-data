@@ -1059,16 +1059,53 @@ echo "$r993" | grep "Not After" | head -1"#,
         }));
     }
 
-    // ManageSieve :4190 — Maddy doesn't run ManageSieve protocol server (built-in sieve only)
+    // Caddy route: mail.diegonmarcos.com/webmail/ → SnappyMail
     {
+        let cl = client.clone();
         futs.push(Box::pin(async move {
+            let t = Instant::now();
+            let url = format!("https://{}/webmail/", MAIL_DOMAIN);
+            let (ok, _code, detail) = http_get(&cl, &url).await;
             Check {
-                name: "ManageSieve :4190".into(),
-                passed: true,
-                details: "N/A — Maddy uses built-in sieve".into(),
-                duration_ms: 0,
-                error: None,
-                severity: Severity::Info,
+                name: "mail.*/webmail/ route".into(),
+                passed: ok,
+                details: format!("HTTP {}", detail),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: if ok { None } else { Some(detail) },
+                severity: Severity::Warning,
+            }
+        }));
+    }
+
+    // Caddy route: webmail.diegonmarcos.com → 301 redirect to /webmail/
+    {
+        let cl = client.clone();
+        futs.push(Box::pin(async move {
+            let t = Instant::now();
+            let url = format!("https://{}/", WEBMAIL_DOMAIN);
+            let resp = cl.get(&url)
+                .timeout(std::time::Duration::from_secs(5))
+                .send()
+                .await;
+            let (ok, detail) = match resp {
+                Ok(r) => {
+                    let status = r.status().as_u16();
+                    let location = r.headers().get("location")
+                        .and_then(|v| v.to_str().ok())
+                        .unwrap_or("")
+                        .to_string();
+                    let is_redirect = status == 301 && location.contains("/webmail/");
+                    (is_redirect, format!("{} → {}", status, location))
+                }
+                Err(e) => (false, format!("ERR: {}", e)),
+            };
+            Check {
+                name: "webmail.* redirect".into(),
+                passed: ok,
+                details: detail.clone(),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: if ok { None } else { Some(detail) },
+                severity: Severity::Warning,
             }
         }));
     }
