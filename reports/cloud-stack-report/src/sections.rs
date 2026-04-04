@@ -492,8 +492,8 @@ fn build_framework_paths(ctx: &Context) -> String {
     lines.push("    Consolidated         ~/git/cloud-data/_cloud-data-consolidated.json".into());
     lines.push(String::new());
     lines.push("  TERRAFORM".into());
-    lines.push("    OCI                  ~/git/cloud/b_infra/vps_oci/src/main.tf".into());
-    lines.push("    GCP                  ~/git/cloud/b_infra/vps_gcloud/src/main.tf".into());
-    lines.push("    Cloudflare           ~/git/cloud/a_solutions/ba-clo_cloudflare/src/main.tf".into());
+    lines.push("    OCI                  ~/git/cloud/c_vps/vps_oci/src/main.tf".into());
+    lines.push("    GCP                  ~/git/cloud/c_vps/vps_gcloud/src/main.tf".into());
+    lines.push("    Cloudflare           ~/git/cloud/c_vps/ba-clo_cloudflare/src/main.tf".into());
     lines.join("\n")
 }

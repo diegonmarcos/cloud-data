@@ -43,15 +43,15 @@ jobs:
         with:
           filters: |
             cloudflare:
-              - 'a_solutions/ba-clo_cloudflare/src/**'
+              - 'c_vps/ba-clo_cloudflare/src/**'
             gcloud:
-              - 'b_infra/vps_gcloud/src/**'
+              - 'c_vps/vps_gcloud/src/**'
             oci:
-              - 'b_infra/vps_oci/src/**'
+              - 'c_vps/vps_oci/src/**'
             aws:
-              - 'b_infra/vps_aws/src/**'
+              - 'c_vps/vps_aws/src/**'
             hetzner:
-              - 'b_infra/vps_hetzner/src/**'
+              - 'c_vps/vps_hetzner/src/**'
 
       - name: Force project override
         id: force

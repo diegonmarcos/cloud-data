@@ -262,7 +262,7 @@
       "provider": "Oracle Cloud",
       "tier": "Free + Paid",
       "infrastructure_type": "Terraform",
-      "folder": "b_infra/vps_oci",
+      "folder": "c_vps/vps_oci",
       "instances": [
         "oci-E2-f_0",
         "oci-E2-f_1",
@@ -275,7 +275,7 @@
       "provider": "Google Cloud",
       "tier": "Free + Paid (Spot)",
       "infrastructure_type": "Terraform",
-      "folder": "b_infra/vps_gcloud",
+      "folder": "c_vps/vps_gcloud",
       "instances": [
         "gcp-E2-f_0",
         "gcp-T4-p_0"
@@ -287,7 +287,7 @@
       "provider": "Amazon Web Services",
       "tier": "Exploration",
       "infrastructure_type": "Terraform",
-      "folder": "b_infra/vps_aws",
+      "folder": "c_vps/vps_aws",
       "instances": [],
       "description": "AWS infrastructure code (not currently active)",
       "has_terraform": true
@@ -296,7 +296,7 @@
       "provider": "Vast.ai",
       "tier": "On-demand rental",
       "infrastructure_type": "Manual rental",
-      "folder": "b_infra/vps_vast-ai",
+      "folder": "c_vps/vps_vast-ai",
       "instances": [
         "vast-RTX-p_0"
       ],
@@ -305,11 +305,11 @@
     },
     "hetzner": {
       "has_terraform": true,
-      "folder": "b_infra/vps_hetzner"
+      "folder": "c_vps/vps_hetzner"
     },
     "resend": {
       "has_terraform": true,
-      "folder": "b_infra/vps_resend"
+      "folder": "c_vps/vps_resend"
     }
   },
   "storage": [
