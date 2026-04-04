@@ -279,6 +279,144 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
         },
     );
 
+    // ── New delivery-path health checks ──────────────────────────────
+    let (cf_worker_check, google_oauth_check, stalwart_domain_check, stalwart_queue_check) = tokio::join!(
+        // CF Worker alive — email-forwarder.diegonm-workers.workers.dev
+        async {
+            let t = Instant::now();
+            let (_, code, detail) = http_get(&client, CF_WORKER_URL).await;
+            // Worker returns various codes; any response (even 405) means it's deployed
+            let ok = code > 0;
+            Check {
+                name: "CF Worker alive".into(),
+                passed: ok,
+                details: format!("HTTP {}", if ok { code.to_string() } else { detail.clone() }),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: if ok { None } else { Some("CF email-forwarder Worker unreachable".into()) },
+                severity: Severity::Critical,
+            }
+        },
+        // Google OAuth endpoint reachable (Gmail API dependency)
+        async {
+            let t = Instant::now();
+            let (_, code, detail) = http_get(&client, GOOGLE_TOKEN_URL).await;
+            // Token endpoint returns 400/404/405 without proper params — that's healthy
+            let ok = matches!(code, 400 | 404 | 405 | 200);
+            Check {
+                name: "Google OAuth reachable".into(),
+                passed: ok,
+                details: format!("HTTP {} (token endpoint)", if ok { code.to_string() } else { detail.clone() }),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: if ok { None } else { Some("Google OAuth unreachable — Gmail API delivery will fail".into()) },
+                severity: Severity::Warning,
+            }
+        },
+        // Stalwart domain principal exists (via WG direct to admin API)
+        async {
+            let t = Instant::now();
+            let url = format!("https://{}:{}/api/principal?types=domain", MAIL_WG_IP, STALWART_ADMIN_PORT);
+            let admin_pass = std::env::var("STALWART_ADMIN_PASSWORD").unwrap_or_default();
+            if admin_pass.is_empty() {
+                return Check {
+                    name: "Domain principal".into(),
+                    passed: false,
+                    details: "STALWART_ADMIN_PASSWORD not set".into(),
+                    duration_ms: t.elapsed().as_millis() as u64,
+                    error: Some("set STALWART_ADMIN_PASSWORD env var".into()),
+                    severity: Severity::Warning,
+                };
+            }
+            let insecure = reqwest::Client::builder()
+                .danger_accept_invalid_certs(true)
+                .timeout(std::time::Duration::from_secs(5))
+                .build()
+                .unwrap_or_else(|_| client.clone());
+            match insecure.get(&url)
+                .basic_auth("admin@diegonmarcos.com", Some(&admin_pass))
+                .send().await
+            {
+                Ok(resp) => {
+                    let code = resp.status().as_u16();
+                    let body = resp.text().await.unwrap_or_default();
+                    let domain_count = serde_json::from_str::<serde_json::Value>(&body)
+                        .ok()
+                        .and_then(|v| v.pointer("/data/items").and_then(|i| i.as_array()).map(|a| a.len()))
+                        .unwrap_or(0);
+                    let ok = domain_count > 0;
+                    Check {
+                        name: "Domain principal".into(),
+                        passed: ok,
+                        details: if ok { format!("{} domains in RocksDB", domain_count) } else { format!("HTTP {} — 0 domains (local delivery broken!)", code) },
+                        duration_ms: t.elapsed().as_millis() as u64,
+                        error: if ok { None } else { Some("diegonmarcos.com missing from domain principals — inbound mail won't deliver locally".into()) },
+                        severity: if ok { Severity::Info } else { Severity::Critical },
+                    }
+                }
+                Err(e) => Check {
+                    name: "Domain principal".into(),
+                    passed: false,
+                    details: format!("API error: {}", e),
+                    duration_ms: t.elapsed().as_millis() as u64,
+                    error: Some("Stalwart admin API unreachable via WG".into()),
+                    severity: Severity::Warning,
+                },
+            }
+        },
+        // Stalwart outbound queue (stuck messages = delivery failure)
+        async {
+            let t = Instant::now();
+            let admin_pass = std::env::var("STALWART_ADMIN_PASSWORD").unwrap_or_default();
+            if admin_pass.is_empty() {
+                return Check {
+                    name: "Outbound queue".into(),
+                    passed: false,
+                    details: "STALWART_ADMIN_PASSWORD not set".into(),
+                    duration_ms: t.elapsed().as_millis() as u64,
+                    error: Some("set STALWART_ADMIN_PASSWORD env var".into()),
+                    severity: Severity::Warning,
+                };
+            }
+            let url = format!("https://{}:{}/api/queue/messages", MAIL_WG_IP, STALWART_ADMIN_PORT);
+            let insecure = reqwest::Client::builder()
+                .danger_accept_invalid_certs(true)
+                .timeout(std::time::Duration::from_secs(5))
+                .build()
+                .unwrap_or_else(|_| client.clone());
+            match insecure.get(&url)
+                .basic_auth("admin@diegonmarcos.com", Some(&admin_pass))
+                .send().await
+            {
+                Ok(resp) => {
+                    let body = resp.text().await.unwrap_or_default();
+                    let count = serde_json::from_str::<serde_json::Value>(&body)
+                        .ok()
+                        .and_then(|v| {
+                            if let Some(arr) = v.pointer("/data/items").and_then(|i| i.as_array()) { return Some(arr.len()); }
+                            v.as_array().map(|a| a.len())
+                        })
+                        .unwrap_or(0);
+                    let ok = count == 0;
+                    Check {
+                        name: "Outbound queue".into(),
+                        passed: ok,
+                        details: if ok { "empty".into() } else { format!("{} messages stuck in queue", count) },
+                        duration_ms: t.elapsed().as_millis() as u64,
+                        error: if ok { None } else { Some(format!("{} messages stuck — likely local delivery or relay failure", count)) },
+                        severity: if ok { Severity::Info } else { Severity::Warning },
+                    }
+                }
+                Err(e) => Check {
+                    name: "Outbound queue".into(),
+                    passed: false,
+                    details: format!("API error: {}", e),
+                    duration_ms: t.elapsed().as_millis() as u64,
+                    error: Some("Stalwart queue API unreachable".into()),
+                    severity: Severity::Warning,
+                },
+            }
+        },
+    );
+
     // TLS port checks via openssl subprocess
     let (tls_993, tls_465, tls_587) = tokio::join!(
         async {
@@ -323,6 +461,7 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
         mail_https, webmail_https, auth_https, mcp_endpoint,
         tls_993, tls_465, tls_587,
         mx_record, dkim_record, gha_health,
+        cf_worker_check, google_oauth_check, stalwart_domain_check, stalwart_queue_check,
     ]
 }
 

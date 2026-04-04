@@ -39,3 +39,12 @@ pub const AWS_RELAY_HOST: &str = "email-smtp.us-east-1.amazonaws.com";
 pub const AWS_RELAY_PORT: u16 = 587;
 pub const SMTP_PROXY_DOMAIN: &str = "smtp.diegonmarcos.com";
 pub const SMTP_PROXY_PORT: u16 = 8080;
+
+// Cloudflare Worker
+pub const CF_WORKER_URL: &str = "https://email-forwarder.diegonm-workers.workers.dev";
+
+// Google OAuth token endpoint (for Gmail API health)
+pub const GOOGLE_TOKEN_URL: &str = "https://oauth2.googleapis.com/token";
+
+// Stalwart Admin API (via WG direct)
+pub const STALWART_ADMIN_PORT: u16 = 443;

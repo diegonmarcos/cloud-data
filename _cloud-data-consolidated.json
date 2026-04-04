@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-04-03T12:05:20.428Z",
+    "generated_at": "2026-04-04T09:07:31.860Z",
     "generated_by": "gen-cloud-data.ts"
   },
   "owner": {
@@ -93,8 +93,8 @@
       "instance_id": "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacbwylmkqr253ay7binepapgsyopllfayovkzaky6oigbq",
       "services": [
         "snappymail",
+        "maddy",
         "smtp-proxy",
-        "stalwart",
         "dagu",
         "syslog-forwarder"
       ],
@@ -1939,6 +1939,90 @@
         "path": "/"
       }
     },
+    "maddy": {
+      "category": "app",
+      "vm": "oci-E2-f_0",
+      "folder": "aa-sui_tools-maddy",
+      "description": "Maddy Mail Server (mail.diegonmarcos.com)",
+      "enabled": true,
+      "domain": "mail.diegonmarcos.com",
+      "flake": "tools-maddy",
+      "port": 443,
+      "dns": "maddy.app",
+      "upstream": "10.0.0.3:443",
+      "containers": {
+        "app": {
+          "container_name": "maddy",
+          "image": "foxcpp/maddy:0.9",
+          "port": 443,
+          "dns": "maddy.app",
+          "public": true,
+          "proxy": {
+            "domain": "mail.diegonmarcos.com",
+            "auth": "two_factor",
+            "tls_skip_verify": true
+          },
+          "healthcheck": null,
+          "volumes": [
+            "maddy_data:/data",
+            "./dkim:/data/dkim:ro"
+          ],
+          "env_file": true,
+          "depends_on": [],
+          "resources": {
+            "limits": {
+              "memory": "256M"
+            },
+            "reservations": {
+              "memory": "32M"
+            }
+          },
+          "read_only": false
+        }
+      },
+      "container_names": [
+        "maddy"
+      ],
+      "all_ports": [
+        "443"
+      ],
+      "all_dns": [
+        "maddy.app"
+      ],
+      "compose": {
+        "containers": [
+          "maddy"
+        ],
+        "ports": [],
+        "networks": []
+      },
+      "proxy": {
+        "primary": {
+          "domain": "mail.diegonmarcos.com",
+          "auth": "two_factor",
+          "tls_skip_verify": true
+        }
+      },
+      "declared_ports": {
+        "app": 443,
+        "smtp": 465,
+        "imap": 993
+      },
+      "health": {
+        "path": "/"
+      },
+      "monitoring": {
+        "tls_check": true,
+        "dns_check": true,
+        "endpoint_check": true
+      },
+      "backup": {
+        "enabled": true,
+        "volumes": [
+          "maddy_data"
+        ]
+      }
+    },
     "smtp-proxy": {
       "category": "app",
       "vm": "oci-E2-f_0",
@@ -1986,94 +2070,6 @@
       },
       "declared_ports": {
         "app": 8080
-      }
-    },
-    "stalwart": {
-      "category": "app",
-      "vm": "oci-E2-f_0",
-      "folder": "aa-sui_tools-stalwart",
-      "description": "Stalwart Mail Server (mail.diegonmarcos.com)",
-      "enabled": true,
-      "domain": "mail.diegonmarcos.com",
-      "flake": "tools-stalwart",
-      "port": 443,
-      "dns": "stalwart.app",
-      "upstream": "10.0.0.3:443",
-      "containers": {
-        "app": {
-          "container_name": "stalwart",
-          "image": "stalwartlabs/mail-server:v0.11",
-          "port": 443,
-          "port_env": null,
-          "dns": "stalwart.app",
-          "public": true,
-          "proxy": {
-            "domain": "mail.diegonmarcos.com",
-            "auth": "two_factor",
-            "tls_skip_verify": true
-          },
-          "healthcheck": "/",
-          "monitoring": {
-            "tls_check": true
-          },
-          "volumes": [
-            "./data:/opt/stalwart-mail/data",
-            "./config.toml:/opt/stalwart-mail/etc/config.toml:ro",
-            "./dkim:/opt/stalwart-mail/dkim:ro"
-          ],
-          "env_file": false,
-          "depends_on": [],
-          "resources": {
-            "limits": {
-              "memory": "512M"
-            },
-            "reservations": {
-              "memory": "64M"
-            }
-          },
-          "read_only": false,
-          "dump_cmd": "sh -c 'stalwart-mail --export /tmp/stalwart-export && tar cf - -C /tmp stalwart-export && rm -rf /tmp/stalwart-export'"
-        }
-      },
-      "container_names": [
-        "stalwart"
-      ],
-      "all_ports": [
-        "443"
-      ],
-      "all_dns": [
-        "stalwart.app"
-      ],
-      "compose": {
-        "containers": [
-          "stalwart"
-        ],
-        "ports": [],
-        "networks": []
-      },
-      "proxy": {
-        "primary": {
-          "domain": "mail.diegonmarcos.com",
-          "auth": "two_factor",
-          "tls_skip_verify": true
-        }
-      },
-      "declared_ports": {
-        "app": 443,
-        "smtp": 465,
-        "imap": 993
-      },
-      "health": {
-        "path": "/"
-      },
-      "monitoring": {
-        "tls_check": true
-      },
-      "backup": {
-        "enabled": true,
-        "volumes": [
-          "stalwart_data"
-        ]
       }
     },
     "vaultwarden": {
@@ -5315,16 +5311,16 @@
         "service": "snappymail"
       },
       {
+        "name": "maddy.app",
+        "type": "A",
+        "value": "10.0.0.3",
+        "service": "maddy"
+      },
+      {
         "name": "smtp-proxy.app",
         "type": "A",
         "value": "10.0.0.3",
         "service": "smtp-proxy"
-      },
-      {
-        "name": "stalwart.app",
-        "type": "A",
-        "value": "10.0.0.3",
-        "service": "stalwart"
       },
       {
         "name": "vaultwarden.app",
@@ -5880,81 +5876,81 @@
     "ntfy": {
       "topics": [
         {
-          "name": "vcs_commits",
-          "category": "vcs",
+          "name": "dev_commits",
+          "category": "dev",
           "desc": "Push/commit events",
           "publishers": [
             "github-rss"
           ]
         },
         {
-          "name": "vcs_pull-requests",
-          "category": "vcs",
+          "name": "dev_pull-requests",
+          "category": "dev",
           "desc": "PR open/close/merge events",
           "publishers": [
             "github-rss"
           ]
         },
         {
-          "name": "vcs_issues-releases",
-          "category": "vcs",
+          "name": "dev_releases",
+          "category": "dev",
           "desc": "Issues, releases, tags, forks",
           "publishers": [
             "github-rss"
           ]
         },
         {
-          "name": "cicd_deploy-digest",
-          "category": "cicd",
-          "desc": "Container restarts & deploy activity",
+          "name": "deploy_ship",
+          "category": "deploy",
+          "desc": "build.sh ship / GHA deploys",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "infra_mesh-health",
-          "category": "infra",
-          "desc": "WireGuard mesh connectivity checks",
+          "name": "deploy_containers",
+          "category": "deploy",
+          "desc": "Container restarts, image pulls",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "infra_endpoints",
-          "category": "infra",
-          "desc": "HTTP service endpoint monitoring",
+          "name": "health_mesh",
+          "category": "health",
+          "desc": "WireGuard mesh connectivity",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "infra_dns",
-          "category": "infra",
+          "name": "health_endpoints",
+          "category": "health",
+          "desc": "HTTP service endpoint checks",
+          "publishers": [
+            "system"
+          ]
+        },
+        {
+          "name": "health_dns",
+          "category": "health",
           "desc": "DNS resolution checks",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "infra_resources",
-          "category": "infra",
+          "name": "health_resources",
+          "category": "health",
           "desc": "VM disk/memory/CPU usage",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "infra_containers",
-          "category": "infra",
+          "name": "health_containers",
+          "category": "health",
           "desc": "Docker container health",
-          "publishers": [
-            "system"
-          ]
-        },
-        {
-          "name": "ops_summary",
-          "category": "ops",
-          "desc": "Daily/weekly ops reports",
           "publishers": [
             "system"
           ]
@@ -5968,43 +5964,43 @@
           ]
         },
         {
-          "name": "ops_cron",
+          "name": "ops_reports",
           "category": "ops",
-          "desc": "Systemd timer/cron failures",
+          "desc": "Daily/weekly summaries",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "security_audit",
-          "category": "security",
+          "name": "sec_audit",
+          "category": "sec",
           "desc": "Auth log analysis & brute-force detection",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "security_tls",
-          "category": "security",
+          "name": "sec_tls",
+          "category": "sec",
           "desc": "TLS certificate expiry warnings",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "security_connections",
-          "category": "security",
-          "desc": "All SSH/sudo/connection events across VMs",
+          "name": "sec_connections",
+          "category": "sec",
+          "desc": "SSH/sudo/connection events across VMs",
           "publishers": [
             "system"
           ]
         },
         {
-          "name": "security_yara",
-          "category": "security",
+          "name": "sec_yara",
+          "category": "sec",
           "desc": "YARA malware scanner alerts & status",
           "publishers": [
-            "syslog-bridge"
+            "system"
           ]
         }
       ],
@@ -6085,8 +6081,8 @@
         "idle_shutdown": null,
         "containers": [
           "snappymail",
+          "maddy",
           "smtp-proxy",
-          "stalwart",
           "dagu",
           "syslog-forwarder"
         ],
@@ -6580,13 +6576,13 @@
         "vm": "oci-mail",
         "has_docker": true
       },
+      "maddy": {
+        "dir": "aa-sui_tools-maddy",
+        "vm": "oci-mail",
+        "has_docker": false
+      },
       "smtp-proxy": {
         "dir": "aa-sui_tools-smtp-proxy",
-        "vm": "oci-mail",
-        "has_docker": true
-      },
-      "stalwart": {
-        "dir": "aa-sui_tools-stalwart",
         "vm": "oci-mail",
         "has_docker": true
       },
