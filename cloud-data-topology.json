@@ -98,6 +98,7 @@
         "photoprism_app",
         "photoprism_mariadb",
         "photoprism_rclone",
+        "photos-db",
         "photos-webhook",
         "radicale",
         "revealmd_app",
@@ -140,7 +141,7 @@
         "backup-bup",
         "gitea",
         "gitea",
-        "kg-graph"
+        "surrealdb"
       ],
       "ports": [
         "10.0.0.6:3015:8080"
@@ -747,12 +748,6 @@
         "type": "A",
         "value": "10.0.0.6",
         "service": "photoprism"
-      },
-      {
-        "name": "photos-webhook.app",
-        "type": "A",
-        "value": "10.0.0.6",
-        "service": "photos-webhook"
       },
       {
         "name": "radicale.app",
@@ -1964,24 +1959,13 @@
       "port": 5002,
       "dns": "photos-webhook.app",
       "upstream": "10.0.0.6:5002",
-      "containers": {
-        "app": {
-          "container_name": "photos-webhook",
-          "image": "",
-          "public": false,
-          "port": 5002,
-          "dns": "photos-webhook.app"
-        }
-      },
+      "containers": {},
       "container_names": [
+        "photos-db",
         "photos-webhook"
       ],
-      "all_ports": [
-        "5002"
-      ],
-      "all_dns": [
-        "photos-webhook.app"
-      ],
+      "all_ports": [],
+      "all_dns": [],
       "compose": {
         "containers": [
           "photos-db",
@@ -1989,6 +1973,9 @@
         ],
         "ports": [],
         "networks": []
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "radicale": {
@@ -4956,6 +4943,9 @@
       },
       "monitoring": {
         "tls_check": true
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "backup-borg": {
@@ -5200,15 +5190,9 @@
       "vm": "oci-A1-f_0",
       "folder": "ca-dat_kg-graph",
       "description": "SurrealDB Hybrid Knowledge Graph - Infrastructure topology + vector search",
-      "containers": {
-        "app": {
-          "container_name": "kg-graph",
-          "image": "",
-          "public": false
-        }
-      },
+      "containers": {},
       "container_names": [
-        "kg-graph"
+        "surrealdb"
       ],
       "all_ports": [],
       "all_dns": [],
@@ -5218,6 +5202,9 @@
         ],
         "ports": [],
         "networks": []
+      },
+      "backup": {
+        "enabled": true
       }
     },
     "postlite": {
