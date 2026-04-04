@@ -17,7 +17,7 @@ jobs:
       - name: Ship inside cloud-builder
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-          docker pull ghcr.io/diegonmarcos/cloud-builder-x86-nixos:latest
+          docker pull ghcr.io/diegonmarcos/cloud-builder-x-deb-nixhm:latest
           mkdir -p "${{ runner.temp }}/traces"
           docker run --rm \
             -v "${{ runner.temp }}/traces:/traces" \
@@ -36,7 +36,7 @@ jobs:
             -e GITHUB_RUN_ID="${{ github.run_id }}" \
             -e GITHUB_SHA="${{ github.sha }}" \
             -e FORCE_DEPLOY=1 \
-            ghcr.io/diegonmarcos/cloud-builder-x86-nixos:latest \
+            ghcr.io/diegonmarcos/cloud-builder-x-deb-nixhm:latest \
             bash -c 'mkdir -p ~/.ssh && ssh-keyscan github.com >>~/.ssh/known_hosts 2>/dev/null && git clone --depth 2 --recurse-submodules https://github.com/$GITHUB_REPOSITORY.git /workspace && cd /workspace && git submodule update --remote && stdbuf -oL bash .github/workflows/scripts/cloud-builder.sh ship $SSH_ALIAS 2>&1 | stdbuf -oL cat'
 
       - name: Push traces to cloud-data
