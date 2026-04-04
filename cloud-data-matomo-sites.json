@@ -64,9 +64,9 @@
       "service": "smtp-proxy"
     },
     {
-      "name": "Stalwart Mail Server (mail.diegonmarcos.com)",
+      "name": "Maddy Mail Server (mail.diegonmarcos.com)",
       "url": "https://mail.diegonmarcos.com",
-      "service": "stalwart"
+      "service": "maddy"
     },
     {
       "name": "Bitwarden password manager",

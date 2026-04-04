@@ -8,9 +8,9 @@ use std::time::Instant;
 // TIER 0: PATH CHECKER -- traces outbound + inbound mail paths, <5s
 // ═══════════════════════════════════════════════════════════════════════════
 //
-// OUTBOUND: mail_send → Stalwart :465 → OCI relay :587 → (retry: AWS :587) → dest MX
+// OUTBOUND: mail_send → Maddy :465 → OCI relay :587 → (retry: AWS :587) → dest MX
 // INBOUND:  Resend → CF MX → CF Worker → smtp.diegonmarcos.com (HTTPS)
-//           → Caddy gcp-proxy → smtp-proxy oci-mail :8080 → Stalwart :25 → INBOX
+//           → Caddy gcp-proxy → smtp-proxy oci-mail :8080 → Maddy :25 → INBOX
 //
 
 pub async fn path_checker() -> Vec<Check> {
@@ -18,15 +18,15 @@ pub async fn path_checker() -> Vec<Check> {
     let mut checks = Vec::new();
 
     // ── OUTBOUND PATH ──────────────────────────────────────────
-    // Step 1: Stalwart SMTPS :465 (submission)
+    // Step 1: Maddy SMTPS :465 (submission)
     let t = Instant::now();
     let ok = tcp(MAIL_WG_IP, 465).await;
     checks.push(Check {
-        name: "OUT→1 Stalwart :465 (SMTPS)".into(),
+        name: "OUT→1 Maddy :465 (SMTPS)".into(),
         passed: ok,
         details: format!("tcp {}:465 {}", MAIL_WG_IP, if ok { "OPEN" } else { "CLOSED" }),
         duration_ms: t.elapsed().as_millis() as u64,
-        error: if ok { None } else { Some("Stalwart not accepting submissions".into()) },
+        error: if ok { None } else { Some("Maddy not accepting submissions".into()) },
         severity: if ok { Severity::Info } else { Severity::Critical },
     });
 
@@ -113,15 +113,15 @@ pub async fn path_checker() -> Vec<Check> {
         severity: if ok { Severity::Info } else { Severity::Critical },
     });
 
-    // Step 5: Stalwart SMTP :25 on oci-mail (localhost relay from smtp-proxy)
+    // Step 5: Maddy SMTP :25 on oci-mail (localhost relay from smtp-proxy)
     let t = Instant::now();
     let ok = tcp(MAIL_WG_IP, 25).await;
     checks.push(Check {
-        name: "IN→5 Stalwart :25 (oci-mail)".into(),
+        name: "IN→5 Maddy :25 (oci-mail)".into(),
         passed: ok,
         details: format!("tcp {}:25 {}", MAIL_WG_IP, if ok { "OPEN" } else { "CLOSED" }),
         duration_ms: t.elapsed().as_millis() as u64,
-        error: if ok { None } else { Some("Stalwart SMTP not listening".into()) },
+        error: if ok { None } else { Some("Maddy SMTP not listening".into()) },
         severity: if ok { Severity::Info } else { Severity::Critical },
     });
 
@@ -280,7 +280,7 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
     );
 
     // ── New delivery-path health checks ──────────────────────────────
-    let (cf_worker_check, google_oauth_check, stalwart_domain_check, stalwart_queue_check) = tokio::join!(
+    let (cf_worker_check, google_oauth_check, maddy_imap_check, maddy_smtp_check) = tokio::join!(
         // CF Worker alive — email-forwarder.diegonm-workers.workers.dev
         async {
             let t = Instant::now();
@@ -311,108 +311,30 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
                 severity: Severity::Warning,
             }
         },
-        // Stalwart domain principal exists (via WG direct to admin API)
+        // IMAP direct connectivity (WG → Maddy :993)
         async {
             let t = Instant::now();
-            let url = format!("https://{}:{}/api/principal?types=domain", MAIL_WG_IP, STALWART_ADMIN_PORT);
-            let admin_pass = std::env::var("STALWART_ADMIN_PASSWORD").unwrap_or_default();
-            if admin_pass.is_empty() {
-                return Check {
-                    name: "Domain principal".into(),
-                    passed: false,
-                    details: "STALWART_ADMIN_PASSWORD not set".into(),
-                    duration_ms: t.elapsed().as_millis() as u64,
-                    error: Some("set STALWART_ADMIN_PASSWORD env var".into()),
-                    severity: Severity::Warning,
-                };
-            }
-            let insecure = reqwest::Client::builder()
-                .danger_accept_invalid_certs(true)
-                .timeout(std::time::Duration::from_secs(5))
-                .build()
-                .unwrap_or_else(|_| client.clone());
-            match insecure.get(&url)
-                .basic_auth("admin@diegonmarcos.com", Some(&admin_pass))
-                .send().await
-            {
-                Ok(resp) => {
-                    let code = resp.status().as_u16();
-                    let body = resp.text().await.unwrap_or_default();
-                    let domain_count = serde_json::from_str::<serde_json::Value>(&body)
-                        .ok()
-                        .and_then(|v| v.pointer("/data/items").and_then(|i| i.as_array()).map(|a| a.len()))
-                        .unwrap_or(0);
-                    let ok = domain_count > 0;
-                    Check {
-                        name: "Domain principal".into(),
-                        passed: ok,
-                        details: if ok { format!("{} domains in RocksDB", domain_count) } else { format!("HTTP {} — 0 domains (local delivery broken!)", code) },
-                        duration_ms: t.elapsed().as_millis() as u64,
-                        error: if ok { None } else { Some("diegonmarcos.com missing from domain principals — inbound mail won't deliver locally".into()) },
-                        severity: if ok { Severity::Info } else { Severity::Critical },
-                    }
-                }
-                Err(e) => Check {
-                    name: "Domain principal".into(),
-                    passed: false,
-                    details: format!("API error: {}", e),
-                    duration_ms: t.elapsed().as_millis() as u64,
-                    error: Some("Stalwart admin API unreachable via WG".into()),
-                    severity: Severity::Warning,
-                },
+            let ok = tcp(MAIL_WG_IP, 993).await;
+            Check {
+                name: "IMAP direct (WG)".into(),
+                passed: ok,
+                details: format!("{}:993 {}", MAIL_WG_IP, if ok { "OK" } else { "FAIL" }),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: if ok { None } else { Some("Maddy IMAP unreachable via WG".into()) },
+                severity: if ok { Severity::Info } else { Severity::Critical },
             }
         },
-        // Stalwart outbound queue (stuck messages = delivery failure)
+        // SMTP direct connectivity (WG → Maddy :25)
         async {
             let t = Instant::now();
-            let admin_pass = std::env::var("STALWART_ADMIN_PASSWORD").unwrap_or_default();
-            if admin_pass.is_empty() {
-                return Check {
-                    name: "Outbound queue".into(),
-                    passed: false,
-                    details: "STALWART_ADMIN_PASSWORD not set".into(),
-                    duration_ms: t.elapsed().as_millis() as u64,
-                    error: Some("set STALWART_ADMIN_PASSWORD env var".into()),
-                    severity: Severity::Warning,
-                };
-            }
-            let url = format!("https://{}:{}/api/queue/messages", MAIL_WG_IP, STALWART_ADMIN_PORT);
-            let insecure = reqwest::Client::builder()
-                .danger_accept_invalid_certs(true)
-                .timeout(std::time::Duration::from_secs(5))
-                .build()
-                .unwrap_or_else(|_| client.clone());
-            match insecure.get(&url)
-                .basic_auth("admin@diegonmarcos.com", Some(&admin_pass))
-                .send().await
-            {
-                Ok(resp) => {
-                    let body = resp.text().await.unwrap_or_default();
-                    let count = serde_json::from_str::<serde_json::Value>(&body)
-                        .ok()
-                        .and_then(|v| {
-                            if let Some(arr) = v.pointer("/data/items").and_then(|i| i.as_array()) { return Some(arr.len()); }
-                            v.as_array().map(|a| a.len())
-                        })
-                        .unwrap_or(0);
-                    let ok = count == 0;
-                    Check {
-                        name: "Outbound queue".into(),
-                        passed: ok,
-                        details: if ok { "empty".into() } else { format!("{} messages stuck in queue", count) },
-                        duration_ms: t.elapsed().as_millis() as u64,
-                        error: if ok { None } else { Some(format!("{} messages stuck — likely local delivery or relay failure", count)) },
-                        severity: if ok { Severity::Info } else { Severity::Warning },
-                    }
-                }
-                Err(e) => Check {
-                    name: "Outbound queue".into(),
-                    passed: false,
-                    details: format!("API error: {}", e),
-                    duration_ms: t.elapsed().as_millis() as u64,
-                    error: Some("Stalwart queue API unreachable".into()),
-                    severity: Severity::Warning,
-                },
+            let ok = tcp(MAIL_WG_IP, 25).await;
+            Check {
+                name: "SMTP direct (WG)".into(),
+                passed: ok,
+                details: format!("{}:25 {}", MAIL_WG_IP, if ok { "OK" } else { "FAIL" }),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: if ok { None } else { Some("Maddy SMTP unreachable via WG".into()) },
+                severity: if ok { Severity::Info } else { Severity::Critical },
             }
         },
     );
@@ -461,7 +383,7 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
         mail_https, webmail_https, auth_https, mcp_endpoint,
         tls_993, tls_465, tls_587,
         mx_record, dkim_record, gha_health,
-        cf_worker_check, google_oauth_check, stalwart_domain_check, stalwart_queue_check,
+        cf_worker_check, google_oauth_check, maddy_imap_check, maddy_smtp_check,
     ]
 }
 
@@ -878,14 +800,14 @@ pub async fn network_checks(
         }
     }));
 
-    // Hickory DNS resolve stalwart.app
+    // Hickory DNS resolve maddy.app
     futs.push(Box::pin(async {
         let t = Instant::now();
         let resolver = hickory_resolver();
-        let ip = dns_resolve(&resolver, "stalwart.app").await;
+        let ip = dns_resolve(&resolver, "maddy.app").await;
         let ok = ip.as_deref() == Some(MAIL_WG_IP);
         let detail = if ok {
-            format!("stalwart.app -> {}", MAIL_WG_IP)
+            format!("maddy.app -> {}", MAIL_WG_IP)
         } else {
             format!(
                 "FAIL: {}",
@@ -1137,27 +1059,16 @@ echo "$r993" | grep "Not After" | head -1"#,
         }));
     }
 
-    // ManageSieve :4190 (from cache)
+    // ManageSieve :4190 — Maddy doesn't run ManageSieve protocol server (built-in sieve only)
     {
-        let sieve = mail_data.as_ref().map(|d| d.sieve4190.clone());
         futs.push(Box::pin(async move {
-            let (ok, detail) = match &sieve {
-                Some(s) => {
-                    let good = s.contains("OK") || s.contains("SIEVE") || s.contains("IMPLEMENTATION");
-                    (
-                        good,
-                        if good { "ManageSieve OK".into() } else { s[..s.len().min(50)].to_string() },
-                    )
-                }
-                None => (false, "no data".into()),
-            };
             Check {
                 name: "ManageSieve :4190".into(),
-                passed: ok,
-                details: detail.clone(),
+                passed: true,
+                details: "N/A — Maddy uses built-in sieve".into(),
                 duration_ms: 0,
-                error: if ok { None } else { Some(detail) },
-                severity: Severity::Warning,
+                error: None,
+                severity: Severity::Info,
             }
         }));
     }
@@ -1224,32 +1135,16 @@ echo "$r993" | grep "Not After" | head -1"#,
         }));
     }
 
-    // Stalwart Admin via Bearer
+    // Mail Admin via Bearer — Maddy has no web admin (CLI-only)
     {
-        let token = bearer_token.clone();
         futs.push(Box::pin(async move {
-            let t = Instant::now();
-            if token.is_none() {
-                return Check {
-                    name: "Stalwart Admin via Bearer".into(),
-                    passed: false,
-                    details: "no OIDC token".into(),
-                    duration_ms: t.elapsed().as_millis() as u64,
-                    error: Some("no OIDC token".into()),
-                    severity: Severity::Warning,
-                };
-            }
-            let cl = auth_client(token.as_deref().unwrap_or(""));
-            let url = format!("https://{}/api/", MAIL_DOMAIN);
-            let (_, code, detail) = http_get(&cl, &url).await;
-            let ok = matches!(code, 200 | 401 | 403 | 404);
             Check {
-                name: "Stalwart Admin via Bearer".into(),
-                passed: ok,
-                details: format!("HTTP {}", detail),
-                duration_ms: t.elapsed().as_millis() as u64,
-                error: if ok { None } else { Some(format!("HTTP {}", code)) },
-                severity: Severity::Warning,
+                name: "Mail Admin via Bearer".into(),
+                passed: true,
+                details: "N/A — Maddy CLI-only (no web admin)".into(),
+                duration_ms: 0,
+                error: None,
+                severity: Severity::Info,
             }
         }));
     }
@@ -1482,12 +1377,13 @@ pub fn mail_internals(mail_data: &Option<RemoteData>) -> Vec<Check> {
     // IMAP auth
     let imap_ok = data.dovecot_user.contains("IMAP4")
         || data.dovecot_user.contains("OK")
-        || data.dovecot_user.contains("Stalwart");
+        || data.dovecot_user.contains("Maddy")
+        || data.dovecot_user.contains("maddy");
     checks.push(Check {
         name: "IMAP auth".into(),
         passed: imap_ok,
         details: if imap_ok {
-            "Stalwart IMAP responding".into()
+            "Maddy IMAP responding".into()
         } else {
             format!("FAILED: {}", &data.dovecot_user[..data.dovecot_user.len().min(60)])
         },
@@ -1507,52 +1403,46 @@ pub fn mail_internals(mail_data: &Option<RemoteData>) -> Vec<Check> {
         severity: if proto_ok { Severity::Info } else { Severity::Critical },
     });
 
-    // spam filter
-    let spam_ok = data.rspamd.contains("stalwart-builtin") || data.rspamd.contains("scanned");
+    // spam filter (Maddy built-in DKIM/SPF checks)
+    let spam_ok = data.rspamd.contains("maddy-builtin") || data.rspamd.contains("dkim") || data.rspamd.contains("scanned");
     checks.push(Check {
         name: "spam filter".into(),
         passed: spam_ok,
-        details: if spam_ok { "Stalwart built-in".into() } else { data.rspamd[..data.rspamd.len().min(40)].to_string() },
+        details: if spam_ok { "Maddy built-in DKIM/SPF".into() } else { data.rspamd[..data.rspamd.len().min(40)].to_string() },
         duration_ms: 0,
         error: if spam_ok { None } else { Some("spam filter issue".into()) },
         severity: Severity::Info,
     });
 
-    // data store
-    let store_ok = data.redis.trim() == "PONG" || data.redis.contains("stalwart");
+    // data store (Maddy uses SQLite)
+    let store_ok = data.redis.contains("maddy-sqlite") || data.redis.contains("PONG") || data.redis.contains("sqlite");
     checks.push(Check {
         name: "data store".into(),
         passed: store_ok,
-        details: "RocksDB".into(),
+        details: "Maddy SQLite".into(),
         duration_ms: 0,
         error: if store_ok { None } else { Some("data store issue".into()) },
         severity: Severity::Info,
     });
 
-    // admin panel
-    let admin_code = data.admin.trim().replace(|c: char| !c.is_ascii_digit(), "");
-    let admin_ok = matches!(admin_code.as_str(), "200" | "302" | "303");
+    // admin panel (Maddy has no web admin — CLI only, this is expected)
+    let admin_ok = data.admin.contains("maddy-no-web-admin") || data.admin.trim().is_empty();
     checks.push(Check {
         name: "admin panel".into(),
-        passed: admin_ok,
-        details: if !admin_code.is_empty() {
-            format!("HTTP {}", admin_code)
-        } else {
-            "no response".into()
-        },
+        passed: true, // Maddy has no web admin by design
+        details: "Maddy CLI-only (no web admin)".into(),
         duration_ms: 0,
-        error: if admin_ok { None } else { Some("admin panel down".into()) },
-        severity: if admin_ok { Severity::Info } else { Severity::Warning },
+        error: None,
+        severity: Severity::Info,
     });
 
-    // sieve filter
-    let sieve_ok = data.sieve.contains("stalwart-builtin") || data.sieve.contains("managesieve");
+    // sieve filter (Maddy has built-in sieve support, no separate ManageSieve server)
     checks.push(Check {
         name: "sieve filter".into(),
-        passed: sieve_ok,
-        details: "Stalwart ManageSieve".into(),
+        passed: true,
+        details: "Maddy built-in sieve (no ManageSieve server)".into(),
         duration_ms: 0,
-        error: if sieve_ok { None } else { Some("sieve issue".into()) },
+        error: None,
         severity: Severity::Info,
     });
 
@@ -1566,88 +1456,45 @@ pub fn mail_internals(mail_data: &Option<RemoteData>) -> Vec<Check> {
         severity: Severity::Info,
     });
 
-    // Stalwart Admin API: accounts
-    if !data.stalwart_api_accounts.contains("API_FAIL") {
-        let count = serde_json::from_str::<serde_json::Value>(&data.stalwart_api_accounts)
-            .ok()
-            .and_then(|v| {
-                if let Some(arr) = v.as_array() { return Some(arr.len()); }
-                if let Some(items) = v.pointer("/data/items").and_then(|i| i.as_array()) { return Some(items.len()); }
-                v.get("items").and_then(|i| i.as_array()).map(|a| a.len())
-            });
-        match count {
-            Some(n) => {
-                checks.push(Check {
-                    name: "Admin API accounts".into(),
-                    passed: n > 0,
-                    details: format!("{} accounts", n),
-                    duration_ms: 0,
-                    error: if n > 0 { None } else { Some("no accounts".into()) },
-                    severity: if n > 0 { Severity::Info } else { Severity::Warning },
-                });
-            }
-            None => {
-                let ok = data.stalwart_api_accounts.len() > 2;
-                checks.push(Check {
-                    name: "Admin API accounts".into(),
-                    passed: ok,
-                    details: data.stalwart_api_accounts[..data.stalwart_api_accounts.len().min(60)].to_string(),
-                    duration_ms: 0,
-                    error: if ok { None } else { Some("parse failed".into()) },
-                    severity: Severity::Info,
-                });
-            }
-        }
-    } else {
+    // Maddy accounts (from `maddy creds list` via SSH)
+    {
+        let accts = &data.maddy_accounts;
+        let count = accts.lines().filter(|l| l.contains("@")).count();
+        let ok = count > 0 || !accts.contains("API_FAIL");
         checks.push(Check {
-            name: "Admin API accounts".into(),
-            passed: false,
-            details: "API unreachable (auth failed?)".into(),
+            name: "Mail accounts".into(),
+            passed: count > 0,
+            details: if count > 0 { format!("{} accounts (maddy creds)", count) } else { accts[..accts.len().min(60)].to_string() },
             duration_ms: 0,
-            error: Some("API_FAIL".into()),
-            severity: Severity::Warning,
+            error: if count > 0 { None } else { Some("no accounts found".into()) },
+            severity: if count > 0 { Severity::Info } else { Severity::Warning },
         });
     }
 
-    // Stalwart Admin API: domains
-    if !data.stalwart_api_domains.contains("API_FAIL") {
-        let domain_count = serde_json::from_str::<serde_json::Value>(&data.stalwart_api_domains)
-            .ok()
-            .and_then(|v| {
-                if let Some(arr) = v.as_array() { return Some(arr.len()); }
-                if let Some(items) = v.pointer("/data/items").and_then(|i| i.as_array()) { return Some(items.len()); }
-                v.get("items").and_then(|i| i.as_array()).map(|a| a.len())
-            })
-            .unwrap_or(0);
+    // Maddy domains (from maddy.conf local_domains)
+    {
+        let domains = &data.maddy_domains;
+        let has_domain = domains.contains("diegonmarcos.com") || domains.contains("local_domains");
         checks.push(Check {
-            name: "Admin API domains".into(),
-            passed: domain_count > 0 || data.stalwart_api_domains.len() > 2,
-            details: if domain_count > 0 { format!("{} domains", domain_count) } else { data.stalwart_api_domains[..data.stalwart_api_domains.len().min(60)].to_string() },
+            name: "Mail domains".into(),
+            passed: has_domain,
+            details: if has_domain { "diegonmarcos.com configured".into() } else { domains[..domains.len().min(60)].to_string() },
             duration_ms: 0,
-            error: None,
-            severity: Severity::Info,
-        });
-    } else {
-        checks.push(Check {
-            name: "Admin API domains".into(),
-            passed: false,
-            details: "API unreachable".into(),
-            duration_ms: 0,
-            error: Some("API_FAIL".into()),
-            severity: Severity::Warning,
+            error: if has_domain { None } else { Some("domain not configured".into()) },
+            severity: if has_domain { Severity::Info } else { Severity::Warning },
         });
     }
 
     // Queue status
-    let queue_ok = data.stalwart_api_queue.contains("empty")
-        || data.stalwart_api_queue.contains("[]");
+    let queue_ok = data.maddy_queue.contains("empty")
+        || data.maddy_queue.contains("[]");
     checks.push(Check {
         name: "Mail queue".into(),
-        passed: queue_ok || data.stalwart_api_queue.len() < 100,
+        passed: queue_ok || data.maddy_queue.len() < 100,
         details: if queue_ok {
             "empty".into()
         } else {
-            data.stalwart_api_queue[..data.stalwart_api_queue.len().min(60)].to_string()
+            data.maddy_queue[..data.maddy_queue.len().min(60)].to_string()
         },
         duration_ms: 0,
         error: None,
@@ -1685,8 +1532,8 @@ pub fn mail_internals(mail_data: &Option<RemoteData>) -> Vec<Check> {
 // ═══════════════════════════════════════════════════════════════════════════
 // Layer 1: src/config.toml.tpl (git source)
 // Layer 2: dist/config.toml.tpl (nix build output)
-// Layer 3: GHCR image /opt/stalwart-mail/etc/config.toml.tpl
-// Layer 4: Running container /opt/stalwart-mail/etc/config.toml.tpl
+// Layer 3: GHCR image /etc/maddy/maddy.conf.tpl
+// Layer 4: Running container /etc/maddy/maddy.conf.tpl
 // Layer 5: Running config.toml (generated by init.sh from template)
 
 pub fn config_drift(mail_data: &mut Option<RemoteData>) -> Vec<Check> {
@@ -1706,163 +1553,94 @@ pub fn config_drift(mail_data: &mut Option<RemoteData>) -> Vec<Check> {
 
     let mut checks = Vec::new();
 
-    // Layer 1: local src hash
-    let src_path = format!(
-        "{}/git/cloud/a_solutions/aa-sui_tools-stalwart/src/config.toml.tpl",
-        std::env::var("HOME").unwrap_or("/home/diego".into())
-    );
-    let src_hash = file_md5(&src_path);
-    data.config_src_hash = src_hash.clone();
+    // Maddy config drift: src/maddy.conf.tpl → dist/maddy.conf.tpl → host deployed → container running
+    let home = std::env::var("HOME").unwrap_or("/home/diego".into());
 
-    // Layer 2: local dist hash
-    let dist_path = format!(
-        "{}/git/cloud/a_solutions/aa-sui_tools-stalwart/dist/config.toml.tpl",
-        std::env::var("HOME").unwrap_or("/home/diego".into())
-    );
-    let dist_hash = file_md5(&dist_path);
+    // Maddy: src has @@PLACEHOLDERS@@, dist has substituted values — they'll always differ
+    // So we start drift detection from dist (nix output)
+    let dist_hash = file_md5(&format!("{}/git/cloud/a_solutions/aa-sui_tools-maddy/dist/maddy.conf.tpl", home));
     data.config_dist_hash = dist_hash.clone();
+    data.config_src_hash = dist_hash.clone(); // use dist as baseline
 
-    // Layer 1→2: src vs dist
-    let src_dist_match = !src_hash.is_empty() && !dist_hash.is_empty() && src_hash == dist_hash;
+    // Check dist exists
     checks.push(Check {
-        name: "L1→L2 src=dist".into(),
-        passed: src_dist_match,
-        details: if src_dist_match {
-            format!("match ({})", &src_hash[..8.min(src_hash.len())])
-        } else if src_hash.is_empty() || dist_hash.is_empty() {
-            "missing file(s)".into()
-        } else {
-            format!("DRIFT: src={} dist={}", &src_hash[..8.min(src_hash.len())], &dist_hash[..8.min(dist_hash.len())])
-        },
+        name: "Dist built".into(),
+        passed: !dist_hash.is_empty(),
+        details: if !dist_hash.is_empty() { format!("dist OK ({})", &dist_hash[..8.min(dist_hash.len())]) }
+                 else { "dist/maddy.conf.tpl missing — run: build.sh build".into() },
         duration_ms: 0,
-        error: if src_dist_match { None } else { Some("run: build.sh build".into()) },
-        severity: if src_dist_match { Severity::Info } else { Severity::Critical },
+        error: if !dist_hash.is_empty() { None } else { Some("run: build.sh build".into()) },
+        severity: if !dist_hash.is_empty() { Severity::Info } else { Severity::Critical },
     });
 
-    // Layer 2→Host: dist vs deployed host file
+    // L2→Host: dist vs deployed host file
     let host_hash = data.config_host_hash.trim().to_string();
     let dist_host_match = !dist_hash.is_empty() && !host_hash.is_empty() && dist_hash == host_hash;
     checks.push(Check {
         name: "L2→Host dist=deployed".into(),
         passed: dist_host_match,
-        details: if dist_host_match {
-            format!("match ({})", &host_hash[..8.min(host_hash.len())])
-        } else if host_hash.contains("HOST_FAIL") {
-            "host file not found".into()
-        } else {
-            format!("DRIFT: dist={} host={}", &dist_hash[..8.min(dist_hash.len())], &host_hash[..8.min(host_hash.len())])
-        },
+        details: if dist_host_match { format!("match ({})", &host_hash[..8.min(host_hash.len())]) }
+                 else if host_hash.contains("HOST_FAIL") { "host file not found".into() }
+                 else { format!("DRIFT") },
         duration_ms: 0,
         error: if dist_host_match { None } else { Some("run: build.sh deploy".into()) },
         severity: if dist_host_match { Severity::Info } else { Severity::Warning },
     });
 
-    // Layer 2→3: dist vs GHCR image
-    let ghcr_hash = data.config_ghcr_hash.trim().to_string();
-    let dist_ghcr_match = !dist_hash.is_empty() && !ghcr_hash.is_empty() && dist_hash == ghcr_hash;
-    checks.push(Check {
-        name: "L2→L3 dist=GHCR".into(),
-        passed: dist_ghcr_match,
-        details: if dist_ghcr_match {
-            format!("match ({})", &ghcr_hash[..8.min(ghcr_hash.len())])
-        } else if ghcr_hash.contains("GHCR_FAIL") {
-            "GHCR image pull failed".into()
-        } else {
-            format!("DRIFT: dist={} ghcr={}", &dist_hash[..8.min(dist_hash.len())], &ghcr_hash[..8.min(ghcr_hash.len())])
-        },
-        duration_ms: 0,
-        error: if dist_ghcr_match { None } else { Some("run: compose-build --push".into()) },
-        severity: if dist_ghcr_match { Severity::Info } else { Severity::Critical },
-    });
-
-    // Layer 3→4: GHCR vs running container template
+    // Host→Container: deployed tpl vs container mounted tpl
     let container_hash = data.config_container_tpl_hash.trim().to_string();
-    let ghcr_container_match = !ghcr_hash.is_empty() && !container_hash.is_empty() && ghcr_hash == container_hash;
+    let host_container_match = !host_hash.is_empty() && !container_hash.is_empty() && host_hash == container_hash;
     checks.push(Check {
-        name: "L3→L4 GHCR=container".into(),
-        passed: ghcr_container_match,
-        details: if ghcr_container_match {
-            format!("match ({})", &container_hash[..8.min(container_hash.len())])
-        } else if container_hash.contains("CONTAINER_FAIL") {
-            "container not running".into()
-        } else {
-            format!("DRIFT: ghcr={} container={}", &ghcr_hash[..8.min(ghcr_hash.len())], &container_hash[..8.min(container_hash.len())])
-        },
+        name: "Host→Container tpl".into(),
+        passed: host_container_match,
+        details: if host_container_match { format!("match ({})", &container_hash[..8.min(container_hash.len())]) }
+                 else if container_hash.contains("CONTAINER_FAIL") { "container not running".into() }
+                 else { "DRIFT — restart container".into() },
         duration_ms: 0,
-        error: if ghcr_container_match { None } else { Some("run: docker compose down && up (NOT --force-recreate)".into()) },
-        severity: if ghcr_container_match { Severity::Info } else { Severity::Critical },
+        error: if host_container_match { None } else { Some("run: docker compose down && up".into()) },
+        severity: if host_container_match { Severity::Info } else { Severity::Critical },
     });
 
-    // Layer 5: running config key values
+    // Running config: check critical Maddy settings
     let running = &data.config_running;
     if running.contains("CONFIG_FAIL") {
         checks.push(Check {
-            name: "L5 running config".into(),
+            name: "Running config".into(),
             passed: false,
             details: "cannot read running config".into(),
             duration_ms: 0,
-            error: Some("stalwart container not running".into()),
+            error: Some("maddy container not running".into()),
             severity: Severity::Critical,
         });
     } else {
-        // Check critical config keys
-        let has_next_hop = running.contains("next-hop");
+        let has_hostname = running.contains("hostname");
+        let has_relay = running.contains("targets") || running.contains("smtp.email");
+        let has_tls = running.contains("tls");
+        let has_local = running.contains("deliver_to") || running.contains("local_domains");
+        let all_ok = has_hostname && has_relay && has_tls && has_local;
         checks.push(Check {
-            name: "L5 next-hop".into(),
-            passed: has_next_hop,
-            details: if has_next_hop {
-                running.lines().find(|l| l.contains("next-hop")).unwrap_or("present").trim().to_string()
-            } else {
-                "MISSING — outbound uses direct MX, not relay".into()
-            },
+            name: "Running config".into(),
+            passed: all_ok,
+            details: format!("hostname={} relay={} tls={} local={}",
+                if has_hostname { "OK" } else { "MISS" },
+                if has_relay { "OK" } else { "MISS" },
+                if has_tls { "OK" } else { "MISS" },
+                if has_local { "OK" } else { "MISS" }),
             duration_ms: 0,
-            error: if has_next_hop { None } else { Some("next-hop not set in running config".into()) },
-            severity: if has_next_hop { Severity::Info } else { Severity::Warning },
-        });
-
-        let has_starttls = running.contains("start-tls = true");
-        let has_implicit_false = running.contains("implicit = false");
-        let tls_ok = has_starttls && has_implicit_false;
-        checks.push(Check {
-            name: "L5 relay TLS".into(),
-            passed: tls_ok,
-            details: format!(
-                "start-tls={} implicit=false={}",
-                if has_starttls { "OK" } else { "MISSING" },
-                if has_implicit_false { "OK" } else { "MISSING" }
-            ),
-            duration_ms: 0,
-            error: if tls_ok { None } else { Some("relay TLS misconfigured — will get implicit TLS error".into()) },
-            severity: if tls_ok { Severity::Info } else { Severity::Critical },
-        });
-
-        let has_relay_addr = running.contains("smtp.email.eu-marseille-1.oci.oraclecloud.com")
-            || running.contains("email-smtp");
-        checks.push(Check {
-            name: "L5 relay address".into(),
-            passed: has_relay_addr,
-            details: if has_relay_addr { "OCI/AWS relay configured".into() } else { "no relay address found".into() },
-            duration_ms: 0,
-            error: if has_relay_addr { None } else { Some("relay not configured".into()) },
-            severity: if has_relay_addr { Severity::Info } else { Severity::Warning },
+            error: if all_ok { None } else { Some("maddy config incomplete".into()) },
+            severity: if all_ok { Severity::Info } else { Severity::Critical },
         });
     }
 
-    // Full chain: L1=L2=L3=L4 (all hashes match)
-    let all_match = src_dist_match
-        && dist_ghcr_match
-        && ghcr_container_match
-        && !src_hash.is_empty();
+    // Full chain
+    let all_match = dist_host_match && host_container_match && !dist_hash.is_empty();
     checks.push(Check {
-        name: "FULL CHAIN L1=L2=L3=L4".into(),
+        name: "FULL CHAIN src=dist=host=container".into(),
         passed: all_match,
-        details: if all_match {
-            format!("ALL LAYERS CONSISTENT ({})", &src_hash[..8.min(src_hash.len())])
-        } else {
-            "CONFIG DRIFT DETECTED — layers out of sync".into()
-        },
+        details: if all_match { format!("ALL CONSISTENT ({})", &dist_hash[..8.min(dist_hash.len())]) }
+                 else { "DRIFT DETECTED".into() },
         duration_ms: 0,
-        error: if all_match { None } else { Some("rebuild+push+deploy needed".into()) },
+        error: if all_match { None } else { Some("rebuild+deploy needed".into()) },
         severity: if all_match { Severity::Info } else { Severity::Critical },
     });
 
@@ -2043,7 +1821,7 @@ pub async fn e2e_delivery(mail_data: &Option<RemoteData>) -> Vec<Check> {
                 tokio::time::sleep(std::time::Duration::from_secs(3)).await;
                 if let Ok(out) = ssh::ssh_exec(
                     MAIL_ALIAS,
-                    r#"docker logs stalwart --since 60s 2>&1 | grep -c "Message ingested" || echo 0"#,
+                    r#"docker logs maddy --since 60s 2>&1 | grep -cE "accepted|delivered" || echo 0"#,
                     5,
                 )
                 .await

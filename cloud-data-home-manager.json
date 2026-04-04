@@ -84,7 +84,7 @@
         "snappymail",
         "maddy",
         "smtp-proxy",
-        "stalwart",
+        "maddy",
         "dagu",
         "syslog-forwarder"
       ],

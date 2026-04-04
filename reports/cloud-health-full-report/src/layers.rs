@@ -1693,20 +1693,20 @@ pub async fn layer_email_e2e(_ctx: &Context, reachable_vms: &[String]) -> Vec<Ch
         }
     }
 
-    // 3. Check stalwart ingestion via SSH (if oci-mail reachable)
+    // 3. Check maddy delivery via SSH (if oci-mail reachable)
     if reachable_vms.contains(&"oci-mail".to_string()) {
         let ssh_result = ssh::ssh_exec(
             "oci-mail",
-            "docker logs stalwart --since 2m 2>&1 | grep -c 'Message ingested' || echo 0",
+            r#"docker logs maddy --since 2m 2>&1 | grep -c -E "accepted|delivered" || echo 0"#,
             10,
         ).await;
         match ssh_result {
             Ok(output) => {
                 let count: u32 = output.trim().parse().unwrap_or(0);
                 checks.push(Check {
-                    name: "Stalwart ingestion".into(),
+                    name: "Maddy delivery".into(),
                     passed: count > 0,
-                    details: format!("{} messages ingested (last 2min)", count),
+                    details: format!("{} messages processed (last 2min)", count),
                     duration_ms: t.elapsed().as_millis() as u64,
                     error: if count == 0 { Some("no messages ingested".into()) } else { None },
                     severity: if count > 0 { Severity::Info } else { Severity::Warning },

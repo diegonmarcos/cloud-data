@@ -20,17 +20,17 @@ pub const WEBMAIL_DOMAIN: &str = "webmail.diegonmarcos.com";
 pub const AUTH_DOMAIN: &str = "auth.diegonmarcos.com";
 pub const MCP_DOMAIN: &str = "mcp.diegonmarcos.com";
 pub const BASE_DOMAIN: &str = "diegonmarcos.com";
-pub const MAIL_CONTAINERS: &[&str] = &["stalwart"];
+pub const MAIL_CONTAINERS: &[&str] = &["maddy"];
 pub const EXTRA_CONTAINERS: &[&str] = &["smtp-proxy", "snappymail"];
 pub const TEST_FROM: &str = "health@mails.diegonmarcos.com";
 pub const TEST_TO: &str = "me@diegonmarcos.com";
 
 // Ports to verify bound on oci-mail
-pub const EXPECTED_PORTS: &[u16] = &[25, 443, 465, 587, 993, 4190, 8888];
+pub const EXPECTED_PORTS: &[u16] = &[25, 143, 465, 587, 993, 8888];
 
 // Bearer token path (relative to $HOME)
 pub const BEARER_TOKEN_PATH: &str =
-    "Mounts/Git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json";
+    "git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json";
 
 // SMTP relay hosts
 pub const OCI_RELAY_HOST: &str = "smtp.email.eu-marseille-1.oci.oraclecloud.com";
@@ -46,5 +46,4 @@ pub const CF_WORKER_URL: &str = "https://email-forwarder.diegonm-workers.workers
 // Google OAuth token endpoint (for Gmail API health)
 pub const GOOGLE_TOKEN_URL: &str = "https://oauth2.googleapis.com/token";
 
-// Stalwart Admin API (via WG direct)
-pub const STALWART_ADMIN_PORT: u16 = 443;
+// Maddy CLI (no REST API — admin via `docker exec maddy maddy ...`)

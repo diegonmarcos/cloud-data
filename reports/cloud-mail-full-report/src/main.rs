@@ -1,4 +1,4 @@
-//! Cloud Mail Full Report -- 7-Phase (0-6) Stalwart Mail Diagnostic
+//! Cloud Mail Full Report -- 7-Phase (0-6) Maddy Mail Diagnostic
 //! Native async: TCP, HTTP, DNS, SSH batch, TLS probing -- all parallel
 //!
 //! Phase 0: INSTANT KPIs (public URLs + DNS, no SSH, <2s)
@@ -6,7 +6,7 @@
 //! Phase 2: CONTAINERS (from cached batch data)
 //! Phase 3: NETWORK + AUTH (~30 checks: TLS, HTTP, OIDC, Caddy L4, MCP)
 //! Phase 4: DNS AUTH (MX, DKIM, SPF, DMARC)
-//! Phase 5: MAIL INTERNALS (IMAP, queue, spam, sieve, quota, Admin API)
+//! Phase 5: MAIL INTERNALS (IMAP, queue, spam, sieve, quota, Maddy CLI)
 //! Phase 6: E2E DELIVERY (optional, requires RESEND_API_KEY)
 //!
 //! Usage: cargo run --release (from cloud-mail-full-report/)
@@ -37,7 +37,7 @@ fn load_bearer_token() -> Option<String> {
 #[tokio::main]
 async fn main() -> Result<()> {
     let start = Instant::now();
-    println!("=== Cloud Mail Full Report (7-Phase Stalwart Diagnostic) ===");
+    println!("=== Cloud Mail Full Report (7-Phase Maddy Diagnostic) ===");
 
     let bearer_token = load_bearer_token();
     if bearer_token.is_some() {

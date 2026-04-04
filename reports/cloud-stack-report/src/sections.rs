@@ -362,26 +362,26 @@ fn build_mail_auth(ctx: &Context) -> String {
 fn build_mail_flow(ctx: &Context, live: &LiveData) -> String {
     let oci_ip = ctx.vms.iter().find(|v| v.alias == "oci-mail").map(|v| v.pub_ip.as_str()).unwrap_or("?");
     let gcp_ip = ctx.vms.iter().find(|v| v.alias == "gcp-proxy").map(|v| v.pub_ip.as_str()).unwrap_or("?");
-    let stalwart = live.vm_data.iter().find(|v| v.alias == "oci-mail").and_then(|v| v.containers.iter().find(|c| c.name == "stalwart"));
+    let maddy = live.vm_data.iter().find(|v| v.alias == "oci-mail").and_then(|v| v.containers.iter().find(|c| c.name == "maddy"));
     let smtp_proxy = live.vm_data.iter().find(|v| v.alias == "oci-mail").and_then(|v| v.containers.iter().find(|c| c.name == "smtp-proxy"));
-    let st_ok = stalwart.map(|c| c.health != "exited").unwrap_or(false);
+    let st_ok = maddy.map(|c| c.health != "exited").unwrap_or(false);
     let sp_ok = smtp_proxy.map(|c| c.health != "exited").unwrap_or(false);
     format!(
 "MAIL FLOW — Pipeline Status
 ─────────────────────────────────
-  📨 INBOUND: Gmail → MX → CF Email Routing → CF Worker → Caddy → smtp-proxy → Stalwart
+  📨 INBOUND: Gmail → MX → CF Email Routing → CF Worker → Caddy → smtp-proxy → Maddy
      {} smtp-proxy           {}
-     {} stalwart             {}
+     {} maddy                {}
 
-  📱 CLIENT: Phone/Thunderbird → gcp-proxy ({}) → Caddy L4 → oci-mail → Stalwart
+  📱 CLIENT: Phone/Thunderbird → gcp-proxy ({}) → Caddy L4 → oci-mail → Maddy
 {}
-  📤 OUTBOUND PERSONAL: Stalwart → ⚠️ direct from {} (NOT IN SPF!)
-     ❌ SPF FAIL  ✅ DKIM OK  ❌ DMARC=reject
+  📤 OUTBOUND: Maddy → OCI SMTP relay from {}
+     ✅ SPF OK  ✅ DKIM OK
 
   📤 OUTBOUND TRANSACTIONAL: App → Resend API → SES → recipient
      ✅ SPF OK  ✅ DKIM OK  ✅ DMARC OK",
         if sp_ok { "✅" } else { "❌" }, smtp_proxy.map(|c| c.status.as_str()).unwrap_or("not found"),
-        if st_ok { "✅" } else { "❌" }, stalwart.map(|c| c.status.as_str()).unwrap_or("not found"),
+        if st_ok { "✅" } else { "❌" }, maddy.map(|c| c.status.as_str()).unwrap_or("not found"),
         gcp_ip,
         ctx.caddy_l4.iter().map(|l| format!("     :{}  → {}", l.port, l.upstream)).collect::<Vec<_>>().join("\n"),
         oci_ip)

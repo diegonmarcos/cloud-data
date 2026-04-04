@@ -742,15 +742,15 @@
       ]
     },
     {
-      "name": "stalwart",
+      "name": "maddy",
       "category": "app",
       "vm": "oci-E2-f_0",
-      "description": "Stalwart Mail Server (mail.diegonmarcos.com)",
+      "description": "Maddy Mail Server (mail.diegonmarcos.com)",
       "domain": "mail.diegonmarcos.com",
       "ports": [],
       "networks": [],
       "containers": [
-        "stalwart"
+        "maddy"
       ]
     },
     {
@@ -1548,15 +1548,15 @@
       ]
     },
     {
-      "name": "stalwart",
+      "name": "maddy",
       "category": "app",
       "vm": "oci-E2-f_0",
-      "description": "Stalwart Mail Server (mail.diegonmarcos.com)",
+      "description": "Maddy Mail Server (mail.diegonmarcos.com)",
       "domain": "mail.diegonmarcos.com",
       "ports": [],
       "networks": [],
       "containers": [
-        "stalwart"
+        "maddy"
       ]
     },
     {

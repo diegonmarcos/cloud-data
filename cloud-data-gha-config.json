@@ -115,8 +115,8 @@
       "vm": "oci-mail",
       "has_docker": true
     },
-    "stalwart": {
-      "dir": "aa-sui_tools-stalwart",
+    "maddy": {
+      "dir": "aa-sui_tools-maddy",
       "vm": "oci-mail",
       "has_docker": true
     },

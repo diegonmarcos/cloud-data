@@ -311,8 +311,8 @@ pub fn parse_section(output: &str, name: &str) -> String {
 /// Big batch SSH to oci-mail -- collects all data in one round-trip
 /// Returns Err(diagnostic) with Dropbear liveness info on failure
 pub async fn ssh_batch_mail() -> Result<RemoteData, String> {
+    // SSH batch script for Maddy mail server (migrated from Stalwart 2026-04-04)
     let script = r#"
-ADMIN_CREDS=$(grep ADMIN_PASSWORD /opt/stalwart/.secrets 2>/dev/null | head -1 | cut -d= -f2-)
 T=3
 echo "===disk==="
 df / --output=pcent 2>/dev/null | tail -1 | tr -d ' %'
@@ -326,26 +326,25 @@ timeout $T docker info --format '{{.ServerVersion}}' 2>&1 | head -1
 echo "===containers==="
 timeout $T docker ps -a --format '{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}' 2>&1
 echo "===restarts==="
-timeout $T docker inspect --format '{{.Name}}\t{{.RestartCount}}' $(timeout $T docker ps -aq --filter name=stalwart --filter name=smtp-proxy --filter name=snappymail 2>/dev/null) 2>/dev/null | tr -d '/'
+timeout $T docker inspect --format '{{.Name}}\t{{.RestartCount}}' $(timeout $T docker ps -aq --filter name=maddy --filter name=smtp-proxy --filter name=snappymail 2>/dev/null) 2>/dev/null | tr -d '/'
 echo "===dovecotUser==="
 echo "a001 CAPABILITY" | timeout $T openssl s_client -connect localhost:993 -quiet 2>/dev/null | head -3
 echo "===imapCap==="
 echo "a001 CAPABILITY" | timeout $T openssl s_client -connect localhost:993 -quiet 2>/dev/null | head -3
 echo "===postfixQueue==="
-curl -skf -u "admin@diegonmarcos.com:$ADMIN_CREDS" https://localhost:443/api/queue/messages 2>/dev/null | head -3 || echo "empty"
+docker exec maddy maddy -config /data/maddy.conf queue list 2>/dev/null || echo "empty"
 echo "===rspamd==="
-echo "stalwart-builtin-spam-filter"
+echo "maddy-builtin-dkim-spf"
 echo "===redis==="
-echo "PONG"
+echo "maddy-sqlite"
 echo "===admin==="
-curl -skL -o /dev/null -w '%{http_code}' --max-time $T https://localhost:443/ 2>&1
-echo ""
+echo "maddy-no-web-admin"
 echo "===sieve==="
-echo "stalwart-builtin-managesieve"
+echo QUIT | timeout $T nc -w3 localhost 4190 2>&1 | head -1 || echo "managesieve-ok"
 echo "===quota==="
-echo "stalwart-builtin-quota"
+docker exec maddy maddy imap-acct list 2>/dev/null | head -5 || echo "maddy-accounts"
 echo "===users==="
-curl -skf -u "admin@diegonmarcos.com:$ADMIN_CREDS" https://localhost:443/api/principal 2>/dev/null | head -5 || echo "0"
+docker exec maddy maddy creds list 2>/dev/null | wc -l || echo "0"
 echo "===smtp25==="
 echo QUIT | timeout $T nc -w3 localhost 25 2>&1 | head -1
 echo "===smtp587==="
@@ -353,42 +352,44 @@ echo QUIT | timeout $T openssl s_client -starttls smtp -connect localhost:587 2>
 echo "===webmailInternal==="
 curl -skL -o /dev/null -w '%{http_code}' --max-time $T http://localhost:8888/ 2>&1
 echo ""
-echo "===stalwartApiAccounts==="
-curl -skf -u "admin@diegonmarcos.com:$ADMIN_CREDS" https://localhost:443/api/principal 2>/dev/null | head -5 || echo "API_FAIL"
-echo "===stalwartApiDomains==="
-docker exec stalwart grep -oP 'domains\s*=\s*\K\[.*?\]' /opt/stalwart-mail/etc/config.toml 2>/dev/null || curl -skf -u "admin@diegonmarcos.com:$ADMIN_CREDS" https://localhost:443/api/domain 2>/dev/null | head -5 || echo "API_FAIL"
-echo "===stalwartApiQueue==="
-curl -skf -u "admin@diegonmarcos.com:$ADMIN_CREDS" https://localhost:443/api/queue/messages 2>/dev/null | head -3 || echo "empty"
+echo "===maddyAccounts==="
+docker exec maddy maddy creds list 2>/dev/null || echo "CLI_FAIL"
+echo "===maddyDomains==="
+docker exec maddy grep 'local_domains' /data/maddy.conf 2>/dev/null || echo "CLI_FAIL"
+echo "===maddyQueue==="
+docker exec maddy maddy -config /data/maddy.conf queue list 2>/dev/null || echo "empty"
 echo "===snappymailInternal==="
 curl -skL -o /dev/null -w '%{http_code}' --max-time $T http://localhost:8888/ 2>&1
 echo ""
 echo "===sieve4190==="
 echo QUIT | timeout $T nc -w3 localhost 4190 2>&1 | head -1
 echo "===allLocalPorts==="
-sudo ss -tlnp 2>/dev/null | grep -E ':(25|443|465|587|993|4190|8888)\s' || ss -tlnp 2>/dev/null | grep -E ':(25|443|465|587|993|4190|8888)\s' || echo "(none)"
+sudo ss -tlnp 2>/dev/null | grep -E ':(25|143|465|587|993|4190|8888)\s' || ss -tlnp 2>/dev/null | grep -E ':(25|143|465|587|993|4190|8888)\s' || echo "(none)"
 echo "===configGhcrHash==="
-timeout 30 docker run --rm --entrypoint md5sum ghcr.io/diegonmarcos/stalwart:latest /opt/stalwart-mail/etc/config.toml.tpl 2>/dev/null | awk '{print $1}' || echo "GHCR_FAIL"
+echo "maddy-no-ghcr-image"
 echo "===configContainerTplHash==="
-docker exec stalwart md5sum /opt/stalwart-mail/etc/config.toml.tpl 2>/dev/null | awk '{print $1}' || echo "CONTAINER_FAIL"
+docker exec maddy md5sum /etc/maddy/maddy.conf.tpl 2>/dev/null | awk '{print $1}' || echo "CONTAINER_FAIL"
 echo "===configHostHash==="
-md5sum /opt/stalwart/config.toml.tpl 2>/dev/null | awk '{print $1}' || echo "HOST_FAIL"
+md5sum /opt/containers/maddy/maddy.conf.tpl 2>/dev/null | awk '{print $1}' || echo "HOST_FAIL"
 echo "===configRunning==="
-docker exec stalwart grep -E 'next-hop|tls\.implicit|tls\.start-tls|address.*smtp|port.*=.*587|port.*=.*25' /opt/stalwart-mail/etc/config.toml 2>/dev/null || echo "CONFIG_FAIL"
+docker exec maddy grep -E 'hostname|targets|deliver_to|local_domains|smart_host|tls' /data/maddy.conf 2>/dev/null | head -20 || echo "CONFIG_FAIL"
 echo "===debugDump==="
 echo "--- ss listening ports ---"
 sudo ss -tlnp 2>/dev/null || ss -tlnp 2>/dev/null || true
 echo "--- docker networks ---"
 timeout $T docker network ls --format '{{.Name}}\t{{.Driver}}' 2>/dev/null || true
-echo "--- stalwart config ---"
-grep -E 'hostname|bind' /opt/stalwart/config.toml 2>/dev/null || echo "(no config yet)"
-echo "--- stalwart logs (last 10) ---"
-timeout $T docker logs stalwart --tail 10 2>&1 || echo "(no stalwart container)"
+echo "--- maddy config ---"
+docker exec maddy grep -E 'hostname|smtp|imap|submission|tls' /data/maddy.conf 2>/dev/null | head -10 || echo "(no config)"
+echo "--- maddy logs (last 10) ---"
+timeout $T docker logs maddy --tail 10 2>&1 || echo "(no maddy container)"
 echo "--- resolv.conf ---"
 cat /etc/resolv.conf 2>/dev/null || true
 "#;
 
     eprintln!("[mail-health] SSH batch oci-mail: connecting...");
-    let output = match ssh_exec(MAIL_ALIAS, script.trim(), 45).await {
+    // Wrap in bash -c to avoid fish shell syntax errors
+    let bash_script = format!("bash -c '{}'", script.trim().replace('\'', "'\\''"));
+    let output = match ssh_exec(MAIL_ALIAS, &bash_script, 45).await {
         Ok(o) => o,
         Err(e) => {
             eprintln!("[mail-health] SSH batch oci-mail FAILED: {}", e);
@@ -415,9 +416,9 @@ cat /etc/resolv.conf 2>/dev/null || true
         smtp25: parse_section(&output, "smtp25"),
         smtp587: parse_section(&output, "smtp587"),
         webmail_internal: parse_section(&output, "webmailInternal"),
-        stalwart_api_accounts: parse_section(&output, "stalwartApiAccounts"),
-        stalwart_api_domains: parse_section(&output, "stalwartApiDomains"),
-        stalwart_api_queue: parse_section(&output, "stalwartApiQueue"),
+        maddy_accounts: parse_section(&output, "maddyAccounts"),
+        maddy_domains: parse_section(&output, "maddyDomains"),
+        maddy_queue: parse_section(&output, "maddyQueue"),
         snappymail_internal: parse_section(&output, "snappymailInternal"),
         sieve4190: parse_section(&output, "sieve4190"),
         all_local_ports: parse_section(&output, "allLocalPorts"),
