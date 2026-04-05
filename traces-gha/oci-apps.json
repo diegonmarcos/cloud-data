@@ -12720,5 +12720,219 @@
         "duration_s": 0
       }
     ]
+  },
+  {
+    "vm": "oci-apps",
+    "run_id": "23999646742",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/23999646742",
+    "sha": "84ebff0dd43744a5e4769141e581643e3abbb54b",
+    "trigger": "push",
+    "ts": "2026-04-05T10:47:03Z",
+    "duration_s": 686,
+    "total": 33,
+    "ok": 0,
+    "fail": 1,
+    "skip": 32,
+    "status": "failure",
+    "services": [
+      {
+        "name": "code-server",
+        "dir": "aa-sui_code-server",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "etherpad",
+        "dir": "aa-sui_etherpad",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "filebrowser",
+        "dir": "aa-sui_filebrowser",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "google-workspace-mcp",
+        "dir": "aa-sui_google-workspace-mcp",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "grist",
+        "dir": "aa-sui_grist",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "hedgedoc",
+        "dir": "aa-sui_hedgedoc",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "mail-mcp",
+        "dir": "aa-sui_mail-mcp",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "mattermost-bots",
+        "dir": "aa-sui_mattermost-bots",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "mattermost-mcp",
+        "dir": "aa-sui_mattermost-mcp",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "photoprism",
+        "dir": "aa-sui_photoprism",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "photos-webhook",
+        "dir": "aa-sui_photos-webhook",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "radicale",
+        "dir": "aa-sui_radicale",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "revealmd",
+        "dir": "aa-sui_revealmd",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "crawlee-cloud",
+        "dir": "ac-fin_crawlee-cloud",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "quant-lab-light",
+        "dir": "ac-fin_quant-lab-light",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "ollama-hai",
+        "dir": "ad-agi_ollama-hai",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "rig-agentic-hai-1.5bq4",
+        "dir": "ad-agi_rig-agentic-hai-1.5bq4",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "rig-agentic-sonn-14bq8",
+        "dir": "ad-agi_rig-agentic-sonn-14bq8",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "sauron-central",
+        "dir": "bb-sec_sauron-central",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "c3-infra-api",
+        "dir": "bc-obs_c3-infra-api",
+        "status": "fail",
+        "duration_s": 546
+      },
+      {
+        "name": "c3-infra-mcp",
+        "dir": "bc-obs_c3-infra-mcp",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "c3-services-api",
+        "dir": "bc-obs_c3-services-api",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "c3-services-mcp",
+        "dir": "bc-obs_c3-services-mcp",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "cloud-cgc-mcp",
+        "dir": "bc-obs_cloud-cgc-mcp",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "cloud-spec",
+        "dir": "bc-obs_cloud-spec",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "lgtm",
+        "dir": "bc-obs_lgtm",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "nocodb",
+        "dir": "bc-obs_nocodb",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "windmill",
+        "dir": "bc-obs_windmill",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "backup-borg",
+        "dir": "ca-dat_backup-borg",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "backup-bup",
+        "dir": "ca-dat_backup-bup",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "backup-gitea",
+        "dir": "ca-dat_backup-gitea",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "gitea",
+        "dir": "ca-dat_gitea",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "kg-graph",
+        "dir": "ca-dat_kg-graph",
+        "status": "skip",
+        "duration_s": 0
+      }
+    ]
   }
 ]
