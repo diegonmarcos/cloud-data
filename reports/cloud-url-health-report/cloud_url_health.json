@@ -1,0 +1,802 @@
+{
+  "generated": "2026-04-05T17:00:40.373376927+00:00",
+  "duration_ms": 6516,
+  "summary": {
+    "public_total": 16,
+    "public_healthy": 9,
+    "private_total": 44,
+    "private_healthy": 33
+  },
+  "public": [
+    {
+      "domain": "auth.diegonmarcos.com",
+      "url": "https://auth.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "fail",
+      "http_code": 502,
+      "latency_ms": 5961,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": [
+        "HTTP 502"
+      ]
+    },
+    {
+      "domain": "cal.diegonmarcos.com",
+      "url": "https://cal.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "fail",
+      "http_code": 502,
+      "latency_ms": 6198,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": [
+        "HTTP 502"
+      ]
+    },
+    {
+      "domain": "chat.diegonmarcos.com",
+      "url": "https://chat.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "fail",
+      "http_code": 502,
+      "latency_ms": 6151,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": [
+        "HTTP 502"
+      ]
+    },
+    {
+      "domain": "db.diegonmarcos.com",
+      "url": "https://db.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "fail",
+      "http_code": 502,
+      "latency_ms": 6104,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": [
+        "HTTP 502"
+      ]
+    },
+    {
+      "domain": "diegonmarcos.com",
+      "url": "https://diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 6058,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "git.diegonmarcos.com",
+      "url": "https://git.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 5937,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "grafana.diegonmarcos.com",
+      "url": "https://grafana.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 5939,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "ide.diegonmarcos.com",
+      "url": "https://ide.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "fail",
+      "http_code": 502,
+      "latency_ms": 6235,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": [
+        "HTTP 502"
+      ]
+    },
+    {
+      "domain": "mail.diegonmarcos.com",
+      "url": "https://mail.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 6050,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "photos.diegonmarcos.com",
+      "url": "https://photos.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 6029,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "sheets.diegonmarcos.com",
+      "url": "https://sheets.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "fail",
+      "http_code": 502,
+      "latency_ms": 6006,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": [
+        "HTTP 502"
+      ]
+    },
+    {
+      "domain": "smtp.diegonmarcos.com",
+      "url": "https://smtp.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 6129,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "vault.diegonmarcos.com",
+      "url": "https://vault.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 5928,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "webmail.diegonmarcos.com",
+      "url": "https://webmail.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 6467,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "windmill.diegonmarcos.com",
+      "url": "https://windmill.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 5921,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": []
+    },
+    {
+      "domain": "workflows.diegonmarcos.com",
+      "url": "https://workflows.diegonmarcos.com",
+      "dns": "ok",
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "fail",
+      "http_code": 502,
+      "latency_ms": 6038,
+      "resolved_ips": [
+        "35.226.147.64"
+      ],
+      "errors": [
+        "HTTP 502"
+      ]
+    }
+  ],
+  "private": [
+    {
+      "domain": "alerts-api (oci-E2-f_1)",
+      "url": "10.0.0.4:5050",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 275,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "authelia (gcp-E2-f_0)",
+      "url": "10.0.0.1:9091",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 191,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "backup-gitea (oci-A1-f_0)",
+      "url": "10.0.0.6:3002",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 840,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "c3-infra-api (oci-A1-f_0)",
+      "url": "10.0.0.6:8081",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 843,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "c3-infra-mcp (oci-A1-f_0)",
+      "url": "10.0.0.6:3100",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 856,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "c3-services-api (oci-A1-f_0)",
+      "url": "10.0.0.6:8082",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 302,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "c3-services-mcp (oci-A1-f_0)",
+      "url": "10.0.0.6:3101",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 865,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "caddy (gcp-E2-f_0)",
+      "url": "10.0.0.1:443",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 400,
+      "latency_ms": 511,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "cloud-cgc-mcp (oci-A1-f_0)",
+      "url": "10.0.0.6:3105",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 864,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "cloud-spec (oci-A1-f_0)",
+      "url": "10.0.0.6:3080",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 864,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "code-server (oci-A1-f_0)",
+      "url": "10.0.0.6:8443",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1161,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "crawlee-cloud (oci-A1-f_0)",
+      "url": "10.0.0.6:3000",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 875,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "dagu (oci-E2-f_0)",
+      "url": "10.0.0.3:8070",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 862,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "dbgate (oci-A1-f_0)",
+      "url": "10.0.0.6:8086",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 875,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "dozzle (oci-E2-f_1)",
+      "url": "10.0.0.4:9999",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 2885,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "etherpad (oci-A1-f_0)",
+      "url": "10.0.0.6:3012",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 899,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "filebrowser (oci-A1-f_0)",
+      "url": "10.0.0.6:3015",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 947,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "fluent-bit (oci-E2-f_1)",
+      "url": "10.0.0.4:2020",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 312,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "gitea (oci-A1-f_0)",
+      "url": "10.0.0.6:3002",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 917,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "google-workspace-mcp (oci-A1-f_0)",
+      "url": "10.0.0.6:3104",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 947,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "grist (oci-A1-f_0)",
+      "url": "10.0.0.6:3011",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 948,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "hedgedoc (oci-A1-f_0)",
+      "url": "10.0.0.6:3018",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 976,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "hickory-dns (gcp-E2-f_0)",
+      "url": "10.0.0.1:53",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 184,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "introspect-proxy (gcp-E2-f_0)",
+      "url": "10.0.0.1:4182",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 613,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "lgtm (oci-A1-f_0)",
+      "url": "10.0.0.6:3200",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1219,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "maddy (oci-E2-f_0)",
+      "url": "10.0.0.3:443",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 317,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "mail-mcp (oci-A1-f_0)",
+      "url": "10.0.0.6:3103",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 972,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "matomo (oci-E2-f_1)",
+      "url": "10.0.0.4:8084",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 314,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "mattermost-bots (oci-A1-f_0)",
+      "url": "10.0.0.6:8065",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 923,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "mattermost-mcp (oci-A1-f_0)",
+      "url": "10.0.0.6:3102",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 938,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "ntfy (gcp-E2-f_0)",
+      "url": "10.0.0.1:8090",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 810,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "ollama (gcp-T4-p_0)",
+      "url": "10.0.0.8:11434",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 5002,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: timeout 5s"
+      ]
+    },
+    {
+      "domain": "ollama-hai (oci-A1-f_0)",
+      "url": "10.0.0.6:11435",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 907,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "photoprism (oci-A1-f_0)",
+      "url": "10.0.0.6:3013",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 309,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "photos-webhook (oci-A1-f_0)",
+      "url": "10.0.0.6:5002",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 918,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "radicale (oci-A1-f_0)",
+      "url": "10.0.0.6:5232",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1964,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "redis (gcp-E2-f_0)",
+      "url": "10.0.0.1:6379",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "fail",
+      "http_code": null,
+      "latency_ms": 606,
+      "resolved_ips": [],
+      "errors": [
+        "HTTP: error sending request for url (http://10.0.0.1:6379/)"
+      ]
+    },
+    {
+      "domain": "revealmd (oci-A1-f_0)",
+      "url": "10.0.0.6:3014",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 916,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "rig-agentic-sonn-14bq8 (oci-A1-f_0)",
+      "url": "10.0.0.6:8091",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 904,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "smtp-proxy (oci-E2-f_0)",
+      "url": "10.0.0.3:8080",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 917,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "snappymail (oci-E2-f_0)",
+      "url": "10.0.0.3:8888",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 911,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "umami (oci-E2-f_1)",
+      "url": "10.0.0.4:3006",
+      "dns": "skip",
+      "tcp": "fail",
+      "tls": "skip",
+      "http": "skip",
+      "http_code": null,
+      "latency_ms": 318,
+      "resolved_ips": [],
+      "errors": [
+        "TCP: Connection refused (os error 111)"
+      ]
+    },
+    {
+      "domain": "vaultwarden (gcp-E2-f_0)",
+      "url": "10.0.0.1:8880",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 498,
+      "resolved_ips": [],
+      "errors": []
+    },
+    {
+      "domain": "windmill (oci-A1-f_0)",
+      "url": "10.0.0.6:8000",
+      "dns": "skip",
+      "tcp": "ok",
+      "tls": "skip",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 962,
+      "resolved_ips": [],
+      "errors": []
+    }
+  ]
+}

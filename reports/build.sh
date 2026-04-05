@@ -25,25 +25,29 @@ case "$target" in
     sh "$ROOT/cloud-stack-report/build.sh" all
     sh "$ROOT/cloud-health-full-report/build.sh" all
     sh "$ROOT/cloud-mail-full-report/build.sh" all
+    sh "$ROOT/cloud-url-health-report/build.sh" all
     generate_manifest
     ;;
   stack)  sh "$ROOT/cloud-stack-report/build.sh" all ;;
   cloud)  sh "$ROOT/cloud-health-full-report/build.sh" all ;;
   mail)   sh "$ROOT/cloud-mail-full-report/build.sh" all ;;
+  url)    sh "$ROOT/cloud-url-health-report/build.sh" all ;;
   build)
     sh "$ROOT/cloud-stack-report/build.sh" build
     sh "$ROOT/cloud-health-full-report/build.sh" build
     sh "$ROOT/cloud-mail-full-report/build.sh" build
+    sh "$ROOT/cloud-url-health-report/build.sh" build
     generate_manifest
     ;;
   manifest) generate_manifest ;;
   *)
-    echo "Usage: $0 [all|stack|cloud|mail|build|manifest]"
+    echo "Usage: $0 [all|stack|cloud|mail|url|build|manifest]"
     echo ""
-    echo "  all       Build + run all 3 reports (default)"
+    echo "  all       Build + run all 4 reports (default)"
     echo "  stack     Cloud stack report"
     echo "  cloud     Cloud health full (10-layer)"
     echo "  mail      Cloud mail full (6-phase)"
+    echo "  url       URL health (4-layer probe)"
     echo "  build     Build all without running"
     echo "  manifest  Regenerate reports/manifest.json"
     exit 1
