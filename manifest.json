@@ -94,5 +94,9 @@
   {
     "file": "cloud-data-deps.json",
     "name": "cloud data deps"
+  },
+  {
+    "file": "cloud-data-databases.json",
+    "name": "cloud data databases"
   }
 ]
