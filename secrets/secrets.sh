@@ -155,6 +155,17 @@ cmd_decrypt() {
     echo "Linked: dist/cloud-data-secrets-env-var-names.json"
   fi
 
+  # Generate manifest.json
+  local MANIFEST="[]"
+  for f in "$DIST_DIR"/*.json.secrets; do
+    [ -f "$f" ] || continue
+    local base
+    base=$(basename "$f" .json.secrets)
+    MANIFEST=$(echo "$MANIFEST" | jq --arg file "secrets/dist/$(basename "$f")" --arg name "$base" '. + [{"file": $file, "name": $name}]')
+  done
+  echo "$MANIFEST" | jq '.' > "$SCRIPT_DIR/manifest.json"
+  echo "Manifest: $(echo "$MANIFEST" | jq 'length') entries"
+
   echo ""
   echo "Done: ${count} decrypted | ${failed} failed"
   echo "Consolidated: dist/cloud-secrets.json.secrets ($(echo "$CONSOLIDATED" | jq 'keys | length') services)"
