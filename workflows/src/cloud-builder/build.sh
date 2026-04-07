@@ -666,10 +666,7 @@ step_compose() {
         log "Waiting for CPU to settle..."
         sleep 5
         log "Starting containers on $DEPLOY_HOST:$DEPLOY_PATH"
-        # Only --build on ARM VMs (oci-apps*). x86 VMs use pre-built GHCR images — NEVER build on host.
-        BUILD_FLAG=""
-        case "$DEPLOY_HOST" in oci-apps|oci-apps-1|oci-apps-2) BUILD_FLAG="--build" ;; esac
-        ssh $SSH_OPTS "$DEPLOY_HOST" "cd $DEPLOY_PATH && docker compose $ENV_FILE_FLAG up -d $BUILD_FLAG"
+        ssh $SSH_OPTS "$DEPLOY_HOST" "cd $DEPLOY_PATH && docker compose $ENV_FILE_FLAG pull --quiet 2>/dev/null; docker compose $ENV_FILE_FLAG up -d --no-build"
     else
         # Standard: pull first (while old containers run), then down + up (instant, no pulling)
         # Uses 'docker pull' instead of 'docker compose pull' — compose pull spawns heavy Go binary
@@ -677,11 +674,8 @@ step_compose() {
         EXTRA_FLAGS="${COMPOSE_FLAGS:-}"
         log "Pulling images on $DEPLOY_HOST (one at a time, old containers keep running)"
         ssh $SSH_OPTS "$DEPLOY_HOST" "cd $DEPLOY_PATH && docker compose $ENV_FILE_FLAG config --images 2>/dev/null | sort -u | while read img; do echo \"  pull: \$img\"; ionice -c3 nice -n19 docker pull \"\$img\" 2>/dev/null || true; done"
-        log "Rebuilding $SERVICE_NAME on $DEPLOY_HOST:$DEPLOY_PATH"
-        # Only --build on ARM VMs. x86 VMs (gcp-proxy, oci-mail, oci-analytics) use pre-built images.
-        BUILD_FLAG=""
-        case "$DEPLOY_HOST" in oci-apps|oci-apps-1|oci-apps-2) BUILD_FLAG="--build" ;; esac
-        ssh $SSH_OPTS "$DEPLOY_HOST" "cd $DEPLOY_PATH && docker compose down --remove-orphans 2>/dev/null; docker compose $ENV_FILE_FLAG up -d --force-recreate $BUILD_FLAG $EXTRA_FLAGS"
+        log "Recreating $SERVICE_NAME on $DEPLOY_HOST:$DEPLOY_PATH"
+        ssh $SSH_OPTS "$DEPLOY_HOST" "cd $DEPLOY_PATH && docker compose down --remove-orphans 2>/dev/null; docker compose $ENV_FILE_FLAG up -d --no-build --force-recreate $EXTRA_FLAGS"
     fi
 
     # Post-compose hook (e.g. mailu setup.sh)
