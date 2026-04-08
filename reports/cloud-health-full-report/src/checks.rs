@@ -197,7 +197,7 @@ pub fn oci_status(display_name: &str) -> Option<String> {
 }
 
 /// Cloud-agnostic VM status check
-pub fn cloud_vm_status(vm_id: &str, cloud_name: &str, provider: &str) -> Option<String> {
+pub fn cloud_vm_status(_vm_id: &str, cloud_name: &str, provider: &str) -> Option<String> {
     match provider.to_lowercase().as_str() {
         "gcp" => gcloud_status(cloud_name),
         "oci" => oci_status(cloud_name),

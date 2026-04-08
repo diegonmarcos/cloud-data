@@ -28,11 +28,11 @@ pub fn render(report: &Report) -> anyhow::Result<()> {
     let mut issues = String::new();
     for r in report.public.iter().chain(report.private.iter()) {
         if !r.errors.is_empty() {
-            issues.push_str(&format!("  FAIL  {}  {}\n", r.domain, r.errors.join("; ")));
+            issues.push_str(&format!("  ❌  {}  {}\n", r.domain, r.errors.join("; ")));
         }
     }
     if issues.is_empty() {
-        issues = "  No issues detected.\n".into();
+        issues = "  ✅ No issues detected.\n".into();
     }
     vars.insert("ISSUES".into(), issues);
 

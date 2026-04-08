@@ -1,6 +1,6 @@
 {
-  "generated": "2026-03-31T12:47:44.249067221+00:00",
-  "duration_ms": 86549,
+  "generated": "2026-04-06T04:38:51.059651967+00:00",
+  "duration_ms": 69892,
   "mesh": [
     {
       "name": "oci-mail",
@@ -34,9 +34,9 @@
       "pub_ip": "82.70.229.129",
       "wg_ip": "10.0.0.6",
       "peer_type": "VM",
-      "vps_ok": true,
-      "vps_status": "SSH OK",
-      "pub_ok": true,
+      "vps_ok": false,
+      "vps_status": "SSH fail",
+      "pub_ok": false,
       "dropbear_ok": false,
       "wg_ok": false,
       "wg_handshake": "no data"
@@ -110,8 +110,8 @@
   "public_urls": [
     {
       "url": "auth.diegonmarcos.com",
-      "upstream": "authelia.app:9091",
-      "tcp": false,
+      "upstream": "10.0.0.1:9091",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -120,8 +120,8 @@
     },
     {
       "url": "git.diegonmarcos.com",
-      "upstream": "backup-gitea.app:3002",
-      "tcp": false,
+      "upstream": "10.0.0.6:3002",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -130,7 +130,7 @@
     },
     {
       "url": "api.diegonmarcos.com/c3-api",
-      "upstream": "c3-infra-api.app:8081",
+      "upstream": "10.0.0.6:8081",
       "tcp": false,
       "http": false,
       "https": false,
@@ -140,7 +140,7 @@
     },
     {
       "url": "mcp.diegonmarcos.com/c3-infra-mcp",
-      "upstream": "c3-infra-mcp.app:3100",
+      "upstream": "10.0.0.6:3100",
       "tcp": false,
       "http": false,
       "https": false,
@@ -150,7 +150,7 @@
     },
     {
       "url": "api.diegonmarcos.com/services",
-      "upstream": "c3-services-api.app:8082",
+      "upstream": "10.0.0.6:8082",
       "tcp": false,
       "http": false,
       "https": false,
@@ -160,8 +160,8 @@
     },
     {
       "url": "proxy.diegonmarcos.com",
-      "upstream": "caddy.app:443",
-      "tcp": false,
+      "upstream": "10.0.0.1:443",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -170,8 +170,8 @@
     },
     {
       "url": "ide.diegonmarcos.com",
-      "upstream": "code-server.app:8443",
-      "tcp": false,
+      "upstream": "10.0.0.6:8443",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -180,8 +180,8 @@
     },
     {
       "url": "api.diegonmarcos.com",
-      "upstream": "crawlee.app:3000",
-      "tcp": false,
+      "upstream": "10.0.0.6:3000",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -190,8 +190,8 @@
     },
     {
       "url": "workflows.diegonmarcos.com",
-      "upstream": "dagu.app:8070",
-      "tcp": false,
+      "upstream": "10.0.0.3:8070",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -199,9 +199,19 @@
       "auth_code": "err: error sending request for url (https://workflows.diegonmarcos.com/)"
     },
     {
+      "url": "db.diegonmarcos.com",
+      "upstream": "10.0.0.6:8086",
+      "tcp": true,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://db.diegonmarcos.com/)",
+      "auth_code": "err: error sending request for url (https://db.diegonmarcos.com/)"
+    },
+    {
       "url": "logs.diegonmarcos.com",
-      "upstream": "dozzle.app:9999",
-      "tcp": false,
+      "upstream": "10.0.0.4:9999",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -210,8 +220,8 @@
     },
     {
       "url": "pad.diegonmarcos.com",
-      "upstream": "etherpad.app:3012",
-      "tcp": false,
+      "upstream": "10.0.0.6:3012",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -220,8 +230,8 @@
     },
     {
       "url": "files.diegonmarcos.com",
-      "upstream": "filebrowser.app:3015",
-      "tcp": false,
+      "upstream": "10.0.0.6:3015",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -230,8 +240,8 @@
     },
     {
       "url": "sheets.diegonmarcos.com",
-      "upstream": "grist.app:3011",
-      "tcp": false,
+      "upstream": "10.0.0.6:3011",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -240,8 +250,8 @@
     },
     {
       "url": "doc.diegonmarcos.com",
-      "upstream": "hedgedoc.app:3018",
-      "tcp": false,
+      "upstream": "10.0.0.6:3018",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -250,7 +260,7 @@
     },
     {
       "url": "dns.internal",
-      "upstream": "hickory-dns.app:53",
+      "upstream": "10.0.0.1:53",
       "tcp": false,
       "http": false,
       "https": false,
@@ -260,8 +270,8 @@
     },
     {
       "url": "grafana.diegonmarcos.com",
-      "upstream": "grafana.app:3200",
-      "tcp": false,
+      "upstream": "10.0.0.6:3200",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -269,9 +279,19 @@
       "auth_code": "err: error sending request for url (https://grafana.diegonmarcos.com/)"
     },
     {
+      "url": "mail.diegonmarcos.com",
+      "upstream": "10.0.0.3:443",
+      "tcp": true,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://mail.diegonmarcos.com/)",
+      "auth_code": "err: error sending request for url (https://mail.diegonmarcos.com/)"
+    },
+    {
       "url": "analytics.diegonmarcos.com",
-      "upstream": "matomo.app:8084",
-      "tcp": false,
+      "upstream": "10.0.0.4:8084",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -280,8 +300,8 @@
     },
     {
       "url": "chat.diegonmarcos.com",
-      "upstream": "mattermost.app:8065",
-      "tcp": false,
+      "upstream": "10.0.0.6:8065",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -289,19 +309,9 @@
       "auth_code": "err: error sending request for url (https://chat.diegonmarcos.com/)"
     },
     {
-      "url": "db.diegonmarcos.com",
-      "upstream": "nocodb.app:8085",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://db.diegonmarcos.com/)",
-      "auth_code": "err: error sending request for url (https://db.diegonmarcos.com/)"
-    },
-    {
       "url": "rss.diegonmarcos.com",
-      "upstream": "ntfy.app:8090",
-      "tcp": false,
+      "upstream": "10.0.0.1:8090",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -310,8 +320,8 @@
     },
     {
       "url": "photos.diegonmarcos.com",
-      "upstream": "photoprism.app:3013",
-      "tcp": false,
+      "upstream": "10.0.0.6:3013",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -320,8 +330,8 @@
     },
     {
       "url": "cal.diegonmarcos.com",
-      "upstream": "radicale.app:5232",
-      "tcp": false,
+      "upstream": "10.0.0.6:5232",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -329,19 +339,9 @@
       "auth_code": "err: error sending request for url (https://cal.diegonmarcos.com/)"
     },
     {
-      "url": "slides.diegonmarcos.com",
-      "upstream": "revealmd.app:3014",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://slides.diegonmarcos.com/)",
-      "auth_code": "err: error sending request for url (https://slides.diegonmarcos.com/)"
-    },
-    {
       "url": "smtp.diegonmarcos.com",
-      "upstream": "smtp-proxy.app:8080",
-      "tcp": false,
+      "upstream": "10.0.0.3:8080",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -350,8 +350,8 @@
     },
     {
       "url": "webmail.diegonmarcos.com",
-      "upstream": "snappymail.app:8888",
-      "tcp": false,
+      "upstream": "10.0.0.3:8888",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -359,19 +359,9 @@
       "auth_code": "err: error sending request for url (https://webmail.diegonmarcos.com/)"
     },
     {
-      "url": "mail.diegonmarcos.com",
-      "upstream": "stalwart.app:443",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://mail.diegonmarcos.com/)",
-      "auth_code": "err: error sending request for url (https://mail.diegonmarcos.com/)"
-    },
-    {
       "url": "vault.diegonmarcos.com",
-      "upstream": "vaultwarden.app:8880",
-      "tcp": false,
+      "upstream": "10.0.0.1:8880",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -380,113 +370,13 @@
     },
     {
       "url": "windmill.diegonmarcos.com",
-      "upstream": "windmill-app.app:8000",
-      "tcp": false,
+      "upstream": "10.0.0.6:8000",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
       "code": "err: error sending request for url (http://windmill.diegonmarcos.com/)",
       "auth_code": "err: error sending request for url (https://windmill.diegonmarcos.com/)"
-    },
-    {
-      "url": "app.diegonmarcos.com/etherpad",
-      "upstream": "etherpad.app:3012",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/etherpad)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/etherpad)"
-    },
-    {
-      "url": "app.diegonmarcos.com/filebrowser",
-      "upstream": "filebrowser.app:3015",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/filebrowser)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/filebrowser)"
-    },
-    {
-      "url": "app.diegonmarcos.com/hedgedoc",
-      "upstream": "hedgedoc.app:3018",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/hedgedoc)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/hedgedoc)"
-    },
-    {
-      "url": "app.diegonmarcos.com/revealmd",
-      "upstream": "revealmd.app:3014",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/revealmd)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/revealmd)"
-    },
-    {
-      "url": "app.diegonmarcos.com/dozzle",
-      "upstream": "dozzle.app:9999",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/dozzle)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/dozzle)"
-    },
-    {
-      "url": "app.diegonmarcos.com/windmill",
-      "upstream": "windmill-app.app:8000",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/windmill)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/windmill)"
-    },
-    {
-      "url": "app.diegonmarcos.com/grafana",
-      "upstream": "grafana.app:3016",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/grafana)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/grafana)"
-    },
-    {
-      "url": "app.diegonmarcos.com/gitea",
-      "upstream": "gitea.app:3017",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/gitea)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/gitea)"
-    },
-    {
-      "url": "app.diegonmarcos.com/crawlee",
-      "upstream": "crawlee.app:3001",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://app.diegonmarcos.com/crawlee)",
-      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/crawlee)"
-    },
-    {
-      "url": "api.diegonmarcos.com/crawlee",
-      "upstream": "crawlee.app:3000",
-      "tcp": false,
-      "http": false,
-      "https": false,
-      "auth": false,
-      "code": "err: error sending request for url (http://api.diegonmarcos.com/crawlee)",
-      "auth_code": "err: error sending request for url (https://api.diegonmarcos.com/crawlee)"
     },
     {
       "url": "api.diegonmarcos.com/dash",
@@ -499,9 +389,109 @@
       "auth_code": "err: error sending request for url (https://api.diegonmarcos.com/dash)"
     },
     {
-      "url": "cloud.diegonmarcos.com",
-      "upstream": "c3-spec.app:3080",
+      "url": "api.diegonmarcos.com/crawlee",
+      "upstream": "10.0.0.6:3000",
       "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://api.diegonmarcos.com/crawlee)",
+      "auth_code": "err: error sending request for url (https://api.diegonmarcos.com/crawlee)"
+    },
+    {
+      "url": "app.diegonmarcos.com/windmill",
+      "upstream": "10.0.0.6:8000",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/windmill)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/windmill)"
+    },
+    {
+      "url": "app.diegonmarcos.com/etherpad",
+      "upstream": "10.0.0.6:3012",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/etherpad)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/etherpad)"
+    },
+    {
+      "url": "app.diegonmarcos.com/filebrowser",
+      "upstream": "10.0.0.6:3015",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/filebrowser)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/filebrowser)"
+    },
+    {
+      "url": "app.diegonmarcos.com/hedgedoc",
+      "upstream": "10.0.0.6:3018",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/hedgedoc)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/hedgedoc)"
+    },
+    {
+      "url": "app.diegonmarcos.com/revealmd",
+      "upstream": "10.0.0.6:3014",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/revealmd)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/revealmd)"
+    },
+    {
+      "url": "app.diegonmarcos.com/dozzle",
+      "upstream": "10.0.0.4:9999",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/dozzle)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/dozzle)"
+    },
+    {
+      "url": "app.diegonmarcos.com/grafana",
+      "upstream": "10.0.0.6:3016",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/grafana)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/grafana)"
+    },
+    {
+      "url": "app.diegonmarcos.com/gitea",
+      "upstream": "10.0.0.6:3017",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/gitea)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/gitea)"
+    },
+    {
+      "url": "app.diegonmarcos.com/crawlee",
+      "upstream": "10.0.0.6:3001",
+      "tcp": false,
+      "http": false,
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (http://app.diegonmarcos.com/crawlee)",
+      "auth_code": "err: error sending request for url (https://app.diegonmarcos.com/crawlee)"
+    },
+    {
+      "url": "cloud.diegonmarcos.com",
+      "upstream": "10.0.0.6:3080",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -510,8 +500,8 @@
     },
     {
       "url": "mcp.diegonmarcos.com",
-      "upstream": "g-workspace-mcp.app:3104",
-      "tcp": false,
+      "upstream": "10.0.0.6:3100",
+      "tcp": true,
       "http": false,
       "https": false,
       "auth": false,
@@ -791,6 +781,16 @@
       "resolved_ip": ""
     },
     {
+      "dns": "dbgate.app",
+      "container": "dbgate",
+      "port": 8086,
+      "vm": "oci-apps",
+      "tcp": false,
+      "http": false,
+      "code": "---",
+      "resolved_ip": ""
+    },
+    {
       "dns": "etherpad-db.app",
       "container": "etherpad_postgres",
       "port": 5436,
@@ -951,26 +951,6 @@
       "resolved_ip": ""
     },
     {
-      "dns": "nocodb-db.app",
-      "container": "nocodb-db",
-      "port": 5441,
-      "vm": "oci-apps",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": ""
-    },
-    {
-      "dns": "nocodb.app",
-      "container": "nocodb",
-      "port": 8085,
-      "vm": "oci-apps",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": ""
-    },
-    {
       "dns": "ollama-hai.app",
       "container": "ollama-hai",
       "port": 11435,
@@ -984,16 +964,6 @@
       "dns": "photoprism.app",
       "container": "photoprism_app",
       "port": 3013,
-      "vm": "oci-apps",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": ""
-    },
-    {
-      "dns": "photos-webhook.app",
-      "container": "photos-webhook",
-      "port": 5002,
       "vm": "oci-apps",
       "tcp": false,
       "http": false,
@@ -1111,6 +1081,16 @@
       "resolved_ip": ""
     },
     {
+      "dns": "maddy.app",
+      "container": "maddy",
+      "port": 443,
+      "vm": "oci-mail",
+      "tcp": false,
+      "http": false,
+      "code": "---",
+      "resolved_ip": ""
+    },
+    {
       "dns": "smtp-proxy.app",
       "container": "smtp-proxy",
       "port": 8080,
@@ -1129,21 +1109,587 @@
       "http": false,
       "code": "---",
       "resolved_ip": ""
-    },
-    {
-      "dns": "stalwart.app",
-      "container": "stalwart",
-      "port": 443,
-      "vm": "oci-mail",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": ""
     }
   ],
   "vm_data": [
     {
       "alias": "gcp-proxy",
+      "reachable": true,
+      "mem_used": "1075M",
+      "mem_total": "1952M",
+      "mem_pct": 55,
+      "swap": "135M/3999M",
+      "disk_used": "23G",
+      "disk_total": "31G",
+      "disk_pct": "74%",
+      "load": "0.10 0.08 0.02",
+      "uptime": "5d 7h",
+      "containers": [
+        {
+          "name": "authelia",
+          "status": "Exited (1) 9 minutes ago",
+          "health": "exited",
+          "docker_port": "9091",
+          "host_port": "—"
+        },
+        {
+          "name": "hickory-dns",
+          "status": "Exited (1) 17 hours ago",
+          "health": "exited",
+          "docker_port": "53",
+          "host_port": "—"
+        },
+        {
+          "name": "authelia-redis",
+          "status": "Up 9 minutes",
+          "health": "none",
+          "docker_port": "6380",
+          "host_port": "—"
+        },
+        {
+          "name": "syslog-bridge",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "github-rss",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "ntfy",
+          "status": "Up 17 hours",
+          "health": "none",
+          "docker_port": "8090",
+          "host_port": "—"
+        },
+        {
+          "name": "caddy",
+          "status": "Up 19 hours",
+          "health": "none",
+          "docker_port": "443",
+          "host_port": "443"
+        },
+        {
+          "name": "sqlite-vaultwarden",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "sqlite-ntfy",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "sqlite-npm",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "sqlite-authelia",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "postlite-vaultwarden",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "postlite-ntfy",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "postlite-npm",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "postlite-authelia",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "introspect-proxy",
+          "status": "Up 19 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "4182",
+          "host_port": "—"
+        },
+        {
+          "name": "redis",
+          "status": "Up 4 days (healthy)",
+          "health": "healthy",
+          "docker_port": "6379",
+          "host_port": "—"
+        },
+        {
+          "name": "vaultwarden",
+          "status": "Up 4 days (healthy)",
+          "health": "healthy",
+          "docker_port": "8880",
+          "host_port": "—"
+        }
+      ],
+      "containers_running": 16,
+      "containers_total": 18
+    },
+    {
+      "alias": "oci-apps",
+      "reachable": true,
+      "mem_used": "5268M",
+      "mem_total": "23975M",
+      "mem_pct": 21,
+      "swap": "150M/12288M",
+      "disk_used": "54.2G",
+      "disk_total": "95.8G",
+      "disk_pct": "60%",
+      "load": "0.25 0.42 0.38",
+      "uptime": "7d 14h",
+      "containers": [
+        {
+          "name": "c3-services-mcp",
+          "status": "Exited (134) 5 hours ago",
+          "health": "exited",
+          "docker_port": "3101",
+          "host_port": "—"
+        },
+        {
+          "name": "nocodb",
+          "status": "Exited (143) 17 hours ago",
+          "health": "exited",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "nocodb-db",
+          "status": "Exited (0) 17 hours ago",
+          "health": "exited",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "trusting_herschel",
+          "status": "Up 2 days (unhealthy)",
+          "health": "unhealthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "photoprism_app",
+          "status": "Up 4 days (unhealthy)",
+          "health": "unhealthy",
+          "docker_port": "3013",
+          "host_port": "—"
+        },
+        {
+          "name": "mattermost-bots",
+          "status": "Up 43 hours",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "mattermost-mcp",
+          "status": "Up 2 days",
+          "health": "none",
+          "docker_port": "3102",
+          "host_port": "—"
+        },
+        {
+          "name": "mail-mcp",
+          "status": "Up 43 hours",
+          "health": "none",
+          "docker_port": "3103",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_runner",
+          "status": "Up 6 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_dashboard",
+          "status": "Up 6 days",
+          "health": "none",
+          "docker_port": "3001",
+          "host_port": "3001"
+        },
+        {
+          "name": "crawlee_scheduler",
+          "status": "Up 6 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "quant_light_engine",
+          "status": "Up 6 days",
+          "health": "none",
+          "docker_port": "5001",
+          "host_port": "—"
+        },
+        {
+          "name": "windmill-worker",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "lgtm_mimir",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "9009",
+          "host_port": "—"
+        },
+        {
+          "name": "lgtm_tempo",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "3210",
+          "host_port": "—"
+        },
+        {
+          "name": "gitea",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "3002",
+          "host_port": "—"
+        },
+        {
+          "name": "bup-server",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "borg-server",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "cloud-spec",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "3080",
+          "host_port": "—"
+        },
+        {
+          "name": "siem-api",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "code-server",
+          "status": "Up 7 days",
+          "health": "none",
+          "docker_port": "8443",
+          "host_port": "—"
+        },
+        {
+          "name": "dbgate",
+          "status": "Up 17 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "8086",
+          "host_port": "—"
+        },
+        {
+          "name": "c3-infra-mcp",
+          "status": "Up 43 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "3100",
+          "host_port": "—"
+        },
+        {
+          "name": "c3-infra-api",
+          "status": "Up 3 days (healthy)",
+          "health": "healthy",
+          "docker_port": "8081",
+          "host_port": "8081"
+        },
+        {
+          "name": "rig-agentic-hai",
+          "status": "Up 5 days (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_api",
+          "status": "Up 6 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3000",
+          "host_port": "3000"
+        },
+        {
+          "name": "crawlee_redis",
+          "status": "Up 6 days (healthy)",
+          "health": "healthy",
+          "docker_port": "6381",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_minio",
+          "status": "Up 6 days (healthy)",
+          "health": "healthy",
+          "docker_port": "9000",
+          "host_port": "—"
+        },
+        {
+          "name": "crawlee_db",
+          "status": "Up 6 days (healthy)",
+          "health": "healthy",
+          "docker_port": "5433",
+          "host_port": "—"
+        },
+        {
+          "name": "quant_light_research",
+          "status": "Up 6 days (healthy)",
+          "health": "healthy",
+          "docker_port": "8889",
+          "host_port": "—"
+        },
+        {
+          "name": "quant_light_db",
+          "status": "Up 6 days (healthy)",
+          "health": "healthy",
+          "docker_port": "5443",
+          "host_port": "—"
+        },
+        {
+          "name": "windmill-server",
+          "status": "Up 5 days (healthy)",
+          "health": "healthy",
+          "docker_port": "8000",
+          "host_port": "—"
+        },
+        {
+          "name": "windmill-db",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "5440",
+          "host_port": "—"
+        },
+        {
+          "name": "photoprism_mariadb",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "photoprism_rclone",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "lgtm_grafana",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3200",
+          "host_port": "—"
+        },
+        {
+          "name": "lgtm_loki",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3110",
+          "host_port": "—"
+        },
+        {
+          "name": "ollama-hai",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "11435",
+          "host_port": "—"
+        },
+        {
+          "name": "mattermost",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "8065",
+          "host_port": "—"
+        },
+        {
+          "name": "mattermost-postgres",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "5435",
+          "host_port": "—"
+        },
+        {
+          "name": "hedgedoc_app",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3018",
+          "host_port": "—"
+        },
+        {
+          "name": "hedgedoc_postgres",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "5439",
+          "host_port": "—"
+        },
+        {
+          "name": "etherpad_app",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3012",
+          "host_port": "—"
+        },
+        {
+          "name": "etherpad_postgres",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "5436",
+          "host_port": "—"
+        },
+        {
+          "name": "google-workspace-mcp",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3104",
+          "host_port": "—"
+        },
+        {
+          "name": "cloud-cgc-mcp",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3105",
+          "host_port": "—"
+        },
+        {
+          "name": "syslog-central",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "photos-webhook",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "photos-db",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "—",
+          "host_port": "—"
+        },
+        {
+          "name": "revealmd_app",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3014",
+          "host_port": "—"
+        },
+        {
+          "name": "radicale",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "5232",
+          "host_port": "—"
+        },
+        {
+          "name": "grist_app",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3011",
+          "host_port": "—"
+        },
+        {
+          "name": "filebrowser_app",
+          "status": "Up 7 days (healthy)",
+          "health": "healthy",
+          "docker_port": "3015",
+          "host_port": "—"
+        }
+      ],
+      "containers_running": 50,
+      "containers_total": 53
+    },
+    {
+      "alias": "oci-mail",
+      "reachable": true,
+      "mem_used": "624M",
+      "mem_total": "954M",
+      "mem_pct": 65,
+      "swap": "217M/2559M",
+      "disk_used": "33G",
+      "disk_total": "45G",
+      "disk_pct": "78%",
+      "load": "0.00 0.09 0.09",
+      "uptime": "5d 10h",
+      "containers": [
+        {
+          "name": "dagu",
+          "status": "Up 40 hours",
+          "health": "none",
+          "docker_port": "8070",
+          "host_port": "—"
+        },
+        {
+          "name": "maddy",
+          "status": "Up 43 hours",
+          "health": "none",
+          "docker_port": "443",
+          "host_port": "—"
+        },
+        {
+          "name": "smtp-proxy",
+          "status": "Up 4 days",
+          "health": "none",
+          "docker_port": "8080",
+          "host_port": "8080"
+        },
+        {
+          "name": "snappymail",
+          "status": "Up 42 hours (healthy)",
+          "health": "healthy",
+          "docker_port": "8888",
+          "host_port": "—"
+        }
+      ],
+      "containers_running": 4,
+      "containers_total": 4
+    },
+    {
+      "alias": "oci-analytics",
       "reachable": false,
       "mem_used": "?",
       "mem_total": "?",
@@ -1157,561 +1703,6 @@
       "containers": [],
       "containers_running": 0,
       "containers_total": 0
-    },
-    {
-      "alias": "oci-apps",
-      "reachable": true,
-      "mem_used": "4364M",
-      "mem_total": "23975M",
-      "mem_pct": 18,
-      "swap": "0M/0M",
-      "disk_used": "69.5G",
-      "disk_total": "95.8G",
-      "disk_pct": "77%",
-      "load": "0.55 0.93 0.83",
-      "uptime": "1d 22h",
-      "containers": [
-        {
-          "name": "rig-agentic-sonn-14bq8",
-          "status": "Exited (101) 22 hours ago",
-          "health": "exited",
-          "docker_port": "8091",
-          "host_port": "—"
-        },
-        {
-          "name": "crawlee_minio_init",
-          "status": "Exited (0) 22 hours ago",
-          "health": "exited",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "windmill-server",
-          "status": "Exited (137) 15 hours ago",
-          "health": "exited",
-          "docker_port": "8000",
-          "host_port": "—"
-        },
-        {
-          "name": "rig",
-          "status": "Exited (101) 39 hours ago",
-          "health": "exited",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "rig-agentic",
-          "status": "Exited (101) 39 hours ago",
-          "health": "exited",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "surrealdb",
-          "status": "Exited (2) 39 hours ago",
-          "health": "exited",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "photoprism_app",
-          "status": "Up About a minute (health: starting)",
-          "health": "starting",
-          "docker_port": "3013",
-          "host_port": "—"
-        },
-        {
-          "name": "mail-mcp",
-          "status": "Up 10 hours",
-          "health": "none",
-          "docker_port": "3103",
-          "host_port": "—"
-        },
-        {
-          "name": "crawlee_runner",
-          "status": "Up 22 hours",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "crawlee_dashboard",
-          "status": "Up 22 hours",
-          "health": "none",
-          "docker_port": "3001",
-          "host_port": "3001"
-        },
-        {
-          "name": "crawlee_scheduler",
-          "status": "Up 22 hours",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "quant_light_engine",
-          "status": "Up 23 hours",
-          "health": "none",
-          "docker_port": "5001",
-          "host_port": "—"
-        },
-        {
-          "name": "windmill-worker",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "mattermost-bots",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "lgtm_mimir",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "9009",
-          "host_port": "—"
-        },
-        {
-          "name": "lgtm_tempo",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "3210",
-          "host_port": "—"
-        },
-        {
-          "name": "mattermost-mcp",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "3102",
-          "host_port": "—"
-        },
-        {
-          "name": "gitea",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "3002",
-          "host_port": "—"
-        },
-        {
-          "name": "bup-server",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "borg-server",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "cloud-spec",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "3080",
-          "host_port": "—"
-        },
-        {
-          "name": "siem-api",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "code-server",
-          "status": "Up 39 hours",
-          "health": "none",
-          "docker_port": "8443",
-          "host_port": "—"
-        },
-        {
-          "name": "c3-services-mcp",
-          "status": "Up 17 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3101",
-          "host_port": "—"
-        },
-        {
-          "name": "c3-infra-mcp",
-          "status": "Up 18 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3100",
-          "host_port": "—"
-        },
-        {
-          "name": "crawlee_api",
-          "status": "Up 22 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3000",
-          "host_port": "3000"
-        },
-        {
-          "name": "crawlee_redis",
-          "status": "Up 22 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "6381",
-          "host_port": "—"
-        },
-        {
-          "name": "crawlee_minio",
-          "status": "Up 22 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "9000",
-          "host_port": "—"
-        },
-        {
-          "name": "crawlee_db",
-          "status": "Up 22 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5433",
-          "host_port": "—"
-        },
-        {
-          "name": "quant_light_research",
-          "status": "Up 23 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "8889",
-          "host_port": "—"
-        },
-        {
-          "name": "quant_light_db",
-          "status": "Up 23 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5443",
-          "host_port": "—"
-        },
-        {
-          "name": "c3-infra-api",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "8081",
-          "host_port": "8081"
-        },
-        {
-          "name": "windmill-db",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5440",
-          "host_port": "—"
-        },
-        {
-          "name": "photoprism_mariadb",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "photoprism_rclone",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "lgtm_grafana",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3200",
-          "host_port": "—"
-        },
-        {
-          "name": "lgtm_loki",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3110",
-          "host_port": "—"
-        },
-        {
-          "name": "ollama-hai",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "11435",
-          "host_port": "—"
-        },
-        {
-          "name": "mattermost",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "8065",
-          "host_port": "—"
-        },
-        {
-          "name": "mattermost-postgres",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5435",
-          "host_port": "—"
-        },
-        {
-          "name": "hedgedoc_app",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3018",
-          "host_port": "—"
-        },
-        {
-          "name": "hedgedoc_postgres",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5439",
-          "host_port": "—"
-        },
-        {
-          "name": "etherpad_app",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3012",
-          "host_port": "—"
-        },
-        {
-          "name": "etherpad_postgres",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5436",
-          "host_port": "—"
-        },
-        {
-          "name": "google-workspace-mcp",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3104",
-          "host_port": "—"
-        },
-        {
-          "name": "nocodb",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "8085",
-          "host_port": "—"
-        },
-        {
-          "name": "nocodb-db",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5441",
-          "host_port": "—"
-        },
-        {
-          "name": "cloud-cgc-mcp",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3105",
-          "host_port": "—"
-        },
-        {
-          "name": "syslog-central",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "rig-agentic-hai",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "photos-webhook",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5002",
-          "host_port": "—"
-        },
-        {
-          "name": "photos-db",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "revealmd_app",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3014",
-          "host_port": "—"
-        },
-        {
-          "name": "radicale",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "5232",
-          "host_port": "—"
-        },
-        {
-          "name": "grist_app",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3011",
-          "host_port": "—"
-        },
-        {
-          "name": "filebrowser_app",
-          "status": "Up 39 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "3015",
-          "host_port": "—"
-        }
-      ],
-      "containers_running": 50,
-      "containers_total": 56
-    },
-    {
-      "alias": "oci-mail",
-      "reachable": true,
-      "mem_used": "629M",
-      "mem_total": "954M",
-      "mem_pct": 65,
-      "swap": "115M/2559M",
-      "disk_used": "29G",
-      "disk_total": "45G",
-      "disk_pct": "68%",
-      "load": "0.97 0.98 1.00",
-      "uptime": "0d 1h",
-      "containers": [
-        {
-          "name": "palantir-cron",
-          "status": "Created",
-          "health": "created",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "introspect-proxy",
-          "status": "Exited (255) 2 hours ago",
-          "health": "exited",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "dagu",
-          "status": "Up 2 hours",
-          "health": "none",
-          "docker_port": "8070",
-          "host_port": "—"
-        },
-        {
-          "name": "stalwart",
-          "status": "Up 2 hours",
-          "health": "none",
-          "docker_port": "443",
-          "host_port": "—"
-        },
-        {
-          "name": "smtp-proxy",
-          "status": "Up 2 hours",
-          "health": "none",
-          "docker_port": "8080",
-          "host_port": "8080"
-        },
-        {
-          "name": "fluent-bit",
-          "status": "Up 2 hours",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "snappymail",
-          "status": "Up 2 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "8888",
-          "host_port": "—"
-        },
-        {
-          "name": "syslog-forwarder",
-          "status": "Up 2 hours (healthy)",
-          "health": "healthy",
-          "docker_port": "—",
-          "host_port": "—"
-        }
-      ],
-      "containers_running": 6,
-      "containers_total": 8
-    },
-    {
-      "alias": "oci-analytics",
-      "reachable": true,
-      "mem_used": "703M",
-      "mem_total": "954M",
-      "mem_pct": 73,
-      "swap": "232M/2559M",
-      "disk_used": "25G",
-      "disk_total": "48G",
-      "disk_pct": "56%",
-      "load": "2.08 2.12 2.09",
-      "uptime": "0d 1h",
-      "containers": [
-        {
-          "name": "umami-setup",
-          "status": "Exited (1) About an hour ago",
-          "health": "exited",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "sauron-forwarder",
-          "status": "Up About an hour",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "matomo-hybrid",
-          "status": "Up About an hour",
-          "health": "none",
-          "docker_port": "8084",
-          "host_port": "—"
-        },
-        {
-          "name": "fluent-bit",
-          "status": "Up About an hour",
-          "health": "none",
-          "docker_port": "—",
-          "host_port": "—"
-        },
-        {
-          "name": "dozzle",
-          "status": "Up About an hour",
-          "health": "none",
-          "docker_port": "9999",
-          "host_port": "—"
-        },
-        {
-          "name": "alerts-api",
-          "status": "Up About an hour (healthy)",
-          "health": "healthy",
-          "docker_port": "5050",
-          "host_port": "—"
-        },
-        {
-          "name": "umami",
-          "status": "Up About an hour (healthy)",
-          "health": "healthy",
-          "docker_port": "3006",
-          "host_port": "—"
-        },
-        {
-          "name": "umami-db",
-          "status": "Up About an hour (healthy)",
-          "health": "healthy",
-          "docker_port": "5442",
-          "host_port": "—"
-        }
-      ],
-      "containers_running": 7,
-      "containers_total": 8
     }
   ],
   "mail_dns": {
@@ -1780,7 +1771,11 @@
       "name": "gcp-proxy",
       "ip": "35.226.147.64",
       "open_ports": [
-        22
+        22,
+        443,
+        465,
+        587,
+        993
       ]
     },
     {
@@ -1791,20 +1786,12 @@
     {
       "name": "oci-apps",
       "ip": "82.70.229.129",
-      "open_ports": [
-        22
-      ]
+      "open_ports": []
     },
     {
       "name": "oci-mail",
       "ip": "130.110.251.193",
-      "open_ports": [
-        25,
-        465,
-        587,
-        993,
-        8080
-      ]
+      "open_ports": []
     },
     {
       "name": "oci-analytics",
@@ -1813,12 +1800,12 @@
     }
   ],
   "timers": {
-    "mail_dns": 74822,
-    "mesh": 33530,
-    "public_urls": 33771,
+    "mail_dns": 55013,
+    "TOTAL": 69892,
+    "port_scan": 4955,
+    "public_urls": 25439,
+    "mesh": 16831,
     "private": 0,
-    "port_scan": 24807,
-    "TOTAL": 86549,
-    "vm_ssh": 33517
+    "vm_ssh": 16818
   }
 }

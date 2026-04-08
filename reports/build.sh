@@ -18,6 +18,17 @@ generate_manifest() {
     echo "Generated reports/manifest.json"
 }
 
+# Symlink each report's .md output to reports/ root (for manifest + consumers)
+link_reports() {
+    for dir in "$ROOT"/cloud-*-report; do
+        [ -d "$dir" ] || continue
+        for md in "$dir"/*.md; do
+            [ -f "$md" ] || continue
+            ln -sf "$(basename "$dir")/$(basename "$md")" "$ROOT/$(basename "$md")"
+        done
+    done
+}
+
 target="${1:-all}"
 
 case "$target" in
@@ -26,12 +37,13 @@ case "$target" in
     sh "$ROOT/cloud-health-full-report/build.sh" all
     sh "$ROOT/cloud-mail-full-report/build.sh" all
     sh "$ROOT/cloud-url-health-report/build.sh" all
+    link_reports
     generate_manifest
     ;;
-  stack)  sh "$ROOT/cloud-stack-report/build.sh" all ;;
-  cloud)  sh "$ROOT/cloud-health-full-report/build.sh" all ;;
-  mail)   sh "$ROOT/cloud-mail-full-report/build.sh" all ;;
-  url)    sh "$ROOT/cloud-url-health-report/build.sh" all ;;
+  stack)  sh "$ROOT/cloud-stack-report/build.sh" all; link_reports ;;
+  cloud)  sh "$ROOT/cloud-health-full-report/build.sh" all; link_reports ;;
+  mail)   sh "$ROOT/cloud-mail-full-report/build.sh" all; link_reports ;;
+  url)    sh "$ROOT/cloud-url-health-report/build.sh" all; link_reports ;;
   build)
     sh "$ROOT/cloud-stack-report/build.sh" build
     sh "$ROOT/cloud-health-full-report/build.sh" build

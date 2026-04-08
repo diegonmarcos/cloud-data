@@ -1,11 +1,11 @@
 {
-  "generated": "2026-04-05T17:00:40.373376927+00:00",
-  "duration_ms": 6516,
+  "generated": "2026-04-06T06:26:44.969268803+00:00",
+  "duration_ms": 5439,
   "summary": {
     "public_total": 16,
-    "public_healthy": 9,
+    "public_healthy": 14,
     "private_total": 44,
-    "private_healthy": 33
+    "private_healthy": 35
   },
   "public": [
     {
@@ -14,15 +14,13 @@
       "dns": "ok",
       "tcp": "ok",
       "tls": "ok",
-      "http": "fail",
-      "http_code": 502,
-      "latency_ms": 5961,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 752,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "HTTP 502"
-      ]
+      "errors": []
     },
     {
       "domain": "cal.diegonmarcos.com",
@@ -30,15 +28,13 @@
       "dns": "ok",
       "tcp": "ok",
       "tls": "ok",
-      "http": "fail",
-      "http_code": 502,
-      "latency_ms": 6198,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 2310,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "HTTP 502"
-      ]
+      "errors": []
     },
     {
       "domain": "chat.diegonmarcos.com",
@@ -46,15 +42,13 @@
       "dns": "ok",
       "tcp": "ok",
       "tls": "ok",
-      "http": "fail",
-      "http_code": 502,
-      "latency_ms": 6151,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1377,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "HTTP 502"
-      ]
+      "errors": []
     },
     {
       "domain": "db.diegonmarcos.com",
@@ -64,7 +58,7 @@
       "tls": "ok",
       "http": "fail",
       "http_code": 502,
-      "latency_ms": 6104,
+      "latency_ms": 1383,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -80,7 +74,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 6058,
+      "latency_ms": 878,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -94,7 +88,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 5937,
+      "latency_ms": 1522,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -108,7 +102,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 5939,
+      "latency_ms": 1405,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -120,15 +114,13 @@
       "dns": "ok",
       "tcp": "ok",
       "tls": "ok",
-      "http": "fail",
-      "http_code": 502,
-      "latency_ms": 6235,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1612,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "HTTP 502"
-      ]
+      "errors": []
     },
     {
       "domain": "mail.diegonmarcos.com",
@@ -138,7 +130,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 6050,
+      "latency_ms": 1037,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -152,7 +144,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 6029,
+      "latency_ms": 1051,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -164,15 +156,13 @@
       "dns": "ok",
       "tcp": "ok",
       "tls": "ok",
-      "http": "fail",
-      "http_code": 502,
-      "latency_ms": 6006,
+      "http": "ok",
+      "http_code": 401,
+      "latency_ms": 1733,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "HTTP 502"
-      ]
+      "errors": []
     },
     {
       "domain": "smtp.diegonmarcos.com",
@@ -182,7 +172,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 6129,
+      "latency_ms": 1362,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -196,7 +186,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 5928,
+      "latency_ms": 1733,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -210,7 +200,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 6467,
+      "latency_ms": 1768,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -224,7 +214,7 @@
       "tls": "ok",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 5921,
+      "latency_ms": 1371,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -238,7 +228,7 @@
       "tls": "ok",
       "http": "fail",
       "http_code": 502,
-      "latency_ms": 6038,
+      "latency_ms": 1381,
       "resolved_ips": [
         "35.226.147.64"
       ],
@@ -256,7 +246,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 275,
+      "latency_ms": 239,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -266,15 +256,13 @@
       "domain": "authelia (gcp-E2-f_0)",
       "url": "10.0.0.1:9091",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 191,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 487,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "backup-gitea (oci-A1-f_0)",
@@ -284,7 +272,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 840,
+      "latency_ms": 853,
       "resolved_ips": [],
       "errors": []
     },
@@ -296,7 +284,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 843,
+      "latency_ms": 714,
       "resolved_ips": [],
       "errors": []
     },
@@ -308,7 +296,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 856,
+      "latency_ms": 701,
       "resolved_ips": [],
       "errors": []
     },
@@ -316,15 +304,13 @@
       "domain": "c3-services-api (oci-A1-f_0)",
       "url": "10.0.0.6:8082",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 302,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 736,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "c3-services-mcp (oci-A1-f_0)",
@@ -334,7 +320,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 865,
+      "latency_ms": 702,
       "resolved_ips": [],
       "errors": []
     },
@@ -346,7 +332,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 400,
-      "latency_ms": 511,
+      "latency_ms": 370,
       "resolved_ips": [],
       "errors": []
     },
@@ -358,7 +344,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 864,
+      "latency_ms": 700,
       "resolved_ips": [],
       "errors": []
     },
@@ -370,7 +356,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 864,
+      "latency_ms": 714,
       "resolved_ips": [],
       "errors": []
     },
@@ -382,7 +368,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 1161,
+      "latency_ms": 1023,
       "resolved_ips": [],
       "errors": []
     },
@@ -394,7 +380,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 875,
+      "latency_ms": 714,
       "resolved_ips": [],
       "errors": []
     },
@@ -406,7 +392,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 862,
+      "latency_ms": 1738,
       "resolved_ips": [],
       "errors": []
     },
@@ -418,7 +404,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 875,
+      "latency_ms": 870,
       "resolved_ips": [],
       "errors": []
     },
@@ -430,7 +416,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 2885,
+      "latency_ms": 875,
       "resolved_ips": [],
       "errors": []
     },
@@ -442,7 +428,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 899,
+      "latency_ms": 827,
       "resolved_ips": [],
       "errors": []
     },
@@ -454,7 +440,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 947,
+      "latency_ms": 862,
       "resolved_ips": [],
       "errors": []
     },
@@ -466,7 +452,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 312,
+      "latency_ms": 239,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -480,7 +466,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 917,
+      "latency_ms": 862,
       "resolved_ips": [],
       "errors": []
     },
@@ -492,7 +478,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 947,
+      "latency_ms": 742,
       "resolved_ips": [],
       "errors": []
     },
@@ -504,7 +490,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 948,
+      "latency_ms": 847,
       "resolved_ips": [],
       "errors": []
     },
@@ -516,7 +502,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 976,
+      "latency_ms": 900,
       "resolved_ips": [],
       "errors": []
     },
@@ -524,14 +510,14 @@
       "domain": "hickory-dns (gcp-E2-f_0)",
       "url": "10.0.0.1:53",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
+      "http": "fail",
       "http_code": null,
-      "latency_ms": 184,
+      "latency_ms": 5436,
       "resolved_ips": [],
       "errors": [
-        "TCP: Connection refused (os error 111)"
+        "HTTP: error sending request for url (http://10.0.0.1:53/)"
       ]
     },
     {
@@ -542,7 +528,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 613,
+      "latency_ms": 404,
       "resolved_ips": [],
       "errors": []
     },
@@ -554,7 +540,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 1219,
+      "latency_ms": 951,
       "resolved_ips": [],
       "errors": []
     },
@@ -566,7 +552,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 317,
+      "latency_ms": 1278,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -580,7 +566,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 972,
+      "latency_ms": 755,
       "resolved_ips": [],
       "errors": []
     },
@@ -592,7 +578,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 314,
+      "latency_ms": 239,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -606,7 +592,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 923,
+      "latency_ms": 839,
       "resolved_ips": [],
       "errors": []
     },
@@ -618,7 +604,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 938,
+      "latency_ms": 755,
       "resolved_ips": [],
       "errors": []
     },
@@ -630,7 +616,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 810,
+      "latency_ms": 370,
       "resolved_ips": [],
       "errors": []
     },
@@ -642,7 +628,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 5002,
+      "latency_ms": 5000,
       "resolved_ips": [],
       "errors": [
         "TCP: timeout 5s"
@@ -656,7 +642,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 907,
+      "latency_ms": 714,
       "resolved_ips": [],
       "errors": []
     },
@@ -668,7 +654,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 309,
+      "latency_ms": 240,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -682,7 +668,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 918,
+      "latency_ms": 718,
       "resolved_ips": [],
       "errors": []
     },
@@ -694,7 +680,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 1964,
+      "latency_ms": 1632,
       "resolved_ips": [],
       "errors": []
     },
@@ -706,7 +692,7 @@
       "tls": "skip",
       "http": "fail",
       "http_code": null,
-      "latency_ms": 606,
+      "latency_ms": 656,
       "resolved_ips": [],
       "errors": [
         "HTTP: error sending request for url (http://10.0.0.1:6379/)"
@@ -720,7 +706,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 916,
+      "latency_ms": 719,
       "resolved_ips": [],
       "errors": []
     },
@@ -732,7 +718,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 904,
+      "latency_ms": 719,
       "resolved_ips": [],
       "errors": []
     },
@@ -744,7 +730,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 917,
+      "latency_ms": 714,
       "resolved_ips": [],
       "errors": []
     },
@@ -756,7 +742,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 911,
+      "latency_ms": 706,
       "resolved_ips": [],
       "errors": []
     },
@@ -768,7 +754,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 318,
+      "latency_ms": 239,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -782,7 +768,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 498,
+      "latency_ms": 1236,
       "resolved_ips": [],
       "errors": []
     },
@@ -794,7 +780,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 962,
+      "latency_ms": 853,
       "resolved_ips": [],
       "errors": []
     }

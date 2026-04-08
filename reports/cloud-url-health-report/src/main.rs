@@ -261,9 +261,9 @@ fn print_table(title: &str, results: &[ProbeResult], show_dns: bool) {
 
 fn icon(s: &ProbeStatus) -> &'static str {
     match s {
-        ProbeStatus::Ok => "OK",
-        ProbeStatus::Fail => "FAIL",
-        ProbeStatus::Skip => "--",
+        ProbeStatus::Ok => "✅",
+        ProbeStatus::Fail => "❌",
+        ProbeStatus::Skip => "⬚ ",
     }
 }
 

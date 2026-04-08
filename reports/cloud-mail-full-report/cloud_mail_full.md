@@ -6,18 +6,29 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-04-04T09:58:18.889158059+00:00
+  CLOUD MAIL FULL — 2026-04-06T04:43:03.319552632+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-  4 issues: 2 critical, 2 warnings, 0 info
+  15 issues: 9 critical, 6 warnings, 0 info
 
   CRITICAL:
-    ❌ Hickory DNS: FAIL: 10.0.0.1
+    ❌ mail:993 TLS: timeout/error
+    ❌ mail:465 TLS: timeout/error
+    ❌ mail:587 STARTTLS: timeout/error
+    ❌ Caddy (gcp-proxy): Caddy DOWN
+    ❌ Hickory DNS: FAIL: no response
     ❌ TLS WG direct: 993 FAIL 465 FAIL 587 FAIL
+    ❌ mail:993 (IMAP): timeout/error
+    ❌ mail:465 (SMTPS): timeout/error
+    ❌ mail:587 (SMTP Sub): timeout/error
   WARNINGS:
-    ⚠️  OIDC bearer -> webmail: HTTP 502
+    ⚠️  auth HTTPS: HTTP 502
+    ⚠️  SSH batch gcp-proxy: Authelia FAILED
+    ⚠️  mail.*/webmail/ route: HTTP 502
+    ⚠️  webmail.* redirect: 301 → https://mail.diegonmarcos.com/
+    ⚠️  Authelia health: FAIL
     ⚠️  mcp->SMTP AUTH: SMTP_NO_AUTH
 SMTP_NO_AUTH
 ERR:write after end
@@ -26,22 +37,22 @@ TIMEOUT
 
 0. INSTANT KPIs
 ──────────────────────────────────────────────────────────────
-  ✅ mail.* HTTPS                   HTTP 302 (0.5s)
-  ✅ webmail HTTPS                  HTTP 200 (0.6s)
-  ✅ auth HTTPS                     HTTP 200 (0.5s)
-  ✅ MCP endpoint                   HTTP 400 (0.7s)
-  ✅ mail:993 TLS                   TLS OK (1.1s)
-  ✅ mail:465 TLS                   TLS OK (1.1s)
-  ✅ mail:587 STARTTLS              TLS OK (1.8s)
+  ✅ mail.* HTTPS                   HTTP 200 (0.6s)
+  ✅ webmail HTTPS                  HTTP 301 (0.6s)
+  ⚠️  auth HTTPS                     HTTP 502 (0.6s) [WARNING]
+  ✅ MCP endpoint                   HTTP 400 (5.7s)
+  ❌ mail:993 TLS                   timeout/error (5.0s) [CRITICAL]
+  ❌ mail:465 TLS                   timeout/error (5.0s) [CRITICAL]
+  ❌ mail:587 STARTTLS              timeout/error (5.0s) [CRITICAL]
   ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
   ✅ DKIM record                    present (0.0s)
-  ✅ GHA health                     1 failing: Health (1.0s)
-  ✅ CF Worker alive                HTTP 500 (0.2s)
-  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.7s)
+  ✅ GHA health                     2 failing: Health, Health (6.1s)
+  ✅ CF Worker alive                HTTP 500 (0.3s)
+  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.2s)
   ✅ IMAP direct (WG)               10.0.0.3:993 OK (0.2s)
   ✅ SMTP direct (WG)               10.0.0.3:25 OK (0.2s)
 
-  Summary: 14/14 passed, 0 failed
+  Summary: 10/14 passed, 4 failed
 
 1. PRE-FLIGHT
 ──────────────────────────────────────────────────────────────
@@ -52,42 +63,43 @@ TIMEOUT
   ✅ WG oci-apps                    10.0.0.6:22 OK (0.2s)
   ✅ WG gcp-proxy                   10.0.0.1:22 OK (0.2s)
   ✅ SSH batch oci-mail             Docker 27.5.1
-  ✅ SSH batch oci-apps             mail-mcp: Up 31 minutes
-  ✅ SSH batch gcp-proxy            Authelia OK
-  ✅ Disk space                     73% used
-  ✅ Memory                         638/954MB (67%)
-  ✅ Load                           load: 0.03 0.10 0.11
+  ✅ SSH batch oci-apps             mail-mcp: Up 43 hours
+  ⚠️  SSH batch gcp-proxy            Authelia FAILED [WARNING]
+  ✅ Disk space                     78% used
+  ✅ Memory                         649/954MB (68%)
+  ✅ Load                           load: 0.12 0.16 0.12
 
-  Summary: 12/12 passed, 0 failed
+  Summary: 11/12 passed, 1 failed
 
 2. CONTAINERS
 ──────────────────────────────────────────────────────────────
-  ✅ maddy                          Up 35 minutes
-  ✅ smtp-proxy                     Up 2 days
-  ✅ snappymail                     Up 2 days
-  ✅ mail-mcp                       Up 31 minutes
+  ✅ maddy                          Up 43 hours
+  ✅ smtp-proxy                     Up 4 days
+  ✅ snappymail                     Up 42 hours
+  ✅ mail-mcp                       Up 43 hours
 
   Summary: 4/4 passed, 0 failed
 
 3. NETWORK + AUTH
 ──────────────────────────────────────────────────────────────
-  ✅ Caddy (gcp-proxy)              HTTPS OK (10.0.0.1) (0.7s)
-  ❌ Hickory DNS                    FAIL: 10.0.0.1 (0.1s) [CRITICAL]
+  ❌ Caddy (gcp-proxy)              Caddy DOWN (8.0s) [CRITICAL]
+  ❌ Hickory DNS                    FAIL: no response (3.0s) [CRITICAL]
   ❌ TLS WG direct                  993 FAIL 465 FAIL 587 FAIL (0.5s) [CRITICAL]
   ✅ Caddy L4 -> IMAP               993 forwarding OK
   ✅ Caddy L4 -> SMTPS              465 forwarding OK
   ✅ Caddy L4 -> SMTP               587 forwarding OK
-  ✅ mail:993 (IMAP)                TLS OK (0.9s)
-  ✅ mail:465 (SMTPS)               TLS OK (0.8s)
-  ✅ mail:587 (SMTP Sub)            TLS OK (1.5s)
+  ❌ mail:993 (IMAP)                timeout/error (5.0s) [CRITICAL]
+  ❌ mail:465 (SMTPS)               timeout/error (5.0s) [CRITICAL]
+  ❌ mail:587 (SMTP Sub)            timeout/error (5.0s) [CRITICAL]
   ✅ SMTP :25 relay                 220 mail.diegonmarcos.com ESMTP Service Ready
   ✅ SMTP :587 local TLS            STARTTLS OK
-  ✅ Webmail HTTPS                  HTTP 302 (0.5s)
+  ✅ Webmail HTTPS                  HTTP 200 (0.5s)
   ✅ Webmail internal               HTTP 200
   ✅ SnappyMail internal            HTTP 200
-  ✅ ManageSieve :4190              N/A — Maddy uses built-in sieve
-  ✅ Authelia health                Authelia OK
-  ⚠️  OIDC bearer -> webmail         HTTP 502 (0.6s) [WARNING]
+  ⚠️  mail.*/webmail/ route          HTTP 502 (0.5s) [WARNING]
+  ⚠️  webmail.* redirect             301 → https://mail.diegonmarcos.com/ (0.5s) [WARNING]
+  ⚠️  Authelia health                FAIL [WARNING]
+  ✅ OIDC bearer -> webmail         Bearer auth -> 200 OK (full chain) (5.4s)
   ✅ Mail Admin via Bearer          N/A — Maddy CLI-only (no web admin)
   ✅ mcp->DNS resolve               -> 35.226.147.64
   ✅ mcp->IMAP TLS                  OK proto=TLSv1.3 cn=*.diegonmarcos.com
@@ -99,17 +111,17 @@ TIMEOUT
 SMTP_NO_AUTH
 ERR:write after end
 TIMEOUT [WARNING]
-  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.7s)
+  ✅ mail-mcp MCP                   HTTP 400 (alive) (5.7s)
   ✅ All ports bound                all 6 ports bound
 
-  Summary: 22/26 passed, 4 failed
+  Summary: 17/27 passed, 10 failed
 
 4. DNS AUTH
 ──────────────────────────────────────────────────────────────
-  ✅ MX                             22 route1.mx.cloudflare.net. (0.1s)
+  ✅ MX                             97 route3.mx.cloudflare.net. (0.0s)
   ✅ DKIM                           present (0.0s)
   ✅ SPF                            v=spf1 (0.0s)
-  ✅ DMARC                          v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.0s)
+  ✅ DMARC                          v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.3s)
 
   Summary: 4/4 passed, 0 failed
 
@@ -139,22 +151,22 @@ no-reply@diegonmarcos.com
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    30.9s
-  P1_preflight             22.7s
-  P0_instant_kpis          3.5s
-  T0_path_checker          3.2s
-  P3_network               1.5s
-  P4_dns_auth              1.5s
-  P2-P5_parallel           1.5s
+  TOTAL                    76.3s
+  T0_path_checker          30.4s
+  P1_preflight             26.4s
+  P0_instant_kpis          11.5s
+  P2-P5_parallel           8.0s
+  P3_network               8.0s
+  P4_dns_auth              8.0s
+  P6_e2e_delivery          0.0s
   P2_containers            0.0s
   P5_internals             0.0s
-  P6_e2e_delivery          0.0s
 
-  Total: 30.9s | Engine: Rust (native async tokio)
+  Total: 76.3s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════
-RESULT: CRITICAL -- 82/86 passed, 2 critical, 2 warnings
+RESULT: CRITICAL -- 70/87 passed, 11 critical, 6 warnings
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────
