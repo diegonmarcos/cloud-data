@@ -1,0 +1,42 @@
+[
+  {
+    "vm": "oci-mail",
+    "run_id": "24470729489",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/24470729489",
+    "sha": "624d682028a6b9fffc70c4271dca51028d1aec7d",
+    "trigger": "push",
+    "ts": "2026-04-15T18:32:09Z",
+    "duration_s": 810,
+    "total": 4,
+    "ok": 0,
+    "fail": 1,
+    "skip": 3,
+    "status": "failure",
+    "services": [
+      {
+        "name": "snappymail",
+        "dir": "aa-sui_snappymail",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "maddy",
+        "dir": "aa-sui_tools-maddy",
+        "status": "fail",
+        "duration_s": 676
+      },
+      {
+        "name": "smtp-proxy",
+        "dir": "aa-sui_tools-smtp-proxy",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "syslog-forwarder",
+        "dir": "bc-obs_syslog-forwarder",
+        "status": "skip",
+        "duration_s": 0
+      }
+    ]
+  }
+]
