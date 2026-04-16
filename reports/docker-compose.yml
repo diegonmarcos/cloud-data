@@ -8,10 +8,12 @@ services:
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${HOME}/.ssh:/root/.ssh:ro
+      - ${HOME}/.ssh:/root/.ssh
+      - ${HOME}/.ssh:/home/diego/.ssh
       - ${HOME}/.config/sops:/root/.config/sops:ro
       - ${HOME}/.config/gh:/root/.config/gh:ro
-      - ${HOME}/git/vault/A0_keys/providers/github:/home/diego/git/vault/A0_keys/providers/github:ro
+      - ${HOME}/git/vault/A0_keys:/home/diego/git/vault/A0_keys:ro
+      - /nix/store:/nix/store:ro
       - ${HOME}/git/cloud-data:/root/git/cloud-data
     environment:
       - GITHUB_TOKEN

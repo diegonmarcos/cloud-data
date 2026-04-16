@@ -16,7 +16,7 @@ RUN cargo build --release
 FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates openssh-client curl dnsutils iputils-ping netcat-openbsd \
-    openssl yara \
+    openssl yara rsync \
     && rm -rf /var/lib/apt/lists/*
 
 # Fetch community YARA rules at build time
