@@ -1,7 +1,9 @@
 services:
   reports:
     image: ghcr.io/diegonmarcos/cloud-data-reports:latest
-    build: .
+    build:
+      context: .
+      network: host
     container_name: cloud-data-reports
     network_mode: host
     volumes:
@@ -16,3 +18,5 @@ services:
       - GCP_T4_SSH_KEY
       - GITHUB_TOKEN
       - GITHUB_ACTOR
+      - BEARER_TOKEN
+      - SIEM_API_URL=https://api.diegonmarcos.com/siem-api
