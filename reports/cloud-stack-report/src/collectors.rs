@@ -209,7 +209,7 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
             let cache_dir = format!("cache/{}", alias);
             let _ = std::fs::create_dir_all(&cache_dir);
             let cache_file = format!("{}/latest.json", cache_dir);
-            let ssh_cmd = format!("ssh -o ConnectTimeout=15 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes", mux);
+            let ssh_cmd = format!("ssh -o ConnectTimeout=30 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes", mux);
 
             let rsync_ok = {
                 let out = tokio::process::Command::new("rsync")
