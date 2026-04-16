@@ -4,6 +4,7 @@ use serde::Serialize;
 pub struct PortScanResult {
     pub vm_alias: String,
     pub ip: String,
+    pub scan_path: String, // "external" or "internal"
     pub declared_ports: Vec<u16>,
     pub open_ports: Vec<u16>,
     pub undeclared_open: Vec<u16>,
@@ -36,6 +37,7 @@ pub struct WgPeerStatus {
 pub struct DnsValidationResult {
     pub domain: String,
     pub record_type: String,
+    pub resolver: String, // "external" or "hickory"
     pub expected: String,
     pub actual: String,
     pub matches: bool,

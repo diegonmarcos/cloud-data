@@ -23,14 +23,14 @@ async fn main() -> Result<()> {
 
     // Phase 1: Port scan all VMs (parallel)
     let t = Instant::now();
-    let (port_checks, port_data) = port_scan::scan_all_vms(&ctx).await;
+    let (port_checks, port_data) = port_scan::scan_all_vms(&ctx, &caps).await;
     let port_ms = t.elapsed().as_millis() as u64;
 
     // Phase 2: Parallel — TLS, DNS, WireGuard
     let t = Instant::now();
     let (tls_result, dns_result, wg_result) = tokio::join!(
-        tls_audit::audit_all_certs(&ctx),
-        dns_audit::validate_dns(&ctx),
+        tls_audit::audit_all_certs(&ctx, &caps),
+        dns_audit::validate_dns(&ctx, &caps),
         wireguard::check_wg(&ctx, &caps),
     );
     let (tls_checks, _tls_data) = tls_result;

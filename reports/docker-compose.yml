@@ -7,16 +7,23 @@ services:
     container_name: cloud-data-reports
     network_mode: host
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME}/.ssh:/root/.ssh:ro
       - ${HOME}/.config/sops:/root/.config/sops:ro
-      - .:/workspace
+      - ${HOME}/.config/gh:/root/.config/gh:ro
+      - ${HOME}/git/vault/A0_keys/providers/github:/home/diego/git/vault/A0_keys/providers/github:ro
+      - ${HOME}/git/cloud-data:/root/git/cloud-data
     environment:
+      - GITHUB_TOKEN
+      - GITHUB_ACTOR
+      - SSH_KEY
+      - SSH_HOST
+      - SSH_USER
+      - SSH_ALIAS
       - SOPS_AGE_KEY
       - WG_PRIVATE_KEY
       - OCI_SSH_KEY
       - GCP_PROXY_SSH_KEY
       - GCP_T4_SSH_KEY
-      - GITHUB_TOKEN
-      - GITHUB_ACTOR
       - BEARER_TOKEN
       - SIEM_API_URL=https://api.diegonmarcos.com/siem-api

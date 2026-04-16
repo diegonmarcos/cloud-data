@@ -35,5 +35,13 @@ COPY --from=builder /build/target/release/cloud-sec-data /usr/local/bin/
 # Bundle YARA rules (custom + infra)
 COPY cloud-sec-data-report/yara-rules/ /usr/local/share/yara-rules/
 
+# Entrypoint — same pattern as cloud-builder-x
+COPY entrypoint.sh /opt/reports/entrypoint.sh
+RUN chmod +x /opt/reports/entrypoint.sh
+
 LABEL org.opencontainers.image.source="https://github.com/diegonmarcos/cloud-data"
-WORKDIR /workspace
+LABEL org.opencontainers.image.description="cloud-data-reports — health report runner (SSH, WG, SOPS setup)"
+
+WORKDIR /root/git/cloud-data/reports
+ENTRYPOINT ["/opt/reports/entrypoint.sh"]
+CMD ["all"]

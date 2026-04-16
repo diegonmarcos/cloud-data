@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       report:
-        description: "Report to run (all, cloud, mail, url, stack)"
+        description: "Report to run (all, cloud, mail, url, stack, sec-net, sec-data, sec)"
         required: false
         default: "all"
 
@@ -29,6 +29,8 @@ jobs:
       GCP_T4_SSH_KEY: ${{ secrets.GCP_T4_SSH_KEY }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_ACTOR: ${{ github.actor }}
+      BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+      SIEM_API_URL: https://api.diegonmarcos.com/siem-api
     steps:
       - uses: actions/checkout@v4
 

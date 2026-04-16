@@ -8,6 +8,10 @@ BINARY="health-reporter"
 export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$HOME/.cargo/target}"
 
 build() {
+  if command -v cloud-stack-report >/dev/null 2>&1 || command -v "$BINARY" >/dev/null 2>&1; then
+    echo "═══ $BINARY found in PATH — skipping build ═══"
+    return 0
+  fi
   echo "═══ Building $BINARY ═══"
   cargo build --release --manifest-path "$WORKSPACE/Cargo.toml" -p "$BINARY"
 
@@ -24,7 +28,13 @@ build() {
 run() {
   echo ""
   echo "═══ Running $BINARY ═══"
-  (cd "$ROOT" && "$ROOT/dist/$BINARY")
+  if command -v cloud-stack-report >/dev/null 2>&1; then
+    (cd "$ROOT" && cloud-stack-report)
+  elif command -v "$BINARY" >/dev/null 2>&1; then
+    (cd "$ROOT" && "$BINARY")
+  else
+    (cd "$ROOT" && "$ROOT/dist/$BINARY")
+  fi
 }
 
 case "${1:-all}" in

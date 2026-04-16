@@ -6,104 +6,143 @@
   ██║   ██║██╔══██╗██║          ██╔══██║██╔══╝  ██╔══██║██║     ██║   ██╔══██║
   ╚██████╔╝██║  ██║███████╗     ██║  ██║███████╗██║  ██║███████╗██║   ██║  ██║
    ╚═════╝ ╚═╝  ╚═╝╚══════╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝
-  CLOUD URL HEALTH — 2026-04-06T06:26:44.969268803+00:00
+  CLOUD URL HEALTH — 2026-04-16T11:03:52.172589600+00:00
 ══════════════════════════════════════════════════════════════
 
   SUMMARY
 ══════════════════════════════════════════════════════════════
-  Public:  14/16 healthy
-  Private: 35/44 healthy
+  Public:  0/16 healthy
+  Private: 8/43 healthy
   Duration: 5.4s
 
   ISSUES
 ══════════════════════════════════════════════════════════════
-  ❌  db.diegonmarcos.com  HTTP 502
-  ❌  workflows.diegonmarcos.com  HTTP 502
-  ❌  alerts-api (oci-E2-f_1)  TCP: Connection refused (os error 111)
+  ❌  auth.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  cal.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  chat.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  db.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  git.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  grafana.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  ide.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  mail.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  photos.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  sheets.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  smtp.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  vault.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  webmail.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  windmill.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  workflows.diegonmarcos.com  TCP: Connection refused (os error 111)
+  ❌  backup-gitea (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  c3-infra-api (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  c3-infra-mcp (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  c3-services-api (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  c3-services-mcp (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  caddy (gcp-E2-f_0)  TCP: Connection refused (os error 111)
+  ❌  cloud-cgc-mcp (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  cloud-spec (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  code-server (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  crawlee-cloud (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  etherpad (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  filebrowser (oci-A1-f_0)  TCP: Connection refused (os error 111)
   ❌  fluent-bit (oci-E2-f_1)  TCP: Connection refused (os error 111)
+  ❌  gitea (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  google-workspace-mcp (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  grist (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  hedgedoc (oci-A1-f_0)  TCP: Connection refused (os error 111)
   ❌  hickory-dns (gcp-E2-f_0)  HTTP: error sending request for url (http://10.0.0.1:53/)
+  ❌  introspect-proxy (gcp-E2-f_0)  TCP: Connection refused (os error 111)
   ❌  maddy (oci-E2-f_0)  TCP: Connection refused (os error 111)
+  ❌  mail-mcp (oci-A1-f_0)  TCP: Connection refused (os error 111)
   ❌  matomo (oci-E2-f_1)  TCP: Connection refused (os error 111)
+  ❌  mattermost-bots (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  mattermost-mcp (oci-A1-f_0)  TCP: Connection refused (os error 111)
   ❌  ollama (gcp-T4-p_0)  TCP: timeout 5s
+  ❌  ollama-hai (oci-A1-f_0)  TCP: Connection refused (os error 111)
   ❌  photoprism (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  photos-webhook (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  radicale (oci-A1-f_0)  TCP: Connection refused (os error 111)
   ❌  redis (gcp-E2-f_0)  HTTP: error sending request for url (http://10.0.0.1:6379/)
+  ❌  revealmd (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  rig-agentic-sonn-14bq8 (oci-A1-f_0)  TCP: Connection refused (os error 111)
   ❌  umami (oci-E2-f_1)  TCP: Connection refused (os error 111)
+  ❌  vaultwarden (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  windmill (oci-A1-f_0)  TCP: Connection refused (os error 111)
 
 
 1. PUBLIC URLS (Cloudflare -> Caddy -> Backend)
 ──────────────────────────────────────────────────────────────
   DOMAIN                                    DNS  TCP  TLS  HTTP    ms  DETAIL
   ------------------------------------------------------------------------------------------
-  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 752ms  200
-  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 2310ms  200
-  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 1377ms  200
-  db.diegonmarcos.com                         ✅    ✅    ✅     ❌ 1383ms  HTTP 502
-  diegonmarcos.com                            ✅    ✅    ✅     ✅ 878ms  200
-  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 1522ms  200
-  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 1405ms  200
-  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 1612ms  200
-  mail.diegonmarcos.com                       ✅    ✅    ✅     ✅ 1037ms  200
-  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 1051ms  200
-  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 1733ms  401
-  smtp.diegonmarcos.com                       ✅    ✅    ✅     ✅ 1362ms  404
-  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 1733ms  200
-  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅ 1768ms  200
-  windmill.diegonmarcos.com                   ✅    ✅    ✅     ✅ 1371ms  200
-  workflows.diegonmarcos.com                  ✅    ✅    ✅     ❌ 1381ms  HTTP 502
+  auth.diegonmarcos.com                       ✅    ❌   ⬚     ⬚  160ms  TCP: Connection refused (os erro...
+  cal.diegonmarcos.com                        ✅    ❌   ⬚     ⬚  156ms  TCP: Connection refused (os erro...
+  chat.diegonmarcos.com                       ✅    ❌   ⬚     ⬚  152ms  TCP: Connection refused (os erro...
+  db.diegonmarcos.com                         ✅    ❌   ⬚     ⬚  153ms  TCP: Connection refused (os erro...
+  diegonmarcos.com                            ✅    ❌   ⬚     ⬚  150ms  TCP: Connection refused (os erro...
+  git.diegonmarcos.com                        ✅    ❌   ⬚     ⬚  155ms  TCP: Connection refused (os erro...
+  grafana.diegonmarcos.com                    ✅    ❌   ⬚     ⬚  156ms  TCP: Connection refused (os erro...
+  ide.diegonmarcos.com                        ✅    ❌   ⬚     ⬚  159ms  TCP: Connection refused (os erro...
+  mail.diegonmarcos.com                       ✅    ❌   ⬚     ⬚  280ms  TCP: Connection refused (os erro...
+  photos.diegonmarcos.com                     ✅    ❌   ⬚     ⬚  155ms  TCP: Connection refused (os erro...
+  sheets.diegonmarcos.com                     ✅    ❌   ⬚     ⬚  155ms  TCP: Connection refused (os erro...
+  smtp.diegonmarcos.com                       ✅    ❌   ⬚     ⬚  158ms  TCP: Connection refused (os erro...
+  vault.diegonmarcos.com                      ✅    ❌   ⬚     ⬚  163ms  TCP: Connection refused (os erro...
+  webmail.diegonmarcos.com                    ✅    ❌   ⬚     ⬚  1265ms  TCP: Connection refused (os erro...
+  windmill.diegonmarcos.com                   ✅    ❌   ⬚     ⬚  155ms  TCP: Connection refused (os erro...
+  workflows.diegonmarcos.com                  ✅    ❌   ⬚     ⬚  156ms  TCP: Connection refused (os erro...
 
 
 2. PRIVATE URLS (WireGuard -> Container)
 ──────────────────────────────────────────────────────────────
   SERVICE                        UPSTREAM                TCP  HTTP    ms  DETAIL
   ------------------------------------------------------------------------------------------
-  alerts-api (oci-E2-f_1)        10.0.0.4:5050             ❌    ⬚  239ms  TCP: Connection refused (os erro...
-  authelia (gcp-E2-f_0)          10.0.0.1:9091             ✅     ✅ 487ms  200
-  backup-gitea (oci-A1-f_0)      10.0.0.6:3002             ✅     ✅ 853ms  200
-  c3-infra-api (oci-A1-f_0)      10.0.0.6:8081             ✅     ✅ 714ms  404
-  c3-infra-mcp (oci-A1-f_0)      10.0.0.6:3100             ✅     ✅ 701ms  404
-  c3-services-api (oci-A1-f_0)   10.0.0.6:8082             ✅     ✅ 736ms  200
-  c3-services-mcp (oci-A1-f_0)   10.0.0.6:3101             ✅     ✅ 702ms  404
-  caddy (gcp-E2-f_0)             10.0.0.1:443              ✅     ✅ 370ms  400
-  cloud-cgc-mcp (oci-A1-f_0)     10.0.0.6:3105             ✅     ✅ 700ms  404
-  cloud-spec (oci-A1-f_0)        10.0.0.6:3080             ✅     ✅ 714ms  200
-  code-server (oci-A1-f_0)       10.0.0.6:8443             ✅     ✅ 1023ms  200
-  crawlee-cloud (oci-A1-f_0)     10.0.0.6:3000             ✅     ✅ 714ms  404
-  dagu (oci-E2-f_0)              10.0.0.3:8070             ✅     ✅ 1738ms  200
-  dbgate (oci-A1-f_0)            10.0.0.6:8086             ✅     ✅ 870ms  200
-  dozzle (oci-E2-f_1)            10.0.0.4:9999             ✅     ✅ 875ms  200
-  etherpad (oci-A1-f_0)          10.0.0.6:3012             ✅     ✅ 827ms  200
-  filebrowser (oci-A1-f_0)       10.0.0.6:3015             ✅     ✅ 862ms  200
-  fluent-bit (oci-E2-f_1)        10.0.0.4:2020             ❌    ⬚  239ms  TCP: Connection refused (os erro...
-  gitea (oci-A1-f_0)             10.0.0.6:3002             ✅     ✅ 862ms  200
-  google-workspace-mcp (oci-A1-f_0) 10.0.0.6:3104             ✅     ✅ 742ms  200
-  grist (oci-A1-f_0)             10.0.0.6:3011             ✅     ✅ 847ms  200
-  hedgedoc (oci-A1-f_0)          10.0.0.6:3018             ✅     ✅ 900ms  200
-  hickory-dns (gcp-E2-f_0)       10.0.0.1:53               ✅     ❌ 5436ms  HTTP: error sending request for ...
-  introspect-proxy (gcp-E2-f_0)  10.0.0.1:4182             ✅     ✅ 404ms  404
-  lgtm (oci-A1-f_0)              10.0.0.6:3200             ✅     ✅ 951ms  200
-  maddy (oci-E2-f_0)             10.0.0.3:443              ❌    ⬚  1278ms  TCP: Connection refused (os erro...
-  mail-mcp (oci-A1-f_0)          10.0.0.6:3103             ✅     ✅ 755ms  404
-  matomo (oci-E2-f_1)            10.0.0.4:8084             ❌    ⬚  239ms  TCP: Connection refused (os erro...
-  mattermost-bots (oci-A1-f_0)   10.0.0.6:8065             ✅     ✅ 839ms  200
-  mattermost-mcp (oci-A1-f_0)    10.0.0.6:3102             ✅     ✅ 755ms  404
-  ntfy (gcp-E2-f_0)              10.0.0.1:8090             ✅     ✅ 370ms  200
-  ollama (gcp-T4-p_0)            10.0.0.8:11434            ❌    ⬚  5000ms  TCP: timeout 5s
-  ollama-hai (oci-A1-f_0)        10.0.0.6:11435            ✅     ✅ 714ms  200
-  photoprism (oci-A1-f_0)        10.0.0.6:3013             ❌    ⬚  240ms  TCP: Connection refused (os erro...
-  photos-webhook (oci-A1-f_0)    10.0.0.6:5002             ✅     ✅ 718ms  404
-  radicale (oci-A1-f_0)          10.0.0.6:5232             ✅     ✅ 1632ms  200
-  redis (gcp-E2-f_0)             10.0.0.1:6379             ✅     ❌ 656ms  HTTP: error sending request for ...
-  revealmd (oci-A1-f_0)          10.0.0.6:3014             ✅     ✅ 719ms  200
-  rig-agentic-sonn-14bq8 (oci-A1-f_0) 10.0.0.6:8091             ✅     ✅ 719ms  404
-  smtp-proxy (oci-E2-f_0)        10.0.0.3:8080             ✅     ✅ 714ms  404
-  snappymail (oci-E2-f_0)        10.0.0.3:8888             ✅     ✅ 706ms  200
-  umami (oci-E2-f_1)             10.0.0.4:3006             ❌    ⬚  239ms  TCP: Connection refused (os erro...
-  vaultwarden (gcp-E2-f_0)       10.0.0.1:8880             ✅     ✅ 1236ms  200
-  windmill (oci-A1-f_0)          10.0.0.6:8000             ✅     ✅ 853ms  200
+  authelia (gcp-E2-f_0)          10.0.0.1:9091             ✅     ✅ 386ms  200
+  backup-gitea (oci-A1-f_0)      10.0.0.6:3002             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  c3-infra-api (oci-A1-f_0)      10.0.0.6:8081             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  c3-infra-mcp (oci-A1-f_0)      10.0.0.6:3100             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  c3-services-api (oci-A1-f_0)   10.0.0.6:8082             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  c3-services-mcp (oci-A1-f_0)   10.0.0.6:3101             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  caddy (gcp-E2-f_0)             10.0.0.1:443              ❌    ⬚  129ms  TCP: Connection refused (os erro...
+  cloud-cgc-mcp (oci-A1-f_0)     10.0.0.6:3105             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  cloud-spec (oci-A1-f_0)        10.0.0.6:3080             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  code-server (oci-A1-f_0)       10.0.0.6:8443             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  crawlee-cloud (oci-A1-f_0)     10.0.0.6:3000             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  dagu (oci-E2-f_1)              10.0.0.4:8070             ✅     ✅ 725ms  200
+  dbgate (oci-A1-f_0)            10.0.0.6:8086             ✅     ✅ 727ms  200
+  dozzle (oci-E2-f_1)            10.0.0.4:9999             ✅     ✅ 726ms  200
+  etherpad (oci-A1-f_0)          10.0.0.6:3012             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  filebrowser (oci-A1-f_0)       10.0.0.6:3015             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  fluent-bit (oci-E2-f_1)        10.0.0.4:2020             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  gitea (oci-A1-f_0)             10.0.0.6:3002             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  google-workspace-mcp (oci-A1-f_0) 10.0.0.6:3104             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  grist (oci-A1-f_0)             10.0.0.6:3011             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  hedgedoc (oci-A1-f_0)          10.0.0.6:3018             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  hickory-dns (gcp-E2-f_0)       10.0.0.1:53               ✅     ❌ 5388ms  HTTP: error sending request for ...
+  introspect-proxy (gcp-E2-f_0)  10.0.0.1:4182             ❌    ⬚  129ms  TCP: Connection refused (os erro...
+  lgtm (oci-A1-f_0)              10.0.0.6:3200             ✅     ✅ 971ms  200
+  maddy (oci-E2-f_0)             10.0.0.3:443              ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  mail-mcp (oci-A1-f_0)          10.0.0.6:3103             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  matomo (oci-E2-f_1)            10.0.0.4:8084             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  mattermost-bots (oci-A1-f_0)   10.0.0.6:8065             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  mattermost-mcp (oci-A1-f_0)    10.0.0.6:3102             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  ntfy (oci-A1-f_0)              10.0.0.6:8090             ✅     ✅ 725ms  404
+  ollama (gcp-T4-p_0)            10.0.0.8:11434            ❌    ⬚  5001ms  TCP: timeout 5s
+  ollama-hai (oci-A1-f_0)        10.0.0.6:11435            ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  photoprism (oci-A1-f_0)        10.0.0.6:3013             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  photos-webhook (oci-A1-f_0)    10.0.0.6:5002             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  radicale (oci-A1-f_0)          10.0.0.6:5232             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  redis (gcp-E2-f_0)             10.0.0.1:6379             ✅     ❌ 386ms  HTTP: error sending request for ...
+  revealmd (oci-A1-f_0)          10.0.0.6:3014             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  rig-agentic-sonn-14bq8 (oci-A1-f_0) 10.0.0.6:8091             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  smtp-proxy (oci-E2-f_0)        10.0.0.3:8080             ✅     ✅ 725ms  405
+  snappymail (oci-E2-f_0)        10.0.0.3:8888             ✅     ✅ 732ms  200
+  umami (oci-E2-f_1)             10.0.0.4:3006             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  vaultwarden (oci-A1-f_0)       10.0.0.6:8880             ❌    ⬚  242ms  TCP: Connection refused (os erro...
+  windmill (oci-A1-f_0)          10.0.0.6:8000             ❌    ⬚  242ms  TCP: Connection refused (os erro...
 
 
 ══════════════════════════════════════════════════════════════
-RESULT: 49/60 healthy (11 failed) in 5.4s
+RESULT: 8/59 healthy (51 failed) in 5.4s
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────

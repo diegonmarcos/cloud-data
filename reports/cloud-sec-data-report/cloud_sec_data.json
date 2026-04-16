@@ -1,0 +1,123 @@
+{
+  "duration_ms": 429447,
+  "generated": "2026-04-16T11:13:17.981347483+00:00",
+  "siem_alerts": [],
+  "summary": {
+    "critical": 10,
+    "failed": 13,
+    "passed": 59,
+    "total_checks": 72,
+    "warnings": 3
+  },
+  "threat_intel_matches": [],
+  "yara_hits": [
+    {
+      "container": "hickory-dns",
+      "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
+      "file_path": "/tmp/.tmpFy4sZ8/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3989,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "gcp-proxy"
+    },
+    {
+      "container": "ntfy",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmp6CCbos/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "gcp-proxy"
+    },
+    {
+      "container": "rig-agentic",
+      "file_hash": "9350dc463e577a36f7104145b618ec9d7e4f6bdec3e5eb7bbab559ecd1c27360",
+      "file_path": "/tmp/.tmp2yXpPH/app/app/rig-agentic",
+      "file_size": 9192032,
+      "rule_name": "container_escape_proc_mount",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "rig-agentic",
+      "file_hash": "9350dc463e577a36f7104145b618ec9d7e4f6bdec3e5eb7bbab559ecd1c27360",
+      "file_path": "/tmp/.tmp2yXpPH/app/app/rig-agentic",
+      "file_size": 9192032,
+      "rule_name": "container_escape_docker_socket",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "lgtm_grafana",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmpuWuVRB/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "lgtm_loki",
+      "file_hash": "9d03182abed51a1eb82ba669f14c3c7a8c8a19c3b57e5f2cc657c77349960c8f",
+      "file_path": "/tmp/.tmpFQeooc/usr_local_bin/bin/busybox",
+      "file_size": 1660152,
+      "rule_name": "container_escape_proc_mount",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "lgtm_loki",
+      "file_hash": "9d03182abed51a1eb82ba669f14c3c7a8c8a19c3b57e5f2cc657c77349960c8f",
+      "file_path": "/tmp/.tmpFQeooc/usr_local_bin/bin/busybox",
+      "file_size": 1660152,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "lgtm_tempo",
+      "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
+      "file_path": "/tmp/.tmpH60HGD/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3989,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "maddy",
+      "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
+      "file_path": "/tmp/.tmpSTFxtx/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3989,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-mail"
+    },
+    {
+      "container": "smtp-proxy",
+      "file_hash": "80141c252ef60113b3c6491e37a59657f296a7e06d2308f49d6fc8fbbdacbf18",
+      "file_path": "/tmp/.tmpiGwbMh/usr_local_bin/bin/smtp-proxy",
+      "file_size": 6099528,
+      "rule_name": "container_escape_proc_mount",
+      "severity": "critical",
+      "vm": "oci-mail"
+    },
+    {
+      "container": "snappymail",
+      "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
+      "file_path": "/tmp/.tmpp20mbY/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3989,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-mail"
+    },
+    {
+      "container": "dozzle",
+      "file_hash": "04f0ac7ce3e43ff07b94adb9bcabcaec9db344e107c77c48b2344cced1711f51",
+      "file_path": "/tmp/.tmpxfK4W4/opt/opt/cloud-docs/docker-compose.yml",
+      "file_size": 1946,
+      "rule_name": "container_escape_docker_socket",
+      "severity": "critical",
+      "vm": "oci-analytics"
+    }
+  ]
+}

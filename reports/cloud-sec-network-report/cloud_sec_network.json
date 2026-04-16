@@ -1,6 +1,6 @@
 {
-  "duration_ms": 47984,
-  "generated": "2026-04-16T10:41:17.844917408+00:00",
+  "duration_ms": 26696,
+  "generated": "2026-04-16T11:04:18.875773038+00:00",
   "port_scan": [
     {
       "declared_closed": [
@@ -100,10 +100,10 @@
     }
   ],
   "summary": {
-    "critical": 17,
-    "failed": 30,
-    "passed": 27,
-    "total_checks": 57,
+    "critical": 16,
+    "failed": 29,
+    "passed": 22,
+    "total_checks": 51,
     "warnings": 13
   }
 }
