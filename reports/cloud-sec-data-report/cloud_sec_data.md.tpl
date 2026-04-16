@@ -42,6 +42,24 @@ $THREAT_INTEL
 
 ---
 
+## Journal Analysis (24h)
+
+$JOURNAL_ANALYSIS
+
+---
+
+## Runtime Security Analysis
+
+$RUNTIME_ANALYSIS
+
+---
+
+## Container Diff Analysis
+
+$DIFF_ANALYSIS
+
+---
+
 ## Cross-Correlation Analysis
 
 $CORRELATIONS

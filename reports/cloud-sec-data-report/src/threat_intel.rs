@@ -3,7 +3,7 @@ use reports_common::types::{Check, Severity};
 use std::collections::HashSet;
 use std::time::Instant;
 
-const URLHAUS_API: &str = "https://urlhaus-api.abuse.ch/api/v1/";
+const URLHAUS_API: &str = "https://urlhaus.abuse.ch/downloads/json_recent/";
 
 /// Fetch threat intelligence feeds and cross-match with YARA hits
 pub async fn fetch_all() -> (Vec<Check>, Vec<ThreatIntelMatch>) {
@@ -17,10 +17,9 @@ pub async fn fetch_all() -> (Vec<Check>, Vec<ThreatIntelMatch>) {
         .build()
         .unwrap_or_else(|_| reqwest::Client::new());
 
-    // Fetch URLhaus recent entries
+    // Fetch URLhaus recent entries (public JSON download, no auth needed)
     match client
-        .post(URLHAUS_API)
-        .form(&[("query", "get_recent"), ("selector", "100")])
+        .get(URLHAUS_API)
         .send()
         .await
     {
@@ -81,40 +80,40 @@ pub async fn fetch_all() -> (Vec<Check>, Vec<ThreatIntelMatch>) {
     (checks, matches)
 }
 
-/// Parse URLhaus API response into ThreatIntelMatch entries
+/// Parse URLhaus JSON download into ThreatIntelMatch entries.
+/// Format: {"12345": [{"url": "...", "threat": "...", ...}], "12346": [...]}
 fn parse_urlhaus(body: &serde_json::Value) -> Vec<ThreatIntelMatch> {
     let mut matches = Vec::new();
 
-    let urls = body["urls"]
-        .as_array()
-        .or_else(|| body["data"].as_array());
-
-    let Some(urls) = urls else {
+    let Some(obj) = body.as_object() else {
         return matches;
     };
 
-    for entry in urls {
-        let url = entry["url"]
-            .as_str()
-            .unwrap_or("")
-            .to_string();
-        let threat = entry["threat"]
-            .as_str()
-            .or_else(|| entry["url_status"].as_str())
-            .unwrap_or("unknown")
-            .to_string();
-
-        if url.is_empty() {
+    // Each key is a numeric ID, value is an array of URL entries
+    for (_id, entries) in obj.iter().take(200) {
+        let Some(arr) = entries.as_array() else {
             continue;
-        }
+        };
+        for entry in arr {
+            let url = entry["url"].as_str().unwrap_or("").to_string();
+            let threat = entry["threat"]
+                .as_str()
+                .or_else(|| entry["url_status"].as_str())
+                .unwrap_or("unknown")
+                .to_string();
 
-        matches.push(ThreatIntelMatch {
-            source: "URLhaus".into(),
-            indicator: url,
-            indicator_type: "url".into(),
-            matched_in: threat,
-            confidence: "medium".into(),
-        });
+            if url.is_empty() {
+                continue;
+            }
+
+            matches.push(ThreatIntelMatch {
+                source: "URLhaus".into(),
+                indicator: url,
+                indicator_type: "url".into(),
+                matched_in: threat,
+                confidence: "medium".into(),
+            });
+        }
     }
 
     matches

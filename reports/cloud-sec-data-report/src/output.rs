@@ -8,6 +8,9 @@ pub fn build_template_vars(
     yara_checks: &[Check],
     siem_checks: &[Check],
     ti_checks: &[Check],
+    journal_checks: &[Check],
+    runtime_checks: &[Check],
+    diff_checks: &[Check],
     corr_checks: &[Check],
     all_checks: &[&Check],
     summary: &Summary,
@@ -71,6 +74,69 @@ pub fn build_template_vars(
         "THREAT_INTEL".into(),
         output::format_checks(ti_checks),
     );
+
+    // Journal analysis
+    let journal_failed: Vec<&Check> = journal_checks.iter().filter(|c| !c.passed).collect();
+    let journal_text = if journal_failed.is_empty() {
+        format!(
+            "{}\n\n  No suspicious journal entries detected.",
+            output::format_checks(journal_checks)
+        )
+    } else {
+        let details = journal_failed
+            .iter()
+            .map(|c| format!("  - {}: {}", c.name, c.details))
+            .collect::<Vec<_>>()
+            .join("\n");
+        format!(
+            "{}\n\n### Journal Alert Details\n\n{}",
+            output::format_checks(journal_checks),
+            details
+        )
+    };
+    vars.insert("JOURNAL_ANALYSIS".into(), journal_text);
+
+    // Runtime analysis
+    let runtime_failed: Vec<&Check> = runtime_checks.iter().filter(|c| !c.passed).collect();
+    let runtime_text = if runtime_failed.is_empty() {
+        format!(
+            "{}\n\n  No runtime security issues detected.",
+            output::format_checks(runtime_checks)
+        )
+    } else {
+        let details = runtime_failed
+            .iter()
+            .map(|c| format!("  - {}: {}", c.name, c.details))
+            .collect::<Vec<_>>()
+            .join("\n");
+        format!(
+            "{}\n\n### Runtime Issue Details\n\n{}",
+            output::format_checks(runtime_checks),
+            details
+        )
+    };
+    vars.insert("RUNTIME_ANALYSIS".into(), runtime_text);
+
+    // Diff analysis
+    let diff_failed: Vec<&Check> = diff_checks.iter().filter(|c| !c.passed).collect();
+    let diff_text = if diff_failed.is_empty() {
+        format!(
+            "{}\n\n  No significant container changes detected.",
+            output::format_checks(diff_checks)
+        )
+    } else {
+        let details = diff_failed
+            .iter()
+            .map(|c| format!("  - {}: {}", c.name, c.details))
+            .collect::<Vec<_>>()
+            .join("\n");
+        format!(
+            "{}\n\n### Diff Change Details\n\n{}",
+            output::format_checks(diff_checks),
+            details
+        )
+    };
+    vars.insert("DIFF_ANALYSIS".into(), diff_text);
 
     // Correlations
     vars.insert(
