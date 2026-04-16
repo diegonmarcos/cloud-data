@@ -108,7 +108,7 @@ async fn collect_public_urls(ctx: &Context, client: &Client, aclient: &Client) -
                 url, upstream, tcp: tcp_ok,
                 http: http_r.0, https: https_r.0,
                 auth: auth_r.0 && auth_r.1 != "401" && auth_r.1 != "403",
-                code: if https_r.0 { https_r.1 } else { http_r.1 },
+                code: if https_r.0 { https_r.1 } else { https_r.1 },
                 auth_code: auth_r.1,
             }
         }
@@ -205,71 +205,16 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                 containers: vec![], containers_running: 0, containers_total: 0,
             };
 
-            // Strategy 1: rsync /opt/health/latest.json via SSH multiplex (pre-warmed above)
-            let cache_dir = format!("cache/{}", alias);
-            let _ = std::fs::create_dir_all(&cache_dir);
-            let cache_file = format!("{}/latest.json", cache_dir);
-            let ssh_cmd = format!("ssh -o ConnectTimeout=30 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes", mux);
+            // Live SSH: system stats + docker ps -a + docker stats (via pre-warmed mux)
+            let ssh_opts = format!("-o ConnectTimeout=30 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes", mux);
+            let cmd = r#"echo "MEM:$(free -m | awk '/Mem/{printf "%d %d %d", $3, $2, ($2>0?$3*100/$2:0)}')";echo "SWAP:$(free -m | awk '/Swap/{printf "%dM/%dM", $3, $2}')";echo "DISK:$(df -h / | awk 'NR==2{printf "%s %s %s", $3, $2, $5}')";echo "LOAD:$(cut -d' ' -f1-3 /proc/loadavg)";echo "UPTIME:$(awk '{printf "%dd %dh", $1/86400, ($1%86400)/3600}' /proc/uptime)";docker ps -a --format '{{.Names}}|{{.Status}}' 2>/dev/null | sed 's/^/CTR:/';docker stats --no-stream --format '{{.Name}}|{{.CPUPerc}}|{{.MemUsage}}' 2>/dev/null | sed 's/^/STATS:/'"#;
 
-            let rsync_ok = {
-                let out = tokio::process::Command::new("rsync")
-                    .args(["-az", "-e", &ssh_cmd,
-                           &format!("{}:/opt/health/latest.json", alias), &cache_file])
-                    .output().await;
-                out.map(|o| o.status.success()).unwrap_or(false)
-            };
-
-            // VM is reachable if rsync succeeded (regardless of JSON validity)
-            if rsync_ok {
-                data.reachable = true;
-            }
-
-            // Parse cached JSON for stats (best-effort — malformed JSON doesn't affect reachability)
-            if rsync_ok || std::path::Path::new(&cache_file).exists() {
-                if let Ok(raw) = std::fs::read_to_string(&cache_file) {
-                    if let Ok(j) = serde_json::from_str::<serde_json::Value>(&raw) {
-                        data.mem_used = format!("{}M", j["mem"]["used"].as_u64().unwrap_or(0));
-                        data.mem_total = format!("{}M", j["mem"]["total"].as_u64().unwrap_or(0));
-                        data.mem_pct = j["mem"]["pct"].as_u64().unwrap_or(0) as u32;
-                        data.swap = j["swap"].as_str().map(|s| s.to_string()).unwrap_or_else(||
-                            format!("{}M/{}M", j["swap"]["used"].as_u64().unwrap_or(0), j["swap"]["total"].as_u64().unwrap_or(0)));
-                        data.disk_used = j["disk"]["used"].as_str().unwrap_or("?").to_string();
-                        data.disk_total = j["disk"]["total"].as_str().unwrap_or("?").to_string();
-                        data.disk_pct = j["disk"]["pct"].as_str().unwrap_or("?").to_string();
-                        data.load = j["load"].as_str().unwrap_or("?").to_string();
-                        data.uptime = j["uptime"].as_str().unwrap_or("?").to_string();
-                        data.containers_total = j["containers_total"].as_u64().unwrap_or(0) as u32;
-                        data.containers_running = j["containers_running"].as_u64().unwrap_or(0) as u32;
-                        if let Some(ctrs) = j["containers"].as_array() {
-                            for c in ctrs {
-                                let name = c["name"].as_str().unwrap_or("?").to_string();
-                                let status = c["status"].as_str().unwrap_or("?").to_string();
-                                let health = c["health"].as_str().unwrap_or("none").to_string();
-                                let dns_entry = dns_entries.iter().find(|d| d.container == name);
-                                data.containers.push(ContainerState {
-                                    name, status, health,
-                                    docker_port: dns_entry.map(|d| d.port.to_string()).unwrap_or("—".into()),
-                                    host_port: dns_entry.filter(|d| d.host_port).map(|d| d.port.to_string()).unwrap_or("—".into()),
-                                });
-                            }
-                        }
-                        data.containers.sort_by(|a, b| {
-                            let order = |h: &str| -> u8 { match h { "created" => 0, "exited" => 1, "unhealthy" => 2, "starting" => 3, "none" => 4, "healthy" => 5, _ => 9 } };
-                            order(&a.health).cmp(&order(&b.health))
-                        });
-                        return data;
-                    }
-                }
-            }
-
-            // Strategy 2: SSH fallback DISABLED — agents deployed on all VMs
-            // Uncomment if agents are not yet deployed:
-            /*
-            let cmd = r#"echo "MEM:$(free -m | awk '/Mem/{printf "%d %d %d", $3, $2, $3*100/$2}')";echo "SWAP:$(free -m | awk '/Swap/{printf "%dM/%dM", $3, $2}')";echo "DISK:$(df -h / | awk 'NR==2{printf "%s %s %s", $3, $2, $5}')";echo "LOAD:$(cut -d' ' -f1-3 /proc/loadavg)";echo "UPTIME:$(uptime -p 2>/dev/null || awk '{printf "up %dd %dh", $1/86400, ($1%86400)/3600}' /proc/uptime)";docker ps -a --format '{{.Names}}|{{.Status}}' 2>/dev/null | sed 's/^/CTR:/' "#;
+            let mut ssh_args: Vec<String> = ssh_opts.split_whitespace().map(|s| s.to_string()).collect();
+            ssh_args.push(alias.clone());
+            ssh_args.push(cmd.to_string());
 
             let output = tokio::process::Command::new("ssh")
-                .args(["-o", "ConnectTimeout=8", "-o", "ControlPath=none", "-o", "BatchMode=yes", &alias])
-                .arg(cmd)
+                .args(&ssh_args)
                 .output().await;
 
             match output {
@@ -307,25 +252,36 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                                     else if status.contains("health: starting") { "starting" }
                                     else if status.starts_with("Created") { "created" }
                                     else if status.starts_with("Exited") { "exited" }
+                                    else if status.starts_with("Up") { "running" }
                                     else { "none" };
                                 let dns_entry = dns_entries.iter().find(|d| d.container == name);
-                                let docker_port = dns_entry.map(|d| d.port.to_string()).unwrap_or("—".into());
-                                let host_port = dns_entry.filter(|d| d.host_port).map(|d| d.port.to_string()).unwrap_or("—".into());
-                                data.containers.push(ContainerState { name, status, health: health.into(), docker_port, host_port });
-                                data.containers_total += 1;
-                                if health != "exited" && health != "created" { data.containers_running += 1; }
+                                data.containers.push(ContainerState {
+                                    name, status, health: health.to_string(),
+                                    docker_port: dns_entry.map(|d| d.port.to_string()).unwrap_or("—".into()),
+                                    host_port: dns_entry.filter(|d| d.host_port).map(|d| d.port.to_string()).unwrap_or("—".into()),
+                                });
+                            }
+                        } else if let Some(_stats) = line.strip_prefix("STATS:") {
+                            // docker stats: name|cpu%|mem usage — enrich existing container entries
+                            let parts: Vec<&str> = _stats.splitn(3, '|').collect();
+                            if parts.len() == 3 {
+                                if let Some(c) = data.containers.iter_mut().find(|c| c.name == parts[0]) {
+                                    c.status = format!("{} cpu={} mem={}", c.status, parts[1], parts[2]);
+                                }
                             }
                         }
                     }
-                    // Sort containers: exited first, then unhealthy, then starting, then up, then healthy
+                    data.containers_total = data.containers.len() as u32;
+                    data.containers_running = data.containers.iter().filter(|c| c.health != "exited" && c.health != "created").count() as u32;
                     data.containers.sort_by(|a, b| {
-                        let order = |h: &str| -> u8 { match h { "created" => 0, "exited" => 1, "unhealthy" => 2, "starting" => 3, "none" => 4, "healthy" => 5, _ => 9 } };
+                        let order = |h: &str| -> u8 { match h { "created" => 0, "exited" => 1, "unhealthy" => 2, "starting" => 3, "none" => 4, "running" => 5, "healthy" => 6, _ => 9 } };
                         order(&a.health).cmp(&order(&b.health))
                     });
                 }
-                _ => { /* unreachable */ }
+                _ => { /* VM unreachable */ }
             }
-            */
+
+            // (old rsync + commented SSH fallback removed — now using live SSH above)
             data
         }
     }).collect();
