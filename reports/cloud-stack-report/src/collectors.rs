@@ -169,11 +169,25 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
         }
         true
     }).collect();
+    // Pre-warm SSH multiplexed connections (sequential — one handshake each)
+    let mux_dir = "/tmp/ssh-mux-health";
+    let _ = std::fs::create_dir_all(mux_dir);
+    for vm in &active_vms {
+        let _ = tokio::process::Command::new("ssh")
+            .args(["-o", "BatchMode=yes", "-o", "ConnectTimeout=15",
+                   "-o", &format!("ControlPath={}/%%r@%%h:%%p", mux_dir),
+                   "-o", "ControlMaster=auto", "-o", "ControlPersist=60",
+                   "-fNM", &vm.alias])
+            .output().await;
+    }
+
+    let mux_dir_owned = mux_dir.to_string();
     let futs: Vec<_> = active_vms.iter().map(|vm| {
         let alias = vm.alias.clone();
         let _pub_ip = vm.pub_ip.clone();
         let _rescue_port = vm.rescue_port;
         let dns_entries: Vec<_> = ctx.private_dns.iter().filter(|d| d.vm == alias).cloned().collect();
+        let mux = mux_dir_owned.clone();
         async move {
             let mut data = VmLiveData {
                 alias: alias.clone(), reachable: false,
@@ -183,14 +197,15 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                 containers: vec![], containers_running: 0, containers_total: 0,
             };
 
-            // Strategy 1: rsync /opt/health/latest.json via SSH alias (uses ~/.ssh/config)
+            // Strategy 1: rsync /opt/health/latest.json via SSH multiplex (pre-warmed above)
             let cache_dir = format!("cache/{}", alias);
             let _ = std::fs::create_dir_all(&cache_dir);
             let cache_file = format!("{}/latest.json", cache_dir);
+            let ssh_cmd = format!("ssh -o ConnectTimeout=15 -o ControlPath={}/%%r@%%h:%%p -o ControlMaster=auto -o BatchMode=yes", mux);
 
             let rsync_ok = {
                 let out = tokio::process::Command::new("rsync")
-                    .args(["-az", "-e", "ssh -o ConnectTimeout=15 -o ControlPath=none -o BatchMode=yes",
+                    .args(["-az", "-e", &ssh_cmd,
                            &format!("{}:/opt/health/latest.json", alias), &cache_file])
                     .output().await;
                 out.map(|o| o.status.success()).unwrap_or(false)
