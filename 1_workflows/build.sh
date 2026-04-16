@@ -34,6 +34,14 @@ deploy() {
     done
     log "Deployed $(ls "$DIST_DIR/cicd/"*.yml 2>/dev/null | wc -l) workflow(s) → .github/workflows/"
 
+    # scripts/ → .github/workflows/scripts/
+    if [ -d "$DIST_DIR/scripts" ]; then
+        mkdir -p "$TARGET/scripts"
+        cp -r "$DIST_DIR/scripts/"* "$TARGET/scripts/"
+        chmod +x "$TARGET/scripts/"* 2>/dev/null || true
+        log "Deployed $(ls "$DIST_DIR/scripts/"* 2>/dev/null | wc -l) script(s) → .github/workflows/scripts/"
+    fi
+
     # hooks/ → .github/workflows/hooks/
     if [ -d "$DIST_DIR/hooks" ]; then
         mkdir -p "$TARGET/hooks"
