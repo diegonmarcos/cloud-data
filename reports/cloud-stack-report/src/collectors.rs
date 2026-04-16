@@ -219,11 +219,15 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                 out.map(|o| o.status.success()).unwrap_or(false)
             };
 
-            // Parse cached JSON (rsync may have refreshed it, or previous run's cache is still valid)
+            // VM is reachable if rsync succeeded (regardless of JSON validity)
+            if rsync_ok {
+                data.reachable = true;
+            }
+
+            // Parse cached JSON for stats (best-effort — malformed JSON doesn't affect reachability)
             if rsync_ok || std::path::Path::new(&cache_file).exists() {
                 if let Ok(raw) = std::fs::read_to_string(&cache_file) {
                     if let Ok(j) = serde_json::from_str::<serde_json::Value>(&raw) {
-                        data.reachable = true;
                         data.mem_used = format!("{}M", j["mem"]["used"].as_u64().unwrap_or(0));
                         data.mem_total = format!("{}M", j["mem"]["total"].as_u64().unwrap_or(0));
                         data.mem_pct = j["mem"]["pct"].as_u64().unwrap_or(0) as u32;
