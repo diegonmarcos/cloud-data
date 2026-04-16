@@ -1,13 +1,13 @@
 {
   "vm": "web-server",
-  "timestamp": "2026-04-06T04:35:16Z",
-  "mem": {"used":624,"total":954,"pct":65},
-  "swap": {"used":217,"total":2559},
+  "timestamp": "2026-04-16T11:48:55Z",
+  "mem": {"used":629,"total":954,"pct":65},
+  "swap": {"used":196,"total":2559},
   "disk": {"used":"33G","total":"45G","pct":"78%"},
-  "load": "0.00 0.09 0.09",
-  "uptime": "5d 10h",
+  "load": "0.01 0.14 0.17",
+  "uptime": "15d 17h",
   "wg_up": true,
   "containers_running": 4,
   "containers_total": 4,
-  "containers": [{"name":"dagu","status":"Up 40 hours","health":"none"},{"name":"snappymail","status":"Up 42 hours (healthy)","health":"healthy"},{"name":"maddy","status":"Up 43 hours","health":"none"},{"name":"smtp-proxy","status":"Up 4 days","health":"none"}]
+  "containers": [{"name":"maddy","status":"Up 12 minutes","health":"none"},{"name":"smtp-proxy","status":"Up 39 hours","health":"none"},{"name":"dagu","status":"Up 11 days","health":"none"},{"name":"snappymail","status":"Up 12 days (healthy)","health":"healthy"}]
 }

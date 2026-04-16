@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-16T18:13:02.759183176+00:00",
-  "duration_ms": 12678,
+  "generated": "2026-04-16T18:39:35.257772279+00:00",
+  "duration_ms": 12698,
   "mesh": [
     {
       "name": "oci-mail",
@@ -271,7 +271,7 @@
     {
       "url": "grafana.diegonmarcos.com",
       "upstream": "10.0.0.6:3200",
-      "tcp": false,
+      "tcp": true,
       "http": false,
       "https": true,
       "auth": true,
@@ -283,9 +283,9 @@
       "upstream": "10.0.0.3:443",
       "tcp": true,
       "http": false,
-      "https": false,
+      "https": true,
       "auth": true,
-      "code": "err: error sending request for url (https://mail.diegonmarcos.com/)",
+      "code": "200",
       "auth_code": "200"
     },
     {
@@ -493,10 +493,10 @@
       "upstream": "10.0.0.6:3080",
       "tcp": true,
       "http": false,
-      "https": true,
-      "auth": true,
-      "code": "200",
-      "auth_code": "200"
+      "https": false,
+      "auth": false,
+      "code": "err: error sending request for url (https://cloud.diegonmarcos.com/)",
+      "auth_code": "err: error sending request for url (https://cloud.diegonmarcos.com/)"
     },
     {
       "url": "mcp.diegonmarcos.com",
@@ -1115,138 +1115,138 @@
     {
       "alias": "gcp-proxy",
       "reachable": true,
-      "mem_used": "1020M",
+      "mem_used": "1188M",
       "mem_total": "1952M",
-      "mem_pct": 52,
-      "swap": "53M/3999M",
-      "disk_used": "20G",
+      "mem_pct": 60,
+      "swap": "126M/3999M",
+      "disk_used": "22G",
       "disk_total": "31G",
-      "disk_pct": "64%",
-      "load": "0.08 0.06 0.08",
-      "uptime": "15d 20h",
+      "disk_pct": "70%",
+      "load": "0.03 0.18 0.40",
+      "uptime": "15d 21h",
       "containers": [
         {
           "name": "sqlite-authelia",
-          "status": "Exited (2) 27 minutes ago",
+          "status": "Exited (2) 53 minutes ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "sqlite-ntfy",
-          "status": "Exited (2) 27 minutes ago",
+          "status": "Exited (2) 53 minutes ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "sqlite-npm",
-          "status": "Exited (2) 27 minutes ago",
+          "status": "Exited (2) 53 minutes ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "sqlite-vaultwarden",
-          "status": "Exited (2) 27 minutes ago",
+          "status": "Exited (2) 53 minutes ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "authelia",
-          "status": "Exited (1) 27 minutes ago",
+          "status": "Exited (1) 54 minutes ago",
           "health": "exited",
           "docker_port": "9091",
           "host_port": "—"
         },
         {
           "name": "introspect-proxy",
-          "status": "Up 26 minutes (unhealthy) cpu=0.01% mem=41.48MiB / 64MiB",
+          "status": "Up 53 minutes (unhealthy) cpu=0.02% mem=11.31MiB / 64MiB",
           "health": "unhealthy",
           "docker_port": "4182",
           "host_port": "—"
         },
         {
           "name": "postlite-vaultwarden",
-          "status": "Up 27 minutes cpu=0.00% mem=1016KiB / 1.906GiB",
+          "status": "Up 53 minutes cpu=0.00% mem=516KiB / 1.906GiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "postlite-authelia",
-          "status": "Up 27 minutes cpu=0.00% mem=1.34MiB / 1.906GiB",
+          "status": "Up 53 minutes cpu=0.00% mem=4.344MiB / 1.906GiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "postlite-ntfy",
-          "status": "Up 27 minutes cpu=0.00% mem=5.199MiB / 1.906GiB",
+          "status": "Up 53 minutes cpu=0.00% mem=2.773MiB / 1.906GiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "postlite-npm",
-          "status": "Up 27 minutes cpu=0.00% mem=3.074MiB / 1.906GiB",
+          "status": "Up 53 minutes cpu=0.00% mem=4.305MiB / 1.906GiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "syslog-bridge",
-          "status": "Up 27 minutes cpu=0.00% mem=16.76MiB / 32MiB",
+          "status": "Up 53 minutes cpu=0.00% mem=3.422MiB / 32MiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "github-rss",
-          "status": "Up 27 minutes cpu=0.00% mem=23.67MiB / 32MiB",
+          "status": "Up 53 minutes cpu=0.00% mem=11.77MiB / 32MiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "ntfy",
-          "status": "Up 27 minutes cpu=0.00% mem=17.93MiB / 64MiB",
+          "status": "Up 53 minutes cpu=0.00% mem=34.46MiB / 64MiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "hickory-dns",
-          "status": "Up 27 minutes cpu=0.33% mem=13.65MiB / 48MiB",
+          "status": "Up 53 minutes cpu=0.16% mem=5.164MiB / 48MiB",
           "health": "running",
           "docker_port": "53",
           "host_port": "—"
         },
         {
           "name": "caddy",
-          "status": "Up 27 minutes cpu=0.00% mem=70.91MiB / 128MiB",
+          "status": "Up 53 minutes cpu=0.34% mem=41.14MiB / 128MiB",
           "health": "running",
           "docker_port": "443",
           "host_port": "443"
         },
         {
           "name": "authelia-redis",
-          "status": "Up 27 minutes cpu=0.27% mem=4.113MiB / 48MiB",
+          "status": "Up 54 minutes cpu=0.35% mem=1.535MiB / 48MiB",
           "health": "running",
           "docker_port": "6380",
           "host_port": "—"
         },
         {
           "name": "vaultwarden",
-          "status": "Up 27 minutes (healthy) cpu=0.00% mem=20.7MiB / 128MiB",
+          "status": "Up 53 minutes (healthy) cpu=0.00% mem=32.37MiB / 128MiB",
           "health": "healthy",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "redis",
-          "status": "Up 27 minutes (healthy) cpu=0.28% mem=13.32MiB / 48MiB",
+          "status": "Up 53 minutes (healthy) cpu=0.31% mem=6.352MiB / 48MiB",
           "health": "healthy",
           "docker_port": "6379",
           "host_port": "—"
@@ -1258,14 +1258,14 @@
     {
       "alias": "oci-apps",
       "reachable": true,
-      "mem_used": "3986M",
+      "mem_used": "3826M",
       "mem_total": "23975M",
-      "mem_pct": 16,
-      "swap": "133M/12288M",
+      "mem_pct": 15,
+      "swap": "135M/12288M",
       "disk_used": "63.6G",
       "disk_total": "95.8G",
       "disk_pct": "70%",
-      "load": "0.11 0.15 0.14",
+      "load": "0.14 0.22 0.20",
       "uptime": "18d 4h",
       "containers": [
         {
@@ -1305,21 +1305,21 @@
         },
         {
           "name": "crawlee_api",
-          "status": "Exited (255) 18 minutes ago",
+          "status": "Exited (255) 44 minutes ago",
           "health": "exited",
           "docker_port": "3000",
           "host_port": "3000"
         },
         {
           "name": "crawlee_minio_init",
-          "status": "Exited (255) 18 minutes ago",
+          "status": "Exited (255) 44 minutes ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "crawlee_scheduler",
-          "status": "Exited (255) 18 minutes ago",
+          "status": "Exited (255) 44 minutes ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
@@ -1340,35 +1340,35 @@
         },
         {
           "name": "radicale",
-          "status": "Exited (255) 18 minutes ago",
+          "status": "Exited (255) 44 minutes ago",
           "health": "exited",
           "docker_port": "5232",
           "host_port": "—"
         },
         {
           "name": "ollama-hai",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "11435",
           "host_port": "—"
         },
         {
           "name": "syslog-bridge",
-          "status": "Exited (255) 18 minutes ago",
+          "status": "Exited (255) 44 minutes ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "github-rss",
-          "status": "Exited (255) 18 minutes ago",
+          "status": "Exited (255) 44 minutes ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "ntfy",
-          "status": "Exited (255) 18 minutes ago",
+          "status": "Exited (255) 44 minutes ago",
           "health": "exited",
           "docker_port": "8090",
           "host_port": "—"
@@ -1382,7 +1382,7 @@
         },
         {
           "name": "code-server",
-          "status": "Exited (255) 18 minutes ago",
+          "status": "Exited (255) 44 minutes ago",
           "health": "exited",
           "docker_port": "8443",
           "host_port": "—"
@@ -1417,140 +1417,140 @@
         },
         {
           "name": "syslog-central",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "siem-api",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "revealmd_app",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "3014",
           "host_port": "—"
         },
         {
           "name": "photos-db",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "grist_app",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "3011",
           "host_port": "—"
         },
         {
           "name": "filebrowser_app",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "3015",
           "host_port": "—"
         },
         {
           "name": "cloud-spec",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "3080",
           "host_port": "—"
         },
         {
           "name": "cloud-cgc-mcp",
-          "status": "Exited (255) 39 minutes ago",
+          "status": "Exited (255) About an hour ago",
           "health": "exited",
           "docker_port": "3105",
           "host_port": "—"
         },
         {
           "name": "news-gdelt",
-          "status": "Up 39 minutes (unhealthy) cpu=0.00% mem=32.19MiB / 128MiB",
+          "status": "Up About an hour (unhealthy) cpu=0.00% mem=34.18MiB / 128MiB",
           "health": "unhealthy",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "google-workspace-mcp",
-          "status": "Up 4 hours (unhealthy) cpu=1.98% mem=127.2MiB / 23.41GiB",
+          "status": "Up 5 hours (unhealthy) cpu=0.16% mem=126.7MiB / 23.41GiB",
           "health": "unhealthy",
           "docker_port": "3104",
           "host_port": "—"
         },
         {
           "name": "c3-services-api",
-          "status": "Up 4 hours (unhealthy) cpu=0.06% mem=108.1MiB / 512MiB",
+          "status": "Up 5 hours (unhealthy) cpu=0.05% mem=108.1MiB / 512MiB",
           "health": "unhealthy",
           "docker_port": "8082",
           "host_port": "—"
         },
         {
           "name": "c3-infra-api",
-          "status": "Up 4 hours (unhealthy) cpu=0.10% mem=126.4MiB / 512MiB",
+          "status": "Up 5 hours (unhealthy) cpu=0.08% mem=126MiB / 512MiB",
           "health": "unhealthy",
           "docker_port": "8081",
           "host_port": "8081"
         },
         {
           "name": "mattermost-bots",
-          "status": "Up 4 hours cpu=0.01% mem=54.76MiB / 512MiB",
+          "status": "Up 4 hours cpu=0.01% mem=54.79MiB / 512MiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "windmill-worker",
-          "status": "Up 4 hours cpu=0.77% mem=26.21MiB / 256MiB",
+          "status": "Up 4 hours cpu=1.12% mem=26.26MiB / 256MiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "mail-mcp",
-          "status": "Up 5 hours cpu=0.14% mem=133.4MiB / 23.41GiB",
+          "status": "Up 5 hours cpu=0.13% mem=133.4MiB / 23.41GiB",
           "health": "running",
           "docker_port": "3103",
           "host_port": "—"
         },
         {
           "name": "mattermost-mcp",
-          "status": "Up 5 hours cpu=0.04% mem=101MiB / 23.41GiB",
+          "status": "Up 5 hours cpu=0.08% mem=101MiB / 23.41GiB",
           "health": "running",
           "docker_port": "3102",
           "host_port": "—"
         },
         {
           "name": "lgtm_mimir",
-          "status": "Up 31 hours cpu=0.48% mem=32.41MiB / 23.41GiB",
+          "status": "Up 31 hours cpu=0.45% mem=32.41MiB / 23.41GiB",
           "health": "running",
           "docker_port": "9009",
           "host_port": "—"
         },
         {
           "name": "lgtm_tempo",
-          "status": "Up 31 hours cpu=0.07% mem=21.75MiB / 23.41GiB",
+          "status": "Up 31 hours cpu=0.02% mem=21.75MiB / 23.41GiB",
           "health": "running",
           "docker_port": "3210",
           "host_port": "—"
         },
         {
           "name": "quant_light_db",
-          "status": "Up 4 hours (healthy) cpu=1.79% mem=18.4MiB / 23.41GiB",
+          "status": "Up 4 hours (healthy) cpu=0.00% mem=18.43MiB / 23.41GiB",
           "health": "healthy",
           "docker_port": "5443",
           "host_port": "—"
         },
         {
           "name": "vaultwarden",
-          "status": "Up 4 hours (healthy) cpu=0.00% mem=11.04MiB / 128MiB",
+          "status": "Up 4 hours (healthy) cpu=0.00% mem=11.3MiB / 128MiB",
           "health": "healthy",
           "docker_port": "8880",
           "host_port": "—"
@@ -1564,7 +1564,7 @@
         },
         {
           "name": "photoprism_mariadb",
-          "status": "Up 4 hours (healthy) cpu=0.01% mem=102.4MiB / 512MiB",
+          "status": "Up 4 hours (healthy) cpu=0.01% mem=102.5MiB / 512MiB",
           "health": "healthy",
           "docker_port": "—",
           "host_port": "—"
@@ -1578,105 +1578,105 @@
         },
         {
           "name": "crawlee_db",
-          "status": "Up 4 hours (healthy) cpu=0.00% mem=17.62MiB / 23.41GiB",
+          "status": "Up 4 hours (healthy) cpu=0.00% mem=17.63MiB / 23.41GiB",
           "health": "healthy",
           "docker_port": "5433",
           "host_port": "—"
         },
         {
           "name": "crawlee_minio",
-          "status": "Up 4 hours (healthy) cpu=1.60% mem=83.16MiB / 23.41GiB",
+          "status": "Up 4 hours (healthy) cpu=1.34% mem=83.46MiB / 23.41GiB",
           "health": "healthy",
           "docker_port": "9000",
           "host_port": "—"
         },
         {
           "name": "crawlee_redis",
-          "status": "Up 4 hours (healthy) cpu=1.45% mem=5.547MiB / 23.41GiB",
+          "status": "Up 4 hours (healthy) cpu=1.41% mem=5.539MiB / 23.41GiB",
           "health": "healthy",
           "docker_port": "6381",
           "host_port": "—"
         },
         {
           "name": "mattermost",
-          "status": "Up 4 hours (healthy) cpu=0.08% mem=175.2MiB / 512MiB",
+          "status": "Up 4 hours (healthy) cpu=0.08% mem=175.1MiB / 512MiB",
           "health": "healthy",
           "docker_port": "8065",
           "host_port": "—"
         },
         {
           "name": "mattermost-postgres",
-          "status": "Up 4 hours (healthy) cpu=0.01% mem=28.01MiB / 512MiB",
+          "status": "Up 4 hours (healthy) cpu=0.06% mem=28.2MiB / 512MiB",
           "health": "healthy",
           "docker_port": "5435",
           "host_port": "—"
         },
         {
           "name": "hedgedoc_app",
-          "status": "Up 4 hours (healthy) cpu=0.25% mem=88.86MiB / 512MiB",
+          "status": "Up 4 hours (healthy) cpu=0.24% mem=88.82MiB / 512MiB",
           "health": "healthy",
           "docker_port": "3018",
           "host_port": "—"
         },
         {
           "name": "hedgedoc_postgres",
-          "status": "Up 4 hours (healthy) cpu=0.00% mem=18.77MiB / 512MiB",
+          "status": "Up 4 hours (healthy) cpu=0.00% mem=18.8MiB / 512MiB",
           "health": "healthy",
           "docker_port": "5439",
           "host_port": "—"
         },
         {
           "name": "etherpad_app",
-          "status": "Up 4 hours (healthy) cpu=0.33% mem=292.7MiB / 512MiB",
+          "status": "Up 4 hours (healthy) cpu=0.42% mem=294.3MiB / 512MiB",
           "health": "healthy",
           "docker_port": "3012",
           "host_port": "—"
         },
         {
           "name": "etherpad_postgres",
-          "status": "Up 4 hours (healthy) cpu=0.00% mem=22.3MiB / 512MiB",
+          "status": "Up 4 hours (healthy) cpu=0.00% mem=22.14MiB / 512MiB",
           "health": "healthy",
           "docker_port": "5436",
           "host_port": "—"
         },
         {
           "name": "windmill-server",
-          "status": "Up 4 hours (healthy) cpu=0.08% mem=171MiB / 512MiB",
+          "status": "Up 4 hours (healthy) cpu=0.03% mem=170.5MiB / 512MiB",
           "health": "healthy",
           "docker_port": "8000",
           "host_port": "—"
         },
         {
           "name": "windmill-db",
-          "status": "Up 4 hours (healthy) cpu=1.25% mem=118.8MiB / 128MiB",
+          "status": "Up 4 hours (healthy) cpu=1.25% mem=104.6MiB / 128MiB",
           "health": "healthy",
           "docker_port": "5440",
           "host_port": "—"
         },
         {
           "name": "c3-services-mcp",
-          "status": "Up 4 hours (healthy) cpu=0.08% mem=123.9MiB / 512MiB",
+          "status": "Up 5 hours (healthy) cpu=0.07% mem=124.1MiB / 512MiB",
           "health": "healthy",
           "docker_port": "3101",
           "host_port": "—"
         },
         {
           "name": "dbgate",
-          "status": "Up 6 hours (healthy) cpu=1.56% mem=50.09MiB / 256MiB",
+          "status": "Up 6 hours (healthy) cpu=1.60% mem=50.7MiB / 256MiB",
           "health": "healthy",
           "docker_port": "8086",
           "host_port": "—"
         },
         {
           "name": "lgtm_grafana",
-          "status": "Up 31 hours (healthy) cpu=0.34% mem=127.5MiB / 23.41GiB",
+          "status": "Up 31 hours (healthy) cpu=0.37% mem=127.5MiB / 23.41GiB",
           "health": "healthy",
           "docker_port": "3200",
           "host_port": "—"
         },
         {
           "name": "lgtm_loki",
-          "status": "Up 31 hours (healthy) cpu=0.64% mem=63.19MiB / 23.41GiB",
+          "status": "Up 31 hours (healthy) cpu=0.80% mem=63.45MiB / 23.41GiB",
           "health": "healthy",
           "docker_port": "3110",
           "host_port": "—"
@@ -1691,37 +1691,37 @@
       "mem_used": "632M",
       "mem_total": "954M",
       "mem_pct": 66,
-      "swap": "190M/2559M",
+      "swap": "188M/2559M",
       "disk_used": "33G",
       "disk_total": "45G",
       "disk_pct": "78%",
-      "load": "0.63 0.31 0.22",
+      "load": "0.23 0.29 0.23",
       "uptime": "16d 0h",
       "containers": [
         {
           "name": "smtp-proxy",
-          "status": "Up 4 hours cpu=0.00% mem=2.414MiB / 954.2MiB",
+          "status": "Up 4 hours cpu=0.00% mem=3.008MiB / 954.2MiB",
           "health": "running",
           "docker_port": "8080",
           "host_port": "8080"
         },
         {
           "name": "maddy",
-          "status": "Up 7 hours cpu=0.02% mem=9.898MiB / 256MiB",
+          "status": "Up 7 hours cpu=0.01% mem=23.96MiB / 256MiB",
           "health": "running",
           "docker_port": "443",
           "host_port": "—"
         },
         {
           "name": "dagu",
-          "status": "Up 12 days cpu=0.01% mem=13.38MiB / 256MiB",
+          "status": "Up 12 days cpu=0.01% mem=17.61MiB / 256MiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "snappymail",
-          "status": "Up 6 hours (healthy) cpu=0.02% mem=18.12MiB / 64MiB",
+          "status": "Up 6 hours (healthy) cpu=0.02% mem=13.62MiB / 64MiB",
           "health": "healthy",
           "docker_port": "8888",
           "host_port": "—"
@@ -1733,15 +1733,15 @@
     {
       "alias": "oci-analytics",
       "reachable": true,
-      "mem_used": "663M",
+      "mem_used": "698M",
       "mem_total": "954M",
-      "mem_pct": 69,
-      "swap": "264M/1535M",
+      "mem_pct": 73,
+      "swap": "287M/1535M",
       "disk_used": "23G",
       "disk_total": "48G",
       "disk_pct": "51%",
-      "load": "0.33 0.72 0.77",
-      "uptime": "9d 6h",
+      "load": "0.94 0.65 0.60",
+      "uptime": "9d 7h",
       "containers": [
         {
           "name": "fluent-bit",
@@ -1773,42 +1773,42 @@
         },
         {
           "name": "matomo-hybrid",
-          "status": "Up 5 hours cpu=0.02% mem=3.938MiB / 954.2MiB",
+          "status": "Up 5 hours cpu=0.02% mem=4.293MiB / 954.2MiB",
           "health": "running",
           "docker_port": "8084",
           "host_port": "—"
         },
         {
           "name": "dagu",
-          "status": "Up 6 hours cpu=0.07% mem=61.18MiB / 256MiB",
+          "status": "Up 6 hours cpu=0.01% mem=13.86MiB / 256MiB",
           "health": "running",
           "docker_port": "8070",
           "host_port": "—"
         },
         {
           "name": "sauron-forwarder",
-          "status": "Up 37 hours cpu=0.00% mem=748KiB / 954.2MiB",
+          "status": "Up 37 hours cpu=0.01% mem=748KiB / 954.2MiB",
           "health": "running",
           "docker_port": "—",
           "host_port": "—"
         },
         {
           "name": "dozzle",
-          "status": "Up 37 hours cpu=0.05% mem=5.242MiB / 64MiB",
+          "status": "Up 37 hours cpu=0.07% mem=2.32MiB / 64MiB",
           "health": "running",
           "docker_port": "9999",
           "host_port": "—"
         },
         {
           "name": "umami",
-          "status": "Up 5 hours (healthy) cpu=0.00% mem=62.45MiB / 128MiB",
+          "status": "Up 5 hours (healthy) cpu=3.34% mem=68.09MiB / 128MiB",
           "health": "healthy",
           "docker_port": "3006",
           "host_port": "—"
         },
         {
           "name": "umami-db",
-          "status": "Up 5 hours (healthy) cpu=0.00% mem=17.57MiB / 128MiB",
+          "status": "Up 5 hours (healthy) cpu=0.00% mem=17.48MiB / 128MiB",
           "health": "healthy",
           "docker_port": "5442",
           "host_port": "—"
@@ -1824,25 +1824,25 @@
         "domain": "diegonmarcos.com",
         "priority": "22",
         "server": "route1.mx.cloudflare.net.",
-        "ip": "162.159.205.13"
-      },
-      {
-        "domain": "diegonmarcos.com",
-        "priority": "85",
-        "server": "route2.mx.cloudflare.net.",
-        "ip": "162.159.205.18"
+        "ip": "162.159.205.12"
       },
       {
         "domain": "diegonmarcos.com",
         "priority": "97",
         "server": "route3.mx.cloudflare.net.",
-        "ip": "162.159.205.25"
+        "ip": "162.159.205.23"
+      },
+      {
+        "domain": "diegonmarcos.com",
+        "priority": "85",
+        "server": "route2.mx.cloudflare.net.",
+        "ip": "162.159.205.19"
       },
       {
         "domain": "send.mails.diegonmarcos.com",
         "priority": "10",
         "server": "feedback-smtp.us-east-1.amazonses.com.",
-        "ip": "18.235.76.96"
+        "ip": "3.218.134.115"
       },
       {
         "domain": "mails.diegonmarcos.com",
@@ -1945,13 +1945,216 @@
       "open_ports": []
     }
   ],
+  "db_health": [
+    {
+      "service": "authelia",
+      "db_type": "?",
+      "container": "authelia",
+      "vm": "gcp-proxy",
+      "port": 9091,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "authelia.app",
+      "backup": true
+    },
+    {
+      "service": "umami",
+      "db_type": "postgres",
+      "container": "umami-db",
+      "vm": "oci-analytics",
+      "port": 5442,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "umami-db.app",
+      "backup": true
+    },
+    {
+      "service": "crawlee-cloud",
+      "db_type": "postgres",
+      "container": "crawlee_db",
+      "vm": "oci-apps",
+      "port": 5433,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": true,
+      "dns": "crawlee-db.app",
+      "backup": true
+    },
+    {
+      "service": "etherpad",
+      "db_type": "postgres",
+      "container": "etherpad_postgres",
+      "vm": "oci-apps",
+      "port": 5436,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": true,
+      "dns": "etherpad-db.app",
+      "backup": true
+    },
+    {
+      "service": "gitea",
+      "db_type": "?",
+      "container": "gitea",
+      "vm": "oci-apps",
+      "port": 3002,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "backup-gitea.app",
+      "backup": true
+    },
+    {
+      "service": "grist",
+      "db_type": "?",
+      "container": "grist_app",
+      "vm": "oci-apps",
+      "port": 3011,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "grist.app",
+      "backup": true
+    },
+    {
+      "service": "hedgedoc",
+      "db_type": "postgres",
+      "container": "hedgedoc_postgres",
+      "vm": "oci-apps",
+      "port": 5439,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": true,
+      "dns": "hedgedoc-db.app",
+      "backup": true
+    },
+    {
+      "service": "mattermost-bots",
+      "db_type": "postgres",
+      "container": "mattermost-postgres",
+      "vm": "oci-apps",
+      "port": 5435,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": true,
+      "dns": "mattermost-postgres.app",
+      "backup": true
+    },
+    {
+      "service": "ntfy",
+      "db_type": "?",
+      "container": "ntfy",
+      "vm": "oci-apps",
+      "port": 8090,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "ntfy.app",
+      "backup": true
+    },
+    {
+      "service": "photoprism",
+      "db_type": "mariadb",
+      "container": "photoprism_mariadb",
+      "vm": "oci-apps",
+      "port": 0,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "embedded",
+      "backup": true
+    },
+    {
+      "service": "quant-lab-light",
+      "db_type": "postgres",
+      "container": "quant_light_db",
+      "vm": "oci-apps",
+      "port": 5443,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": true,
+      "dns": "quant-light-db.app",
+      "backup": true
+    },
+    {
+      "service": "vaultwarden",
+      "db_type": "?",
+      "container": "vaultwarden",
+      "vm": "oci-apps",
+      "port": 8880,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": true,
+      "dns": "vaultwarden.app",
+      "backup": true
+    },
+    {
+      "service": "windmill",
+      "db_type": "postgres",
+      "container": "windmill-db",
+      "vm": "oci-apps",
+      "port": 5440,
+      "declared": true,
+      "running": true,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": true,
+      "dns": "windmill-db.app",
+      "backup": true
+    }
+  ],
+  "storage_health": [
+    {
+      "name": "archlinux-images",
+      "provider": "oci",
+      "tier": "Standard",
+      "accessible": true,
+      "size": "—",
+      "objects": "—"
+    },
+    {
+      "name": "my-photos",
+      "provider": "oci",
+      "tier": "Standard",
+      "accessible": true,
+      "size": "—",
+      "objects": "—"
+    }
+  ],
   "timers": {
-    "private": 5480,
-    "vm_ssh": 11317,
-    "mesh": 3001,
-    "public_urls": 5719,
-    "port_scan": 3009,
-    "mail_dns": 12537,
-    "TOTAL": 12678
+    "public_urls": 2518,
+    "private": 5463,
+    "mesh": 3002,
+    "databases": 4728,
+    "port_scan": 3008,
+    "vm_ssh": 8989,
+    "mail_dns": 12507,
+    "TOTAL": 12698
   }
 }

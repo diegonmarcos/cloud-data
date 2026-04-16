@@ -1,12 +1,12 @@
 {
-  "generated": "2026-04-16T11:03:46.773253289+00:00",
-  "duration_ms": 9747,
+  "generated": "2026-04-16T11:52:51.049524661+00:00",
+  "duration_ms": 18950,
   "path_checks": [
     {
       "name": "OUT→1 Maddy :465 (SMTPS)",
       "passed": true,
       "details": "tcp 10.0.0.3:465 OPEN",
-      "duration_ms": 247,
+      "duration_ms": 288,
       "error": null,
       "severity": "Info"
     },
@@ -14,7 +14,7 @@
       "name": "OUT→2 OCI relay :587",
       "passed": true,
       "details": "tcp smtp.email.eu-marseille-1.oci.oraclecloud.com:587 OPEN",
-      "duration_ms": 201,
+      "duration_ms": 245,
       "error": null,
       "severity": "Info"
     },
@@ -22,7 +22,7 @@
       "name": "OUT→3 AWS relay :587 (fallback)",
       "passed": true,
       "details": "tcp email-smtp.us-east-1.amazonaws.com:587 OPEN",
-      "duration_ms": 251,
+      "duration_ms": 259,
       "error": null,
       "severity": "Info"
     },
@@ -30,7 +30,7 @@
       "name": "IN→1 Cloudflare MX",
       "passed": true,
       "details": "MX records present",
-      "duration_ms": 145,
+      "duration_ms": 205,
       "error": null,
       "severity": "Info"
     },
@@ -38,7 +38,7 @@
       "name": "IN→2 smtp.diegonmarcos.com HTTPS",
       "passed": false,
       "details": "HTTP 0 (err: error sending request for url (https://smtp.diegonmarcos.com/))",
-      "duration_ms": 349,
+      "duration_ms": 332,
       "error": "Caddy/smtp-proxy unreachable from internet",
       "severity": "Critical"
     },
@@ -46,7 +46,7 @@
       "name": "IN→3 Hickory DNS smtp-proxy.app",
       "passed": true,
       "details": "→ 10.0.0.3",
-      "duration_ms": 128,
+      "duration_ms": 185,
       "error": null,
       "severity": "Info"
     },
@@ -54,7 +54,7 @@
       "name": "IN→4 smtp-proxy :8080 (oci-mail)",
       "passed": true,
       "details": "tcp 10.0.0.3:8080 OPEN",
-      "duration_ms": 243,
+      "duration_ms": 301,
       "error": null,
       "severity": "Info"
     },
@@ -62,7 +62,7 @@
       "name": "IN→5 Maddy :25 (oci-mail)",
       "passed": true,
       "details": "tcp 10.0.0.3:25 OPEN",
-      "duration_ms": 242,
+      "duration_ms": 306,
       "error": null,
       "severity": "Info"
     },
@@ -70,7 +70,7 @@
       "name": "IN→6 IMAP :993 (INBOX)",
       "passed": true,
       "details": "tcp 10.0.0.3:993 OPEN",
-      "duration_ms": 534,
+      "duration_ms": 241,
       "error": null,
       "severity": "Info"
     }
@@ -80,7 +80,7 @@
       "name": "mail.* HTTPS",
       "passed": false,
       "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/)",
-      "duration_ms": 256,
+      "duration_ms": 296,
       "error": "err: error sending request for url (https://mail.diegonmarcos.com/)",
       "severity": "Critical"
     },
@@ -88,7 +88,7 @@
       "name": "webmail HTTPS",
       "passed": false,
       "details": "HTTP err: error sending request for url (https://webmail.diegonmarcos.com/)",
-      "duration_ms": 254,
+      "duration_ms": 297,
       "error": "err: error sending request for url (https://webmail.diegonmarcos.com/)",
       "severity": "Critical"
     },
@@ -96,7 +96,7 @@
       "name": "auth HTTPS",
       "passed": false,
       "details": "HTTP err: error sending request for url (https://auth.diegonmarcos.com/api/health)",
-      "duration_ms": 261,
+      "duration_ms": 295,
       "error": "err: error sending request for url (https://auth.diegonmarcos.com/api/health)",
       "severity": "Warning"
     },
@@ -104,7 +104,7 @@
       "name": "MCP endpoint",
       "passed": false,
       "details": "HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
-      "duration_ms": 270,
+      "duration_ms": 295,
       "error": "err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
       "severity": "Warning"
     },
@@ -112,7 +112,7 @@
       "name": "mail:993 TLS",
       "passed": false,
       "details": "FAIL",
-      "duration_ms": 300,
+      "duration_ms": 335,
       "error": "FAIL",
       "severity": "Critical"
     },
@@ -120,7 +120,7 @@
       "name": "mail:465 TLS",
       "passed": false,
       "details": "FAIL",
-      "duration_ms": 312,
+      "duration_ms": 331,
       "error": "FAIL",
       "severity": "Critical"
     },
@@ -128,7 +128,7 @@
       "name": "mail:587 STARTTLS",
       "passed": false,
       "details": "FAIL",
-      "duration_ms": 309,
+      "duration_ms": 331,
       "error": "FAIL",
       "severity": "Critical"
     },
@@ -136,7 +136,7 @@
       "name": "MX record",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 14,
+      "duration_ms": 18,
       "error": null,
       "severity": "Critical"
     },
@@ -144,7 +144,7 @@
       "name": "DKIM record",
       "passed": false,
       "details": "MISSING",
-      "duration_ms": 17,
+      "duration_ms": 20,
       "error": "DKIM TXT record missing",
       "severity": "Critical"
     },
@@ -160,7 +160,7 @@
       "name": "CF Worker alive",
       "passed": true,
       "details": "HTTP 500",
-      "duration_ms": 1230,
+      "duration_ms": 240,
       "error": null,
       "severity": "Critical"
     },
@@ -168,7 +168,7 @@
       "name": "Google OAuth reachable",
       "passed": true,
       "details": "HTTP 404 (token endpoint)",
-      "duration_ms": 833,
+      "duration_ms": 689,
       "error": null,
       "severity": "Warning"
     },
@@ -176,7 +176,7 @@
       "name": "IMAP direct (WG)",
       "passed": true,
       "details": "10.0.0.3:993 OK",
-      "duration_ms": 1277,
+      "duration_ms": 243,
       "error": null,
       "severity": "Info"
     },
@@ -184,7 +184,7 @@
       "name": "SMTP direct (WG)",
       "passed": true,
       "details": "10.0.0.3:25 OK",
-      "duration_ms": 1277,
+      "duration_ms": 243,
       "error": null,
       "severity": "Info"
     }
@@ -218,7 +218,7 @@
       "name": "WG oci-mail",
       "passed": true,
       "details": "10.0.0.3:22 OK",
-      "duration_ms": 242,
+      "duration_ms": 277,
       "error": null,
       "severity": "Critical"
     },
@@ -226,7 +226,7 @@
       "name": "WG oci-apps",
       "passed": true,
       "details": "10.0.0.6:22 OK",
-      "duration_ms": 242,
+      "duration_ms": 277,
       "error": null,
       "severity": "Critical"
     },
@@ -234,43 +234,91 @@
       "name": "WG gcp-proxy",
       "passed": true,
       "details": "10.0.0.1:22 OK",
-      "duration_ms": 131,
+      "duration_ms": 129,
       "error": null,
       "severity": "Critical"
     },
     {
       "name": "SSH batch oci-mail",
-      "passed": false,
-      "details": "SSH to oci-mail failed: ssh: Could not resolve hostname oci-mail: Name or service not known",
+      "passed": true,
+      "details": "Docker 27.5.1",
       "duration_ms": 0,
-      "error": "SSH to oci-mail failed: ssh: Could not resolve hostname oci-mail: Name or service not known",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
     },
     {
       "name": "SSH batch oci-apps",
       "passed": false,
-      "details": "SSH to oci-apps failed: ssh: Could not resolve hostname oci-apps: Name or service not known",
+      "details": "mail-mcp: ",
       "duration_ms": 0,
-      "error": "SSH to oci-apps failed: ssh: Could not resolve hostname oci-apps: Name or service not known",
+      "error": "mail-mcp: ",
       "severity": "Warning"
     },
     {
       "name": "SSH batch gcp-proxy",
-      "passed": false,
-      "details": "SSH to gcp-proxy failed: ssh: Could not resolve hostname gcp-proxy: Name or service not known",
+      "passed": true,
+      "details": "Authelia OK",
       "duration_ms": 0,
-      "error": "SSH to gcp-proxy failed: ssh: Could not resolve hostname gcp-proxy: Name or service not known",
+      "error": null,
       "severity": "Warning"
+    },
+    {
+      "name": "Disk space",
+      "passed": true,
+      "details": "78% used",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Memory",
+      "passed": true,
+      "details": "640/954MB (67%)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Load",
+      "passed": true,
+      "details": "load: 0.11 0.17 0.18",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
     }
   ],
   "containers": [
     {
-      "name": "skipped",
-      "passed": false,
-      "details": "SSH unreachable",
+      "name": "maddy",
+      "passed": true,
+      "details": "Up 16 minutes",
       "duration_ms": 0,
-      "error": "SSH to oci-mail failed",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "smtp-proxy",
+      "passed": true,
+      "details": "Up 39 hours",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "snappymail",
+      "passed": true,
+      "details": "Up 12 days",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "mail-mcp",
+      "passed": false,
+      "details": "",
+      "duration_ms": 0,
+      "error": "",
+      "severity": "Warning"
     }
   ],
   "network": [
@@ -278,7 +326,7 @@
       "name": "Caddy (gcp-proxy)",
       "passed": false,
       "details": "Caddy DOWN",
-      "duration_ms": 5130,
+      "duration_ms": 559,
       "error": "Caddy DOWN",
       "severity": "Critical"
     },
@@ -286,47 +334,47 @@
       "name": "Hickory DNS",
       "passed": false,
       "details": "FAIL: 10.0.0.1",
-      "duration_ms": 133,
+      "duration_ms": 221,
       "error": "FAIL: 10.0.0.1",
       "severity": "Critical"
     },
     {
       "name": "TLS WG direct",
       "passed": false,
-      "details": "SSH down",
-      "duration_ms": 0,
-      "error": "SSH down",
+      "details": "993 FAIL 465 FAIL 587 FAIL",
+      "duration_ms": 499,
+      "error": "993 FAIL 465 FAIL 587 FAIL",
       "severity": "Critical"
     },
     {
       "name": "Caddy L4 -> IMAP",
-      "passed": false,
-      "details": "no proxy data",
+      "passed": true,
+      "details": "993 forwarding OK",
       "duration_ms": 0,
-      "error": "no proxy data",
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "Caddy L4 -> SMTPS",
-      "passed": false,
-      "details": "no proxy data",
+      "passed": true,
+      "details": "465 forwarding OK",
       "duration_ms": 0,
-      "error": "no proxy data",
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "Caddy L4 -> SMTP",
-      "passed": false,
-      "details": "no proxy data",
+      "passed": true,
+      "details": "587 forwarding OK",
       "duration_ms": 0,
-      "error": "no proxy data",
+      "error": null,
       "severity": "Critical"
     },
     {
       "name": "mail:993 (IMAP)",
       "passed": false,
       "details": "FAIL",
-      "duration_ms": 305,
+      "duration_ms": 428,
       "error": "FAIL",
       "severity": "Critical"
     },
@@ -334,7 +382,7 @@
       "name": "mail:465 (SMTPS)",
       "passed": false,
       "details": "FAIL",
-      "duration_ms": 308,
+      "duration_ms": 429,
       "error": "FAIL",
       "severity": "Critical"
     },
@@ -342,55 +390,55 @@
       "name": "mail:587 (SMTP Sub)",
       "passed": false,
       "details": "FAIL",
-      "duration_ms": 303,
+      "duration_ms": 428,
       "error": "FAIL",
       "severity": "Critical"
     },
     {
       "name": "SMTP :25 relay",
-      "passed": false,
-      "details": "no data",
+      "passed": true,
+      "details": "220 mail.diegonmarcos.com ESMTP Service Ready",
       "duration_ms": 0,
-      "error": "no data",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "SMTP :587 local TLS",
-      "passed": false,
-      "details": "no data",
+      "passed": true,
+      "details": "STARTTLS OK",
       "duration_ms": 0,
-      "error": "no data",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "Webmail HTTPS",
       "passed": false,
       "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/)",
-      "duration_ms": 257,
+      "duration_ms": 425,
       "error": "err: error sending request for url (https://mail.diegonmarcos.com/)",
       "severity": "Warning"
     },
     {
       "name": "Webmail internal",
-      "passed": false,
-      "details": "no data",
+      "passed": true,
+      "details": "HTTP 200",
       "duration_ms": 0,
-      "error": "no data",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "SnappyMail internal",
-      "passed": false,
-      "details": "no data",
+      "passed": true,
+      "details": "HTTP 200",
       "duration_ms": 0,
-      "error": "no data",
+      "error": null,
       "severity": "Warning"
     },
     {
       "name": "mail.*/webmail/ route",
       "passed": false,
       "details": "HTTP err: error sending request for url (https://mail.diegonmarcos.com/webmail/)",
-      "duration_ms": 260,
+      "duration_ms": 425,
       "error": "err: error sending request for url (https://mail.diegonmarcos.com/webmail/)",
       "severity": "Warning"
     },
@@ -398,16 +446,16 @@
       "name": "webmail.* redirect",
       "passed": false,
       "details": "ERR: error sending request for url (https://webmail.diegonmarcos.com/)",
-      "duration_ms": 260,
+      "duration_ms": 425,
       "error": "ERR: error sending request for url (https://webmail.diegonmarcos.com/)",
       "severity": "Warning"
     },
     {
       "name": "Authelia health",
-      "passed": false,
-      "details": "no proxy data",
+      "passed": true,
+      "details": "Authelia OK",
       "duration_ms": 0,
-      "error": "no proxy data",
+      "error": null,
       "severity": "Warning"
     },
     {
@@ -429,65 +477,65 @@
     {
       "name": "mcp->DNS resolve",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: No such container: mail-mcp",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: No such container: mail-mcp",
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP TLS",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: No such container: mail-mcp",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: No such container: mail-mcp",
       "severity": "Warning"
     },
     {
       "name": "mcp->SMTP TLS",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: No such container: mail-mcp",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: No such container: mail-mcp",
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP WG direct",
       "passed": false,
-      "details": "no app data",
+      "details": "10.0.0.3:993 Error response from daemon: No such container: mail-mcp",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "10.0.0.3:993 Error response from daemon: No such container: mail-mcp",
       "severity": "Warning"
     },
     {
       "name": "mcp->IMAP LOGIN",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: No such container: mail-mcp",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: No such container: mail-mcp",
       "severity": "Warning"
     },
     {
       "name": "mcp->SMTP AUTH",
       "passed": false,
-      "details": "no app data",
+      "details": "Error response from daemon: No such container: mail-mcp",
       "duration_ms": 0,
-      "error": "no app data",
+      "error": "Error response from daemon: No such container: mail-mcp",
       "severity": "Warning"
     },
     {
       "name": "mail-mcp MCP",
       "passed": false,
       "details": "HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (alive)",
-      "duration_ms": 259,
+      "duration_ms": 425,
       "error": "err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)",
       "severity": "Warning"
     },
     {
       "name": "All ports bound",
-      "passed": false,
-      "details": "no data",
+      "passed": true,
+      "details": "all 6 ports bound",
       "duration_ms": 0,
-      "error": "no data",
+      "error": null,
       "severity": "Critical"
     }
   ],
@@ -496,7 +544,7 @@
       "name": "MX",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 56,
+      "duration_ms": 23,
       "error": null,
       "severity": "Critical"
     },
@@ -504,7 +552,7 @@
       "name": "DKIM",
       "passed": false,
       "details": "missing",
-      "duration_ms": 3167,
+      "duration_ms": 25,
       "error": "DKIM missing",
       "severity": "Critical"
     },
@@ -512,7 +560,7 @@
       "name": "SPF",
       "passed": true,
       "details": "v=spf1",
-      "duration_ms": 78,
+      "duration_ms": 220,
       "error": null,
       "severity": "Critical"
     },
@@ -520,28 +568,140 @@
       "name": "DMARC",
       "passed": true,
       "details": "v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 78,
+      "duration_ms": 15,
       "error": null,
       "severity": "Critical"
     }
   ],
   "internals": [
     {
-      "name": "skipped",
-      "passed": false,
-      "details": "SSH unreachable",
+      "name": "IMAP auth",
+      "passed": true,
+      "details": "Maddy IMAP responding",
       "duration_ms": 0,
-      "error": "SSH to oci-mail failed",
-      "severity": "Critical"
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "IMAP protocol",
+      "passed": true,
+      "details": "IMAP4rev1",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "spam filter",
+      "passed": true,
+      "details": "Maddy built-in DKIM/SPF",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "data store",
+      "passed": true,
+      "details": "Maddy SQLite",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "admin panel",
+      "passed": true,
+      "details": "Maddy CLI-only (no web admin)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "sieve filter",
+      "passed": true,
+      "details": "Maddy built-in sieve (no ManageSieve server)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "mailbox quota",
+      "passed": true,
+      "details": "me@diegonmarcos.com\nno-reply@diegonmarcos.com",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Mail accounts",
+      "passed": true,
+      "details": "2 accounts (maddy creds)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Mail domains",
+      "passed": true,
+      "details": "diegonmarcos.com configured",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Mail queue",
+      "passed": true,
+      "details": "empty",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "User accounts",
+      "passed": true,
+      "details": "2 users",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
     }
   ],
   "config_drift": [
     {
-      "name": "config drift",
+      "name": "Dist built",
       "passed": false,
-      "details": "no remote data (SSH failed)",
+      "details": "dist/maddy.conf.tpl missing — run: build.sh build",
       "duration_ms": 0,
-      "error": "SSH to oci-mail failed",
+      "error": "run: build.sh build",
+      "severity": "Critical"
+    },
+    {
+      "name": "L2→Host dist=deployed",
+      "passed": false,
+      "details": "DRIFT",
+      "duration_ms": 0,
+      "error": "run: build.sh deploy",
+      "severity": "Warning"
+    },
+    {
+      "name": "Host→Container tpl",
+      "passed": true,
+      "details": "match (a3e47eca)",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "Running config",
+      "passed": true,
+      "details": "hostname=OK relay=OK tls=OK local=OK",
+      "duration_ms": 0,
+      "error": null,
+      "severity": "Info"
+    },
+    {
+      "name": "FULL CHAIN src=dist=host=container",
+      "passed": false,
+      "details": "DRIFT DETECTED",
+      "duration_ms": 0,
+      "error": "rebuild+deploy needed",
       "severity": "Critical"
     }
   ],
@@ -556,22 +716,22 @@
     }
   ],
   "summary": {
-    "total_checks": 67,
-    "passed": 22,
-    "failed": 45,
-    "warnings": 20,
-    "critical": 25
+    "total_checks": 87,
+    "passed": 52,
+    "failed": 35,
+    "warnings": 16,
+    "critical": 19
   },
   "timers": {
-    "P1_preflight": 404,
-    "T0_path_checker": 2345,
     "P2_containers": 0,
-    "TOTAL": 9747,
-    "P0_instant_kpis": 1866,
-    "P4_dns_auth": 5130,
-    "P3_network": 5130,
-    "P6_e2e_delivery": 0,
-    "P2-P5_parallel": 5130,
-    "P5_internals": 0
+    "P5_internals": 0,
+    "P4_dns_auth": 559,
+    "P2-P5_parallel": 559,
+    "P3_network": 559,
+    "TOTAL": 18950,
+    "P0_instant_kpis": 1321,
+    "T0_path_checker": 2368,
+    "P1_preflight": 14699,
+    "P6_e2e_delivery": 0
   }
 }

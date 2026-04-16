@@ -6,14 +6,14 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-04-16T18:13:02.759183176+00:00
+         CONTAINER HEALTH — 2026-04-16T18:39:35.257772279+00:00
 ════════════════════════════════════════════════════════════
 
 
 ══════════════════════════════════════════════════════════════
   ⚠️  ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-46 critical, 5 warnings — 51 total
+50 critical, 14 warnings — 64 total
 
     ❌ A3       gcp-proxy/sqlite-authelia — exited
     ❌ A3       gcp-proxy/sqlite-ntfy — exited
@@ -61,11 +61,24 @@
     ❌ A1       db.diegonmarcos.com — [502]
     ❌ A1       sheets.diegonmarcos.com — [502]
     ❌ A1       dns.internal — [err: error sending request for url (https://dns.internal/)]
-    ❌ A1       mail.diegonmarcos.com — [err: error sending request for url (https://mail.diegonmarcos.com/)]
     ❌ A1       analytics.diegonmarcos.com — [502]
     ❌ A1       chat.diegonmarcos.com — [502]
     ❌ A1       rss.diegonmarcos.com — [502]
     ❌ A1       cal.diegonmarcos.com — [502]
+    ❌ A1       cloud.diegonmarcos.com — [err: error sending request for url (https://cloud.diegonmarcos.com/)]
+    ❌ B2       gcp-proxy/authelia (?) — not running
+    ⚠️ B2       oci-analytics/umami-db (postgres) — unhealthy
+    ⚠️ B2       oci-apps/crawlee_db (postgres) — unhealthy
+    ⚠️ B2       oci-apps/etherpad_postgres (postgres) — unhealthy
+    ❌ B2       oci-apps/gitea (?) — not running
+    ❌ B2       oci-apps/grist_app (?) — not running
+    ⚠️ B2       oci-apps/hedgedoc_postgres (postgres) — unhealthy
+    ⚠️ B2       oci-apps/mattermost-postgres (postgres) — unhealthy
+    ❌ B2       oci-apps/ntfy (?) — not running
+    ⚠️ B2       oci-apps/photoprism_mariadb (mariadb) — unhealthy
+    ⚠️ B2       oci-apps/quant_light_db (postgres) — unhealthy
+    ⚠️ B2       oci-apps/vaultwarden (?) — unhealthy
+    ⚠️ B2       oci-apps/windmill-db (postgres) — unhealthy
 
 
 ══════════════════════════════════════════════════════════════
@@ -109,8 +122,8 @@ PUBLIC URLs (Caddy routes)
 ⚠️ sheets.diegonmarcos.com          ✅  ❌  ❌  ❌  10.0.0.6:3011          [502] auth:[502]
 ✅ doc.diegonmarcos.com             ✅  ❌  ✅  ✅  10.0.0.6:3018          [200] 
 ❌ dns.internal                     ❌  ❌  ❌  ❌  10.0.0.1:53            [err: error sending request for url (https://dns.internal/)] auth:[err: error sending request for url (https://dns.internal/)]
-⚠️ grafana.diegonmarcos.com         ❌  ❌  ✅  ✅  10.0.0.6:3200          [200] 
-⚠️ mail.diegonmarcos.com            ✅  ❌  ❌  ✅  10.0.0.3:443           [err: error sending request for url (https://mail.diegonmarcos.com/)] 
+✅ grafana.diegonmarcos.com         ✅  ❌  ✅  ✅  10.0.0.6:3200          [200] 
+✅ mail.diegonmarcos.com            ✅  ❌  ✅  ✅  10.0.0.3:443           [200] 
 ⚠️ analytics.diegonmarcos.com       ✅  ❌  ❌  ❌  10.0.0.4:8084          [502] auth:[502]
 ⚠️ chat.diegonmarcos.com            ✅  ❌  ❌  ❌  10.0.0.6:8065          [502] auth:[502]
 ⚠️ rss.diegonmarcos.com             ✅  ❌  ❌  ❌  10.0.0.6:8090          [502] auth:[502]
@@ -131,7 +144,7 @@ PUBLIC URLs (Caddy routes)
 ⚠️ app.diegonmarcos.com/grafana     ❌  ❌  ✅  ✅  10.0.0.6:3016          [404] 
 ⚠️ app.diegonmarcos.com/gitea       ❌  ❌  ✅  ✅  10.0.0.6:3017          [404] 
 ⚠️ app.diegonmarcos.com/crawlee     ❌  ❌  ✅  ✅  10.0.0.6:3001          [404] 
-✅ cloud.diegonmarcos.com           ✅  ❌  ✅  ✅  10.0.0.6:3080          [200] 
+⚠️ cloud.diegonmarcos.com           ✅  ❌  ❌  ❌  10.0.0.6:3080          [err: error sending request for url (https://cloud.diegonmarcos.com/)] auth:[err: error sending request for url (https://cloud.diegonmarcos.com/)]
 ✅ mcp.diegonmarcos.com             ✅  ❌  ✅  ✅  10.0.0.6:3100          [200] 
 ✅ mta-sts.diegonmarcos.com         ✅  ✅  ✅  ✅  static                 [404] 
 
@@ -224,107 +237,107 @@ REPOS & REGISTRIES
 
 ── A3) Containers ────────────────────────────────────────────
 
-gcp-proxy ✅ — 2C/2G — mem 1020M/1952M (52%) — disk 64% — swap 53M/3999M — load 0.08 0.06 0.08 — 13/18 ctrs — 15d 20h
+gcp-proxy ✅ — 2C/2G — mem 1188M/1952M (60%) — disk 70% — swap 126M/3999M — load 0.03 0.18 0.40 — 13/18 ctrs — 15d 21h
 ────────────────────────────────────────────────────────────
-  ❌ sqlite-authelia           —      —      DOWN(2)        Exited (2) 27 minutes ago
-  ❌ sqlite-ntfy               —      —      DOWN(2)        Exited (2) 27 minutes ago
-  ❌ sqlite-npm                —      —      DOWN(2)        Exited (2) 27 minutes ago
-  ❌ sqlite-vaultwarden        —      —      DOWN(2)        Exited (2) 27 minutes ago
-  ❌ authelia                  —      9091   DOWN(1)        Exited (1) 27 minutes ago
-  ❌ introspect-proxy          —      4182   UNHEALTHY      Up 26 minutes (unhealthy) cpu=
-  ⚠️ postlite-vaultwarden      —      —      running        Up 27 minutes cpu=0.00% mem=10
-  ⚠️ postlite-authelia         —      —      running        Up 27 minutes cpu=0.00% mem=1.
-  ⚠️ postlite-ntfy             —      —      running        Up 27 minutes cpu=0.00% mem=5.
-  ⚠️ postlite-npm              —      —      running        Up 27 minutes cpu=0.00% mem=3.
-  ⚠️ syslog-bridge             —      —      running        Up 27 minutes cpu=0.00% mem=16
-  ⚠️ github-rss                —      —      running        Up 27 minutes cpu=0.00% mem=23
-  ⚠️ ntfy                      —      —      running        Up 27 minutes cpu=0.00% mem=17
-  ⚠️ hickory-dns               —      53     running        Up 27 minutes cpu=0.33% mem=13
-  ⚠️ caddy                     443    443    running        Up 27 minutes cpu=0.00% mem=70
-  ⚠️ authelia-redis            —      6380   running        Up 27 minutes cpu=0.27% mem=4.
-  ✅ vaultwarden               —      —      HEALTHY        Up 27 minutes (healthy) cpu=0.
-  ✅ redis                     —      6379   HEALTHY        Up 27 minutes (healthy) cpu=0.
+  ❌ sqlite-authelia           —      —      DOWN(2)        Exited (2) 53 minutes ago
+  ❌ sqlite-ntfy               —      —      DOWN(2)        Exited (2) 53 minutes ago
+  ❌ sqlite-npm                —      —      DOWN(2)        Exited (2) 53 minutes ago
+  ❌ sqlite-vaultwarden        —      —      DOWN(2)        Exited (2) 53 minutes ago
+  ❌ authelia                  —      9091   DOWN(1)        Exited (1) 54 minutes ago
+  ❌ introspect-proxy          —      4182   UNHEALTHY      Up 53 minutes (unhealthy) cpu=
+  ⚠️ postlite-vaultwarden      —      —      running        Up 53 minutes cpu=0.00% mem=51
+  ⚠️ postlite-authelia         —      —      running        Up 53 minutes cpu=0.00% mem=4.
+  ⚠️ postlite-ntfy             —      —      running        Up 53 minutes cpu=0.00% mem=2.
+  ⚠️ postlite-npm              —      —      running        Up 53 minutes cpu=0.00% mem=4.
+  ⚠️ syslog-bridge             —      —      running        Up 53 minutes cpu=0.00% mem=3.
+  ⚠️ github-rss                —      —      running        Up 53 minutes cpu=0.00% mem=11
+  ⚠️ ntfy                      —      —      running        Up 53 minutes cpu=0.00% mem=34
+  ⚠️ hickory-dns               —      53     running        Up 53 minutes cpu=0.16% mem=5.
+  ⚠️ caddy                     443    443    running        Up 53 minutes cpu=0.34% mem=41
+  ⚠️ authelia-redis            —      6380   running        Up 54 minutes cpu=0.35% mem=1.
+  ✅ vaultwarden               —      —      HEALTHY        Up 53 minutes (healthy) cpu=0.
+  ✅ redis                     —      6379   HEALTHY        Up 53 minutes (healthy) cpu=0.
 
-oci-apps ✅ — 4C/24G — mem 3986M/23975M (16%) — disk 70% — swap 133M/12288M — load 0.11 0.15 0.14 — 30/59 ctrs — 18d 4h
+oci-apps ✅ — 4C/24G — mem 3826M/23975M (15%) — disk 70% — swap 135M/12288M — load 0.14 0.22 0.20 — 30/59 ctrs — 18d 4h
 ────────────────────────────────────────────────────────────
   ❌ crawlee_runner            —      —      DOWN(?)        Created
   ❌ crawlee_dashboard         3001   3001   DOWN(?)        Created
   ❌ photos-webhook            —      —      DOWN(?)        Created
   ❌ quant_light_engine        —      5001   DOWN(255)      Exited (255) 4 hours ago
   ❌ quant_light_research      —      8889   DOWN(255)      Exited (255) 4 hours ago
-  ❌ crawlee_api               3000   3000   DOWN(255)      Exited (255) 18 minutes ago
-  ❌ crawlee_minio_init        —      —      DOWN(255)      Exited (255) 18 minutes ago
-  ❌ crawlee_scheduler         —      —      DOWN(255)      Exited (255) 18 minutes ago
+  ❌ crawlee_api               3000   3000   DOWN(255)      Exited (255) 44 minutes ago
+  ❌ crawlee_minio_init        —      —      DOWN(255)      Exited (255) 44 minutes ago
+  ❌ crawlee_scheduler         —      —      DOWN(255)      Exited (255) 44 minutes ago
   ❌ rig-agentic-sonn-14bq8    —      8091   DOWN(255)      Exited (255) 4 hours ago
   ❌ rig-agentic-hai           —      —      DOWN(255)      Exited (255) 6 hours ago
-  ❌ radicale                  —      5232   DOWN(255)      Exited (255) 18 minutes ago
-  ❌ ollama-hai                —      11435  DOWN(255)      Exited (255) 39 minutes ago
-  ❌ syslog-bridge             —      —      DOWN(255)      Exited (255) 18 minutes ago
-  ❌ github-rss                —      —      DOWN(255)      Exited (255) 18 minutes ago
-  ❌ ntfy                      —      8090   DOWN(255)      Exited (255) 18 minutes ago
+  ❌ radicale                  —      5232   DOWN(255)      Exited (255) 44 minutes ago
+  ❌ ollama-hai                —      11435  DOWN(255)      Exited (255) About an hour ago
+  ❌ syslog-bridge             —      —      DOWN(255)      Exited (255) 44 minutes ago
+  ❌ github-rss                —      —      DOWN(255)      Exited (255) 44 minutes ago
+  ❌ ntfy                      —      8090   DOWN(255)      Exited (255) 44 minutes ago
   ❌ surrealdb                 —      —      DOWN(255)      Exited (255) 6 hours ago
-  ❌ code-server               —      8443   DOWN(255)      Exited (255) 18 minutes ago
+  ❌ code-server               —      8443   DOWN(255)      Exited (255) 44 minutes ago
   ❌ c3-infra-mcp              —      3100   DOWN(1)        Exited (1) 6 hours ago
   ❌ gitea                     —      3002   DOWN(255)      Exited (255) 6 hours ago
   ❌ bup-server                —      —      DOWN(255)      Exited (255) 6 hours ago
   ❌ borg-server               —      —      DOWN(255)      Exited (255) 6 hours ago
-  ❌ syslog-central            —      —      DOWN(255)      Exited (255) 39 minutes ago
-  ❌ siem-api                  —      —      DOWN(255)      Exited (255) 39 minutes ago
-  ❌ revealmd_app              —      3014   DOWN(255)      Exited (255) 39 minutes ago
-  ❌ photos-db                 —      —      DOWN(255)      Exited (255) 39 minutes ago
-  ❌ grist_app                 —      3011   DOWN(255)      Exited (255) 39 minutes ago
-  ❌ filebrowser_app           —      3015   DOWN(255)      Exited (255) 39 minutes ago
-  ❌ cloud-spec                —      3080   DOWN(255)      Exited (255) 39 minutes ago
-  ❌ cloud-cgc-mcp             —      3105   DOWN(255)      Exited (255) 39 minutes ago
-  ❌ news-gdelt                —      —      UNHEALTHY      Up 39 minutes (unhealthy) cpu=
-  ❌ google-workspace-mcp      —      3104   UNHEALTHY      Up 4 hours (unhealthy) cpu=1.9
-  ❌ c3-services-api           —      8082   UNHEALTHY      Up 4 hours (unhealthy) cpu=0.0
-  ❌ c3-infra-api              8081   8081   UNHEALTHY      Up 4 hours (unhealthy) cpu=0.1
-  ⚠️ mattermost-bots           —      —      running        Up 4 hours cpu=0.01% mem=54.76
-  ⚠️ windmill-worker           —      —      running        Up 4 hours cpu=0.77% mem=26.21
-  ⚠️ mail-mcp                  —      3103   running        Up 5 hours cpu=0.14% mem=133.4
-  ⚠️ mattermost-mcp            —      3102   running        Up 5 hours cpu=0.04% mem=101Mi
-  ⚠️ lgtm_mimir                —      9009   running        Up 31 hours cpu=0.48% mem=32.4
-  ⚠️ lgtm_tempo                —      3210   running        Up 31 hours cpu=0.07% mem=21.7
-  ✅ quant_light_db            —      5443   HEALTHY        Up 4 hours (healthy) cpu=1.79%
+  ❌ syslog-central            —      —      DOWN(255)      Exited (255) About an hour ago
+  ❌ siem-api                  —      —      DOWN(255)      Exited (255) About an hour ago
+  ❌ revealmd_app              —      3014   DOWN(255)      Exited (255) About an hour ago
+  ❌ photos-db                 —      —      DOWN(255)      Exited (255) About an hour ago
+  ❌ grist_app                 —      3011   DOWN(255)      Exited (255) About an hour ago
+  ❌ filebrowser_app           —      3015   DOWN(255)      Exited (255) About an hour ago
+  ❌ cloud-spec                —      3080   DOWN(255)      Exited (255) About an hour ago
+  ❌ cloud-cgc-mcp             —      3105   DOWN(255)      Exited (255) About an hour ago
+  ❌ news-gdelt                —      —      UNHEALTHY      Up About an hour (unhealthy) c
+  ❌ google-workspace-mcp      —      3104   UNHEALTHY      Up 5 hours (unhealthy) cpu=0.1
+  ❌ c3-services-api           —      8082   UNHEALTHY      Up 5 hours (unhealthy) cpu=0.0
+  ❌ c3-infra-api              8081   8081   UNHEALTHY      Up 5 hours (unhealthy) cpu=0.0
+  ⚠️ mattermost-bots           —      —      running        Up 4 hours cpu=0.01% mem=54.79
+  ⚠️ windmill-worker           —      —      running        Up 4 hours cpu=1.12% mem=26.26
+  ⚠️ mail-mcp                  —      3103   running        Up 5 hours cpu=0.13% mem=133.4
+  ⚠️ mattermost-mcp            —      3102   running        Up 5 hours cpu=0.08% mem=101Mi
+  ⚠️ lgtm_mimir                —      9009   running        Up 31 hours cpu=0.45% mem=32.4
+  ⚠️ lgtm_tempo                —      3210   running        Up 31 hours cpu=0.02% mem=21.7
+  ✅ quant_light_db            —      5443   HEALTHY        Up 4 hours (healthy) cpu=0.00%
   ✅ vaultwarden               —      8880   HEALTHY        Up 4 hours (healthy) cpu=0.00%
   ✅ photoprism_app            —      3013   HEALTHY        Up 4 hours (healthy) cpu=0.00%
   ✅ photoprism_mariadb        —      —      HEALTHY        Up 4 hours (healthy) cpu=0.01%
   ✅ photoprism_rclone         —      —      HEALTHY        Up 4 hours (healthy) cpu=0.01%
   ✅ crawlee_db                —      5433   HEALTHY        Up 4 hours (healthy) cpu=0.00%
-  ✅ crawlee_minio             —      9000   HEALTHY        Up 4 hours (healthy) cpu=1.60%
-  ✅ crawlee_redis             —      6381   HEALTHY        Up 4 hours (healthy) cpu=1.45%
+  ✅ crawlee_minio             —      9000   HEALTHY        Up 4 hours (healthy) cpu=1.34%
+  ✅ crawlee_redis             —      6381   HEALTHY        Up 4 hours (healthy) cpu=1.41%
   ✅ mattermost                —      8065   HEALTHY        Up 4 hours (healthy) cpu=0.08%
-  ✅ mattermost-postgres       —      5435   HEALTHY        Up 4 hours (healthy) cpu=0.01%
-  ✅ hedgedoc_app              —      3018   HEALTHY        Up 4 hours (healthy) cpu=0.25%
+  ✅ mattermost-postgres       —      5435   HEALTHY        Up 4 hours (healthy) cpu=0.06%
+  ✅ hedgedoc_app              —      3018   HEALTHY        Up 4 hours (healthy) cpu=0.24%
   ✅ hedgedoc_postgres         —      5439   HEALTHY        Up 4 hours (healthy) cpu=0.00%
-  ✅ etherpad_app              —      3012   HEALTHY        Up 4 hours (healthy) cpu=0.33%
+  ✅ etherpad_app              —      3012   HEALTHY        Up 4 hours (healthy) cpu=0.42%
   ✅ etherpad_postgres         —      5436   HEALTHY        Up 4 hours (healthy) cpu=0.00%
-  ✅ windmill-server           —      8000   HEALTHY        Up 4 hours (healthy) cpu=0.08%
+  ✅ windmill-server           —      8000   HEALTHY        Up 4 hours (healthy) cpu=0.03%
   ✅ windmill-db               —      5440   HEALTHY        Up 4 hours (healthy) cpu=1.25%
-  ✅ c3-services-mcp           —      3101   HEALTHY        Up 4 hours (healthy) cpu=0.08%
-  ✅ dbgate                    —      8086   HEALTHY        Up 6 hours (healthy) cpu=1.56%
-  ✅ lgtm_grafana              —      3200   HEALTHY        Up 31 hours (healthy) cpu=0.34
-  ✅ lgtm_loki                 —      3110   HEALTHY        Up 31 hours (healthy) cpu=0.64
+  ✅ c3-services-mcp           —      3101   HEALTHY        Up 5 hours (healthy) cpu=0.07%
+  ✅ dbgate                    —      8086   HEALTHY        Up 6 hours (healthy) cpu=1.60%
+  ✅ lgtm_grafana              —      3200   HEALTHY        Up 31 hours (healthy) cpu=0.37
+  ✅ lgtm_loki                 —      3110   HEALTHY        Up 31 hours (healthy) cpu=0.80
 
-oci-mail ✅ — 1C/1G — mem 632M/954M (66%) — disk 78% — swap 190M/2559M — load 0.63 0.31 0.22 — 4/4 ctrs — 16d 0h
+oci-mail ✅ — 1C/1G — mem 632M/954M (66%) — disk 78% — swap 188M/2559M — load 0.23 0.29 0.23 — 4/4 ctrs — 16d 0h
 ────────────────────────────────────────────────────────────
-  ⚠️ smtp-proxy                8080   8080   running        Up 4 hours cpu=0.00% mem=2.414
-  ⚠️ maddy                     —      443    running        Up 7 hours cpu=0.02% mem=9.898
-  ⚠️ dagu                      —      —      running        Up 12 days cpu=0.01% mem=13.38
+  ⚠️ smtp-proxy                8080   8080   running        Up 4 hours cpu=0.00% mem=3.008
+  ⚠️ maddy                     —      443    running        Up 7 hours cpu=0.01% mem=23.96
+  ⚠️ dagu                      —      —      running        Up 12 days cpu=0.01% mem=17.61
   ✅ snappymail                —      8888   HEALTHY        Up 6 hours (healthy) cpu=0.02%
 
-oci-analytics ✅ — 1C/1G — mem 663M/954M (69%) — disk 51% — swap 264M/1535M — load 0.33 0.72 0.77 — 6/10 ctrs — 9d 6h
+oci-analytics ✅ — 1C/1G — mem 698M/954M (73%) — disk 51% — swap 287M/1535M — load 0.94 0.65 0.60 — 6/10 ctrs — 9d 7h
 ────────────────────────────────────────────────────────────
   ❌ fluent-bit                —      —      DOWN(?)        Created
   ❌ umami-setup               —      —      DOWN(1)        Exited (1) 5 hours ago
   ❌ siem-api                  —      —      DOWN(1)        Exited (1) 6 hours ago
   ❌ syslog-central            —      —      DOWN(2)        Exited (2) 6 hours ago
-  ⚠️ matomo-hybrid             —      8084   running        Up 5 hours cpu=0.02% mem=3.938
-  ⚠️ dagu                      —      8070   running        Up 6 hours cpu=0.07% mem=61.18
-  ⚠️ sauron-forwarder          —      —      running        Up 37 hours cpu=0.00% mem=748K
-  ⚠️ dozzle                    —      9999   running        Up 37 hours cpu=0.05% mem=5.24
-  ✅ umami                     —      3006   HEALTHY        Up 5 hours (healthy) cpu=0.00%
+  ⚠️ matomo-hybrid             —      8084   running        Up 5 hours cpu=0.02% mem=4.293
+  ⚠️ dagu                      —      8070   running        Up 6 hours cpu=0.01% mem=13.86
+  ⚠️ sauron-forwarder          —      —      running        Up 37 hours cpu=0.01% mem=748K
+  ⚠️ dozzle                    —      9999   running        Up 37 hours cpu=0.07% mem=2.32
+  ✅ umami                     —      3006   HEALTHY        Up 5 hours (healthy) cpu=3.34%
   ✅ umami-db                  —      5442   HEALTHY        Up 5 hours (healthy) cpu=0.00%
 
 
@@ -338,10 +351,10 @@ MX — Inbound Routing (dig MX)
 ────────────────────────────────────────────────────────────
     Domain                       Pri   Server                                     IP
 ────────────────────────────────────────────────────────────
-✅ diegonmarcos.com             22    route1.mx.cloudflare.net.                  162.159.205.13
-✅ diegonmarcos.com             85    route2.mx.cloudflare.net.                  162.159.205.18
-✅ diegonmarcos.com             97    route3.mx.cloudflare.net.                  162.159.205.25
-✅ send.mails.diegonmarcos.com  10    feedback-smtp.us-east-1.amazonses.com.     18.235.76.96
+✅ diegonmarcos.com             22    route1.mx.cloudflare.net.                  162.159.205.12
+✅ diegonmarcos.com             97    route3.mx.cloudflare.net.                  162.159.205.23
+✅ diegonmarcos.com             85    route2.mx.cloudflare.net.                  162.159.205.19
+✅ send.mails.diegonmarcos.com  10    feedback-smtp.us-east-1.amazonses.com.     3.218.134.115
 ❌ mails.diegonmarcos.com       —     no MX record                               
 
 SPF — Outbound Policy: IP Allowlist
@@ -377,8 +390,8 @@ MAIL AUTH — Authorized Senders
 MAIL FLOW — Pipeline Status
 ─────────────────────────────────
   📨 INBOUND: Gmail → MX → CF Email Routing → CF Worker → Caddy → smtp-proxy → Maddy
-     ✅ smtp-proxy           Up 4 hours cpu=0.00% mem=2.414MiB / 954.2MiB
-     ✅ maddy                Up 7 hours cpu=0.02% mem=9.898MiB / 256MiB
+     ✅ smtp-proxy           Up 4 hours cpu=0.00% mem=3.008MiB / 954.2MiB
+     ✅ maddy                Up 7 hours cpu=0.01% mem=23.96MiB / 256MiB
 
   📱 CLIENT: Phone/Thunderbird → gcp-proxy (35.226.147.64) → Caddy L4 → oci-mail → Maddy
 
@@ -407,15 +420,15 @@ RESOURCES (live)
 ────────────────────────────────────────────────────────────
 gcp-proxy      oci-apps       oci-mail       oci-analytics 
 ────────────────────────────────────────────────────────────
-CPU                52 cores      16 cores      66 cores      69 cores      
-RAM                1020M/1952M   3986M/23975M  632M/954M     663M/954M     
-RAM %              52%           16%           66%           69%           
-Swap               53M/3999M     133M/12288M   190M/2559M    264M/1535M    
-Disk               20G/31G       63.6G/95.8G   33G/45G       23G/48G       
-Disk %             64%           70%           78%           51%           
-Load               0.08 0.06 0.080.11 0.15 0.140.63 0.31 0.220.33 0.72 0.77
+CPU                60 cores      15 cores      66 cores      73 cores      
+RAM                1188M/1952M   3826M/23975M  632M/954M     698M/954M     
+RAM %              60%           15%           66%           73%           
+Swap               126M/3999M    135M/12288M   188M/2559M    287M/1535M    
+Disk               22G/31G       63.6G/95.8G   33G/45G       23G/48G       
+Disk %             70%           70%           78%           51%           
+Load               0.03 0.18 0.400.14 0.22 0.200.23 0.29 0.230.94 0.65 0.60
 Containers         13/18         30/59         4/4           6/10          
-Uptime             15d 20h       18d 4h        16d 0h        9d 6h         
+Uptime             15d 21h       18d 4h        16d 0h        9d 7h         
 
 STORAGE
 ────────────────────────────────────────────────────────────
@@ -437,6 +450,31 @@ STORAGE
     quant-lab-light      postgres   quant_light_db         oci-apps
     vaultwarden          ?          vaultwarden            oci-apps
     windmill             postgres   windmill-db            oci-apps
+
+── B2) Databases (live) ──────────────────────────────────
+    Service              Type       Container              VM               Port   TCP  Health   Size       Backup
+    ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+❌ authelia             ?          authelia               gcp-proxy        9091   ❌   ❌   ?          ✅
+⚠️ umami                postgres   umami-db               oci-analytics    5442   ❌   ❌   ?          ✅
+⚠️ crawlee-cloud        postgres   crawlee_db             oci-apps         5433   ✅   ❌   ?          ✅
+⚠️ etherpad             postgres   etherpad_postgres      oci-apps         5436   ✅   ❌   ?          ✅
+❌ gitea                ?          gitea                  oci-apps         3002   ❌   ❌   ?          ✅
+❌ grist                ?          grist_app              oci-apps         3011   ❌   ❌   ?          ✅
+⚠️ hedgedoc             postgres   hedgedoc_postgres      oci-apps         5439   ✅   ❌   ?          ✅
+⚠️ mattermost-bots      postgres   mattermost-postgres    oci-apps         5435   ✅   ❌   ?          ✅
+❌ ntfy                 ?          ntfy                   oci-apps         8090   ❌   ❌   ?          ✅
+⚠️ photoprism           mariadb    photoprism_mariadb     oci-apps         —      —   ❌   ?          ✅
+⚠️ quant-lab-light      postgres   quant_light_db         oci-apps         5443   ✅   ❌   ?          ✅
+⚠️ vaultwarden          ?          vaultwarden            oci-apps         8880   ✅   ❌   ?          ✅
+⚠️ windmill             postgres   windmill-db            oci-apps         5440   ✅   ❌   ?          ✅
+
+  Healthy: 0/13  Running: 9/13
+
+── B3) Object Storage ──────────────────────────────────
+    Bucket                         Provider   Tier           Size       Objects   
+    ────────────────────────────────────────────────────────────────────────────────
+    archlinux-images               oci        Standard       —          —         
+    my-photos                      oci        Standard       —          —         
 
 
 ══════════════════════════════════════════════════════════════
@@ -529,11 +567,12 @@ PERFORMANCE
 ────────────────────────────────────────────────────────────
   TOTAL                12.7s
   mail_dns             12.5s
-  vm_ssh               11.3s
-  public_urls          5.7s
+  vm_ssh               9.0s
   private              5.5s
+  databases            4.7s
   port_scan            3.0s
   mesh                 3.0s
+  public_urls          2.5s
 
 SCRIPT INFO
 ────────────────────────────────────────────────────────────

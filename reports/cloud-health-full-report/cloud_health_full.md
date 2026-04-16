@@ -6,23 +6,112 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-  CLOUD HEALTH FULL — 2026-04-16T11:03:37.007362809+00:00
+  CLOUD HEALTH FULL — 2026-04-16T11:52:32.075611942+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-  218 issues: 15 critical, 137 warnings, 66 info
+  258 issues: 104 critical, 88 warnings, 66 info
 
   CRITICAL:
     ❌ C3 API (mesh): http://10.0.0.6:8081/health -> err: error sending request for url (http://10.0.0.6:8081/health)
-    ❌ WG gcp-proxy: gcp-proxy (10.0.0.1): VPS=? Dropbear=fail WG:TCP=ok SSH=fail
-    ❌ WG oci-apps: oci-apps (10.0.0.6): VPS=? Dropbear=fail WG:TCP=ok SSH=fail
-    ❌ WG oci-mail: oci-mail (10.0.0.3): VPS=? Dropbear=fail WG:TCP=ok SSH=fail
-    ❌ WG oci-analytics: oci-analytics (10.0.0.4): VPS=? Dropbear=fail WG:TCP=ok SSH=fail
-    ❌ Platform gcp-proxy: gcp-proxy: unreachable (WG down)
-    ❌ Platform oci-apps: oci-apps: unreachable (WG down)
-    ❌ Platform oci-mail: oci-mail: unreachable (WG down)
-    ❌ Platform oci-analytics: oci-analytics: unreachable (WG down)
+    ❌ Container backup-gitea/gitea: gitea on oci-apps: NOT FOUND in docker ps
+    ❌ Container c3-infra-api/c3-infra-api: c3-infra-api on oci-apps: NOT FOUND in docker ps
+    ❌ Container c3-infra-mcp/c3-infra-mcp: c3-infra-mcp on oci-apps: NOT FOUND in docker ps
+    ❌ Container c3-services-mcp/c3-services-mcp: c3-services-mcp on oci-apps: NOT FOUND in docker ps
+    ❌ Container cloud-cgc-mcp/cloud-cgc-mcp: cloud-cgc-mcp on oci-apps: NOT FOUND in docker ps
+    ❌ Container cloud-spec/cloud-spec: cloud-spec on oci-apps: NOT FOUND in docker ps
+    ❌ Container code-server/code-server: code-server on oci-apps: NOT FOUND in docker ps
+    ❌ Container crawlee-cloud/crawlee_api: crawlee_api on oci-apps: NOT FOUND in docker ps
+    ❌ Container crawlee-cloud/crawlee_dashboard: crawlee_dashboard on oci-apps: NOT FOUND in docker ps
+    ❌ Container crawlee-cloud/crawlee_db: crawlee_db on oci-apps: NOT FOUND in docker ps
+    ❌ Container crawlee-cloud/crawlee_minio: crawlee_minio on oci-apps: NOT FOUND in docker ps
+    ❌ Container crawlee-cloud/crawlee_redis: crawlee_redis on oci-apps: NOT FOUND in docker ps
+    ❌ Container crawlee-cloud/crawlee_runner: crawlee_runner on oci-apps: NOT FOUND in docker ps
+    ❌ Container crawlee-cloud/crawlee_scheduler: crawlee_scheduler on oci-apps: NOT FOUND in docker ps
+    ❌ Container etherpad/etherpad_app: etherpad_app on oci-apps: NOT FOUND in docker ps
+    ❌ Container etherpad/etherpad_postgres: etherpad_postgres on oci-apps: NOT FOUND in docker ps
+    ❌ Container filebrowser/filebrowser_app: filebrowser_app on oci-apps: NOT FOUND in docker ps
+    ❌ Container fluent-bit/fluent-bit: fluent-bit on oci-analytics: NOT FOUND in docker ps
+    ❌ Container gitea/gitea: gitea on oci-apps: NOT FOUND in docker ps
+    ❌ Container google-workspace-mcp/google-workspace-mcp: google-workspace-mcp on oci-apps: NOT FOUND in docker ps
+    ❌ Container grist/grist_app: grist_app on oci-apps: NOT FOUND in docker ps
+    ❌ Container hedgedoc/hedgedoc_app: hedgedoc_app on oci-apps: NOT FOUND in docker ps
+    ❌ Container hedgedoc/hedgedoc_postgres: hedgedoc_postgres on oci-apps: NOT FOUND in docker ps
+    ❌ Container mail-mcp/mail-mcp: mail-mcp on oci-apps: NOT FOUND in docker ps
+    ❌ Container matomo/matomo-hybrid: matomo-hybrid on oci-analytics: NOT FOUND in docker ps
+    ❌ Container mattermost-bots/mattermost: mattermost on oci-apps: NOT FOUND in docker ps
+    ❌ Container mattermost-bots/mattermost-bots: mattermost-bots on oci-apps: NOT FOUND in docker ps
+    ❌ Container mattermost-bots/mattermost-postgres: mattermost-postgres on oci-apps: NOT FOUND in docker ps
+    ❌ Container mattermost-mcp/mattermost-mcp: mattermost-mcp on oci-apps: NOT FOUND in docker ps
+    ❌ Container ntfy/ntfy: ntfy on oci-apps: NOT FOUND in docker ps
+    ❌ Container ntfy/github-rss: github-rss on oci-apps: NOT FOUND in docker ps
+    ❌ Container ntfy/syslog-bridge: syslog-bridge on oci-apps: NOT FOUND in docker ps
+    ❌ Container ollama-hai/ollama-hai: ollama-hai on oci-apps: NOT FOUND in docker ps
+    ❌ Container photoprism/photoprism_app: photoprism_app on oci-apps: NOT FOUND in docker ps
+    ❌ Container photoprism/photoprism_mariadb: photoprism_mariadb on oci-apps: NOT FOUND in docker ps
+    ❌ Container photoprism/photoprism_rclone: photoprism_rclone on oci-apps: NOT FOUND in docker ps
+    ❌ Container quant-lab-light/quant_light_db: quant_light_db on oci-apps: NOT FOUND in docker ps
+    ❌ Container quant-lab-light/quant_light_engine: quant_light_engine on oci-apps: NOT FOUND in docker ps
+    ❌ Container quant-lab-light/quant_light_research: quant_light_research on oci-apps: NOT FOUND in docker ps
+    ❌ Container radicale/radicale: radicale on oci-apps: NOT FOUND in docker ps
+    ❌ Container rig-agentic-sonn-14bq8/rig-agentic-sonn-14bq8: rig-agentic-sonn-14bq8 on oci-apps: NOT FOUND in docker ps
+    ❌ Container syslog-forwarder/syslog-forwarder: syslog-forwarder on oci-mail: NOT FOUND in docker ps
+    ❌ Container umami/umami: umami on oci-analytics: NOT FOUND in docker ps
+    ❌ Container umami/umami-db: umami-db on oci-analytics: NOT FOUND in docker ps
+    ❌ Container umami/umami-setup: umami-setup on oci-analytics: NOT FOUND in docker ps
+    ❌ Container vaultwarden/vaultwarden: vaultwarden on oci-apps: NOT FOUND in docker ps
+    ❌ Container windmill/windmill-server: windmill-server on oci-apps: NOT FOUND in docker ps
+    ❌ Container windmill/windmill-db: windmill-db on oci-apps: NOT FOUND in docker ps
+    ❌ Container windmill/windmill-worker: windmill-worker on oci-apps: NOT FOUND in docker ps
+    ❌ Drift missing: oci-apps/ollama-hai: ollama-hai declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/mattermost-mcp: mattermost-mcp declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/crawlee_redis: crawlee_redis declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/crawlee_scheduler: crawlee_scheduler declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/cloud-spec: cloud-spec declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/mattermost-bots: mattermost-bots declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/crawlee_minio: crawlee_minio declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/hedgedoc_app: hedgedoc_app declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/code-server: code-server declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/gitea: gitea declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/mattermost-postgres: mattermost-postgres declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/mail-mcp: mail-mcp declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/crawlee_dashboard: crawlee_dashboard declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/mattermost: mattermost declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/ntfy: ntfy declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/etherpad_app: etherpad_app declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/google-workspace-mcp: google-workspace-mcp declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/c3-infra-mcp: c3-infra-mcp declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/syslog-bridge: syslog-bridge declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/photoprism_app: photoprism_app declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/photoprism_rclone: photoprism_rclone declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/crawlee_api: crawlee_api declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/photoprism_mariadb: photoprism_mariadb declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/quant_light_db: quant_light_db declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/quant_light_engine: quant_light_engine declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/crawlee_runner: crawlee_runner declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/quant_light_research: quant_light_research declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/etherpad_postgres: etherpad_postgres declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/vaultwarden: vaultwarden declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/windmill-worker: windmill-worker declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/filebrowser_app: filebrowser_app declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/windmill-server: windmill-server declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/c3-infra-api: c3-infra-api declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/github-rss: github-rss declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/rig-agentic-sonn-14bq8: rig-agentic-sonn-14bq8 declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/windmill-db: windmill-db declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/cloud-cgc-mcp: cloud-cgc-mcp declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/grist_app: grist_app declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/radicale: radicale declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/crawlee_db: crawlee_db declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/c3-services-mcp: c3-services-mcp declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-apps/hedgedoc_postgres: hedgedoc_postgres declared in topology but not found in docker on oci-apps
+    ❌ Drift missing: oci-analytics/matomo-hybrid: matomo-hybrid declared in topology but not found in docker on oci-analytics
+    ❌ Drift missing: oci-analytics/umami-setup: umami-setup declared in topology but not found in docker on oci-analytics
+    ❌ Drift missing: oci-analytics/umami: umami declared in topology but not found in docker on oci-analytics
+    ❌ Drift missing: oci-analytics/umami-db: umami-db declared in topology but not found in docker on oci-analytics
+    ❌ Drift missing: oci-analytics/fluent-bit: fluent-bit declared in topology but not found in docker on oci-analytics
+    ❌ Drift missing: oci-mail/syslog-forwarder: syslog-forwarder declared in topology but not found in docker on oci-mail
     ❌ TLS cert diegonmarcos.com: TLS connection failed
     ❌ TLS cert api.diegonmarcos.com: TLS connection failed
     ❌ TLS cert auth.diegonmarcos.com: TLS connection failed
@@ -32,74 +121,15 @@
   WARNINGS:
     ⚠️  C3 API (public): https://api.diegonmarcos.com/c3-api/health -> err: error sending request for url (https://api.diegonmarcos.com/c3-api/health)
     ⚠️  SSH agent: no SSH agent or no keys
+    ⚠️  Platform gcp-proxy: gcp-proxy: rsync failed
     ⚠️  Container authelia/authelia: authelia on gcp-proxy: VM unreachable
     ⚠️  Container authelia/authelia-redis: authelia-redis on gcp-proxy: VM unreachable
-    ⚠️  Container backup-gitea/gitea: gitea on oci-apps: VM unreachable
-    ⚠️  Container c3-infra-api/c3-infra-api: c3-infra-api on oci-apps: VM unreachable
-    ⚠️  Container c3-infra-mcp/c3-infra-mcp: c3-infra-mcp on oci-apps: VM unreachable
-    ⚠️  Container c3-services-mcp/c3-services-mcp: c3-services-mcp on oci-apps: VM unreachable
     ⚠️  Container caddy/caddy: caddy on gcp-proxy: VM unreachable
     ⚠️  Container caddy/introspect-proxy: introspect-proxy on gcp-proxy: VM unreachable
-    ⚠️  Container cloud-cgc-mcp/cloud-cgc-mcp: cloud-cgc-mcp on oci-apps: VM unreachable
-    ⚠️  Container cloud-spec/cloud-spec: cloud-spec on oci-apps: VM unreachable
-    ⚠️  Container code-server/code-server: code-server on oci-apps: VM unreachable
-    ⚠️  Container crawlee-cloud/crawlee_api: crawlee_api on oci-apps: VM unreachable
-    ⚠️  Container crawlee-cloud/crawlee_dashboard: crawlee_dashboard on oci-apps: VM unreachable
-    ⚠️  Container crawlee-cloud/crawlee_db: crawlee_db on oci-apps: VM unreachable
-    ⚠️  Container crawlee-cloud/crawlee_minio: crawlee_minio on oci-apps: VM unreachable
-    ⚠️  Container crawlee-cloud/crawlee_redis: crawlee_redis on oci-apps: VM unreachable
-    ⚠️  Container crawlee-cloud/crawlee_runner: crawlee_runner on oci-apps: VM unreachable
-    ⚠️  Container crawlee-cloud/crawlee_scheduler: crawlee_scheduler on oci-apps: VM unreachable
-    ⚠️  Container dagu/dagu: dagu on oci-analytics: VM unreachable
-    ⚠️  Container dbgate/dbgate: dbgate on oci-apps: VM unreachable
-    ⚠️  Container dozzle/dozzle: dozzle on oci-analytics: VM unreachable
-    ⚠️  Container etherpad/etherpad_app: etherpad_app on oci-apps: VM unreachable
-    ⚠️  Container etherpad/etherpad_postgres: etherpad_postgres on oci-apps: VM unreachable
-    ⚠️  Container filebrowser/filebrowser_app: filebrowser_app on oci-apps: VM unreachable
-    ⚠️  Container fluent-bit/fluent-bit: fluent-bit on oci-analytics: VM unreachable
-    ⚠️  Container gitea/gitea: gitea on oci-apps: VM unreachable
-    ⚠️  Container google-workspace-mcp/google-workspace-mcp: google-workspace-mcp on oci-apps: VM unreachable
-    ⚠️  Container grist/grist_app: grist_app on oci-apps: VM unreachable
-    ⚠️  Container hedgedoc/hedgedoc_app: hedgedoc_app on oci-apps: VM unreachable
-    ⚠️  Container hedgedoc/hedgedoc_postgres: hedgedoc_postgres on oci-apps: VM unreachable
     ⚠️  Container hickory-dns/hickory-dns: hickory-dns on gcp-proxy: VM unreachable
     ⚠️  Container introspect-proxy/introspect-proxy: introspect-proxy on gcp-proxy: VM unreachable
-    ⚠️  Container lgtm/lgtm_grafana: lgtm_grafana on oci-apps: VM unreachable
-    ⚠️  Container lgtm/lgtm_loki: lgtm_loki on oci-apps: VM unreachable
-    ⚠️  Container lgtm/lgtm_mimir: lgtm_mimir on oci-apps: VM unreachable
-    ⚠️  Container lgtm/lgtm_tempo: lgtm_tempo on oci-apps: VM unreachable
-    ⚠️  Container maddy/maddy: maddy on oci-mail: VM unreachable
-    ⚠️  Container mail-mcp/mail-mcp: mail-mcp on oci-apps: VM unreachable
-    ⚠️  Container matomo/matomo-hybrid: matomo-hybrid on oci-analytics: VM unreachable
-    ⚠️  Container mattermost-bots/mattermost: mattermost on oci-apps: VM unreachable
-    ⚠️  Container mattermost-bots/mattermost-bots: mattermost-bots on oci-apps: VM unreachable
-    ⚠️  Container mattermost-bots/mattermost-postgres: mattermost-postgres on oci-apps: VM unreachable
-    ⚠️  Container mattermost-mcp/mattermost-mcp: mattermost-mcp on oci-apps: VM unreachable
-    ⚠️  Container ntfy/ntfy: ntfy on oci-apps: VM unreachable
-    ⚠️  Container ntfy/github-rss: github-rss on oci-apps: VM unreachable
-    ⚠️  Container ntfy/syslog-bridge: syslog-bridge on oci-apps: VM unreachable
     ⚠️  Container ollama/ollama: ollama on gcp-t4: VM unreachable
-    ⚠️  Container ollama-hai/ollama-hai: ollama-hai on oci-apps: VM unreachable
-    ⚠️  Container photoprism/photoprism_app: photoprism_app on oci-apps: VM unreachable
-    ⚠️  Container photoprism/photoprism_mariadb: photoprism_mariadb on oci-apps: VM unreachable
-    ⚠️  Container photoprism/photoprism_rclone: photoprism_rclone on oci-apps: VM unreachable
-    ⚠️  Container quant-lab-light/quant_light_db: quant_light_db on oci-apps: VM unreachable
-    ⚠️  Container quant-lab-light/quant_light_engine: quant_light_engine on oci-apps: VM unreachable
-    ⚠️  Container quant-lab-light/quant_light_research: quant_light_research on oci-apps: VM unreachable
-    ⚠️  Container radicale/radicale: radicale on oci-apps: VM unreachable
     ⚠️  Container redis/redis: redis on gcp-proxy: VM unreachable
-    ⚠️  Container rig-agentic-sonn-14bq8/rig-agentic-sonn-14bq8: rig-agentic-sonn-14bq8 on oci-apps: VM unreachable
-    ⚠️  Container sauron-forwarder/sauron-forwarder: sauron-forwarder on oci-analytics: VM unreachable
-    ⚠️  Container smtp-proxy/smtp-proxy: smtp-proxy on oci-mail: VM unreachable
-    ⚠️  Container snappymail/snappymail: snappymail on oci-mail: VM unreachable
-    ⚠️  Container syslog-forwarder/syslog-forwarder: syslog-forwarder on oci-mail: VM unreachable
-    ⚠️  Container umami/umami: umami on oci-analytics: VM unreachable
-    ⚠️  Container umami/umami-db: umami-db on oci-analytics: VM unreachable
-    ⚠️  Container umami/umami-setup: umami-setup on oci-analytics: VM unreachable
-    ⚠️  Container vaultwarden/vaultwarden: vaultwarden on oci-apps: VM unreachable
-    ⚠️  Container windmill/windmill-server: windmill-server on oci-apps: VM unreachable
-    ⚠️  Container windmill/windmill-db: windmill-db on oci-apps: VM unreachable
-    ⚠️  Container windmill/windmill-worker: windmill-worker on oci-apps: VM unreachable
     ⚠️  backup-gitea.app:3002: backup-gitea.app:3002 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
     ⚠️  c3-infra-api.app:8081: c3-infra-api.app:8081 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
     ⚠️  c3-infra-mcp.app:3100: c3-infra-mcp.app:3100 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
@@ -119,7 +149,6 @@
     ⚠️  google-workspace-mcp.app:3104: g-workspace-mcp.app:3104 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
     ⚠️  grist.app:3011: grist.app:3011 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
     ⚠️  hedgedoc.app:3018: hedgedoc.app:3018 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
-    ⚠️  introspect-proxy.app:4182: introspect-proxy.app:4182 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
     ⚠️  lgtm.app:3200: grafana.app:3200 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
     ⚠️  maddy.app:443: maddy.app:443 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
     ⚠️  mail-mcp.app:3103: mail-mcp.app:3103 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip
@@ -164,8 +193,19 @@
     ⚠️  Public vault.diegonmarcos.com: vault.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://vault.diegonmarcos.com/), auth=0)
     ⚠️  Public windmill.diegonmarcos.com: windmill.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://windmill.diegonmarcos.com/), auth=0)
     ⚠️  Cross c3-services-api: container up, public down: c3-services-api: containers healthy but public URL api.diegonmarcos.com/services unreachable — check Caddy/Cloudflare
+    ⚠️  Cross dagu: container up, public down: dagu: containers healthy but public URL workflows.diegonmarcos.com unreachable — check Caddy/Cloudflare
+    ⚠️  Cross dbgate: container up, public down: dbgate: containers healthy but public URL db.diegonmarcos.com unreachable — check Caddy/Cloudflare
+    ⚠️  Cross dozzle: container up, public down: dozzle: containers healthy but public URL logs.diegonmarcos.com unreachable — check Caddy/Cloudflare
+    ⚠️  Cross lgtm: container up, public down: lgtm: containers healthy but public URL grafana.diegonmarcos.com unreachable — check Caddy/Cloudflare
+    ⚠️  Cross maddy: container up, public down: maddy: containers healthy but public URL mail.diegonmarcos.com unreachable — check Caddy/Cloudflare
+    ⚠️  Cross smtp-proxy: container up, public down: smtp-proxy: containers healthy but public URL smtp.diegonmarcos.com unreachable — check Caddy/Cloudflare
+    ⚠️  Cross snappymail: container up, public down: snappymail: containers healthy but public URL webmail.diegonmarcos.com unreachable — check Caddy/Cloudflare
     ⚠️  GHA workflows: gh CLI failed
     ⚠️  DKIM dkim._domainkey: DKIM: NOT FOUND
+    ⚠️  Drift unmanaged: oci-mail/dagu: dagu running on oci-mail but not declared in topology
+    ⚠️  Drift unmanaged: oci-apps/news-gdelt: news-gdelt running on oci-apps but not declared in topology
+    ⚠️  Drift unmanaged: oci-apps/nocodb-db: nocodb-db running on oci-apps but not declared in topology
+    ⚠️  Drift unmanaged: oci-apps/nocodb: nocodb running on oci-apps but not declared in topology
     ⚠️  Caddy TLS: proxy.diegonmarcos.com -> err: error sending request for url (https://proxy.diegonmarcos.com/)
   INFO:
     ℹ️  Local docker: error: No such file or directory (os error 2)
@@ -242,14 +282,14 @@
                          (front door)     (mail)           (apps)           (analytics)     
     ────────────────────────────────────────────────────────────────────────────────────
     1. Self-check        ⚠️ 3/7                                          
-    2. WG Mesh           ❌ 0/1            ❌ 0/1            ❌ 0/1            ❌ 0/1           
-    3. Platform          ❌ 0/1            ❌ 0/1            ❌ 0/1            ❌ 0/1           
-    4. Containers        ❌ 0/7            ❌ 0/4            ❌ 0/48           ❌ 0/8           
-    5. Private URLs      ⚠️ 5/41          —                —                —               
+    2. WG Mesh           ✅ 1/1            ✅ 1/1            ✅ 1/1            ✅ 1/1           
+    3. Platform          ❌ 0/1            ✅ 1/1            ✅ 1/1            ✅ 1/1           
+    4. Containers        ❌ 0/7            ⚠️ 3/4           ⚠️ 5/48          ⚠️ 3/8          
+    5. Private URLs      ⚠️ 6/41          —                —                —               
     6. Public URLs       ❌ 0/27                                          
-    7. Cross-checks      ❌ 0/1                                           
+    7. Cross-checks      ❌ 0/8                                           
     8. External          ⚠️ 8/10                                         
-    9. Drift             ❌ 0/65                                          
+    9. Drift             ❌ 0/117                                         
     10. Security         ⚠️ 12/19                                        
     11. E2E Email        ✅ 1/1                                           
 
@@ -257,110 +297,110 @@
 ──────────────────────────────────────────────────────────────
   ❌ C3 API (mesh)                  http://10.0.0.6:8081/health -> err: error sending request for url (http://10.0.0.6:8081/health) (0.2s) [CRITICAL]
   ⚠️  C3 API (public)                https://api.diegonmarcos.com/c3-api/health -> err: error sending request for url (https://api.diegonmarcos.com/c3-api/health) (0.4s) [WARNING]
-  ✅ WireGuard interface            TCP 10.0.0.1:22 -> open (0.2s)
+  ✅ WireGuard interface            TCP 10.0.0.1:22 -> open (0.1s)
   ℹ️  Local docker                   error: No such file or directory (os error 2) [INFO]
   ⚠️  SSH agent                      no SSH agent or no keys (0.0s) [WARNING]
-  ✅ cloud-data freshness           generated 2026-04-15T17:36:15.684Z (17h ago)
-  ✅ Hickory DNS resolver           dig caddy.app @10.0.0.1 -> 10.0.0.1 (0.1s)
+  ✅ cloud-data freshness           generated 2026-04-15T17:36:15.684Z (18h ago)
+  ✅ Hickory DNS resolver           dig caddy.app @10.0.0.1 -> 10.0.0.1 (0.2s)
 
   Summary: 3/7 passed, 4 failed
 
 2. WIREGUARD MESH
 ──────────────────────────────────────────────────────────────
-  ❌ WG gcp-proxy                   gcp-proxy (10.0.0.1): VPS=? Dropbear=fail WG:TCP=ok SSH=fail (3.3s) [CRITICAL]
+  ✅ WG gcp-proxy                   gcp-proxy (10.0.0.1): VPS=? Dropbear=fail WG:TCP=ok SSH=ok (6.0s)
   ✅ WG gcp-t4                      gcp-t4 (10.0.0.8): VPS=? Dropbear=fail WG:TCP=fail SSH=fail [spot instance] (6.0s)
-  ❌ WG oci-apps                    oci-apps (10.0.0.6): VPS=? Dropbear=fail WG:TCP=ok SSH=fail (3.5s) [CRITICAL]
-  ❌ WG oci-mail                    oci-mail (10.0.0.3): VPS=? Dropbear=fail WG:TCP=ok SSH=fail (3.5s) [CRITICAL]
-  ❌ WG oci-analytics               oci-analytics (10.0.0.4): VPS=? Dropbear=fail WG:TCP=ok SSH=fail (3.5s) [CRITICAL]
+  ✅ WG oci-apps                    oci-apps (10.0.0.6): VPS=? Dropbear=fail WG:TCP=ok SSH=ok (6.4s)
+  ✅ WG oci-mail                    oci-mail (10.0.0.3): VPS=? Dropbear=fail WG:TCP=ok SSH=ok (6.4s)
+  ✅ WG oci-analytics               oci-analytics (10.0.0.4): VPS=? Dropbear=fail WG:TCP=ok SSH=ok (6.7s)
 
-  Summary: 1/5 passed, 4 failed
+  Summary: 5/5 passed, 0 failed
 
 3. PLATFORM
 ──────────────────────────────────────────────────────────────
-  ❌ Platform gcp-proxy             gcp-proxy: unreachable (WG down) [CRITICAL]
+  ⚠️  Platform gcp-proxy             gcp-proxy: rsync failed (1.5s) [WARNING]
+  ✅ Platform oci-apps              oci-apps: mem 11%, disk 30%, load 0.17 0.10 0.09, 9/9 containers, up 17d 22h (2.4s)
+  ✅ Platform oci-mail              oci-mail: mem 65%, disk 78%, load 0.01 0.14 0.17, 4/4 containers, up 15d 17h (2.4s)
+  ✅ Platform oci-analytics         oci-analytics: mem 55%, disk 45%, load 1.05 0.52 0.42, 3/3 containers, up 9d 0h (2.4s)
   ✅ Platform gcp-t4                gcp-t4: unreachable (WG down) [spot instance]
-  ❌ Platform oci-apps              oci-apps: unreachable (WG down) [CRITICAL]
-  ❌ Platform oci-mail              oci-mail: unreachable (WG down) [CRITICAL]
-  ❌ Platform oci-analytics         oci-analytics: unreachable (WG down) [CRITICAL]
 
-  Summary: 1/5 passed, 4 failed
+  Summary: 4/5 passed, 1 failed
 
 4. CONTAINERS
 ──────────────────────────────────────────────────────────────
   ⚠️  Container authelia/authelia    authelia on gcp-proxy: VM unreachable [WARNING]
   ⚠️  Container authelia/authelia-redis authelia-redis on gcp-proxy: VM unreachable [WARNING]
-  ⚠️  Container backup-gitea/gitea   gitea on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container c3-infra-api/c3-infra-api c3-infra-api on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container c3-infra-mcp/c3-infra-mcp c3-infra-mcp on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container c3-services-mcp/c3-services-mcp c3-services-mcp on oci-apps: VM unreachable [WARNING]
+  ❌ Container backup-gitea/gitea   gitea on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container c3-infra-api/c3-infra-api c3-infra-api on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container c3-infra-mcp/c3-infra-mcp c3-infra-mcp on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container c3-services-mcp/c3-services-mcp c3-services-mcp on oci-apps: NOT FOUND in docker ps [CRITICAL]
   ⚠️  Container caddy/caddy          caddy on gcp-proxy: VM unreachable [WARNING]
   ⚠️  Container caddy/introspect-proxy introspect-proxy on gcp-proxy: VM unreachable [WARNING]
-  ⚠️  Container cloud-cgc-mcp/cloud-cgc-mcp cloud-cgc-mcp on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container cloud-spec/cloud-spec cloud-spec on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container code-server/code-server code-server on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container crawlee-cloud/crawlee_api crawlee_api on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container crawlee-cloud/crawlee_dashboard crawlee_dashboard on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container crawlee-cloud/crawlee_db crawlee_db on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container crawlee-cloud/crawlee_minio crawlee_minio on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container crawlee-cloud/crawlee_redis crawlee_redis on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container crawlee-cloud/crawlee_runner crawlee_runner on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container crawlee-cloud/crawlee_scheduler crawlee_scheduler on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container dagu/dagu            dagu on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container dbgate/dbgate        dbgate on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container dozzle/dozzle        dozzle on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container etherpad/etherpad_app etherpad_app on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container etherpad/etherpad_postgres etherpad_postgres on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container filebrowser/filebrowser_app filebrowser_app on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container fluent-bit/fluent-bit fluent-bit on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container gitea/gitea          gitea on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container google-workspace-mcp/google-workspace-mcp google-workspace-mcp on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container grist/grist_app      grist_app on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container hedgedoc/hedgedoc_app hedgedoc_app on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container hedgedoc/hedgedoc_postgres hedgedoc_postgres on oci-apps: VM unreachable [WARNING]
+  ❌ Container cloud-cgc-mcp/cloud-cgc-mcp cloud-cgc-mcp on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container cloud-spec/cloud-spec cloud-spec on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container code-server/code-server code-server on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container crawlee-cloud/crawlee_api crawlee_api on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container crawlee-cloud/crawlee_dashboard crawlee_dashboard on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container crawlee-cloud/crawlee_db crawlee_db on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container crawlee-cloud/crawlee_minio crawlee_minio on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container crawlee-cloud/crawlee_redis crawlee_redis on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container crawlee-cloud/crawlee_runner crawlee_runner on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container crawlee-cloud/crawlee_scheduler crawlee_scheduler on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ✅ Container dagu/dagu            dagu on oci-analytics: Up 21 hours (none)
+  ✅ Container dbgate/dbgate        dbgate on oci-apps: Up 25 hours (healthy) (healthy)
+  ✅ Container dozzle/dozzle        dozzle on oci-analytics: Up 30 hours (none)
+  ❌ Container etherpad/etherpad_app etherpad_app on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container etherpad/etherpad_postgres etherpad_postgres on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container filebrowser/filebrowser_app filebrowser_app on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container fluent-bit/fluent-bit fluent-bit on oci-analytics: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container gitea/gitea          gitea on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container google-workspace-mcp/google-workspace-mcp google-workspace-mcp on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container grist/grist_app      grist_app on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container hedgedoc/hedgedoc_app hedgedoc_app on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container hedgedoc/hedgedoc_postgres hedgedoc_postgres on oci-apps: NOT FOUND in docker ps [CRITICAL]
   ⚠️  Container hickory-dns/hickory-dns hickory-dns on gcp-proxy: VM unreachable [WARNING]
   ⚠️  Container introspect-proxy/introspect-proxy introspect-proxy on gcp-proxy: VM unreachable [WARNING]
-  ⚠️  Container lgtm/lgtm_grafana    lgtm_grafana on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container lgtm/lgtm_loki       lgtm_loki on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container lgtm/lgtm_mimir      lgtm_mimir on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container lgtm/lgtm_tempo      lgtm_tempo on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container maddy/maddy          maddy on oci-mail: VM unreachable [WARNING]
-  ⚠️  Container mail-mcp/mail-mcp    mail-mcp on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container matomo/matomo-hybrid matomo-hybrid on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container mattermost-bots/mattermost mattermost on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container mattermost-bots/mattermost-bots mattermost-bots on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container mattermost-bots/mattermost-postgres mattermost-postgres on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container mattermost-mcp/mattermost-mcp mattermost-mcp on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container ntfy/ntfy            ntfy on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container ntfy/github-rss      github-rss on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container ntfy/syslog-bridge   syslog-bridge on oci-apps: VM unreachable [WARNING]
+  ✅ Container lgtm/lgtm_grafana    lgtm_grafana on oci-apps: Up 25 hours (healthy) (healthy)
+  ✅ Container lgtm/lgtm_loki       lgtm_loki on oci-apps: Up 25 hours (healthy) (healthy)
+  ✅ Container lgtm/lgtm_mimir      lgtm_mimir on oci-apps: Up 25 hours (none)
+  ✅ Container lgtm/lgtm_tempo      lgtm_tempo on oci-apps: Up 25 hours (none)
+  ✅ Container maddy/maddy          maddy on oci-mail: Up 12 minutes (none)
+  ❌ Container mail-mcp/mail-mcp    mail-mcp on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container matomo/matomo-hybrid matomo-hybrid on oci-analytics: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container mattermost-bots/mattermost mattermost on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container mattermost-bots/mattermost-bots mattermost-bots on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container mattermost-bots/mattermost-postgres mattermost-postgres on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container mattermost-mcp/mattermost-mcp mattermost-mcp on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container ntfy/ntfy            ntfy on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container ntfy/github-rss      github-rss on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container ntfy/syslog-bridge   syslog-bridge on oci-apps: NOT FOUND in docker ps [CRITICAL]
   ⚠️  Container ollama/ollama        ollama on gcp-t4: VM unreachable [WARNING]
-  ⚠️  Container ollama-hai/ollama-hai ollama-hai on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container photoprism/photoprism_app photoprism_app on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container photoprism/photoprism_mariadb photoprism_mariadb on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container photoprism/photoprism_rclone photoprism_rclone on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container quant-lab-light/quant_light_db quant_light_db on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container quant-lab-light/quant_light_engine quant_light_engine on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container quant-lab-light/quant_light_research quant_light_research on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container radicale/radicale    radicale on oci-apps: VM unreachable [WARNING]
+  ❌ Container ollama-hai/ollama-hai ollama-hai on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container photoprism/photoprism_app photoprism_app on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container photoprism/photoprism_mariadb photoprism_mariadb on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container photoprism/photoprism_rclone photoprism_rclone on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container quant-lab-light/quant_light_db quant_light_db on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container quant-lab-light/quant_light_engine quant_light_engine on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container quant-lab-light/quant_light_research quant_light_research on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container radicale/radicale    radicale on oci-apps: NOT FOUND in docker ps [CRITICAL]
   ⚠️  Container redis/redis          redis on gcp-proxy: VM unreachable [WARNING]
-  ⚠️  Container rig-agentic-sonn-14bq8/rig-agentic-sonn-14bq8 rig-agentic-sonn-14bq8 on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container sauron-forwarder/sauron-forwarder sauron-forwarder on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container smtp-proxy/smtp-proxy smtp-proxy on oci-mail: VM unreachable [WARNING]
-  ⚠️  Container snappymail/snappymail snappymail on oci-mail: VM unreachable [WARNING]
-  ⚠️  Container syslog-forwarder/syslog-forwarder syslog-forwarder on oci-mail: VM unreachable [WARNING]
-  ⚠️  Container umami/umami          umami on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container umami/umami-db       umami-db on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container umami/umami-setup    umami-setup on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container vaultwarden/vaultwarden vaultwarden on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container windmill/windmill-server windmill-server on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container windmill/windmill-db windmill-db on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container windmill/windmill-worker windmill-worker on oci-apps: VM unreachable [WARNING]
+  ❌ Container rig-agentic-sonn-14bq8/rig-agentic-sonn-14bq8 rig-agentic-sonn-14bq8 on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ✅ Container sauron-forwarder/sauron-forwarder sauron-forwarder on oci-analytics: Up 30 hours (none)
+  ✅ Container smtp-proxy/smtp-proxy smtp-proxy on oci-mail: Up 39 hours (none)
+  ✅ Container snappymail/snappymail snappymail on oci-mail: Up 12 days (healthy) (healthy)
+  ❌ Container syslog-forwarder/syslog-forwarder syslog-forwarder on oci-mail: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container umami/umami          umami on oci-analytics: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container umami/umami-db       umami-db on oci-analytics: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container umami/umami-setup    umami-setup on oci-analytics: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container vaultwarden/vaultwarden vaultwarden on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container windmill/windmill-server windmill-server on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container windmill/windmill-db windmill-db on oci-apps: NOT FOUND in docker ps [CRITICAL]
+  ❌ Container windmill/windmill-worker windmill-worker on oci-apps: NOT FOUND in docker ps [CRITICAL]
 
-  Summary: 0/68 passed, 68 failed
+  Summary: 11/68 passed, 57 failed
 
 5. PRIVATE URLS
 ──────────────────────────────────────────────────────────────
-  ✅ authelia.app:9091              authelia.app:9091 DNS=ok(10.0.0.1) TCP=ok HTTP=200 (0.5s)
+  ✅ authelia.app:9091              authelia.app:9091 DNS=ok(10.0.0.1) TCP=ok HTTP=200 (0.7s)
   ⚠️  backup-gitea.app:3002          backup-gitea.app:3002 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
   ⚠️  c3-infra-api.app:8081          c3-infra-api.app:8081 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
   ⚠️  c3-infra-mcp.app:3100          c3-infra-mcp.app:3100 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
@@ -381,7 +421,7 @@
   ⚠️  grist.app:3011                 grist.app:3011 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
   ⚠️  hedgedoc.app:3018              hedgedoc.app:3018 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
   ✅ hickory-dns.app:53             hickory-dns.app:53 DNS=ok(10.0.0.1) TCP=ok HTTP=n/a (0.3s)
-  ⚠️  introspect-proxy.app:4182      introspect-proxy.app:4182 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
+  ✅ introspect-proxy.app:4182      introspect-proxy.app:4182 DNS=ok(10.0.0.1) TCP=ok HTTP=404 (0.5s)
   ⚠️  lgtm.app:3200                  grafana.app:3200 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
   ⚠️  maddy.app:443                  maddy.app:443 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
   ⚠️  mail-mcp.app:3103              mail-mcp.app:3103 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
@@ -402,52 +442,59 @@
   ✅ vaultwarden.app:8880           vaultwarden.app:8880 DNS=ok(10.0.0.1) TCP=ok HTTP=200 (0.5s)
   ⚠️  windmill.app:8000              windmill-app.app:8000 DNS=ok(10.0.0.1) TCP=FAIL HTTP=skip (0.3s) [WARNING]
 
-  Summary: 5/41 passed, 36 failed
+  Summary: 6/41 passed, 35 failed
 
 6. PUBLIC URLS
 ──────────────────────────────────────────────────────────────
   ⚠️  Public auth.diegonmarcos.com   auth.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://auth.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public git.diegonmarcos.com    git.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://git.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
+  ⚠️  Public git.diegonmarcos.com    git.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://git.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
   ⚠️  Public api.diegonmarcos.com/c3-api api.diegonmarcos.com/c3-api: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://api.diegonmarcos.com/c3-api), auth=0) (0.5s) [WARNING]
   ⚠️  Public mcp.diegonmarcos.com/c3-infra-mcp mcp.diegonmarcos.com/c3-infra-mcp: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://mcp.diegonmarcos.com/c3-infra-mcp), auth=0) (0.5s) [WARNING]
-  ⚠️  Public proxy.diegonmarcos.com  proxy.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://proxy.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public ide.diegonmarcos.com    ide.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://ide.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
+  ⚠️  Public proxy.diegonmarcos.com  proxy.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://proxy.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
+  ⚠️  Public ide.diegonmarcos.com    ide.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://ide.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
   ⚠️  Public api.diegonmarcos.com    api.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://api.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public workflows.diegonmarcos.com workflows.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://workflows.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
+  ⚠️  Public workflows.diegonmarcos.com workflows.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://workflows.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
   ⚠️  Public db.diegonmarcos.com     db.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://db.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
   ⚠️  Public logs.diegonmarcos.com   logs.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://logs.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public pad.diegonmarcos.com    pad.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://pad.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public files.diegonmarcos.com  files.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://files.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
+  ⚠️  Public pad.diegonmarcos.com    pad.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://pad.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
+  ⚠️  Public files.diegonmarcos.com  files.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://files.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
   ⚠️  Public git.diegonmarcos.com    git.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://git.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
   ⚠️  Public sheets.diegonmarcos.com sheets.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://sheets.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
   ⚠️  Public doc.diegonmarcos.com    doc.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://doc.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public grafana.diegonmarcos.com grafana.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://grafana.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
+  ⚠️  Public grafana.diegonmarcos.com grafana.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://grafana.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
   ⚠️  Public mail.diegonmarcos.com   mail.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://mail.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
   ⚠️  Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://analytics.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public chat.diegonmarcos.com   chat.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://chat.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public rss.diegonmarcos.com    rss.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://rss.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public photos.diegonmarcos.com photos.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://photos.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public cal.diegonmarcos.com    cal.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://cal.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
+  ⚠️  Public chat.diegonmarcos.com   chat.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://chat.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
+  ⚠️  Public rss.diegonmarcos.com    rss.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://rss.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
+  ⚠️  Public photos.diegonmarcos.com photos.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://photos.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
+  ⚠️  Public cal.diegonmarcos.com    cal.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://cal.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
   ⚠️  Public smtp.diegonmarcos.com   smtp.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://smtp.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
-  ⚠️  Public webmail.diegonmarcos.com webmail.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://webmail.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
+  ⚠️  Public webmail.diegonmarcos.com webmail.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://webmail.diegonmarcos.com/), auth=0) (1.5s) [WARNING]
   ⚠️  Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://analytics.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public vault.diegonmarcos.com  vault.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://vault.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
-  ⚠️  Public windmill.diegonmarcos.com windmill.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://windmill.diegonmarcos.com/), auth=0) (0.5s) [WARNING]
+  ⚠️  Public vault.diegonmarcos.com  vault.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://vault.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
+  ⚠️  Public windmill.diegonmarcos.com windmill.diegonmarcos.com: HTTPS=0 AUTH=0 (no-auth=err: error sending request for url (https://windmill.diegonmarcos.com/), auth=0) (0.6s) [WARNING]
 
   Summary: 0/27 passed, 27 failed
 
 7. CROSS-CHECKS
 ──────────────────────────────────────────────────────────────
   ⚠️  Cross c3-services-api: container up, public down c3-services-api: containers healthy but public URL api.diegonmarcos.com/services unreachable — check Caddy/Cloudflare [WARNING]
+  ⚠️  Cross dagu: container up, public down dagu: containers healthy but public URL workflows.diegonmarcos.com unreachable — check Caddy/Cloudflare [WARNING]
+  ⚠️  Cross dbgate: container up, public down dbgate: containers healthy but public URL db.diegonmarcos.com unreachable — check Caddy/Cloudflare [WARNING]
+  ⚠️  Cross dozzle: container up, public down dozzle: containers healthy but public URL logs.diegonmarcos.com unreachable — check Caddy/Cloudflare [WARNING]
+  ⚠️  Cross lgtm: container up, public down lgtm: containers healthy but public URL grafana.diegonmarcos.com unreachable — check Caddy/Cloudflare [WARNING]
+  ⚠️  Cross maddy: container up, public down maddy: containers healthy but public URL mail.diegonmarcos.com unreachable — check Caddy/Cloudflare [WARNING]
+  ⚠️  Cross smtp-proxy: container up, public down smtp-proxy: containers healthy but public URL smtp.diegonmarcos.com unreachable — check Caddy/Cloudflare [WARNING]
+  ⚠️  Cross snappymail: container up, public down snappymail: containers healthy but public URL webmail.diegonmarcos.com unreachable — check Caddy/Cloudflare [WARNING]
 
-  Summary: 0/1 passed, 1 failed
+  Summary: 0/8 passed, 8 failed
 
 8. EXTERNAL
 ──────────────────────────────────────────────────────────────
   ✅ Cloudflare DNS A               dig diegonmarcos.com @1.1.1.1 -> 35.226.147.64 (0.0s)
   ✅ GHCR registry                  ghcr.io/v2/ -> 401 (0.5s)
   ⚠️  GHA workflows                  gh CLI failed [WARNING]
-  ✅ GitHub API                     api.github.com/zen -> 403 (0.5s)
+  ✅ GitHub API                     api.github.com/zen -> 403 (0.6s)
   ✅ MX record                      MX diegonmarcos.com -> 22 route1.mx.cloudflare.net., 85 route2.mx.cloudflare.net., 97 route3.mx.cloudflare.net. (0.0s)
   ✅ A mail                         mail.diegonmarcos.com -> 35.226.147.64 (0.0s)
   ⚠️  DKIM dkim._domainkey           DKIM: NOT FOUND (0.0s) [WARNING]
@@ -459,6 +506,58 @@
 
 9. DRIFT
 ──────────────────────────────────────────────────────────────
+  ❌ Drift missing: oci-apps/ollama-hai ollama-hai declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/mattermost-mcp mattermost-mcp declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/crawlee_redis crawlee_redis declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/crawlee_scheduler crawlee_scheduler declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/cloud-spec cloud-spec declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/mattermost-bots mattermost-bots declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/crawlee_minio crawlee_minio declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/hedgedoc_app hedgedoc_app declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/code-server code-server declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/gitea  gitea declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/mattermost-postgres mattermost-postgres declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/mail-mcp mail-mcp declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/crawlee_dashboard crawlee_dashboard declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/mattermost mattermost declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/ntfy   ntfy declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/etherpad_app etherpad_app declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/google-workspace-mcp google-workspace-mcp declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/c3-infra-mcp c3-infra-mcp declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/syslog-bridge syslog-bridge declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/photoprism_app photoprism_app declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/photoprism_rclone photoprism_rclone declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/crawlee_api crawlee_api declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/photoprism_mariadb photoprism_mariadb declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/quant_light_db quant_light_db declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/quant_light_engine quant_light_engine declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/crawlee_runner crawlee_runner declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/quant_light_research quant_light_research declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/etherpad_postgres etherpad_postgres declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/vaultwarden vaultwarden declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/windmill-worker windmill-worker declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/filebrowser_app filebrowser_app declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/windmill-server windmill-server declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/c3-infra-api c3-infra-api declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/github-rss github-rss declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/rig-agentic-sonn-14bq8 rig-agentic-sonn-14bq8 declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/windmill-db windmill-db declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/cloud-cgc-mcp cloud-cgc-mcp declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/grist_app grist_app declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/radicale radicale declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/crawlee_db crawlee_db declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/c3-services-mcp c3-services-mcp declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-apps/hedgedoc_postgres hedgedoc_postgres declared in topology but not found in docker on oci-apps [CRITICAL]
+  ❌ Drift missing: oci-analytics/matomo-hybrid matomo-hybrid declared in topology but not found in docker on oci-analytics [CRITICAL]
+  ❌ Drift missing: oci-analytics/umami-setup umami-setup declared in topology but not found in docker on oci-analytics [CRITICAL]
+  ❌ Drift missing: oci-analytics/umami umami declared in topology but not found in docker on oci-analytics [CRITICAL]
+  ❌ Drift missing: oci-analytics/umami-db umami-db declared in topology but not found in docker on oci-analytics [CRITICAL]
+  ❌ Drift missing: oci-analytics/fluent-bit fluent-bit declared in topology but not found in docker on oci-analytics [CRITICAL]
+  ❌ Drift missing: oci-mail/syslog-forwarder syslog-forwarder declared in topology but not found in docker on oci-mail [CRITICAL]
+  ⚠️  Drift unmanaged: oci-mail/dagu dagu running on oci-mail but not declared in topology [WARNING]
+  ⚠️  Drift unmanaged: oci-apps/news-gdelt news-gdelt running on oci-apps but not declared in topology [WARNING]
+  ⚠️  Drift unmanaged: oci-apps/nocodb-db nocodb-db running on oci-apps but not declared in topology [WARNING]
+  ⚠️  Drift unmanaged: oci-apps/nocodb nocodb running on oci-apps but not declared in topology [WARNING]
   ℹ️  Drift no-containers: kg-graph  kg-graph has no containers declared in topology [INFO]
   ℹ️  Drift no-containers: photos-webhook photos-webhook has no containers declared in topology [INFO]
   ℹ️  Drift no-domain: c3-diego-personal-data-mcp c3-diego-personal-data-mcp has containers but no domain assigned [INFO]
@@ -525,24 +624,24 @@
   ℹ️  Drift no-port-in-build: vaultwarden vaultwarden has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: windmill windmill has port in topology but missing ports.app in build.json [INFO]
 
-  Summary: 0/65 passed, 65 failed
+  Summary: 0/117 passed, 117 failed
 
 10. SECURITY
 ──────────────────────────────────────────────────────────────
   ❌ TLS cert diegonmarcos.com      TLS connection failed (0.3s) [CRITICAL]
   ❌ TLS cert api.diegonmarcos.com  TLS connection failed (0.3s) [CRITICAL]
-  ❌ TLS cert auth.diegonmarcos.com TLS connection failed (0.3s) [CRITICAL]
+  ❌ TLS cert auth.diegonmarcos.com TLS connection failed (0.4s) [CRITICAL]
   ❌ TLS cert mail.diegonmarcos.com TLS connection failed (0.3s) [CRITICAL]
   ❌ TLS cert vault.diegonmarcos.com TLS connection failed (0.3s) [CRITICAL]
   ✅ DMARC policy                   DMARC: v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.0s)
   ✅ SPF strict (-all)              SPF: present (strict=-all) (0.0s)
-  ❌ Authelia health                auth.diegonmarcos.com/api/health -> err: error sending request for url (https://auth.diegonmarcos.com/api/health) (0.3s) [CRITICAL]
+  ❌ Authelia health                auth.diegonmarcos.com/api/health -> err: error sending request for url (https://auth.diegonmarcos.com/api/health) (1.3s) [CRITICAL]
   ✅ Firewall gcp-proxy             gcp-proxy: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall gcp-t4                gcp-t4: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-apps              oci-apps: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-mail              oci-mail: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-analytics         oci-analytics: no unexpected dangerous ports exposed (3.0s)
-  ✅ SSH ports gcp-proxy            gcp-proxy: SSH:22=open Dropbear:2200=closed (3.1s)
+  ✅ SSH ports gcp-proxy            gcp-proxy: SSH:22=open Dropbear:2200=closed (3.2s)
   ✅ SSH ports gcp-t4               gcp-t4: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
   ✅ SSH ports oci-apps             oci-apps: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
   ✅ SSH ports oci-mail             oci-mail: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
@@ -560,25 +659,25 @@
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    38.0s
-  L5_private_urls          31.1s
-  L10_security             31.1s
-  L8_external              31.1s
-  L6_public_urls           31.1s
-  L4-L11_parallel          31.1s
-  L11_email_e2e            31.1s
-  L2_wg_mesh               6.0s
+  TOTAL                    42.2s
+  L6_public_urls           32.2s
+  L4-L11_parallel          32.2s
+  L11_email_e2e            32.2s
+  L5_private_urls          32.2s
+  L10_security             32.2s
+  L8_external              32.2s
+  L2_wg_mesh               6.7s
+  L3_platform              2.4s
   L1_self_check            0.9s
+  L7_cross_checks          0.0s
   L9_drift                 0.0s
   L4_containers            0.0s
-  L3_platform              0.0s
-  L7_cross_checks          0.0s
 
-  Total: 38.0s | Engine: Rust (native async tokio)
+  Total: 42.2s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(rsync+mux)
 
 ══════════════════════════════════════════════════════════════
-RESULT: CRITICAL -- 31/249 passed, 15 critical, 137 warnings
+RESULT: CRITICAL -- 50/308 passed, 104 critical, 88 warnings
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────
