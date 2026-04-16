@@ -91,10 +91,13 @@ pub fn load_context() -> Result<Context> {
                 let img = ct["image"].as_str().unwrap_or("").to_lowercase();
                 let db_type = if img.contains("postgres") { "postgres" } else if img.contains("mariadb") || img.contains("mysql") { "mariadb" } else if img.contains("redis") { "redis" } else if img.contains("sqlite") { "sqlite" } else { "?" };
                 let dns_entry = private_dns.iter().find(|d| d.container == ct["container_name"].as_str().unwrap_or(""));
+                let port = dns_entry.map(|d| d.port).unwrap_or(0);
                 databases.push(DbEntry {
                     service: svc_name.to_string(), db_type: db_type.to_string(),
                     container: ct["container_name"].as_str().unwrap_or("?").to_string(),
                     db_name: ct["db_name"].as_str().or(ct["db_path"].as_str()).unwrap_or("custom").to_string(),
+                    db_user: ct["db_user"].as_str().unwrap_or("").to_string(),
+                    port,
                     vm: vm_alias.clone(),
                     dns_access: dns_entry.map(|d| format!("{}:{}", d.dns, d.port)).unwrap_or("embedded".to_string()),
                 });

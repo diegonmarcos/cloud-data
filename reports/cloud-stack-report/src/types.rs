@@ -55,6 +55,8 @@ pub struct DbEntry {
     pub db_type: String,
     pub container: String,
     pub db_name: String,
+    pub db_user: String,
+    pub port: u16,
     pub vm: String,
     pub dns_access: String,
 }
@@ -94,6 +96,8 @@ pub struct LiveData {
     pub vm_data: Vec<VmLiveData>,
     pub mail_dns: MailDnsData,
     pub port_scan: Vec<PortScanResult>,
+    pub db_health: Vec<DbHealthResult>,
+    pub storage_health: Vec<StorageHealthResult>,
     pub timers: HashMap<String, u64>,
 }
 
@@ -200,4 +204,30 @@ pub struct PortScanResult {
     pub name: String,
     pub ip: String,
     pub open_ports: Vec<u16>,
+}
+
+#[derive(Debug, Serialize, Clone)]
+pub struct DbHealthResult {
+    pub service: String,
+    pub db_type: String,
+    pub container: String,
+    pub vm: String,
+    pub port: u16,
+    pub declared: bool,
+    pub running: bool,
+    pub healthy: bool,
+    pub size: String,
+    pub tcp_ok: bool,
+    pub dns: String,
+    pub backup: bool,
+}
+
+#[derive(Debug, Serialize, Clone)]
+pub struct StorageHealthResult {
+    pub name: String,
+    pub provider: String,
+    pub tier: String,
+    pub accessible: bool,
+    pub size: String,
+    pub objects: String,
 }

@@ -1,1 +1,13 @@
-{"vm":"services-server","timestamp":"2026-03-29T04:32:53Z","mem":{"used":703,"total":954,"pct":73},"swap":{"used":232,"total":2559},"disk":{"used":"25G","total":"48G","pct":"56%"},"load":"2.08 2.12 2.09","uptime":"0d 1h","wg_up":true,"containers_running":7,"containers_total":8,"containers":[{"name":"alerts-api","status":"Up About an hour (healthy)","health":"healthy"},{"name":"umami-setup","status":"Exited (1) About an hour ago","health":"exited"},{"name":"umami","status":"Up About an hour (healthy)","health":"healthy"},{"name":"umami-db","status":"Up About an hour (healthy)","health":"healthy"},{"name":"sauron-forwarder","status":"Up About an hour","health":"none"},{"name":"matomo-hybrid","status":"Up About an hour","health":"none"},{"name":"fluent-bit","status":"Up About an hour","health":"none"},{"name":"dozzle","status":"Up About an hour","health":"none"}]}
+{
+  "vm": "services-server",
+  "timestamp": "2026-04-16T17:52:37Z",
+  "mem": {"used":688,"total":954,"pct":72},
+  "swap": {"used":256,"total":1535},
+  "disk": {"used":"23G","total":"48G","pct":"51%"},
+  "load": "0.43 0.60 0.68",
+  "uptime": "9d 6h",
+  "wg_up": true,
+  "containers_running": 6,
+  "containers_total": 10,
+  "containers": [{"name":"matomo-hybrid","status":"Up 4 hours","health":"none"},{"name":"umami-setup","status":"Exited (1) 4 hours ago","health":"exited"},{"name":"umami","status":"Up 4 hours (healthy)","health":"healthy"},{"name":"umami-db","status":"Up 4 hours (healthy)","health":"healthy"},{"name":"dagu","status":"Up 6 hours","health":"none"},{"name":"siem-api","status":"Exited (1) 6 hours ago","health":"exited"},{"name":"syslog-central","status":"Exited (2) 6 hours ago","health":"exited"},{"name":"fluent-bit","status":"Created","health":"created"},{"name":"sauron-forwarder","status":"Up 36 hours","health":"none"},{"name":"dozzle","status":"Up 36 hours","health":"none"}]
+}

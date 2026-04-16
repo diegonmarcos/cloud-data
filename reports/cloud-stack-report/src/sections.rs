@@ -38,6 +38,8 @@ pub fn build_all_vars(ctx: &Context, live: &LiveData) -> HashMap<String, String>
     vars.insert("VPS_SPECS".into(), build_vps_specs(ctx));
     vars.insert("RESOURCES_HEADER".into(), live.vm_data.iter().map(|v| format!("{:14}", v.alias)).collect::<Vec<_>>().join(" "));
     vars.insert("RESOURCES_TABLE".into(), build_resources(live));
+    vars.insert("DATABASES_LIVE".into(), build_database_section(live));
+    vars.insert("STORAGE_LIVE".into(), build_storage_section(live));
     vars.insert("STORAGE".into(), build_storage(ctx));
 
     // C Security
@@ -69,6 +71,11 @@ fn build_issues(live: &LiveData) -> String {
     }
     for u in &live.public_urls {
         if !u.https { issues.push(format!("❌ A1       {} — [{}]", u.url, u.code)); }
+    }
+    for db in &live.db_health {
+        if !db.healthy {
+            issues.push(format!("{} B2       {}/{} ({}) — {}", if db.running { "⚠️" } else { "❌" }, db.vm, db.container, db.db_type, if db.running { "unhealthy" } else { "not running" }));
+        }
     }
     if issues.is_empty() { return "✅ No issues found".into(); }
     let crit = issues.iter().filter(|i| i.starts_with("❌")).count();
@@ -325,6 +332,49 @@ fn build_network_audit(ctx: &Context, live: &LiveData) -> String {
         containers.iter().map(|c| format!("{:>w$}", c, w = col_w)).collect::<Vec<_>>().join(" ")));
 
     rows.join("\n")
+}
+
+fn build_database_section(live: &LiveData) -> String {
+    if live.db_health.is_empty() {
+        return "  (no databases declared)".into();
+    }
+    let mut lines = vec![
+        format!("    {:20} {:10} {:22} {:16} {:6} {:4} {:8} {:10} {:6}",
+            "Service", "Type", "Container", "VM", "Port", "TCP", "Health", "Size", "Backup"),
+        format!("    {}", "\u{2500}".repeat(105)),
+    ];
+    for db in &live.db_health {
+        let icon = if db.healthy { "\u{2705}" } else if db.running { "\u{26a0}\u{fe0f}" } else { "\u{274c}" };
+        let tcp_i = if db.port == 0 { "\u{2014}" } else if db.tcp_ok { "\u{2705}" } else { "\u{274c}" };
+        let health_i = if db.healthy { "\u{2705}" } else { "\u{274c}" };
+        let backup_i = if db.backup { "\u{2705}" } else { "\u{274c}" };
+        lines.push(format!("{} {:20} {:10} {:22} {:16} {:6} {}   {}   {:10} {}",
+            icon, db.service, db.db_type, db.container, db.vm,
+            if db.port > 0 { db.port.to_string() } else { "\u{2014}".into() },
+            tcp_i, health_i, db.size, backup_i));
+    }
+    let healthy = live.db_health.iter().filter(|d| d.healthy).count();
+    let running = live.db_health.iter().filter(|d| d.running).count();
+    lines.push(String::new());
+    lines.push(format!("  Healthy: {}/{}  Running: {}/{}",
+        healthy, live.db_health.len(), running, live.db_health.len()));
+    lines.join("\n")
+}
+
+fn build_storage_section(live: &LiveData) -> String {
+    if live.storage_health.is_empty() {
+        return "  (no storage buckets declared)".into();
+    }
+    let mut lines = vec![
+        format!("    {:30} {:10} {:14} {:10} {:10}",
+            "Bucket", "Provider", "Tier", "Size", "Objects"),
+        format!("    {}", "\u{2500}".repeat(80)),
+    ];
+    for s in &live.storage_health {
+        lines.push(format!("    {:30} {:10} {:14} {:10} {:10}",
+            s.name, s.provider, s.tier, s.size, s.objects));
+    }
+    lines.join("\n")
 }
 
 fn build_databases(ctx: &Context) -> String {
