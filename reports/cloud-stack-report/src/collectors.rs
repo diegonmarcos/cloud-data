@@ -190,7 +190,7 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
 
             let rsync_ok = {
                 let out = tokio::process::Command::new("rsync")
-                    .args(["-az", "-e", "ssh -o ConnectTimeout=5 -o ControlPath=none -o BatchMode=yes",
+                    .args(["-az", "-e", "ssh -o ConnectTimeout=15 -o ControlPath=none -o BatchMode=yes",
                            &format!("{}:/opt/health/latest.json", alias), &cache_file])
                     .output().await;
                 out.map(|o| o.status.success()).unwrap_or(false)
