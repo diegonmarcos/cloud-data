@@ -1,0 +1,18 @@
+services:
+  reports:
+    image: ghcr.io/diegonmarcos/cloud-data-reports:latest
+    build: .
+    container_name: cloud-data-reports
+    network_mode: host
+    volumes:
+      - ${HOME}/.ssh:/root/.ssh:ro
+      - ${HOME}/.config/sops:/root/.config/sops:ro
+      - .:/workspace
+    environment:
+      - SOPS_AGE_KEY
+      - WG_PRIVATE_KEY
+      - OCI_SSH_KEY
+      - GCP_PROXY_SSH_KEY
+      - GCP_T4_SSH_KEY
+      - GITHUB_TOKEN
+      - GITHUB_ACTOR
