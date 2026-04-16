@@ -172,14 +172,22 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
     // Pre-warm SSH multiplexed connections (sequential — one handshake each)
     let mux_dir = "/tmp/ssh-mux-health";
     let _ = std::fs::create_dir_all(mux_dir);
-    for vm in &active_vms {
-        let _ = tokio::process::Command::new("ssh")
-            .args(["-o", "BatchMode=yes", "-o", "ConnectTimeout=15",
-                   "-o", &format!("ControlPath={}/%r@%h:%p", mux_dir),
-                   "-o", "ControlMaster=auto", "-o", "ControlPersist=60",
-                   "-fNM", &vm.alias])
-            .output().await;
-    }
+    // Pre-warm: establish SSH multiplexed masters sequentially
+    let mux_futs: Vec<_> = active_vms.iter().map(|vm| {
+        let alias = vm.alias.clone();
+        let mux = mux_dir.to_string();
+        async move {
+            let _ = tokio::process::Command::new("ssh")
+                .args(["-o", "BatchMode=yes", "-o", "ConnectTimeout=15",
+                       "-o", &format!("ControlPath={}/%r@%h:%p", mux),
+                       "-o", "ControlMaster=yes", "-o", "ControlPersist=120",
+                       "-fNM", &alias])
+                .output().await;
+        }
+    }).collect();
+    futures::future::join_all(mux_futs).await;
+    // Brief settle for masters to fully initialize
+    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
 
     let mux_dir_owned = mux_dir.to_string();
     let futs: Vec<_> = active_vms.iter().map(|vm| {
