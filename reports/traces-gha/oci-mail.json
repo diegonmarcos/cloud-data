@@ -1664,5 +1664,20 @@
     "skip": 0,
     "status": "success",
     "services": []
+  },
+  {
+    "vm": "oci-mail",
+    "run_id": "24526040951",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/24526040951",
+    "sha": "3509d2dc51d806446b95c2eb9688d46a7fe7ea05",
+    "trigger": "push",
+    "ts": "2026-04-16T18:07:02Z",
+    "duration_s": 1,
+    "total": 4,
+    "ok": 0,
+    "fail": 0,
+    "skip": 0,
+    "status": "success",
+    "services": []
   }
 ]
