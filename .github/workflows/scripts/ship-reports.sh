@@ -29,13 +29,16 @@ fi
 echo "[1/3] Using $CLOUD_DATA @ $(git -C "$CLOUD_DATA" rev-parse --short HEAD 2>/dev/null || echo unknown)"
 
 # ── 2. GHCR login ─────────────────────────────────────────────────
+# GHA: GITHUB_TOKEN env var. Local: gh CLI via mounted ~/.config/gh
 echo "[2/3] GHCR login"
 if [ -n "${GITHUB_TOKEN:-}" ]; then
   echo "$GITHUB_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR:-diegonmarcos}" --password-stdin 2>/dev/null
+  echo "[ghcr] Authenticated via GITHUB_TOKEN"
 elif command -v gh >/dev/null 2>&1 && gh auth token >/dev/null 2>&1; then
   gh auth token 2>/dev/null | docker login ghcr.io -u "$(gh api user --jq .login 2>/dev/null || echo diegonmarcos)" --password-stdin 2>/dev/null
+  echo "[ghcr] Authenticated via gh CLI"
 else
-  echo "FATAL: No GHCR credentials (set GITHUB_TOKEN or gh auth login)"
+  echo "FATAL: No GHCR credentials (GITHUB_TOKEN or gh auth)"
   exit 1
 fi
 
