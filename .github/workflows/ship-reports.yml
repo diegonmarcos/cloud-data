@@ -19,17 +19,19 @@ jobs:
   build:
     name: "Build + push reports image"
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_ACTOR: ${{ github.actor }}
     steps:
-      - name: Ship via cloud-builder
+      - uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Build and push
         run: |
-          echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
-          IMAGE="ghcr.io/diegonmarcos/cloud-builder-x-deb-nixhm:latest"
-          docker pull "$IMAGE"
-          docker run --rm \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            -e GITHUB_TOKEN \
-            -e GITHUB_ACTOR \
-            "$IMAGE" ship-reports
+          cd reports
+          docker build \
+            --network=host \
+            -t ghcr.io/diegonmarcos/cloud-data-reports:latest \
+            -t ghcr.io/diegonmarcos/cloud-data-reports:${{ github.sha }} \
+            .
+          docker push ghcr.io/diegonmarcos/cloud-data-reports:latest
+          docker push ghcr.io/diegonmarcos/cloud-data-reports:${{ github.sha }}
