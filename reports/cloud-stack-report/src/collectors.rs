@@ -219,8 +219,8 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                 out.map(|o| o.status.success()).unwrap_or(false)
             };
 
-            if rsync_ok {
-                // Parse cached JSON
+            // Parse cached JSON (rsync may have refreshed it, or previous run's cache is still valid)
+            if rsync_ok || std::path::Path::new(&cache_file).exists() {
                 if let Ok(raw) = std::fs::read_to_string(&cache_file) {
                     if let Ok(j) = serde_json::from_str::<serde_json::Value>(&raw) {
                         data.reachable = true;
