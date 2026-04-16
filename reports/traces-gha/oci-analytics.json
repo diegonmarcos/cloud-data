@@ -390,5 +390,20 @@
         "duration_s": 0
       }
     ]
+  },
+  {
+    "vm": "oci-analytics",
+    "run_id": "24515222826",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/24515222826",
+    "sha": "4966c62bc4e2ef20bf600c0cd0ed288b64d2203f",
+    "trigger": "workflow_dispatch",
+    "ts": "2026-04-16T14:16:36Z",
+    "duration_s": 3,
+    "total": 6,
+    "ok": 0,
+    "fail": 0,
+    "skip": 0,
+    "status": "success",
+    "services": []
   }
 ]
