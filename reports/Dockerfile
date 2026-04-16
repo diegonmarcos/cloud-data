@@ -25,7 +25,7 @@ RUN mkdir -p /usr/local/share/yara-rules/community && \
       -o /usr/local/share/yara-rules/community/urlhaus.yar || true
 
 # Copy binaries
-COPY --from=builder /build/target/release/cloud-stack-report /usr/local/bin/
+COPY --from=builder /build/target/release/health-reporter /usr/local/bin/cloud-stack-report
 COPY --from=builder /build/target/release/cloud-health-full /usr/local/bin/
 COPY --from=builder /build/target/release/cloud-mail-full /usr/local/bin/
 COPY --from=builder /build/target/release/cloud-url-health /usr/local/bin/
