@@ -139,6 +139,7 @@ td,th{{font-family:{FONT}}}
     section_title(&mut h, "B", "DATABASES");
     render_database_report(&mut h, data);
     render_object_storage(&mut h, data);
+    render_ghcr(&mut h, data);
     render_runtime_volumes(&mut h, data);
     render_drift(&mut h, data);
     render_backup_status(&mut h, data);
@@ -160,7 +161,6 @@ td,th{{font-family:{FONT}}}
     section_title(&mut h, "D", "WORKFLOWS");
     render_dags(&mut h, data);
     render_gha(&mut h, data);
-    render_ghcr(&mut h, data);
     render_repos(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
@@ -168,14 +168,29 @@ td,th{{font-family:{FONT}}}
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "E", "SERVICES");
     render_services_all_unified(&mut h, data);
+    render_services_api_endpoints(&mut h, data);
     render_services_mcps(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
     // F) OTHERS
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "F", "OTHERS");
-    render_endpoints(&mut h, data);
+    // ═══════════════════════════════════════════════════════════
+    // F) FINOPS
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "F", "FINOPS");
+    render_finops_costs(&mut h, data);
+    render_finops_vms(&mut h, data);
+    render_finops_providers(&mut h, data);
+    render_finops_assets(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // G) OTHERS
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "G", "OTHERS");
     render_mail(&mut h, data);
+    render_wg_traffic(&mut h, data);
+    render_system_info(&mut h, data);
+    render_report_metadata(&mut h, data);
 
     // ── Footer ──────────────────────────────────────────────────
     write!(h, r#"<tr><td style="text-align:center;padding:16px;color:{C_DIM};font-size:11px;font-family:{FONT};">
@@ -640,7 +655,18 @@ fn render_gha(h: &mut String, data: &ReportData) {
 
 fn render_ghcr(h: &mut String, data: &ReportData) {
     if data.ghcr_packages.is_empty() { return; }
-    section_start(h, &format!("GHCR Registry ({} packages)", data.ghcr_total), 2);
+
+    let disk_str = if data.github_disk_kb > 1048576 {
+        format!("{:.1} GB", data.github_disk_kb as f64 / 1048576.0)
+    } else if data.github_disk_kb > 1024 {
+        format!("{:.0} MB", data.github_disk_kb as f64 / 1024.0)
+    } else if data.github_disk_kb > 0 {
+        format!("{} KB", data.github_disk_kb)
+    } else {
+        "?".into()
+    };
+
+    section_start(h, &format!("GHCR Container Registry ({} images — {} total GitHub storage)", data.ghcr_total, disk_str), 2);
     h.push_str("<tr>");
     h.push_str(&th("Package", "left"));
     h.push_str(&th("Updated", "left"));
@@ -1068,74 +1094,77 @@ fn render_services_all_unified(h: &mut String, data: &ReportData) {
     internal.sort_by_key(|s| &s.name);
 
     let total = public.len() + internal.len();
-    section_start(h, &format!("All Services ({} enabled)", total), 5);
+    section_start(h, &format!("All Services ({} enabled)", total), 7);
     h.push_str("<tr>");
-    for (label, align) in &[("Service","left"),("Category","left"),("URL","left"),("Status","center"),("Latency","right")] {
+    for (label, align) in &[("Service","left"),("Category","left"),("URL","left"),("Status","center"),("Latency","right"),("API","center"),("Web","center")] {
         h.push_str(&th(label, align));
     }
     h.push_str("</tr>\n");
 
     // Public services
     if !public.is_empty() {
-        write!(h, r#"<tr><td colspan="5" style="padding:6px 8px 2px;color:{C_DIM};font-size:10px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">Public ({} with domains)</td></tr>"#,
+        write!(h, r#"<tr><td colspan="7" style="padding:6px 8px 2px;color:{C_DIM};font-size:10px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">Public ({} with domains)</td></tr>"#,
             public.len()).unwrap();
         for svc in &public {
-            let ep = data.endpoints.iter().find(|e| e.service == svc.name);
-            let url = if svc.domain.starts_with("http") { svc.domain.clone() } else { format!("https://{}", svc.domain) };
-            let url_link = format!(
-                r#"<a href="{}" style="color:{};font-size:10px;text-decoration:none;font-family:{FONT};">{}</a>"#,
-                url,
-                ep.map(|e| if e.status_code >= 200 && e.status_code < 400 { C_OK } else { C_CRIT }).unwrap_or(C_TEXT),
-                svc.domain
-            );
-            let status_html = match ep {
-                Some(e) => code_badge(e.status_code),
-                None => label_badge("—", C_DIM),
-            };
-            let latency_str = match ep {
-                Some(e) => format!("{}ms", e.latency_ms),
-                None => "—".into(),
-            };
-            let lat_color = ep
-                .map(|e| if e.latency_ms < 200 { C_OK } else if e.latency_ms < 1000 { C_WARN } else { C_CRIT })
-                .unwrap_or(C_DIM);
-            let cat_color = category_color(&svc.category);
-            write!(h, r#"<tr>
-{}{}
-<td style="padding:3px 8px;border-bottom:1px solid rgba(15,52,96,0.3);font-family:{FONT};">{url_link}</td>
-<td style="padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);">{status_html}</td>
-{}
-</tr>
-"#,
-                td(&svc.name, C_TEXT, "11px", "left"),
-                td(&svc.category, cat_color, "10px", "left"),
-                td(&latency_str, lat_color, "10px", "right"),
-            ).unwrap();
+            render_service_unified_row(h, svc, data);
         }
     }
 
     // Internal services
     if !internal.is_empty() {
-        write!(h, r#"<tr><td colspan="5" style="padding:6px 8px 2px;color:{C_DIM};font-size:10px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">Internal ({} no public domain)</td></tr>"#,
+        write!(h, r#"<tr><td colspan="7" style="padding:6px 8px 2px;color:{C_DIM};font-size:10px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">Internal ({} no public domain)</td></tr>"#,
             internal.len()).unwrap();
         for svc in &internal {
-            let cat_color = category_color(&svc.category);
-            write!(h, r#"<tr>
-{}{}
-{}
-{}
-{}
-</tr>
-"#,
-                td(&svc.name, C_TEXT, "11px", "left"),
-                td(&svc.category, cat_color, "10px", "left"),
-                td(&format!("internal :{}", svc.port), C_DIM, "10px", "left"),
-                td("—", C_DIM, "10px", "center"),
-                td(&svc.vm, C_DIM, "10px", "right"),
-            ).unwrap();
+            render_service_unified_row(h, svc, data);
         }
     }
 
+    section_end(h);
+}
+
+fn render_services_api_endpoints(h: &mut String, data: &ReportData) {
+    // Only services with actual known API paths (exclude MCPs — they have their own table)
+    let mut apis: Vec<_> = data.services.iter()
+        .filter(|s| s.enabled && s.has_api && !s.api_path.is_empty() && s.service_type != "mcp")
+        .collect();
+    apis.sort_by_key(|s| &s.name);
+    if apis.is_empty() { return; }
+
+    section_start(h, &format!("API Endpoints ({} services)", apis.len()), 4);
+    h.push_str("<tr>");
+    for (label, align) in &[("Service","left"),("API Path","left"),("Full API URL","left"),("Status","center")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
+    for svc in &apis {
+        let full_url = if !svc.api_url.is_empty() {
+            svc.api_url.clone()
+        } else if !svc.domain.is_empty() {
+            format!("https://{}{}", svc.domain, svc.api_path)
+        } else {
+            format!("internal :{}{}", svc.port, svc.api_path)
+        };
+        let ep = data.endpoints.iter().find(|e| e.service == svc.name);
+        let status_html = match ep {
+            Some(e) => code_badge(e.status_code),
+            None => label_badge("—", C_DIM),
+        };
+        let url_link = if full_url.starts_with("https://") {
+            format!(r#"<a href="{}" style="color:{C_OK};font-size:10px;text-decoration:none;font-family:{FONT};">{}</a>"#, full_url, full_url)
+        } else {
+            format!(r#"<span style="color:{C_DIM};font-size:10px;font-family:{FONT};">{}</span>"#, full_url)
+        };
+        write!(h, r#"<tr>
+{}{}
+<td style="padding:3px 8px;border-bottom:1px solid rgba(15,52,96,0.3);">{url_link}</td>
+<td style="padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);">{status_html}</td>
+</tr>
+"#,
+            td(&svc.name, C_TEXT, "11px", "left"),
+            td(&svc.api_path, "#FF9900", "10px", "left"),
+        ).unwrap();
+    }
     section_end(h);
 }
 
@@ -1182,7 +1211,63 @@ fn category_color(cat: &str) -> &'static str {
     }
 }
 
-// render_service_row removed — inlined into render_services_all
+fn render_service_unified_row(h: &mut String, svc: &ServiceEntry, data: &ReportData) {
+    let ep = data.endpoints.iter().find(|e| e.service == svc.name);
+    let cat_color = category_color(&svc.category);
+
+    // URL column — clickable link or "internal :port"
+    let url_cell = if !svc.domain.is_empty() {
+        let url = if svc.domain.starts_with("http") { svc.domain.clone() } else { format!("https://{}", svc.domain) };
+        let color = ep.map(|e| if e.status_code >= 200 && e.status_code < 400 { C_OK } else { C_CRIT }).unwrap_or(C_TEXT);
+        format!(r#"<td style="padding:3px 8px;border-bottom:1px solid rgba(15,52,96,0.3);font-family:{FONT};"><a href="{}" style="color:{};font-size:10px;text-decoration:none;">{}</a></td>"#, url, color, svc.domain)
+    } else {
+        td(&format!("internal :{}", svc.port), C_DIM, "10px", "left")
+    };
+
+    // Status badge
+    let status_html = match ep {
+        Some(e) => code_badge(e.status_code),
+        None => label_badge("—", C_DIM),
+    };
+
+    // Latency
+    let latency_str = match ep {
+        Some(e) => format!("{}ms", e.latency_ms),
+        None => "—".into(),
+    };
+    let lat_color = ep
+        .map(|e| if e.latency_ms < 200 { C_OK } else if e.latency_ms < 1000 { C_WARN } else { C_CRIT })
+        .unwrap_or(C_DIM);
+
+    // API column — link to api_path or check mark
+    let api_cell = if svc.has_api {
+        if !svc.api_path.is_empty() && !svc.domain.is_empty() {
+            let api_url = format!("https://{}{}", svc.domain, svc.api_path);
+            format!(r#"<td style="padding:3px 4px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);"><a href="{}" style="color:{C_OK};font-size:10px;text-decoration:none;">api</a></td>"#, api_url)
+        } else {
+            format!(r#"<td style="padding:3px 4px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);color:{C_OK};font-size:10px;">api</td>"#)
+        }
+    } else {
+        format!(r#"<td style="padding:3px 4px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);color:{C_DIM};font-size:10px;">—</td>"#)
+    };
+
+    // Web UI column — link or dash
+    let web_cell = if svc.has_web_ui && !svc.domain.is_empty() {
+        let url = if svc.domain.starts_with("http") { svc.domain.clone() } else { format!("https://{}", svc.domain) };
+        format!(r#"<td style="padding:3px 4px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);"><a href="{}" style="color:{C_OK};font-size:10px;text-decoration:none;">web</a></td>"#, url)
+    } else {
+        format!(r#"<td style="padding:3px 4px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);color:{C_DIM};font-size:10px;">—</td>"#)
+    };
+
+    write!(h, "<tr>{}{}{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{status_html}</td>{}{}{}</tr>\n",
+        td(&svc.name, C_TEXT, "11px", "left"),
+        td(&svc.category, cat_color, "10px", "left"),
+        url_cell,
+        td(&latency_str, lat_color, "10px", "right"),
+        api_cell,
+        web_cell,
+    ).unwrap();
+}
 
 fn render_repos(h: &mut String, data: &ReportData) {
     if data.repos.is_empty() { return; }
@@ -1219,6 +1304,255 @@ fn render_repos(h: &mut String, data: &ReportData) {
             td(time_short, C_DIM, "10px", "left"),
         ).unwrap();
     }
+    section_end(h);
+}
+
+fn render_finops_vms(h: &mut String, data: &ReportData) {
+    if data.vm_finops.is_empty() { return; }
+
+    let total_cpu: u32 = data.vm_finops.iter().map(|v| v.cpu).sum();
+    let total_ram: f64 = data.vm_finops.iter().map(|v| v.ram_gb).sum();
+    let free_count = data.vm_finops.iter().filter(|v| v.tier == "Free").count();
+    let paid_count = data.vm_finops.iter().filter(|v| v.tier != "Free").count();
+
+    section_start(h, &format!("VM Fleet ({} VMs — {} free, {} paid — {}cpu / {:.0}GB RAM)",
+        data.vm_finops.len(), free_count, paid_count, total_cpu, total_ram), 6);
+    h.push_str("<tr>");
+    for (label, align) in &[("VM","left"),("Provider","left"),("Tier","center"),("Shape","left"),("Specs","right"),("Workload","right")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
+    for vm in &data.vm_finops {
+        let tier_color = if vm.tier == "Free" { C_OK } else { C_WARN };
+        let tier_badge = label_badge(&vm.tier, tier_color);
+        let specs = format!("{}cpu / {}GB", vm.cpu, vm.ram_gb);
+        let workload = format!("{} svc / {} ctrs", vm.services, vm.containers);
+        write!(h, r#"<tr>
+{}{}
+<td style="padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);">{tier_badge}</td>
+{}{}{}
+</tr>
+"#,
+            td(&vm.alias, C_TEXT, "11px", "left"),
+            td(&vm.provider, C_DIM, "10px", "left"),
+            td(&vm.shape, C_DIM, "10px", "left"),
+            td(&specs, C_TEXT, "11px", "right"),
+            td(&workload, C_DIM, "10px", "right"),
+        ).unwrap();
+    }
+    section_end(h);
+}
+
+fn render_finops_providers(h: &mut String, data: &ReportData) {
+    if data.vps_providers.is_empty() { return; }
+
+    section_start(h, &format!("Cloud Providers ({} registered)", data.vps_providers.len()), 3);
+    h.push_str("<tr>");
+    for (label, align) in &[("Provider","left"),("Name","left"),("Tier","left")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
+    for vps in &data.vps_providers {
+        write!(h, "<tr>{}{}{}</tr>\n",
+            td(&vps.name, C_TEXT, "11px", "left"),
+            td(&vps.provider, C_DIM, "10px", "left"),
+            td(&vps.tier, C_DIM, "10px", "left"),
+        ).unwrap();
+    }
+    section_end(h);
+}
+
+fn render_finops_assets(h: &mut String, data: &ReportData) {
+    section_start(h, "Asset Summary", 2);
+
+    let assets = [
+        ("Virtual Machines", format!("{}", data.vm_finops.len())),
+        ("Services (enabled)", format!("{}", data.total_services)),
+        ("Containers (declared)", format!("{}", data.total_containers)),
+        ("Public Domains", format!("{}", data.total_domains)),
+        ("S3 Buckets", format!("{}", data.cloud_buckets.len())),
+        ("Databases (declared)", format!("{}", data.databases.iter().filter(|d| d.enabled).count())),
+        ("MCP Servers", format!("{}", data.mcp_servers.len())),
+        ("GitHub Repos", format!("{}", data.repos.len())),
+        ("GHCR Packages", format!("{}", data.ghcr_total)),
+        ("Dagu DAGs", format!("{}", data.dags.len())),
+        ("GHA Workflows", format!("{}", data.gha_runs.len())),
+    ];
+
+    for (label, value) in &assets {
+        write!(h, "<tr>{}{}</tr>\n",
+            td(label, C_DIM, "11px", "left"),
+            td(value, C_TEXT, "12px", "right"),
+        ).unwrap();
+    }
+    section_end(h);
+}
+
+fn render_report_metadata(h: &mut String, data: &ReportData) {
+    section_start(h, "Report Metadata", 2);
+
+    let ssh_ok = data.vms.iter().filter(|v| v.status != VmStatus::Unknown && v.containers_total > 0 || v.mem_pct > 0).count();
+    let ssh_fail = data.vms.len() - ssh_ok;
+
+    let meta = [
+        ("Generated", format!("{} {}", data.date, data.time)),
+        ("Duration", format!("{:.1}s", data.generation_duration_ms as f64 / 1000.0)),
+        ("SSH collection", format!("{}/{} VMs responded", ssh_ok, data.vms.len())),
+        ("Endpoints probed", format!("{}", data.endpoints.len())),
+        ("Certs checked", format!("{}", data.certs.len())),
+        ("Engine", "Rust (async tokio + reqwest + trust-dns)".into()),
+    ];
+
+    for (label, value) in &meta {
+        write!(h, "<tr>{}{}</tr>\n",
+            td(label, C_DIM, "11px", "left"),
+            td(value, C_TEXT, "11px", "right"),
+        ).unwrap();
+    }
+    section_end(h);
+}
+
+fn render_finops_costs(h: &mut String, data: &ReportData) {
+    if data.cloud_costs.is_empty() {
+        // No cost data — show free tier badge
+        section_start(h, "Monthly Cloud Costs", 1);
+        write!(h, r#"<tr><td style="padding:12px 16px;text-align:center;">
+<span style="display:inline-block;padding:6px 16px;border-radius:6px;font-size:14px;font-weight:bold;background:{C_OK};color:{BG_BODY};font-family:{FONT};">All Free Tier — $0/mo</span>
+</td></tr>"#).unwrap();
+        section_end(h);
+        return;
+    }
+
+    // Group costs by month
+    let mut months: std::collections::BTreeMap<String, Vec<&CloudCost>> = std::collections::BTreeMap::new();
+    for cost in &data.cloud_costs {
+        months.entry(cost.month.clone()).or_default().push(cost);
+    }
+
+    section_start(h, &format!("Monthly Cloud Costs ({} months)", months.len()), 5);
+    h.push_str("<tr>");
+    for (label, align) in &[("Month","left"),("Provider","left"),("Service","left"),("Usage","right"),("Cost","right")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
+    for (month, items) in months.iter().rev() {
+        let month_total: f64 = items.iter().map(|c| c.amount).sum();
+        let month_usage: f64 = items.iter().map(|c| c.usage).sum();
+        let currency = items.first().map(|c| c.currency.as_str()).unwrap_or("EUR");
+        let total_color = if month_total > 10.0 { C_CRIT } else if month_total > 1.0 { C_WARN } else { C_OK };
+
+        // Month header with totals
+        write!(h, r#"<tr>
+<td colspan="3" style="padding:6px 8px 2px;color:{C_TEXT};font-size:12px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">{month}</td>
+<td style="padding:6px 8px 2px;text-align:right;color:{C_DIM};font-size:11px;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">{month_usage:.0} units</td>
+<td style="padding:6px 8px 2px;text-align:right;color:{total_color};font-size:12px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">{currency} {month_total:.2}</td>
+</tr>"#).unwrap();
+
+        // Sort by cost descending, then by usage
+        let mut sorted: Vec<_> = items.iter().collect();
+        sorted.sort_by(|a, b| {
+            b.amount.partial_cmp(&a.amount)
+                .unwrap_or(std::cmp::Ordering::Equal)
+                .then(b.usage.partial_cmp(&a.usage).unwrap_or(std::cmp::Ordering::Equal))
+        });
+
+        for cost in sorted {
+            let amt_color = if cost.amount > 5.0 { C_CRIT } else if cost.amount > 1.0 { C_WARN } else if cost.amount > 0.0 { C_TEXT } else { C_DIM };
+            let cost_str = if cost.amount > 0.001 {
+                format!("{} {:.2}", cost.currency, cost.amount)
+            } else {
+                "FREE".into()
+            };
+            let usage_str = if cost.usage > 1000.0 {
+                format!("{:.0}", cost.usage)
+            } else if cost.usage > 0.01 {
+                format!("{:.2}", cost.usage)
+            } else {
+                "—".into()
+            };
+            write!(h, "<tr>{}{}{}{}{}</tr>\n",
+                td("", C_DIM, "10px", "left"),
+                td(&cost.provider, C_DIM, "10px", "left"),
+                td(&cost.service, C_TEXT, "10px", "left"),
+                td(&usage_str, C_DIM, "10px", "right"),
+                td(&cost_str, amt_color, "11px", "right"),
+            ).unwrap();
+        }
+    }
+    section_end(h);
+}
+
+fn render_wg_traffic(h: &mut String, data: &ReportData) {
+    let has_transfer = data.vms.iter().any(|v| !v.wg_transfer.is_empty());
+    if !has_transfer { return; }
+
+    section_start(h, "WireGuard Transfer Stats", 4);
+    h.push_str("<tr>");
+    for (label, align) in &[("VM","left"),("Peer","left"),("RX","right"),("TX","right")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
+    for vm in &data.vms {
+        if vm.wg_transfer.is_empty() { continue; }
+        for wt in &vm.wg_transfer {
+            let short_peer = if wt.peer.len() > 12 {
+                format!("{}...", &wt.peer[..12])
+            } else {
+                wt.peer.clone()
+            };
+            write!(h, "<tr>{}{}{}{}</tr>\n",
+                td(&vm.name, C_TEXT, "11px", "left"),
+                td(&short_peer, C_DIM, "10px", "left"),
+                td(&human_size(wt.rx_bytes), C_OK, "11px", "right"),
+                td(&human_size(wt.tx_bytes), C_OK, "11px", "right"),
+            ).unwrap();
+        }
+    }
+    section_end(h);
+}
+
+fn render_system_info(h: &mut String, data: &ReportData) {
+    if data.vms.is_empty() { return; }
+
+    section_start(h, "System Info (Kernel)", 2);
+    h.push_str("<tr>");
+    h.push_str(&th("VM", "left"));
+    h.push_str(&th("Kernel", "left"));
+    h.push_str("</tr>\n");
+
+    // Collect all kernel versions to detect differences
+    let kernels: Vec<&str> = data.vms.iter()
+        .filter(|v| v.kernel != "?" && !v.kernel.is_empty())
+        .map(|v| v.kernel.as_str())
+        .collect();
+    let all_same = kernels.windows(2).all(|w| w[0] == w[1]);
+
+    for vm in &data.vms {
+        let kern_color = if vm.kernel == "?" || vm.kernel.is_empty() {
+            C_DIM
+        } else if !all_same {
+            C_WARN
+        } else {
+            C_OK
+        };
+        let display = if vm.kernel.is_empty() { "?" } else { &vm.kernel };
+        write!(h, "<tr>{}{}</tr>\n",
+            td(&vm.name, C_TEXT, "11px", "left"),
+            td(display, kern_color, "11px", "left"),
+        ).unwrap();
+    }
+
+    if !all_same && kernels.len() > 1 {
+        write!(h, r#"<tr><td colspan="2" style="padding:4px 8px;">
+<div style="border-left:4px solid {C_WARN};background:{BG_CARD};padding:4px 10px;border-radius:0 4px 4px 0;">
+<span style="font-size:10px;color:{C_WARN};font-family:{FONT};">Kernel versions differ across VMs</span>
+</div></td></tr>"#).unwrap();
+    }
+
     section_end(h);
 }
 

@@ -14,6 +14,9 @@ pub struct Context {
     pub cloud_buckets: Vec<CloudBucket>,
     pub services: Vec<ServiceEntry>,
     pub mcp_servers: Vec<McpServer>,
+    pub vps_providers: Vec<VpsProvider>,
+    pub vm_finops: Vec<VmFinops>,
+    pub total_domains: usize,
 }
 
 pub fn load_context() -> Result<Context> {
@@ -41,7 +44,7 @@ pub fn load_context() -> Result<Context> {
     };
 
     // Load cloud buckets + services from consolidated JSON
-    let (cloud_buckets, services) = if Path::new(CONSOLIDATED).exists() {
+    let (cloud_buckets, services, vps_providers, vm_finops, total_domains) = if Path::new(CONSOLIDATED).exists() {
         match std::fs::read_to_string(CONSOLIDATED) {
             Ok(raw) => match serde_json::from_str::<ConsolidatedJson>(&raw) {
                 Ok(c) => {
@@ -51,8 +54,14 @@ pub fn load_context() -> Result<Context> {
                             else { "app" };
                         let domain = svc["domain"].as_str().unwrap_or("").to_string();
                         let port = svc["port"].as_u64().unwrap_or(0) as u16;
-                        // has_api is determined at runtime by probing — set false here, filled by collect
-                        let has_api = false;
+                        // API classification from consolidated (derived by gen-cloud-data.ts)
+                        let api_info = &svc["api"];
+                        let has_api_declared = api_info["has_api"].as_bool().unwrap_or(false);
+                        let has_web_ui = api_info["has_web_ui"].as_bool().unwrap_or(!domain.is_empty());
+                        let api_path = api_info["api_path"].as_str().unwrap_or("").to_string();
+                        let api_url = api_info["api_url"].as_str().unwrap_or("").to_string();
+                        // has_api starts from declared, then upgraded to true by runtime probing in main.rs
+                        let has_api = has_api_declared;
                         ServiceEntry {
                             name: name.clone(),
                             category: svc["category"].as_str().unwrap_or("?").to_string(),
@@ -63,16 +72,56 @@ pub fn load_context() -> Result<Context> {
                             port: svc["port"].as_u64().unwrap_or(0) as u16,
                             service_type: stype.to_string(),
                             has_api,
+                            has_web_ui,
+                            api_path,
+                            api_url,
                         }
                     }).collect();
-                    (c.storage, svc_list)
+                    // Parse VPS providers
+                    let vps_list: Vec<VpsProvider> = c.vpss.iter().map(|(name, v)| {
+                        VpsProvider {
+                            name: name.clone(),
+                            provider: v["provider"].as_str().unwrap_or(name).to_string(),
+                            tier: v["tier"].as_str().unwrap_or("?").to_string(),
+                        }
+                    }).collect();
+
+                    // Parse VM finops
+                    let vm_fin: Vec<VmFinops> = c.vms.iter().map(|(vm_id, vm)| {
+                        let provider = if vm_id.starts_with("oci") { "OCI" }
+                            else if vm_id.starts_with("gcp") { "GCP" }
+                            else { "?" };
+                        let tier = if vm_id.contains("-f_") || vm_id.contains("-f-") { "Free" } else { "Paid" };
+                        let specs = &vm["specs"];
+                        VmFinops {
+                            alias: vm["ssh_alias"].as_str().unwrap_or(vm_id).to_string(),
+                            provider: provider.to_string(),
+                            tier: tier.to_string(),
+                            cpu: specs["cpu"].as_u64().unwrap_or(0) as u32,
+                            ram_gb: specs["ram_gb"].as_f64().unwrap_or(0.0),
+                            shape: specs["shape"].as_str()
+                                .or(specs["machine_type"].as_str())
+                                .unwrap_or("?").to_string(),
+                            services: vm["services"].as_array().map(|a| a.len() as u32).unwrap_or(0),
+                            containers: vm["container_count"].as_u64().unwrap_or(0) as u32,
+                        }
+                    }).collect();
+
+                    // Count unique domains
+                    let total_domains = svc_list.iter()
+                        .filter(|s| s.enabled && !s.domain.is_empty())
+                        .map(|s| s.domain.clone())
+                        .collect::<std::collections::HashSet<_>>()
+                        .len();
+
+                    (c.storage, svc_list, vps_list, vm_fin, total_domains)
                 }
-                Err(e) => { eprintln!("  Failed to parse consolidated: {}", e); (vec![], vec![]) }
+                Err(e) => { eprintln!("  Failed to parse consolidated: {}", e); (vec![], vec![], vec![], vec![], 0) }
             },
-            Err(_) => (vec![], vec![]),
+            Err(_) => (vec![], vec![], vec![], vec![], 0),
         }
     } else {
-        (vec![], vec![])
+        (vec![], vec![], vec![], vec![], 0)
     };
 
     // Load per-VM container manifests
@@ -130,5 +179,5 @@ pub fn load_context() -> Result<Context> {
         servers
     };
 
-    Ok(Context { monitoring, databases, manifests, cloud_buckets, services, mcp_servers })
+    Ok(Context { monitoring, databases, manifests, cloud_buckets, services, mcp_servers, vps_providers, vm_finops, total_domains })
 }

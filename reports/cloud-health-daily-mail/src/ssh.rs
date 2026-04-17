@@ -237,6 +237,10 @@ timeout 10 sh -c 'docker ps -a --format "{{{{.Names}}}}" 2>/dev/null | while rea
   mounts=$(docker inspect "$ctr" --format "{{{{range .Mounts}}}}{{{{.Name}}}}={{{{.Destination}}}} {{{{end}}}}" 2>/dev/null | tr -d "\n")
   [ -n "$mounts" ] && echo "$ctr|$mounts"
 done' 2>/dev/null || echo ""
+echo "===KERNEL==="
+uname -r 2>/dev/null || echo "?"
+echo "===WG_TRANSFER==="
+sudo wg show wg0 transfer 2>/dev/null || echo ""
 {db_cmds}
 {mail_cmds}
 echo "===END==="
@@ -495,6 +499,23 @@ echo "===END==="
             if count > 0 {
                 data.log_errors.push((name, count));
             }
+        }
+    }
+
+    // Kernel version
+    data.kernel = section(&raw, "KERNEL", "WG_TRANSFER");
+    if data.kernel.is_empty() { data.kernel = "?".into(); }
+
+    // WireGuard transfer stats — section ends at next === marker (DB_SIZE_, MAIL_, or END)
+    for line in section(&raw, "WG_TRANSFER", "END").lines() {
+        if line.trim().is_empty() { continue; }
+        let parts: Vec<&str> = line.split_whitespace().collect();
+        if parts.len() >= 3 {
+            data.wg_transfer.push(WgTransfer {
+                peer: parts[0].to_string(),
+                rx_bytes: parts[1].parse().unwrap_or(0),
+                tx_bytes: parts[2].parse().unwrap_or(0),
+            });
         }
     }
 

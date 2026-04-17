@@ -166,24 +166,34 @@ pub async fn fetch_gha(github_token: &str) -> Vec<GhaRun> {
         .unwrap_or_default()
 }
 
-/// Fetch GHCR packages
-pub async fn fetch_ghcr(github_token: &str) -> (Vec<GhcrPackage>, usize) {
+/// Fetch GHCR packages + GitHub disk usage
+pub async fn fetch_ghcr(github_token: &str) -> (Vec<GhcrPackage>, usize, u64) {
     let client = auth_client(github_token);
-    let resp = timeout(
-        Duration::from_secs(10),
-        client
-            .get("https://api.github.com/user/packages?package_type=container&per_page=100")
-            .header("User-Agent", "cloud-health-daily-mail")
-            .send(),
-    )
-    .await;
 
-    let json: serde_json::Value = match resp {
+    // Fetch packages and user disk usage in parallel
+    let (pkgs_resp, user_resp) = tokio::join!(
+        timeout(Duration::from_secs(10),
+            client.get("https://api.github.com/user/packages?package_type=container&per_page=100")
+                .header("User-Agent", "cloud-health-daily-mail").send()),
+        timeout(Duration::from_secs(10),
+            client.get("https://api.github.com/user")
+                .header("User-Agent", "cloud-health-daily-mail").send()),
+    );
+
+    let pkgs_json: serde_json::Value = match pkgs_resp {
         Ok(Ok(r)) => r.json().await.unwrap_or_default(),
-        _ => return (vec![], 0),
+        _ => return (vec![], 0, 0),
     };
 
-    let arr = json.as_array().cloned().unwrap_or_default();
+    let disk_kb = match user_resp {
+        Ok(Ok(r)) => {
+            let j: serde_json::Value = r.json().await.unwrap_or_default();
+            j["disk_usage"].as_u64().unwrap_or(0)
+        }
+        _ => 0,
+    };
+
+    let arr = pkgs_json.as_array().cloned().unwrap_or_default();
     let total = arr.len();
 
     let mut pkgs: Vec<GhcrPackage> = arr
@@ -197,7 +207,7 @@ pub async fn fetch_ghcr(github_token: &str) -> (Vec<GhcrPackage>, usize) {
     pkgs.sort_by(|a, b| b.updated_at.cmp(&a.updated_at));
     pkgs.truncate(10);
 
-    (pkgs, total)
+    (pkgs, total, disk_kb)
 }
 
 /// Fetch Dagu DAG status via v2 API at WG IP 10.0.0.4:8070
@@ -286,6 +296,79 @@ pub async fn fetch_bucket_sizes(buckets: &[CloudBucket]) -> Vec<CloudBucket> {
         }
     }).collect();
     futures::future::join_all(futs).await
+}
+
+/// Fetch cloud costs from OCI billing CLI (6 months, grouped by service)
+pub async fn fetch_cloud_costs() -> Vec<CloudCost> {
+    let mut costs = Vec::new();
+
+    // OCI costs via CLI
+    let tenancy = tokio::process::Command::new("sh")
+        .args(["-c", "grep tenancy ~/.oci/config 2>/dev/null | head -1 | cut -d= -f2 | tr -d ' '"])
+        .stdout(std::process::Stdio::piped())
+        .stderr(std::process::Stdio::piped())
+        .output()
+        .await;
+
+    if let Ok(t) = tenancy {
+        let tid = String::from_utf8_lossy(&t.stdout).trim().to_string();
+        if !tid.is_empty() {
+            let now = chrono::Utc::now();
+            let start = (now - chrono::Duration::days(180)).format("%Y-%m-01T00:00:00Z").to_string();
+            let end = (now + chrono::Duration::days(1)).format("%Y-%m-01T00:00:00Z").to_string();
+
+            let output = timeout(
+                Duration::from_secs(30),
+                tokio::process::Command::new("oci")
+                    .args([
+                        "usage-api", "usage-summary", "request-summarized-usages",
+                        "--tenant-id", &tid,
+                        "--time-usage-started", &start,
+                        "--time-usage-ended", &end,
+                        "--granularity", "MONTHLY",
+                        "--query-type", "COST",
+                        "--group-by", "[\"service\"]",
+                        "--output", "json",
+                    ])
+                    .stdout(std::process::Stdio::piped())
+                    .stderr(std::process::Stdio::piped())
+                    .output(),
+            )
+            .await;
+
+            if let Ok(Ok(o)) = output {
+                if let Ok(j) = serde_json::from_slice::<serde_json::Value>(&o.stdout) {
+                    if let Some(items) = j["data"]["items"].as_array() {
+                        for item in items {
+                            let amt = item["computed-amount"].as_f64().unwrap_or(0.0);
+                            let usage = item["computed-quantity"].as_f64()
+                                .or(item["attributed-usage"].as_str().and_then(|s| s.parse().ok()))
+                                .unwrap_or(0.0);
+                            let svc = item["service"].as_str().unwrap_or("?");
+                            let month_raw = item["time-usage-started"].as_str().unwrap_or("");
+                            let month: String = month_raw.chars().take(7).collect();
+                            let currency = item["currency"].as_str().unwrap_or("EUR").trim().to_string();
+                            let currency = if currency.is_empty() { "EUR".to_string() } else { currency };
+
+                            // Include if there's any cost OR any usage (free tier has usage but $0)
+                            if amt > 0.001 || usage > 0.01 {
+                                costs.push(CloudCost {
+                                    provider: "OCI".into(),
+                                    month,
+                                    service: svc.to_string(),
+                                    amount: amt,
+                                    currency,
+                                    usage,
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    costs
 }
 
 /// Fetch GitHub repos via `gh repo list`

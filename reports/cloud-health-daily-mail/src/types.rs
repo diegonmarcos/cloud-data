@@ -77,6 +77,10 @@ pub struct ConsolidatedJson {
     pub storage: Vec<CloudBucket>,
     #[serde(default)]
     pub services: std::collections::HashMap<String, serde_json::Value>,
+    #[serde(default)]
+    pub vms: std::collections::HashMap<String, serde_json::Value>,
+    #[serde(default)]
+    pub vpss: std::collections::HashMap<String, serde_json::Value>,
 }
 
 // ── Service inventory (parsed from consolidated.services) ───────────
@@ -91,7 +95,10 @@ pub struct ServiceEntry {
     pub containers: u32,
     pub port: u16,
     pub service_type: String, // "mcp", "app", "infra"
-    pub has_api: bool,        // exposes REST/programmatic API
+    pub has_api: bool,        // exposes REST/programmatic API (runtime-confirmed or declared)
+    pub has_web_ui: bool,     // has browser-accessible web UI
+    pub api_path: String,     // API base path (e.g. "/api/v1") or empty
+    pub api_url: String,      // Full API URL (e.g. "https://git.diegonmarcos.com/api/v1") or empty
 }
 
 // ── MCP server config (from .mcp.json) ──────────────────────────────
@@ -102,6 +109,25 @@ pub struct McpServer {
     pub command: String,
     pub source_path: String,
     pub transport: String, // "stdio", "http"
+}
+
+// ── Cloud cost data ─────────────────────────────────────────────────
+
+#[derive(Debug, Clone, Serialize)]
+pub struct CloudCost {
+    pub provider: String,
+    pub month: String,      // "2026-04"
+    pub service: String,    // "Compute", "Storage", "Network", etc.
+    pub amount: f64,
+    pub usage: f64,         // usage quantity (hours, GB, requests)
+    pub currency: String,
+}
+
+#[derive(Debug, Clone, Default, Serialize)]
+pub struct WgTransfer {
+    pub peer: String,
+    pub rx_bytes: u64,
+    pub tx_bytes: u64,
 }
 
 // ── Collected VM data ───────────────────────────────────────────────
@@ -117,6 +143,8 @@ pub struct VmData {
     pub disk_pct: u32,
     pub mem: String,
     pub mem_pct: u32,
+    pub kernel: String,
+    pub wg_transfer: Vec<WgTransfer>,
     pub containers_running: u32,
     pub containers_total: u32,
     pub containers_unhealthy: u32,
@@ -239,6 +267,27 @@ pub struct GithubRepo {
     pub disk_kb: u64,
 }
 
+// ── FinOps / VPS provider data ───────────────────────────────────────
+
+#[derive(Debug, Clone, Serialize)]
+pub struct VpsProvider {
+    pub name: String,
+    pub provider: String,
+    pub tier: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct VmFinops {
+    pub alias: String,
+    pub provider: String,
+    pub tier: String,
+    pub cpu: u32,
+    pub ram_gb: f64,
+    pub shape: String,
+    pub services: u32,
+    pub containers: u32,
+}
+
 // ── Runtime volume data (discovered via SSH) ────────────────────────
 
 #[derive(Debug, Clone, Serialize)]
@@ -313,6 +362,7 @@ pub struct ReportData {
     pub gha_runs: Vec<GhaRun>,
     pub ghcr_packages: Vec<GhcrPackage>,
     pub ghcr_total: usize,
+    pub github_disk_kb: u64,
     pub dags: Vec<DagStatus>,
     pub databases: Vec<DatabaseEntry>,
     pub fleet_running: u32,
@@ -322,7 +372,14 @@ pub struct ReportData {
     pub exec_summary: ExecSummary,
     pub container_drift: Vec<ContainerDrift>,
     pub cloud_buckets: Vec<CloudBucket>,
+    pub cloud_costs: Vec<CloudCost>,
     pub services: Vec<ServiceEntry>,
     pub repos: Vec<GithubRepo>,
     pub mcp_servers: Vec<McpServer>,
+    pub vps_providers: Vec<VpsProvider>,
+    pub vm_finops: Vec<VmFinops>,
+    pub total_services: usize,
+    pub total_containers: u32,
+    pub total_domains: usize,
+    pub generation_duration_ms: u64,
 }

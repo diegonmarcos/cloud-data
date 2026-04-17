@@ -91,7 +91,7 @@ async fn main() -> Result<()> {
         .collect();
 
     // Run everything in parallel
-    let (vms, endpoints, certs, dns, gha_runs, (ghcr_packages, ghcr_total), dags, cloud_buckets, repos) = tokio::join!(
+    let (vms, endpoints, certs, dns, gha_runs, (ghcr_packages, ghcr_total, github_disk_kb), dags, cloud_buckets, repos, cloud_costs) = tokio::join!(
         futures::future::join_all(vm_futures),
         futures::future::join_all(ep_futures),
         futures::future::join_all(cert_futures),
@@ -101,12 +101,13 @@ async fn main() -> Result<()> {
             else { collect::fetch_gha(&github_token).await }
         },
         async {
-            if github_token.is_empty() { (vec![], 0) }
+            if github_token.is_empty() { (vec![], 0, 0) }
             else { collect::fetch_ghcr(&github_token).await }
         },
         collect::fetch_dags(),
         collect::fetch_bucket_sizes(&ctx.cloud_buckets),
         collect::fetch_repos(),
+        collect::fetch_cloud_costs(),
     );
 
     // 3. Mark services that responded as has_api (runtime-proven)
@@ -343,6 +344,7 @@ async fn main() -> Result<()> {
         gha_runs,
         ghcr_packages,
         ghcr_total,
+        github_disk_kb,
         dags,
         databases: ctx.databases.databases.clone(),
         fleet_running,
@@ -352,9 +354,16 @@ async fn main() -> Result<()> {
         exec_summary,
         container_drift,
         cloud_buckets,
+        cloud_costs,
+        total_services: services.iter().filter(|s| s.enabled).count(),
         services,
         repos,
         mcp_servers: ctx.mcp_servers.clone(),
+        vps_providers: ctx.vps_providers.clone(),
+        vm_finops: ctx.vm_finops.clone(),
+        total_containers: fleet_total,
+        total_domains: ctx.total_domains,
+        generation_duration_ms: start.elapsed().as_millis() as u64,
     };
 
     // 8. Render HTML
