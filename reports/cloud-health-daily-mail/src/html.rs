@@ -64,7 +64,8 @@ fn render_latency_bar(latency_ms: u64) -> String {
 // ── Table helpers ───────────────────────────────────────────────────
 
 fn section_title(h: &mut String, letter: &str, title: &str) {
-    write!(h, r#"<tr><td style="padding:20px 8px 4px 8px;">
+    let anchor = title.to_lowercase().replace(' ', "-");
+    write!(h, r#"<tr><td style="padding:20px 8px 4px 8px;" id="sec-{anchor}">
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="padding:10px 16px;border-bottom:2px solid {C_OK};font-family:{FONT};">
 <span style="color:{C_OK};font-size:16px;font-weight:bold;letter-spacing:2px;">{letter}</span>
@@ -112,9 +113,33 @@ td,th{{font-family:{FONT}}}
 <tr><td style="background:{BG_HEAD};padding:20px 24px;text-align:center;border-radius:8px 8px 0 0;">
 <h1 style="margin:0;font-size:20px;color:{C_TEXT};font-family:{FONT};letter-spacing:1px;">C3 Daily Ops Report</h1>
 <p style="margin:4px 0 0;color:{C_DIM};font-size:12px;font-family:{FONT};">{date} &mdash; Generated at {time}</p>
-</td></tr>"#,
+</td></tr>
+<tr><td style="background:{BG_CARD};padding:8px 12px;text-align:center;border-bottom:1px solid {BG_HEAD};">"#,
         date = data.date, time = data.time
     ).unwrap();
+
+    // Nav bar links
+    let nav_items = [
+        ("containers", "A Containers"),
+        ("databases", "B Databases"),
+        ("security", "C Security"),
+        ("workflows", "D Workflows"),
+        ("services", "E Services"),
+        ("finops", "F FinOps"),
+        ("ai", "G AI"),
+        ("others", "H Others"),
+        ("topology", "I Topology"),
+    ];
+    for (i, (anchor, label)) in nav_items.iter().enumerate() {
+        if i > 0 {
+            h.push_str(&format!("<span style=\"color:{};\"> &middot; </span>", C_DIM));
+        }
+        h.push_str(&format!(
+            "<a href=\"#sec-{}\" style=\"color:{};font-size:11px;font-family:{};text-decoration:none;\">{}</a>",
+            anchor, C_OK, FONT, label
+        ));
+    }
+    h.push_str("</td></tr>");
 
     // Executive Summary (NEW)
     render_exec_summary(&mut h, data);
@@ -126,6 +151,7 @@ td,th{{font-family:{FONT}}}
     // A) CONTAINERS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "A", "CONTAINERS");
+    render_topo_containers(&mut h, data);
     render_container_inventory(&mut h, data);
     render_container_resources(&mut h, data);
     render_log_errors(&mut h, data);
@@ -137,9 +163,11 @@ td,th{{font-family:{FONT}}}
     // B) DATABASES
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "B", "DATABASES");
+    render_topo_data(&mut h, data);
     render_database_report(&mut h, data);
     render_object_storage(&mut h, data);
     render_ghcr(&mut h, data);
+    render_repos(&mut h, data);
     render_runtime_volumes(&mut h, data);
     render_drift(&mut h, data);
     render_backup_status(&mut h, data);
@@ -148,6 +176,7 @@ td,th{{font-family:{FONT}}}
     // C) SECURITY
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "C", "SECURITY");
+    render_topo_security(&mut h, data);
     render_security(&mut h, data);
     render_oom_kills(&mut h, data);
     render_certs(&mut h, data);
@@ -159,14 +188,15 @@ td,th{{font-family:{FONT}}}
     // D) WORKFLOWS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "D", "WORKFLOWS");
+    render_topo_cicd(&mut h, data);
     render_dags(&mut h, data);
     render_gha(&mut h, data);
-    render_repos(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
     // E) SERVICES
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "E", "SERVICES");
+    render_topo_routing(&mut h, data);
     render_services_all_unified(&mut h, data);
     render_services_api_endpoints(&mut h, data);
     render_services_mcps(&mut h, data);
@@ -178,19 +208,33 @@ td,th{{font-family:{FONT}}}
     // F) FINOPS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "F", "FINOPS");
+    render_topo_resources(&mut h, data);
     render_finops_costs(&mut h, data);
     render_finops_vms(&mut h, data);
     render_finops_providers(&mut h, data);
     render_finops_assets(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // G) OTHERS
+    // G) AI
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "G", "OTHERS");
+    section_title(&mut h, "G", "AI");
+    render_topo_ai(&mut h, data);
+    render_ai_section(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // H) OTHERS
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "H", "OTHERS");
     render_mail(&mut h, data);
     render_wg_traffic(&mut h, data);
     render_system_info(&mut h, data);
     render_report_metadata(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // I) TOPOLOGY
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "I", "TOPOLOGY");
+    render_topology(&mut h, data);
 
     // ── Footer ──────────────────────────────────────────────────
     write!(h, r#"<tr><td style="text-align:center;padding:16px;color:{C_DIM};font-size:11px;font-family:{FONT};">
@@ -1566,4 +1610,721 @@ fn human_size(bytes: u64) -> String {
     } else {
         format!("{}B", bytes)
     }
+}
+
+fn human_tokens(tokens: u64) -> String {
+    if tokens >= 1_000_000_000 {
+        format!("{:.1}B", tokens as f64 / 1_000_000_000.0)
+    } else if tokens >= 1_000_000 {
+        format!("{:.1}M", tokens as f64 / 1_000_000.0)
+    } else if tokens >= 1_000 {
+        format!("{:.1}K", tokens as f64 / 1_000.0)
+    } else {
+        format!("{}", tokens)
+    }
+}
+
+fn model_color(model: &str) -> &'static str {
+    if model.contains("opus") { "#FF9900" }     // orange for $$$ opus
+    else if model.contains("sonnet") { "#57A6D6" } // blue for sonnet
+    else if model.contains("haiku") { C_OK }     // green for cheap haiku
+    else { C_DIM }
+}
+
+// ── G) AI Section ───────────────────────────────────────────────────
+
+fn render_ai_section(h: &mut String, data: &ReportData) {
+    let Some(ai) = &data.ai else {
+        section_start(h, "AI Usage (Claude Code)", 1);
+        write!(h, r#"<tr><td style="padding:12px 16px;text-align:center;color:{C_DIM};font-size:12px;font-family:{FONT};">No AI stats available (~/.claude/stats-cache.json not found)</td></tr>"#).unwrap();
+        section_end(h);
+        return;
+    };
+
+    // ── 1. Model Usage table ────────────────────────────────────────
+    section_start(h, &format!("AI Model Usage (Est. ${:.0} total)", ai.total_cost_usd), 6);
+    h.push_str("<tr>");
+    for (label, align) in &[("Model","left"),("Input","right"),("Output","right"),("Cache Read","right"),("Cache Create","right"),("Est. Cost","right")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
+    for m in &ai.models {
+        let mc = model_color(&m.model);
+        write!(h, "<tr>{}{}{}{}{}{}</tr>\n",
+            td(&m.model, mc, "12px", "left"),
+            td(&human_tokens(m.input_tokens), C_TEXT, "11px", "right"),
+            td(&human_tokens(m.output_tokens), C_TEXT, "11px", "right"),
+            td(&human_tokens(m.cache_read_tokens), C_DIM, "11px", "right"),
+            td(&human_tokens(m.cache_create_tokens), C_DIM, "11px", "right"),
+            td(&format!("${:.2}", m.estimated_cost_usd), mc, "12px", "right"),
+        ).unwrap();
+    }
+    section_end(h);
+
+    // ── 2. Cost Breakdown with progress bars ────────────────────────
+    if ai.total_cost_usd > 0.0 {
+        section_start(h, "Cost Breakdown by Model", 3);
+        h.push_str("<tr>");
+        for (label, align) in &[("Model","left"),("Proportion","left"),("Cost","right")] {
+            h.push_str(&th(label, align));
+        }
+        h.push_str("</tr>\n");
+
+        for m in &ai.models {
+            let pct = (m.estimated_cost_usd / ai.total_cost_usd * 100.0) as u32;
+            let mc = model_color(&m.model);
+            let bar = format!(
+                r#"<div style="display:inline-block;background:{BG_BAR};border-radius:4px;height:14px;width:200px;vertical-align:middle;"><div style="background:{mc};border-radius:4px;height:14px;width:{pct}%;"></div></div> <span style="color:{mc};font-size:11px;font-family:{FONT};">{pct}%</span>"#
+            );
+            write!(h, r#"<tr>
+{model_td}
+<td style="padding:3px 8px;border-bottom:1px solid rgba(15,52,96,0.3);">{bar}</td>
+{cost_td}
+</tr>
+"#,
+                model_td = td(&m.model, mc, "11px", "left"),
+                cost_td = td(&format!("${:.2}", m.estimated_cost_usd), mc, "11px", "right"),
+            ).unwrap();
+        }
+        section_end(h);
+    }
+
+    // ── 3. Activity Summary ─────────────────────────────────────────
+    section_start(h, "Activity Summary", 2);
+
+    let first_date = if ai.first_session.len() >= 10 { &ai.first_session[..10] } else { &ai.first_session };
+    let summary_items = [
+        ("Total Sessions", format!("{}", ai.total_sessions)),
+        ("Total Messages", format!("{}", ai.total_messages)),
+        ("First Session", first_date.to_string()),
+        ("Models Used", format!("{}", ai.models.len())),
+    ];
+
+    for (label, value) in &summary_items {
+        write!(h, "<tr>{}{}</tr>\n",
+            td(label, C_DIM, "11px", "left"),
+            td(value, C_TEXT, "12px", "right"),
+        ).unwrap();
+    }
+    section_end(h);
+
+    // ── Last 7 days activity table ──────────────────────────────────
+    if !ai.daily.is_empty() {
+        section_start(h, "Last 7 Days Activity", 4);
+        h.push_str("<tr>");
+        for (label, align) in &[("Date","left"),("Messages","right"),("Sessions","right"),("Tokens","right")] {
+            h.push_str(&th(label, align));
+        }
+        h.push_str("</tr>\n");
+
+        for day in &ai.daily {
+            let msg_color = if day.messages > 10000 { C_WARN } else { C_TEXT };
+            write!(h, "<tr>{}{}{}{}</tr>\n",
+                td(&day.date, C_DIM, "11px", "left"),
+                td(&format!("{}", day.messages), msg_color, "11px", "right"),
+                td(&format!("{}", day.sessions), C_TEXT, "11px", "right"),
+                td(&human_tokens(day.tokens), C_DIM, "11px", "right"),
+            ).unwrap();
+        }
+        section_end(h);
+    }
+}
+
+// ── Section Topology Diagrams ────────────────────────────────────────
+
+/// Helper: render a topology node box (consistent template for ALL topology boxes)
+fn topo_box(color: &str, title: &str, subtitle: &str) -> String {
+    format!(r#"<td style="border:2px solid {};background:{};padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
+<div style="color:{};font-size:11px;font-weight:bold;font-family:{};">{}</div>
+<div style="color:{};font-size:9px;font-family:{};">{}</div></td>"#,
+        color, BG_CARD, C_TEXT, FONT, title, C_DIM, FONT, subtitle)
+}
+
+/// Helper: render a horizontal arrow cell between boxes
+fn topo_arrow(direction: &str) -> String {
+    let (arrow, style) = match direction {
+        "right" => ("\u{2192}", ""),
+        "left" => ("\u{2190}", ""),
+        "down" => ("\u{2193}", "display:block;"),
+        "up" => ("\u{2191}", "display:block;"),
+        "both" => ("\u{2194}", ""),
+        _ => ("\u{2192}", ""),
+    };
+    format!(r#"<td style="color:{};font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:{};{}">{}</td>"#,
+        C_OK, FONT, style, arrow)
+}
+
+/// Helper: render a vertical arrow row between rows of boxes
+fn topo_arrow_row(cols: u8) -> String {
+    format!(r#"<tr><td colspan="{}" style="text-align:center;color:{};font-size:18px;padding:2px 0;font-family:{};">{}</td></tr>"#,
+        cols, C_OK, FONT, "\u{2193}")
+}
+
+/// Helper: render a subsection header within a topology table
+fn topo_sub_header(h: &mut String, cols: u8, title: &str) {
+    write!(h, r#"<tr><td colspan="{cols}" style="padding:12px 8px 4px;color:{C_DIM};font-size:11px;font-weight:bold;font-family:{FONT};">{title}</td></tr>"#).unwrap();
+}
+
+/// Helper: resolve VM status to a border color
+fn vm_status_color(status: &VmStatus) -> &'static str {
+    match status {
+        VmStatus::Healthy => C_OK,
+        VmStatus::Warning => C_WARN,
+        VmStatus::Critical => C_CRIT,
+        VmStatus::Unknown => C_DIM,
+    }
+}
+
+// Legacy alias kept for potential external callers
+#[allow(dead_code)]
+fn topo_arrow_cell(arrow: &str) -> String {
+    format!(r#"<td style="color:{C_OK};font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:{FONT};">{arrow}</td>"#)
+}
+
+// ── A) Container Distribution — 2x2 VM grid ────────────────────────
+
+fn render_topo_containers(h: &mut String, data: &ReportData) {
+    if data.vms.is_empty() { return; }
+
+    section_start(h, "Container Distribution", 1);
+
+    // Collect VMs with containers
+    let active_vms: Vec<&VmData> = data.vms.iter().filter(|v| v.containers_total > 0).collect();
+    if active_vms.is_empty() { section_end(h); return; }
+
+    // 2x2 grid with arrows
+    write!(h, r#"<tr><td style="padding:8px;">
+<table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+
+    // Row 1: first two VMs
+    h.push_str("<tr>");
+    if let Some(vm) = active_vms.first() {
+        let color = vm_status_color(&vm.status);
+        h.push_str(&topo_box(color, &vm.name, &format!("{}/{} ctrs", vm.containers_running, vm.containers_total)));
+    }
+    h.push_str(&topo_arrow("both"));
+    if let Some(vm) = active_vms.get(1) {
+        let color = vm_status_color(&vm.status);
+        h.push_str(&topo_box(color, &vm.name, &format!("{}/{} ctrs", vm.containers_running, vm.containers_total)));
+    } else {
+        h.push_str("<td></td>");
+    }
+    h.push_str("</tr>\n");
+
+    // Vertical arrows
+    if active_vms.len() > 2 {
+        h.push_str(&topo_arrow_row(3));
+
+        // Row 2: next two VMs
+        h.push_str("<tr>");
+        if let Some(vm) = active_vms.get(2) {
+            let color = vm_status_color(&vm.status);
+            h.push_str(&topo_box(color, &vm.name, &format!("{}/{} ctrs", vm.containers_running, vm.containers_total)));
+        }
+        if active_vms.len() > 3 {
+            h.push_str(&topo_arrow("both"));
+            if let Some(vm) = active_vms.get(3) {
+                let color = vm_status_color(&vm.status);
+                h.push_str(&topo_box(color, &vm.name, &format!("{}/{} ctrs", vm.containers_running, vm.containers_total)));
+            }
+        } else {
+            h.push_str("<td></td><td></td>");
+        }
+        h.push_str("</tr>\n");
+    }
+
+    // Any remaining VMs beyond 4
+    for chunk in active_vms.get(4..).unwrap_or(&[]).chunks(2) {
+        h.push_str(&topo_arrow_row(3));
+        h.push_str("<tr>");
+        for vm in chunk {
+            let color = vm_status_color(&vm.status);
+            h.push_str(&topo_box(color, &vm.name, &format!("{}/{} ctrs", vm.containers_running, vm.containers_total)));
+        }
+        if chunk.len() < 2 { h.push_str("<td></td><td></td>"); }
+        h.push_str("</tr>\n");
+    }
+
+    h.push_str("</table></td></tr>\n");
+    section_end(h);
+}
+
+// ── B) Data Storage — flow diagram ──────────────────────────────────
+
+fn render_topo_data(h: &mut String, data: &ReportData) {
+    section_start(h, "Data Storage", 1);
+
+    let bucket_count = data.cloud_buckets.len();
+    let bucket_bytes: u64 = data.cloud_buckets.iter().map(|b| b.size_bytes).sum();
+    let bucket_size = if bucket_bytes > 0 { human_size(bucket_bytes) } else { "?".into() };
+    let total_vols: usize = data.vms.iter().map(|v| v.runtime_volumes.len()).sum();
+    let db_count = data.databases.iter().filter(|d| d.enabled).count();
+    let vm_count = data.vms.len();
+
+    // Row 1: [OCI Buckets] -> [Backups] <- [VMs]
+    write!(h, r#"<tr><td style="padding:8px;">
+<table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+
+    h.push_str("<tr>");
+    h.push_str(&topo_box("#FF9900", "OCI Buckets", &format!("{} buckets, {}", bucket_count, bucket_size)));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box(C_OK, "Backups", "restic + S3"));
+    h.push_str(&topo_arrow("left"));
+    h.push_str(&topo_box("#57A6D6", "VMs", &format!("{} nodes", vm_count)));
+    h.push_str("</tr>\n");
+
+    // Arrow down from VMs
+    h.push_str(&topo_arrow_row(5));
+
+    // Row 2: centered Docker Volumes
+    h.push_str("<tr><td></td><td></td>");
+    h.push_str(&topo_box("#4169E1", "Docker Volumes", &format!("{} volumes", total_vols)));
+    h.push_str("<td></td><td></td></tr>\n");
+
+    // Arrow down
+    h.push_str(&topo_arrow_row(5));
+
+    // Row 3: centered Databases
+    h.push_str("<tr><td></td><td></td>");
+    h.push_str(&topo_box("#DC382D", "Databases", &format!("{} declared", db_count)));
+    h.push_str("<td></td><td></td></tr>\n");
+
+    h.push_str("</table></td></tr>\n");
+    section_end(h);
+}
+
+// ── C) Security Topology — 3 parts ──────────────────────────────────
+
+fn render_topo_security(h: &mut String, data: &ReportData) {
+    let certs_ok = data.certs.iter().filter(|c| c.days_left >= 7).count();
+    let certs_total = data.certs.len();
+    let endpoints_ok = data.endpoints.iter().filter(|e| (200..=399).contains(&e.status_code)).count();
+
+    section_start(h, "Security Topology", 1);
+
+    // ── Part 1: Defense in Depth (vertical chain) ───────────────────
+    topo_sub_header(h, 1, "Defense in Depth");
+
+    let layers: Vec<(&str, &str, String)> = vec![
+        ("Cloudflare", "#F46800", "DDoS + CDN".into()),
+        ("Caddy", C_OK, format!("TLS + {}/{} certs", certs_ok, certs_total)),
+        ("Authelia", C_WARN, format!("2FA/OIDC, {}/{} OK", endpoints_ok, data.endpoints.len())),
+        ("introspect", "#9B59B6", "Bearer tokens".into()),
+        ("Container", "#57A6D6", format!("{} isolated", data.fleet_running)),
+    ];
+
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+
+    for (i, (name, color, desc)) in layers.iter().enumerate() {
+        h.push_str("<tr>");
+        h.push_str(&topo_box(color, name, desc));
+        h.push_str("</tr>\n");
+        if i < layers.len() - 1 {
+            h.push_str(&topo_arrow_row(1));
+        }
+    }
+
+    h.push_str("</table></td></tr>\n");
+
+    // ── Part 2: Network Zones (horizontal) ──────────────────────────
+    topo_sub_header(h, 1, "Network Zones");
+
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
+    h.push_str(&topo_box("#F46800", "Internet", "public"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box(C_WARN, "DMZ: gcp-proxy", "edge"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#9B59B6", "WG Mesh", "encrypted"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box(C_OK, "Private VMs", "internal"));
+    h.push_str("</tr></table></td></tr>\n");
+
+    // ── Part 3: Auth Flows (2 horizontal rows) ──────────────────────
+    topo_sub_header(h, 1, "Auth Flows");
+
+    // Browser flow
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
+    h.push_str(&topo_box(C_TEXT, "Browser", "user"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box(C_WARN, "Authelia 2FA", "TOTP"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box(C_OK, "Cookie", "forward_auth"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#57A6D6", "App", "authenticated"));
+    h.push_str("</tr></table></td></tr>\n");
+
+    // CLI flow
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
+    h.push_str(&topo_box(C_TEXT, "CLI/API", "bearer"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#9B59B6", "OIDC Token", "JWT"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box(C_OK, "introspect", "validated"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#57A6D6", "App", "authenticated"));
+    h.push_str("</tr></table></td></tr>\n");
+
+    section_end(h);
+}
+
+// ── D) CI/CD Pipeline — box-and-arrow ───────────────────────────────
+
+fn render_topo_cicd(h: &mut String, data: &ReportData) {
+    let gha_count = data.gha_runs.len();
+    let gha_ok = data.gha_runs.iter().filter(|r| r.conclusion == "success").count();
+    let dag_count = data.dags.len();
+
+    section_start(h, "CI/CD Pipeline", 1);
+
+    // Main pipeline: [Developer] -> [GitHub] -> [GHA] -> [GHCR] -> [VMs]
+    topo_sub_header(h, 1, "Deployment Pipeline");
+
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
+    h.push_str(&topo_box(C_TEXT, "Developer", "git push"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box(C_TEXT, "GitHub", &format!("{} repos", data.repos.len())));
+    h.push_str(&topo_arrow("right"));
+    let gha_color = if gha_ok == gha_count && gha_count > 0 { C_OK } else if gha_ok > 0 { C_WARN } else { C_CRIT };
+    h.push_str(&topo_box(gha_color, "GHA", &format!("{}/{} OK", gha_ok, gha_count)));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#9B59B6", "GHCR", &format!("{} images", data.ghcr_total)));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#57A6D6", "VMs", "docker pull"));
+    h.push_str("</tr></table></td></tr>\n");
+
+    // Orchestration sub-flow: [gen-cloud-data] -> [Dagu] -> [VMs]
+    topo_sub_header(h, 1, "Orchestration");
+
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
+    h.push_str(&topo_box(C_TEXT, "gen-cloud-data", "GHA"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#FF9900", "cloud-data", "JSON hub"));
+    h.push_str(&topo_arrow("right"));
+    let dag_ok = data.dags.iter().filter(|d| d.status == "success" || d.status == "done" || d.status == "finished").count();
+    let dag_color = if dag_ok == dag_count && dag_count > 0 { C_OK } else if dag_ok > 0 { C_WARN } else if dag_count == 0 { C_DIM } else { C_CRIT };
+    h.push_str(&topo_box(dag_color, "Dagu", &format!("{} DAGs, {}/{} OK", dag_count, dag_ok, dag_count)));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#57A6D6", "VM sync", "deploy"));
+    h.push_str("</tr></table></td></tr>\n");
+
+    section_end(h);
+}
+
+// ── E) Service Routing — full chain ─────────────────────────────────
+
+fn render_topo_routing(h: &mut String, data: &ReportData) {
+    section_start(h, "Service Routing", 1);
+
+    // [*.diegonmarcos.com] -> [Cloudflare] -> [Caddy] -> [WireGuard] -> [Container]
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
+    h.push_str(&topo_box("#F46800", "*.diegonmarcos.com", &format!("{} domains", data.total_domains)));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#F46800", "Cloudflare", "DNS"));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box(C_OK, "Caddy", &format!("{} routes", data.endpoints.len())));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#9B59B6", "WireGuard", &format!("{} VMs", data.vms.len())));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#57A6D6", "Container", &format!("{} services", data.total_services)));
+    h.push_str("</tr></table></td></tr>\n");
+
+    section_end(h);
+}
+
+// ── F) Resource Map — VM boxes with specs ───────────────────────────
+
+fn render_topo_resources(h: &mut String, data: &ReportData) {
+    if data.vm_finops.is_empty() { return; }
+
+    section_start(h, "VM Resource Map", 1);
+
+    write!(h, r#"<tr><td style="padding:8px;">
+<table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+
+    // Sort: biggest first (by CPU * RAM)
+    let mut sorted: Vec<&VmFinops> = data.vm_finops.iter().collect();
+    sorted.sort_by(|a, b| {
+        let score_a = a.cpu as f64 * a.ram_gb;
+        let score_b = b.cpu as f64 * b.ram_gb;
+        score_b.partial_cmp(&score_a).unwrap_or(std::cmp::Ordering::Equal)
+    });
+
+    // Render in rows of 3
+    for chunk in sorted.chunks(3) {
+        h.push_str("<tr>");
+        for vm in chunk {
+            let tier_color = if vm.tier == "Free" { C_OK } else { C_WARN };
+            let tier_label = if vm.tier == "Free" { "FREE" } else { "PAID" };
+            h.push_str(&topo_box(tier_color, &vm.alias,
+                &format!("{}cpu/{}GB {}", vm.cpu, vm.ram_gb, tier_label)));
+        }
+        for _ in chunk.len()..3 {
+            h.push_str("<td></td>");
+        }
+        h.push_str("</tr>\n");
+        // Arrow between rows if more coming
+    }
+
+    h.push_str("</table></td></tr>\n");
+    section_end(h);
+}
+
+// ── G) AI Token Flow — input -> models -> costs ─────────────────────
+
+fn render_topo_ai(h: &mut String, data: &ReportData) {
+    let Some(ai) = &data.ai else { return; };
+    if ai.models.is_empty() || ai.total_cost_usd <= 0.0 { return; }
+
+    section_start(h, "AI Token Flow", 1);
+
+    write!(h, r#"<tr><td style="padding:8px;">
+<table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+
+    // Each row: [Claude Code] -> [model] -> [$cost]
+    for (i, m) in ai.models.iter().enumerate() {
+        let mc = model_color(&m.model);
+        h.push_str("<tr>");
+        // Only show source box on first row, span it vertically
+        if i == 0 {
+            write!(h, r#"<td rowspan="{}" style="border:2px solid {};background:{};padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
+<div style="color:{};font-size:11px;font-weight:bold;font-family:{};">Claude Code</div>
+<div style="color:{};font-size:9px;font-family:{};">${:.2} total</div></td>"#,
+                ai.models.len(), C_OK, BG_CARD, C_TEXT, FONT, C_DIM, FONT, ai.total_cost_usd).unwrap();
+        }
+        h.push_str(&topo_arrow("right"));
+        h.push_str(&topo_box(mc, &m.model, "model"));
+        h.push_str(&topo_arrow("right"));
+        h.push_str(&topo_box(mc, &format!("${:.2}", m.estimated_cost_usd), "cost"));
+        h.push_str("</tr>\n");
+    }
+
+    h.push_str("</table></td></tr>\n");
+    section_end(h);
+}
+
+// ── I) TOPOLOGY Section (5 infrastructure maps) ─────────────────────
+
+fn render_topology(h: &mut String, data: &ReportData) {
+    section_start(h, "Infrastructure Topology", 1);
+
+    render_topo_i_wireguard(h, data);
+    render_topo_i_traffic_flow(h, data);
+    render_topo_i_service_categories(h, data);
+    render_topo_i_storage_overview(h, data);
+    render_topo_i_provider_map(h, data);
+
+    section_end(h);
+}
+
+// ── I.1 WireGuard Mesh — 3x3 grid ──────────────────────────────────
+
+fn render_topo_i_wireguard(h: &mut String, data: &ReportData) {
+    if data.vms.is_empty() { return; }
+
+    topo_sub_header(h, 1, "1. WIREGUARD MESH");
+
+    let find_vm = |name: &str| -> Option<&VmData> {
+        data.vms.iter().find(|v| v.name == name)
+    };
+
+    let vm_box = |name: &str, ip: &str| -> String {
+        if let Some(vm) = data.vms.iter().find(|v| v.name.to_lowercase() == name.to_lowercase()) {
+            let color = vm_status_color(&vm.status);
+            topo_box(color, &vm.name, &format!("{} | {} ctrs", vm.ip, vm.containers_running))
+        } else {
+            topo_box(C_DIM, name, &format!("{} | offline", ip))
+        }
+    };
+
+    write!(h, r#"<tr><td style="padding:8px;">
+<table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+
+    // Row 1: [empty] [oci-mail] [oci-analytics]
+    h.push_str("<tr><td></td>");
+    h.push_str(&vm_box("oci-mail", "10.0.0.3"));
+    h.push_str(&vm_box("oci-analytics", "10.0.0.4"));
+    h.push_str("</tr>\n");
+
+    // Arrow row
+    write!(h, r#"<tr><td></td><td style="text-align:center;color:{};font-size:18px;padding:2px 0;font-family:{};">{}</td><td style="text-align:center;color:{};font-size:18px;padding:2px 0;font-family:{};">{}</td></tr>"#,
+        C_OK, FONT, "\u{2195}", C_OK, FONT, "\u{2195}").unwrap();
+
+    // Row 2: [Surface] <-> [GCP-PROXY hub] <-> [oci-apps]
+    h.push_str("<tr>");
+    h.push_str(&vm_box("Surface", "10.0.0.2"));
+    // Hub box (special styling)
+    if let Some(hub) = find_vm("gcp-proxy") {
+        let hub_color = vm_status_color(&hub.status);
+        write!(h, r#"<td style="border:3px solid {};background:{};padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
+<div style="color:{};font-size:12px;font-weight:bold;font-family:{};">GCP-PROXY</div>
+<div style="color:{};font-size:9px;font-family:{};">{} | {} ctrs | HUB</div></td>"#,
+            hub_color, BG_HEAD, C_TEXT, FONT, C_DIM, FONT, hub.ip, hub.containers_running).unwrap();
+    } else {
+        write!(h, r#"<td style="border:3px solid {};background:{};padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
+<div style="color:{};font-size:12px;font-weight:bold;font-family:{};">GCP-PROXY</div>
+<div style="color:{};font-size:9px;font-family:{};">10.0.0.1 | HUB</div></td>"#,
+            C_DIM, BG_HEAD, C_TEXT, FONT, C_DIM, FONT).unwrap();
+    }
+    h.push_str(&vm_box("oci-apps", "10.0.0.6"));
+    h.push_str("</tr>\n");
+
+    // Arrow row
+    write!(h, r#"<tr><td></td><td style="text-align:center;color:{};font-size:18px;padding:2px 0;font-family:{};">{}</td><td style="text-align:center;color:{};font-size:18px;padding:2px 0;font-family:{};">{}</td></tr>"#,
+        C_OK, FONT, "\u{2195}", C_OK, FONT, "\u{2195}").unwrap();
+
+    // Row 3: [Termux] [gcp-t4] [empty]
+    h.push_str("<tr>");
+    h.push_str(&vm_box("Termux", "10.0.0.9"));
+    h.push_str(&vm_box("gcp-t4", "10.0.0.8"));
+    h.push_str("<td></td></tr>\n");
+
+    h.push_str("</table></td></tr>\n");
+}
+
+// ── I.2 Full Traffic Flow — 6 boxes in a row ────────────────────────
+
+fn render_topo_i_traffic_flow(h: &mut String, data: &ReportData) {
+    topo_sub_header(h, 1, "2. FULL TRAFFIC FLOW");
+
+    let caddy_ip = data.vms.iter()
+        .find(|v| v.name == "gcp-proxy")
+        .map(|v| v.ip.as_str())
+        .unwrap_or("10.0.0.1");
+
+    write!(h, r#"<tr><td style="padding:8px;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
+
+    let boxes: &[(&str, &str, &str)] = &[
+        ("User", "browser/CLI", C_TEXT),
+        ("Cloudflare", "DNS + WAF", "#F46800"),
+        ("Caddy", &format!(":443 | {}", caddy_ip), C_OK),
+        ("WireGuard", "10.0.0.0/24", "#9B59B6"),
+        ("VM", &format!("{} nodes", data.vms.len()), "#57A6D6"),
+        ("Container", &format!("{}/{}", data.fleet_running, data.fleet_total), C_OK),
+    ];
+
+    for (i, (title, sub, color)) in boxes.iter().enumerate() {
+        if i > 0 {
+            h.push_str(&topo_arrow("right"));
+        }
+        h.push_str(&topo_box(color, title, sub));
+    }
+
+    h.push_str("</tr></table></td></tr>\n");
+}
+
+// ── I.3 Service Category Map — colored boxes ────────────────────────
+
+fn render_topo_i_service_categories(h: &mut String, data: &ReportData) {
+    topo_sub_header(h, 1, "3. SERVICE CATEGORY MAP");
+
+    let cat_counts: Vec<(String, usize)> = {
+        let mut map: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
+        for svc in data.services.iter().filter(|s| s.enabled) {
+            *map.entry(svc.category.clone()).or_default() += 1;
+        }
+        let mut v: Vec<_> = map.into_iter().collect();
+        v.sort_by(|a, b| b.1.cmp(&a.1));
+        v
+    };
+
+    if cat_counts.is_empty() { return; }
+
+    // Render as boxes in a row (wrapping in chunks of 4)
+    for chunk in cat_counts.chunks(4) {
+        write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="4"><tr>"#).unwrap();
+
+        for (cat, count) in chunk {
+            let color = category_color(cat);
+            // Scale padding proportional to count for visual sizing
+            let pad = 6 + count * 2;
+            let pad = if pad > 20 { 20 } else { pad };
+            write!(h, r#"<td style="border:2px solid {};background:{};padding:{}px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
+<div style="color:{};font-size:11px;font-weight:bold;font-family:{};">{}: {}</div></td>"#,
+                color, BG_CARD, pad, C_TEXT, FONT, cat, count).unwrap();
+        }
+
+        h.push_str("</tr></table></td></tr>\n");
+    }
+}
+
+// ── I.4 Storage Overview — 4 boxes with arrows ──────────────────────
+
+fn render_topo_i_storage_overview(h: &mut String, data: &ReportData) {
+    topo_sub_header(h, 1, "4. STORAGE OVERVIEW");
+
+    let total_vols: usize = data.vms.iter().map(|v| v.runtime_volumes.len()).sum();
+    let db_count = data.databases.iter().filter(|d| d.enabled).count();
+
+    let ghcr_disk = if data.github_disk_kb > 1048576 {
+        format!("{:.1}GB", data.github_disk_kb as f64 / 1048576.0)
+    } else if data.github_disk_kb > 1024 {
+        format!("{:.0}MB", data.github_disk_kb as f64 / 1024.0)
+    } else if data.github_disk_kb > 0 {
+        format!("{}KB", data.github_disk_kb)
+    } else {
+        "?".into()
+    };
+
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
+
+    h.push_str(&topo_box("#FF9900", "OCI S3", &format!("{} buckets", data.cloud_buckets.len())));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#9B59B6", "GHCR", &format!("{} imgs, {}", data.ghcr_total, ghcr_disk)));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#4169E1", "Volumes", &format!("{} vols", total_vols)));
+    h.push_str(&topo_arrow("right"));
+    h.push_str(&topo_box("#DC382D", "DBs", &format!("{} declared", db_count)));
+
+    h.push_str("</tr></table></td></tr>\n");
+}
+
+// ── I.5 Provider Map — grouped VM boxes ─────────────────────────────
+
+fn render_topo_i_provider_map(h: &mut String, data: &ReportData) {
+    if data.vm_finops.is_empty() { return; }
+
+    topo_sub_header(h, 1, "5. PROVIDER MAP");
+
+    // Group VMs by provider+tier
+    let mut groups: std::collections::BTreeMap<String, Vec<&VmFinops>> = std::collections::BTreeMap::new();
+    for vm in &data.vm_finops {
+        let key = format!("{} {}", vm.provider, vm.tier);
+        groups.entry(key).or_default().push(vm);
+    }
+
+    write!(h, r#"<tr><td style="padding:4px 8px;">
+<table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+
+    let group_vec: Vec<_> = groups.iter().collect();
+    for (i, (key, vms)) in group_vec.iter().enumerate() {
+        if i > 0 && i % 2 == 0 {
+            // New row every 2 groups
+            h.push_str("</tr>\n<tr>");
+        } else if i == 0 {
+            h.push_str("<tr>");
+        }
+
+        let tier_color = if key.contains("Free") { C_OK } else { C_WARN };
+        let vm_names: Vec<String> = vms.iter().map(|v| v.alias.clone()).collect();
+        let subtitle = vm_names.join(", ");
+        h.push_str(&topo_box(tier_color, &format!("{}: {} VMs", key, vms.len()), &subtitle));
+
+        if i < group_vec.len() - 1 && (i + 1) % 2 != 0 {
+            h.push_str(&topo_arrow("both"));
+        }
+    }
+    h.push_str("</tr>\n");
+
+    h.push_str("</table></td></tr>\n");
 }

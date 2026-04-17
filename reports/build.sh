@@ -39,12 +39,14 @@ case "$target" in
     sh "$ROOT/cloud-url-health-report/build.sh" all
     sh "$ROOT/cloud-sec-network-report/build.sh" all
     sh "$ROOT/cloud-sec-data-report/build.sh" all
+    sh "$ROOT/cloud-health-daily-mail/build.sh" all
     link_reports
     generate_manifest
     ;;
-  stack)    sh "$ROOT/cloud-stack-report/build.sh" all; link_reports ;;
-  cloud)    sh "$ROOT/cloud-health-full-report/build.sh" all; link_reports ;;
-  mail)     sh "$ROOT/cloud-mail-full-report/build.sh" all; link_reports ;;
+  stack)       sh "$ROOT/cloud-stack-report/build.sh" all; link_reports ;;
+  cloud)       sh "$ROOT/cloud-health-full-report/build.sh" all; link_reports ;;
+  mail)        sh "$ROOT/cloud-mail-full-report/build.sh" all; link_reports ;;
+  daily-mail)  sh "$ROOT/cloud-health-daily-mail/build.sh" all ;;
   url)      sh "$ROOT/cloud-url-health-report/build.sh" all; link_reports ;;
   sec-net)  sh "$ROOT/cloud-sec-network-report/build.sh" all; link_reports ;;
   sec-data) sh "$ROOT/cloud-sec-data-report/build.sh" all; link_reports ;;

@@ -11,6 +11,7 @@ COPY cloud-mail-full-report/ cloud-mail-full-report/
 COPY cloud-url-health-report/ cloud-url-health-report/
 COPY cloud-sec-network-report/ cloud-sec-network-report/
 COPY cloud-sec-data-report/ cloud-sec-data-report/
+COPY cloud-health-daily-mail/ cloud-health-daily-mail/
 RUN cargo build --release
 
 FROM debian:bookworm-slim
@@ -31,6 +32,7 @@ COPY --from=builder /build/target/release/cloud-mail-full /usr/local/bin/
 COPY --from=builder /build/target/release/cloud-url-health /usr/local/bin/
 COPY --from=builder /build/target/release/cloud-sec-network /usr/local/bin/
 COPY --from=builder /build/target/release/cloud-sec-data /usr/local/bin/
+COPY --from=builder /build/target/release/cloud-health-daily-mail /usr/local/bin/
 
 # Bundle YARA rules (custom + infra)
 COPY cloud-sec-data-report/yara-rules/ /usr/local/share/yara-rules/

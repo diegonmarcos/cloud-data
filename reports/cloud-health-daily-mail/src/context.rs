@@ -1,7 +1,7 @@
 use crate::types::*;
 use anyhow::Result;
 use std::collections::HashMap;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 const MONITORING: &str = "../../cloud-data-monitoring-targets.json";
 const DATABASES: &str = "../../cloud-data-databases.json";
@@ -17,6 +17,7 @@ pub struct Context {
     pub vps_providers: Vec<VpsProvider>,
     pub vm_finops: Vec<VmFinops>,
     pub total_domains: usize,
+    pub ai: Option<AiSummary>,
 }
 
 pub fn load_context() -> Result<Context> {
@@ -179,5 +180,130 @@ pub fn load_context() -> Result<Context> {
         servers
     };
 
-    Ok(Context { monitoring, databases, manifests, cloud_buckets, services, mcp_servers, vps_providers, vm_finops, total_domains })
+    // Load AI usage data from Claude stats-cache.json
+    let ai = load_ai_summary();
+
+    Ok(Context { monitoring, databases, manifests, cloud_buckets, services, mcp_servers, vps_providers, vm_finops, total_domains, ai })
+}
+
+// ── AI pricing per 1M tokens ────────────────────────────────────────
+
+struct ModelPricing {
+    input: f64,
+    output: f64,
+    cache_read: f64,
+    cache_create: f64,
+}
+
+fn pricing_for(model: &str) -> ModelPricing {
+    if model.contains("haiku") {
+        ModelPricing { input: 0.80, output: 4.00, cache_read: 0.08, cache_create: 1.00 }
+    } else if model.contains("sonnet") {
+        ModelPricing { input: 3.00, output: 15.00, cache_read: 0.30, cache_create: 3.75 }
+    } else {
+        // opus (all versions)
+        ModelPricing { input: 15.00, output: 75.00, cache_read: 1.50, cache_create: 18.75 }
+    }
+}
+
+fn normalize_model_name(raw: &str) -> String {
+    if raw.contains("opus-4-6") || raw.contains("opus_4_6") {
+        "opus-4.6".into()
+    } else if raw.contains("opus-4-5") || raw.contains("opus_4_5") {
+        "opus-4.5".into()
+    } else if raw.contains("sonnet-4-5") || raw.contains("sonnet_4_5") {
+        "sonnet-4.5".into()
+    } else if raw.contains("haiku-4-5") || raw.contains("haiku_4_5") {
+        "haiku-4.5".into()
+    } else {
+        raw.to_string()
+    }
+}
+
+fn load_ai_summary() -> Option<AiSummary> {
+    let home = std::env::var("HOME").unwrap_or("/home/diego".into());
+    let stats_path = PathBuf::from(&home).join(".claude/stats-cache.json");
+    if !stats_path.exists() {
+        eprintln!("  AI stats not found at {}", stats_path.display());
+        return None;
+    }
+
+    let raw = std::fs::read_to_string(&stats_path).ok()?;
+    let j: serde_json::Value = serde_json::from_str(&raw).ok()?;
+
+    // Parse model usage
+    let mut models = Vec::new();
+    if let Some(mu) = j["modelUsage"].as_object() {
+        for (raw_name, usage) in mu {
+            let input = usage["inputTokens"].as_u64().unwrap_or(0);
+            let output = usage["outputTokens"].as_u64().unwrap_or(0);
+            let cache_read = usage["cacheReadInputTokens"].as_u64().unwrap_or(0);
+            let cache_create = usage["cacheCreationInputTokens"].as_u64().unwrap_or(0);
+
+            let p = pricing_for(raw_name);
+            let cost = (input as f64 * p.input
+                + output as f64 * p.output
+                + cache_read as f64 * p.cache_read
+                + cache_create as f64 * p.cache_create)
+                / 1_000_000.0;
+
+            models.push(AiModelUsage {
+                model: normalize_model_name(raw_name),
+                input_tokens: input,
+                output_tokens: output,
+                cache_read_tokens: cache_read,
+                cache_create_tokens: cache_create,
+                estimated_cost_usd: cost,
+            });
+        }
+    }
+    // Sort by cost descending
+    models.sort_by(|a, b| b.estimated_cost_usd.partial_cmp(&a.estimated_cost_usd).unwrap_or(std::cmp::Ordering::Equal));
+
+    // Parse daily activity (last 7 days)
+    let mut daily = Vec::new();
+    if let Some(da) = j["dailyActivity"].as_array() {
+        let dmt: HashMap<String, u64> = j["dailyModelTokens"].as_array()
+            .map(|arr| {
+                arr.iter().filter_map(|entry| {
+                    let date = entry["date"].as_str()?;
+                    let total: u64 = entry["tokensByModel"].as_object()?
+                        .values()
+                        .filter_map(|v| v.as_u64())
+                        .sum();
+                    Some((date.to_string(), total))
+                }).collect()
+            })
+            .unwrap_or_default();
+
+        // Take last 7 entries
+        let start = if da.len() > 7 { da.len() - 7 } else { 0 };
+        for entry in &da[start..] {
+            let date = entry["date"].as_str().unwrap_or("").to_string();
+            let tokens = dmt.get(&date).copied().unwrap_or(0);
+            daily.push(AiDailyActivity {
+                date: date.clone(),
+                messages: entry["messageCount"].as_u64().unwrap_or(0),
+                sessions: entry["sessionCount"].as_u64().unwrap_or(0),
+                tool_calls: entry["toolCallCount"].as_u64().unwrap_or(0),
+                tokens,
+            });
+        }
+    }
+
+    let total_sessions = j["totalSessions"].as_u64().unwrap_or(0);
+    let total_messages = j["totalMessages"].as_u64().unwrap_or(0);
+    let first_session = j["firstSessionDate"].as_str().unwrap_or("").to_string();
+    let total_cost: f64 = models.iter().map(|m| m.estimated_cost_usd).sum();
+
+    eprintln!("  AI stats loaded: {} models, {} daily entries, ${:.2} est. total", models.len(), daily.len(), total_cost);
+
+    Some(AiSummary {
+        models,
+        daily,
+        total_sessions,
+        total_messages,
+        total_cost_usd: total_cost,
+        first_session,
+    })
 }

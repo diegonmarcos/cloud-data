@@ -364,6 +364,7 @@ async fn main() -> Result<()> {
         total_containers: fleet_total,
         total_domains: ctx.total_domains,
         generation_duration_ms: start.elapsed().as_millis() as u64,
+        ai: ctx.ai,
     };
 
     // 8. Render HTML

@@ -349,6 +349,37 @@ pub struct ContainerDrift {
     pub image_mismatch: Vec<(String, String, String)>,
 }
 
+// ── AI usage data (from Claude stats-cache.json) ───────────────────
+
+#[derive(Debug, Clone, Serialize)]
+pub struct AiModelUsage {
+    pub model: String,
+    pub input_tokens: u64,
+    pub output_tokens: u64,
+    pub cache_read_tokens: u64,
+    pub cache_create_tokens: u64,
+    pub estimated_cost_usd: f64,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct AiDailyActivity {
+    pub date: String,
+    pub messages: u64,
+    pub sessions: u64,
+    pub tool_calls: u64,
+    pub tokens: u64,
+}
+
+#[derive(Debug, Serialize)]
+pub struct AiSummary {
+    pub models: Vec<AiModelUsage>,
+    pub daily: Vec<AiDailyActivity>,
+    pub total_sessions: u64,
+    pub total_messages: u64,
+    pub total_cost_usd: f64,
+    pub first_session: String,
+}
+
 // ── Full report data ────────────────────────────────────────────────
 
 #[derive(Debug, Serialize)]
@@ -382,4 +413,5 @@ pub struct ReportData {
     pub total_containers: u32,
     pub total_domains: usize,
     pub generation_duration_ms: u64,
+    pub ai: Option<AiSummary>,
 }

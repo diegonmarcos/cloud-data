@@ -20,20 +20,21 @@ case "${1:-}" in
     echo "cloud-data-reports — health report runner"
     echo ""
     echo "Commands:"
-    echo "  all            Run all 6 reports"
+    echo "  all            Run all 7 reports"
     echo "  stack          Cloud stack report"
     echo "  cloud          Cloud health full (11-layer)"
     echo "  mail           Cloud mail full (6-phase)"
     echo "  url            URL health (4-layer probe)"
     echo "  sec-network    Security network scan"
     echo "  sec-data       Security data scan"
+    echo "  daily-mail     Daily ops HTML email report"
     echo "  bash           Interactive shell"
     exit 0
     ;;
   bash|sh)
     # Interactive shell — setup env but don't dispatch
     ;;
-  all|stack|cloud|mail|url|sec-network|sec-data)
+  all|stack|cloud|mail|url|sec-network|sec-data|daily-mail)
     # Handled below after setup
     ;;
   *)
@@ -126,5 +127,6 @@ case "$CMD" in
   url)           exec bash "$REPORTS_DIR/build.sh" url ;;
   sec-network)   exec bash "$REPORTS_DIR/cloud-sec-network-report/build.sh" all ;;
   sec-data)      exec bash "$REPORTS_DIR/cloud-sec-data-report/build.sh" all ;;
+  daily-mail)    exec bash "$REPORTS_DIR/cloud-health-daily-mail/build.sh" all ;;
   bash|sh)       exec bash "$@" ;;
 esac
