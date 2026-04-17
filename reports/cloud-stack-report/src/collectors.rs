@@ -101,7 +101,9 @@ async fn collect_mesh(ctx: &Context) -> (Vec<MeshResult>, u64) {
 
 async fn collect_public_urls(ctx: &Context, client: &Client, aclient: &Client) -> (Vec<UrlResult>, u64) {
     let t = Instant::now();
-    let futs: Vec<_> = ctx.public_urls.iter().map(|u| {
+    let futs: Vec<_> = ctx.public_urls.iter()
+        .filter(|u| !u.url.contains("dns.internal")) // internal-only DNS, not a public domain
+        .map(|u| {
         let url = u.url.clone();
         let upstream = u.upstream.clone();
         let cl = client.clone();
