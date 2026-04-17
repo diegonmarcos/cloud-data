@@ -52,6 +52,10 @@ $PRIVATE_HEALTH
 
 $VM_CONTAINERS
 
+── A3b) Container Drift ──────────────────────────────────
+
+$CONTAINER_DRIFT
+
 ── A4) Mail ──────────────────────────────────────────────────
 
 MAIL PORTS (tcp check)

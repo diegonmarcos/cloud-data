@@ -25,6 +25,9 @@ pub fn build_all_vars(ctx: &Context, live: &LiveData) -> HashMap<String, String>
     // A3 Containers
     vars.insert("VM_CONTAINERS".into(), build_containers(ctx, live));
 
+    // A3b Container Drift — ALL containers across ALL VMs
+    vars.insert("CONTAINER_DRIFT".into(), build_container_drift(live));
+
     // A4 Mail
     vars.insert("MAIL_PORTS".into(), "(TODO)".into());
     vars.insert("MAIL_MX".into(), build_mail_mx(live));
@@ -117,25 +120,27 @@ fn build_public_urls(live: &LiveData) -> String {
 
 fn build_private(_ctx: &Context, live: &LiveData) -> String {
     let mut lines = Vec::new();
-    if live.private_endpoints.iter().all(|p| p.resolved_ip.is_empty()) {
+    if live.private_endpoints.iter().all(|p| p.resolved_ip.is_empty() && !p.container_up) {
         lines.push("⚠️  WireGuard/Hickory DOWN — cannot reach .app endpoints".into());
         lines.push("    Run: sudo wg-quick up wg0".into());
         lines.push(String::new());
     }
-    lines.push(format!("    {:28} 📡TCP 🌐HTTP {:7} {:16} {:22} Code", "DNS Name", "Port", "VM", "Container"));
-    lines.push(format!("    {}", "─".repeat(95)));
+    lines.push(format!("    {:28} 📡TCP 🌐HTTP 🐳CTR {:5} {:14} {:22} Code", "DNS Name", "Port", "VM", "Container"));
+    lines.push(format!("    {}", "─".repeat(105)));
     for p in &live.private_endpoints {
-        let all = p.tcp && p.http;
-        let any = p.tcp || p.http;
-        let icon = if p.resolved_ip.is_empty() { "⏸️" } else if all { "✅" } else if any { "⚠️" } else { "❌" };
-        let tcp_i = if p.resolved_ip.is_empty() { "⏸️" } else if p.tcp { "✅" } else { "❌" };
-        let http_i = if p.resolved_ip.is_empty() { "⏸️" } else if p.http { "✅" } else { "❌" };
-        lines.push(format!("{} {:28} {}   {}   {:5} {:16} {:22} [{}]", icon, p.dns, tcp_i, http_i, p.port, p.vm, p.container, p.code));
+        let net_ok = p.tcp || p.http;
+        let ok = net_ok || p.container_up;
+        let icon = if ok { "✅" } else { "❌" };
+        let tcp_i = if p.tcp { "✅" } else if p.resolved_ip.is_empty() { "⏸️" } else { "❌" };
+        let http_i = if p.http { "✅" } else if p.resolved_ip.is_empty() { "⏸️" } else { "❌" };
+        let ctr_i = if p.container_up { "✅" } else { "❌" };
+        lines.push(format!("{} {:28} {}   {}   {}   {:5} {:14} {:22} [{}]", icon, p.dns, tcp_i, http_i, ctr_i, p.port, p.vm, p.container, p.code));
     }
     let tcp_ok = live.private_endpoints.iter().filter(|p| p.tcp).count();
     let http_ok = live.private_endpoints.iter().filter(|p| p.http).count();
+    let ctr_ok = live.private_endpoints.iter().filter(|p| p.container_up).count();
     lines.push(String::new());
-    lines.push(format!("  📡 TCP: {}/{}  🌐 HTTP: {}/{}", tcp_ok, live.private_endpoints.len(), http_ok, live.private_endpoints.len()));
+    lines.push(format!("  📡 TCP: {}/{}  🌐 HTTP: {}/{}  🐳 Container: {}/{}", tcp_ok, live.private_endpoints.len(), http_ok, live.private_endpoints.len(), ctr_ok, live.private_endpoints.len()));
     lines.join("\n")
 }
 
@@ -166,6 +171,80 @@ fn build_containers(ctx: &Context, live: &LiveData) -> String {
         lines.push(String::new());
         lines.join("\n")
     }).collect::<Vec<_>>().join("\n")
+}
+
+fn build_container_drift(live: &LiveData) -> String {
+    let mut total = 0u32;
+    let mut running = 0u32;
+    let mut healthy = 0u32;
+    let mut unhealthy = 0u32;
+    let mut exited = 0u32;
+
+    for vm in &live.vm_data {
+        for c in &vm.containers {
+            total += 1;
+            if c.status.contains("Up") { running += 1; }
+            match c.health.as_str() {
+                "healthy" => healthy += 1,
+                "unhealthy" => unhealthy += 1,
+                "exited" => exited += 1,
+                _ => {}
+            }
+        }
+    }
+
+    let mut lines = vec![
+        format!("CONTAINER HEALTH — {}/{} running, {} healthy, {} unhealthy, {} exited",
+            running, total, healthy, unhealthy, exited),
+        "─".repeat(110),
+    ];
+
+    // Per-VM summary table (docker ps + docker stats aggregated)
+    lines.push(format!("    {:16} {:16} {:6} {:8} {:10} {:8} {:10} {:10} {:10} {:8}",
+        "VM", "Total", "Up", "Healthy", "Unhealthy", "Exited", "Mem Used", "Mem Total", "Disk", "Load"));
+    lines.push(format!("    {}", "─".repeat(100)));
+    for vm in &live.vm_data {
+        let vm_up = vm.containers.iter().filter(|c| c.status.contains("Up")).count();
+        let vm_healthy = vm.containers.iter().filter(|c| c.health == "healthy").count();
+        let vm_unhealthy = vm.containers.iter().filter(|c| c.health == "unhealthy").count();
+        let vm_exited = vm.containers.iter().filter(|c| c.health == "exited").count();
+        let no_docker = vm.reachable && vm.containers_total == 0;
+        let all_ok = vm_unhealthy == 0 && vm_exited == 0 && vm.reachable && !no_docker;
+        let icon = if no_docker { "⚠️" } else if all_ok { "✅" } else if vm.reachable { "⚠️" } else { "❌" };
+        let total_str = if no_docker { "⚠️ no docker CLI".to_string() } else { vm.containers_total.to_string() };
+        lines.push(format!("{} {:16} {:16} {:6} {:8} {:10} {:8} {:10} {:10} {:10} {:8}",
+            icon, vm.alias, total_str, vm_up, vm_healthy, vm_unhealthy, vm_exited,
+            vm.mem_used, vm.mem_total, vm.disk_pct, vm.load.split_whitespace().next().unwrap_or("?")));
+    }
+    lines.push(format!("    {}", "─".repeat(100)));
+
+    // Per-container detail
+    lines.push(String::new());
+    lines.push(format!("    {:25} {:14} {:12} {:35}", "Container", "Health", "VM", "Status (docker ps + stats)"));
+    lines.push(format!("    {}", "─".repeat(95)));
+
+    for vm in &live.vm_data {
+        for c in &vm.containers {
+            let icon = match c.health.as_str() {
+                "healthy" => "✅",
+                "unhealthy" => "⚠️",
+                "exited" | "created" => "❌",
+                _ => if c.status.contains("Up") { "✅" } else { "❌" },
+            };
+            let health_str = match c.health.as_str() {
+                "healthy" => "healthy",
+                "unhealthy" => "UNHEALTHY",
+                "exited" => "EXITED",
+                "created" => "CREATED",
+                "starting" => "starting",
+                "none" => if c.status.contains("Up") { "up" } else { "down" },
+                _ => &c.health,
+            };
+            lines.push(format!("  {} {:25} {:14} {:12} {}",
+                icon, c.name, health_str, vm.alias, &c.status[..c.status.len().min(50)]));
+        }
+    }
+    lines.join("\n")
 }
 
 fn build_mail_mx(live: &LiveData) -> String {
@@ -338,7 +417,16 @@ fn build_database_section(live: &LiveData) -> String {
     if live.db_health.is_empty() {
         return "  (no databases declared)".into();
     }
+
+    // Group by type for summary
+    let mut by_type: std::collections::HashMap<&str, usize> = std::collections::HashMap::new();
+    for db in &live.db_health {
+        *by_type.entry(&db.db_type).or_default() += 1;
+    }
+    let type_summary: Vec<String> = by_type.iter().map(|(t, c)| format!("{} {}", c, t)).collect();
+
     let mut lines = vec![
+        format!("DECLARED DATABASES — {} total ({})", live.db_health.len(), type_summary.join(", ")),
         format!("    {:20} {:10} {:22} {:16} {:6} {:4} {:8} {:10} {:6}",
             "Service", "Type", "Container", "VM", "Port", "TCP", "Health", "Size", "Backup"),
         format!("    {}", "\u{2500}".repeat(105)),
@@ -366,13 +454,17 @@ fn build_storage_section(live: &LiveData) -> String {
         return "  (no storage buckets declared)".into();
     }
     let mut lines = vec![
-        format!("    {:30} {:10} {:14} {:10} {:10}",
-            "Bucket", "Provider", "Tier", "Size", "Objects"),
-        format!("    {}", "\u{2500}".repeat(80)),
+        format!("OBJECT STORAGE — {} buckets (live)", live.storage_health.len()),
+        format!("    {:30} {:10} {:14} {:6} {:10} {:10}",
+            "Bucket", "Provider", "Tier", "Live", "Size", "Objects"),
+        format!("    {}", "\u{2500}".repeat(90)),
     ];
     for s in &live.storage_health {
-        lines.push(format!("    {:30} {:10} {:14} {:10} {:10}",
-            s.name, s.provider, s.tier, s.size, s.objects));
+        let icon = if s.accessible { "\u{2705}" } else { "\u{274c}" };
+        lines.push(format!("{} {:30} {:10} {:14} {}   {:10} {:10}",
+            icon, s.name, s.provider, s.tier,
+            if s.accessible { "\u{2705}" } else { "\u{274c}" },
+            s.size, s.objects));
     }
     lines.join("\n")
 }

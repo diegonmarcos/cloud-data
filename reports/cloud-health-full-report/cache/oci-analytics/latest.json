@@ -1,13 +1,13 @@
 {
   "vm": "services-server",
-  "timestamp": "2026-04-16T11:51:52Z",
-  "mem": {"used":529,"total":954,"pct":55},
-  "swap": {"used":121,"total":1535},
-  "disk": {"used":"21G","total":"48G","pct":"45%"},
-  "load": "1.05 0.52 0.42",
-  "uptime": "9d 0h",
+  "timestamp": "2026-04-16T21:12:17Z",
+  "mem": {"used":702,"total":954,"pct":73},
+  "swap": {"used":269,"total":1535},
+  "disk": {"used":"23G","total":"48G","pct":"51%"},
+  "load": "0.39 0.86 0.86",
+  "uptime": "9d 9h",
   "wg_up": true,
-  "containers_running": 3,
-  "containers_total": 3,
-  "containers": [{"name":"dagu","status":"Up 21 hours","health":"none"},{"name":"sauron-forwarder","status":"Up 30 hours","health":"none"},{"name":"dozzle","status":"Up 30 hours","health":"none"}]
+  "containers_running": 6,
+  "containers_total": 8,
+  "containers": [{"name":"matomo-hybrid","status":"Up 8 hours","health":"none"},{"name":"umami-setup","status":"Exited (1) 8 hours ago","health":"exited"},{"name":"umami","status":"Up 8 hours (healthy)","health":"healthy"},{"name":"umami-db","status":"Up 8 hours (healthy)","health":"healthy"},{"name":"dagu","status":"Up 9 hours","health":"none"},{"name":"fluent-bit","status":"Created","health":"created"},{"name":"sauron-forwarder","status":"Up 40 hours","health":"none"},{"name":"dozzle","status":"Up 40 hours","health":"none"}]
 }

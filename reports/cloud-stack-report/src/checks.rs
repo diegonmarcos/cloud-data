@@ -6,7 +6,7 @@ use trust_dns_resolver::config::{NameServerConfig, Protocol, ResolverConfig, Res
 use trust_dns_resolver::TokioAsyncResolver;
 
 pub const TCP_TIMEOUT: Duration = Duration::from_secs(3);
-pub const HTTP_TIMEOUT: Duration = Duration::from_secs(8);
+pub const HTTP_TIMEOUT: Duration = Duration::from_secs(30);
 pub const HICKORY_IP: &str = "10.0.0.1";
 
 /// Native TCP port check — no subprocess

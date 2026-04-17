@@ -6,131 +6,115 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-04-16T11:52:51.049524661+00:00
+  CLOUD MAIL FULL — 2026-04-16T21:15:46.207385029+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-  31 issues: 16 critical, 15 warnings, 0 info
+  8 issues: 4 critical, 4 warnings, 0 info
 
   CRITICAL:
-    ❌ mail.* HTTPS: HTTP err: error sending request for url (https://mail.diegonmarcos.com/)
-    ❌ webmail HTTPS: HTTP err: error sending request for url (https://webmail.diegonmarcos.com/)
-    ❌ mail:993 TLS: FAIL
-    ❌ mail:465 TLS: FAIL
-    ❌ mail:587 STARTTLS: FAIL
     ❌ DKIM record: MISSING
-    ❌ Cloud API oci-mail: oci-mail: API_FAIL
-    ❌ Cloud API oci-apps: oci-apps: API_FAIL
-    ❌ Cloud API gcp-proxy: gcp-proxy: API_FAIL
-    ❌ Caddy (gcp-proxy): Caddy DOWN
     ❌ Hickory DNS: FAIL: 10.0.0.1
     ❌ TLS WG direct: 993 FAIL 465 FAIL 587 FAIL
-    ❌ mail:993 (IMAP): FAIL
-    ❌ mail:465 (SMTPS): FAIL
-    ❌ mail:587 (SMTP Sub): FAIL
     ❌ DKIM: missing
   WARNINGS:
-    ⚠️  auth HTTPS: HTTP err: error sending request for url (https://auth.diegonmarcos.com/api/health)
-    ⚠️  MCP endpoint: HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp)
-    ⚠️  SSH batch oci-apps: mail-mcp: 
-    ⚠️  mail-mcp: 
-    ⚠️  Webmail HTTPS: HTTP err: error sending request for url (https://mail.diegonmarcos.com/)
-    ⚠️  mail.*/webmail/ route: HTTP err: error sending request for url (https://mail.diegonmarcos.com/webmail/)
-    ⚠️  webmail.* redirect: ERR: error sending request for url (https://webmail.diegonmarcos.com/)
-    ⚠️  OIDC bearer -> webmail: no OIDC token
-    ⚠️  mcp->DNS resolve: Error response from daemon: No such container: mail-mcp
-    ⚠️  mcp->IMAP TLS: Error response from daemon: No such container: mail-mcp
-    ⚠️  mcp->SMTP TLS: Error response from daemon: No such container: mail-mcp
-    ⚠️  mcp->IMAP WG direct: 10.0.0.3:993 Error response from daemon: No such container: mail-mcp
-    ⚠️  mcp->IMAP LOGIN: Error response from daemon: No such container: mail-mcp
-    ⚠️  mcp->SMTP AUTH: Error response from daemon: No such container: mail-mcp
-    ⚠️  mail-mcp MCP: HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (alive)
+    ⚠️  Webmail internal: HTTP 000
+    ⚠️  SnappyMail internal: HTTP 000
+    ⚠️  webmail.* redirect: 301 → https://mail.diegonmarcos.com/
+    ⚠️  mcp->SMTP AUTH: SMTP_NO_AUTH
+SMTP_NO_AUTH
+ERR:write after end
+TIMEOUT
 
 
 0. INSTANT KPIs
 ──────────────────────────────────────────────────────────────
-  ❌ mail.* HTTPS                   HTTP err: error sending request for url (https://mail.diegonmarcos.com/) (0.3s) [CRITICAL]
-  ❌ webmail HTTPS                  HTTP err: error sending request for url (https://webmail.diegonmarcos.com/) (0.3s) [CRITICAL]
-  ⚠️  auth HTTPS                     HTTP err: error sending request for url (https://auth.diegonmarcos.com/api/health) (0.3s) [WARNING]
-  ⚠️  MCP endpoint                   HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (0.3s) [WARNING]
-  ❌ mail:993 TLS                   FAIL (0.3s) [CRITICAL]
-  ❌ mail:465 TLS                   FAIL (0.3s) [CRITICAL]
-  ❌ mail:587 STARTTLS              FAIL (0.3s) [CRITICAL]
-  ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
+  ✅ mail.* HTTPS                   HTTP 200 (0.8s)
+  ✅ webmail HTTPS                  HTTP 301 (0.7s)
+  ✅ auth HTTPS                     HTTP 200 (0.5s)
+  ✅ MCP endpoint                   HTTP 400 (0.8s)
+  ✅ mail:993 TLS                   TLS OK (1.3s)
+  ✅ mail:465 TLS                   TLS OK (1.4s)
+  ✅ mail:587 STARTTLS              TLS OK (1.9s)
+  ✅ MX record                      22 route1.mx.cloudflare.net. (0.1s)
   ❌ DKIM record                    MISSING (0.0s) [CRITICAL]
-  ✅ GHA health                     gh unavailable (skipped)
-  ✅ CF Worker alive                HTTP 500 (0.2s)
-  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.7s)
+  ✅ GHA health                     all green (1.1s)
+  ✅ CF Worker alive                HTTP 500 (0.4s)
+  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.5s)
   ✅ IMAP direct (WG)               10.0.0.3:993 OK (0.2s)
   ✅ SMTP direct (WG)               10.0.0.3:25 OK (0.2s)
 
-  Summary: 6/14 passed, 8 failed
+  Summary: 13/14 passed, 1 failed
 
 1. PRE-FLIGHT
 ──────────────────────────────────────────────────────────────
-  ❌ Cloud API oci-mail             oci-mail: API_FAIL [CRITICAL]
-  ❌ Cloud API oci-apps             oci-apps: API_FAIL [CRITICAL]
-  ❌ Cloud API gcp-proxy            gcp-proxy: API_FAIL [CRITICAL]
-  ✅ WG oci-mail                    10.0.0.3:22 OK (0.3s)
-  ✅ WG oci-apps                    10.0.0.6:22 OK (0.3s)
+  ✅ Cloud API oci-mail             oci-mail: RUNNING
+  ✅ Cloud API oci-apps             oci-apps: RUNNING
+  ✅ Cloud API gcp-proxy            gcp-proxy: RUNNING
+  ✅ WG oci-mail                    10.0.0.3:22 OK (0.2s)
+  ✅ WG oci-apps                    10.0.0.6:22 OK (0.2s)
   ✅ WG gcp-proxy                   10.0.0.1:22 OK (0.1s)
   ✅ SSH batch oci-mail             Docker 27.5.1
-  ⚠️  SSH batch oci-apps             mail-mcp:  [WARNING]
+  ✅ SSH batch oci-apps             mail-mcp: Up About an hour
   ✅ SSH batch gcp-proxy            Authelia OK
   ✅ Disk space                     78% used
-  ✅ Memory                         640/954MB (67%)
-  ✅ Load                           load: 0.11 0.17 0.18
+  ✅ Memory                         688/954MB (72%)
+  ✅ Load                           load: 0.19 0.24 0.23
 
-  Summary: 8/12 passed, 4 failed
+  Summary: 12/12 passed, 0 failed
 
 2. CONTAINERS
 ──────────────────────────────────────────────────────────────
-  ✅ maddy                          Up 16 minutes
-  ✅ smtp-proxy                     Up 39 hours
-  ✅ snappymail                     Up 12 days
-  ⚠️  mail-mcp                        [WARNING]
+  ✅ maddy                          Up 10 hours
+  ✅ smtp-proxy                     Up 7 hours
+  ✅ snappymail                     Up 9 hours
+  ✅ mail-mcp                       Up About an hour
 
-  Summary: 3/4 passed, 1 failed
+  Summary: 4/4 passed, 0 failed
 
 3. NETWORK + AUTH
 ──────────────────────────────────────────────────────────────
-  ❌ Caddy (gcp-proxy)              Caddy DOWN (0.6s) [CRITICAL]
-  ❌ Hickory DNS                    FAIL: 10.0.0.1 (0.2s) [CRITICAL]
-  ❌ TLS WG direct                  993 FAIL 465 FAIL 587 FAIL (0.5s) [CRITICAL]
+  ✅ Caddy (gcp-proxy)              HTTPS OK (10.0.0.1) (0.8s)
+  ❌ Hickory DNS                    FAIL: 10.0.0.1 (0.1s) [CRITICAL]
+  ❌ TLS WG direct                  993 FAIL 465 FAIL 587 FAIL (0.7s) [CRITICAL]
   ✅ Caddy L4 -> IMAP               993 forwarding OK
   ✅ Caddy L4 -> SMTPS              465 forwarding OK
   ✅ Caddy L4 -> SMTP               587 forwarding OK
-  ❌ mail:993 (IMAP)                FAIL (0.4s) [CRITICAL]
-  ❌ mail:465 (SMTPS)               FAIL (0.4s) [CRITICAL]
-  ❌ mail:587 (SMTP Sub)            FAIL (0.4s) [CRITICAL]
+  ✅ mail:993 (IMAP)                TLS OK (0.9s)
+  ✅ mail:465 (SMTPS)               TLS OK (0.9s)
+  ✅ mail:587 (SMTP Sub)            TLS OK (1.6s)
   ✅ SMTP :25 relay                 220 mail.diegonmarcos.com ESMTP Service Ready
   ✅ SMTP :587 local TLS            STARTTLS OK
-  ⚠️  Webmail HTTPS                  HTTP err: error sending request for url (https://mail.diegonmarcos.com/) (0.4s) [WARNING]
-  ✅ Webmail internal               HTTP 200
-  ✅ SnappyMail internal            HTTP 200
-  ⚠️  mail.*/webmail/ route          HTTP err: error sending request for url (https://mail.diegonmarcos.com/webmail/) (0.4s) [WARNING]
-  ⚠️  webmail.* redirect             ERR: error sending request for url (https://webmail.diegonmarcos.com/) (0.4s) [WARNING]
+  ✅ Webmail HTTPS                  HTTP 200 (0.7s)
+  ⚠️  Webmail internal               HTTP 000 [WARNING]
+  ⚠️  SnappyMail internal            HTTP 000 [WARNING]
+  ✅ mail.*/webmail/ route          HTTP 302 (0.5s)
+  ⚠️  webmail.* redirect             301 → https://mail.diegonmarcos.com/ (0.7s) [WARNING]
   ✅ Authelia health                Authelia OK
-  ⚠️  OIDC bearer -> webmail         no OIDC token [WARNING]
+  ✅ OIDC bearer -> webmail         Bearer auth -> 200 OK (full chain) (0.5s)
   ✅ Mail Admin via Bearer          N/A — Maddy CLI-only (no web admin)
-  ⚠️  mcp->DNS resolve               Error response from daemon: No such container: mail-mcp [WARNING]
-  ⚠️  mcp->IMAP TLS                  Error response from daemon: No such container: mail-mcp [WARNING]
-  ⚠️  mcp->SMTP TLS                  Error response from daemon: No such container: mail-mcp [WARNING]
-  ⚠️  mcp->IMAP WG direct            10.0.0.3:993 Error response from daemon: No such container: mail-mcp [WARNING]
-  ⚠️  mcp->IMAP LOGIN                Error response from daemon: No such container: mail-mcp [WARNING]
-  ⚠️  mcp->SMTP AUTH                 Error response from daemon: No such container: mail-mcp [WARNING]
-  ⚠️  mail-mcp MCP                   HTTP err: error sending request for url (https://mcp.diegonmarcos.com/mail-mcp/mcp) (alive) (0.4s) [WARNING]
+  ✅ mcp->DNS resolve               -> 35.226.147.64
+  ✅ mcp->IMAP TLS                  OK proto=TLSv1.3 cn=*.diegonmarcos.com
+  ✅ mcp->SMTP TLS                  OK proto=TLSv1.3
+  ✅ mcp->IMAP WG direct            10.0.0.3:993 OK proto=TLSv1.3
+  ✅ mcp->IMAP LOGIN                LOGIN_OK
+TIMEOUT
+  ⚠️  mcp->SMTP AUTH                 SMTP_NO_AUTH
+SMTP_NO_AUTH
+ERR:write after end
+TIMEOUT [WARNING]
+  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.9s)
   ✅ All ports bound                all 6 ports bound
 
-  Summary: 10/27 passed, 17 failed
+  Summary: 21/27 passed, 6 failed
 
 4. DNS AUTH
 ──────────────────────────────────────────────────────────────
   ✅ MX                             22 route1.mx.cloudflare.net. (0.0s)
   ❌ DKIM                           missing (0.0s) [CRITICAL]
-  ✅ SPF                            v=spf1 (0.2s)
-  ✅ DMARC                          v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.0s)
+  ✅ SPF                            v=spf1 (0.0s)
+  ✅ DMARC                          v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.1s)
 
   Summary: 3/4 passed, 1 failed
 
@@ -160,22 +144,22 @@ no-reply@diegonmarcos.com
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    18.9s
-  P1_preflight             14.7s
-  T0_path_checker          2.4s
-  P0_instant_kpis          1.3s
-  P4_dns_auth              0.6s
-  P2-P5_parallel           0.6s
-  P3_network               0.6s
+  TOTAL                    30.6s
+  P1_preflight             23.1s
+  P0_instant_kpis          3.5s
+  T0_path_checker          2.5s
+  P3_network               1.6s
+  P4_dns_auth              1.6s
+  P2-P5_parallel           1.6s
   P2_containers            0.0s
-  P5_internals             0.0s
   P6_e2e_delivery          0.0s
+  P5_internals             0.0s
 
-  Total: 18.9s | Engine: Rust (native async tokio)
+  Total: 30.6s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════
-RESULT: CRITICAL -- 52/87 passed, 19 critical, 16 warnings
+RESULT: CRITICAL -- 79/87 passed, 4 critical, 4 warnings
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────

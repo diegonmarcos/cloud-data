@@ -3,6 +3,7 @@ members = [
   "reports-common",
   "cloud-stack-report",
   "cloud-health-full-report",
+  "cloud-health-daily-mail",
   "cloud-mail-full-report",
   "cloud-url-health-report",
   "cloud-sec-network-report",

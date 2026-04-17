@@ -1,48 +1,1461 @@
 {
-  "duration_ms": 375893,
-  "generated": "2026-04-16T12:00:01.310265027+00:00",
+  "diff_changes": [],
+  "duration_ms": 1883468,
+  "generated": "2026-04-17T07:56:27.495737967+00:00",
+  "journal_alerts": [],
+  "runtime_issues": [],
   "siem_alerts": [],
   "summary": {
-    "critical": 10,
-    "failed": 13,
-    "passed": 57,
-    "total_checks": 70,
-    "warnings": 3
+    "critical": 18,
+    "failed": 22,
+    "passed": 103,
+    "total_checks": 125,
+    "warnings": 4
   },
-  "threat_intel_matches": [],
-  "yara_hits": [
+  "threat_intel_matches": [
     {
-      "container": "hickory-dns",
-      "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
-      "file_path": "/tmp/.tmpOB71mp/etc/etc/busybox-paths.d/busybox",
-      "file_size": 3989,
-      "rule_name": "container_escape_nsenter",
-      "severity": "critical",
-      "vm": "gcp-proxy"
+      "confidence": "medium",
+      "indicator": "http://110.37.102.128:55751/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
     },
     {
-      "container": "ntfy",
+      "confidence": "medium",
+      "indicator": "http://110.37.120.17:44987/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://trace-y2-alpha.primasfera.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.245.216.249:50091/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://shell-t5-core.primasfera.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://88.88.147.173:4472/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://115.58.91.230:41715/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.209.95.175:53482/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://vision-i1-sync.primasfera.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://115.53.197.134:53792/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://85.113.165.216:55012/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.102.128:55751/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.120.17:44987/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://bridge-e6-light.nexustech-v.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://158.94.208.7/files/8144679401/GFOiw5Q.msi",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://scan-a4-point.nexustech-v.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://sync-m8-vision.nexustech-v.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://rim-k9-outer.curvazero.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://116.149.28.146:38722/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://zone-w1-area.curvazero.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://222.219.4.21:40926/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://178.141.186.36:45251/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://85.113.165.216:55012/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.245.216.249:50091/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.224.255.76:55376/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://field-z7-vast.curvazero.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://111.61.92.78:51564/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://space-x0-open.curvazero.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.198.193.19:51797/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://orbit-n4-moon.purosentido.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://base-b9-steel.purosentido.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://27.37.228.169:44188/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://core-q1-rock.purosentido.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.224.255.76:55376/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://111.61.92.78:51564/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://link-r5-sat.purosentido.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://59.42.89.220:48392/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.198.193.19:51797/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.205.90.249:34895/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://115.63.55.27:44193/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://61.68.175.20:34211/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://123.12.47.238:57010/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://123.12.47.238:57010/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://59.42.89.220:48392/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.78.177:53799/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.217.193.248:46523/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.205.90.249:34895/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://afikku.copyvrok.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://120.60.229.89:38313/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://115.63.55.27:44193/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://vor-tidea.copyvrok.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://61.68.175.20:34211/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://121.231.137.46:51317/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://vellineal.copyvrok.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://120.61.202.93:58831/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://exhys.copyvrok.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/splash.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.arm6",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.arm7",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.arm5",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.mips",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.spc",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.sh4",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.arm",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://120.60.229.89:38313/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.x86",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.m68k",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.mpsl",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://203.161.47.138/oop/dontcrynow.ppc",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.78.177:53799/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://alignpro.slashbak.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.253.65.125:36946/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.227.32.132:37098/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://4ztdaumj.slashbak.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://45.153.34.199/bins/pm68k",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://45.153.34.199/bins/pspc",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://45.153.34.199/bins/parm6",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://45.153.34.199/bins/pmpsl",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://45.153.34.199/bins/px86",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://45.153.34.199/bins/pmips",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://45.153.34.199/bins/parm5",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://60.214.22.144:55219/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://lanecheck.slashbak.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://120.61.202.93:58831/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.237.25.222:48972/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.224.100.120:51739/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://breezetide.slashbak.in.net/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://120.28.109.102:45324/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://196.190.69.149:49095/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.39.32:38426/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.66.248:36845/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://node-x911-auth.ventonodal.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.222.167.173:48653/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.224.100.120:51739/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.253.65.125:36946/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://sync-v02-edge.ventonodal.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://dist-z7-cache.ventonodal.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.196.181.154:32960/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://175.173.90.64:47108/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://175.173.84.220:43593/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.196.181.154:32960/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://infra-k1-static.ventonodal.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.237.25.222:48972/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://196.190.69.149:49095/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://222.140.216.28:56621/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://srv-q44-meta.optic-prime.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.39.32:38426/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.222.167.173:48653/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://app-v09-data.optic-prime.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://120.28.109.102:45324/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://59.88.225.156:56704/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://web-303-proxy.optic-prime.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.66.248:36845/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://core-j1-sync.optic-prime.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://78.29.39.213:37794/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.222.167.199:55331/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://cloud-w22-store.fluido-v.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://222.140.216.28:56621/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://api-r8-remote.fluido-v.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.239.154.160:57474/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://175.173.90.64:47108/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.227.32.132:37098/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://dev-t4-host.fluido-v.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://gate-v5-entry.fluido-v.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.111.178:44391/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://sys-s01-monitor.prismagrid.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.36.23:52787/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.arc",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.m68k",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.arm6",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.sh4",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.mpsl",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.mips",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.x86",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.ppc",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.spc",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.arm",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.i686",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.x86_64",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.arm5",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://87.120.191.32/nuclear.arm7",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://112.239.98.18:56299/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://78.29.39.213:37794/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://219.156.176.247:44440/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.222.167.199:55331/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://59.183.113.113:50503/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://link-p9-power.prismagrid.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.205.169.104:44609/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://61.137.156.80:55202/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://42.239.154.160:57474/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://hub-v22-local.prismagrid.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.205.169.104:44609/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://flow-z4-work.prismagrid.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://196.190.224.62:47577/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://222.142.249.29:36429/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.36.23:52787/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://net-d88-global.termoviva.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://219.156.176.247:44440/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.111.178:44391/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://219.155.95.119:43938/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://base-f3-infra.termoviva.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://219.157.50.209:46320/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://219.155.95.119:43938/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://223.151.75.208:43874/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://182.119.167.192:58696/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://db-g1-point.termoviva.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://61.137.156.80:55202/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://auth-l9-user.termoviva.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://61.54.199.43:58743/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://trace-y21-alpha.nauticbase.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://shell-t0-core.nauticbase.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.209.82.10:34299/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://ghost-u9-node.nauticbase.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://182.119.167.192:58696/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://175.146.154.138:39964/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://61.1.230.165:54923/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.32.228:58226/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://vision-i4-sync.nauticbase.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://room-v5-dark.curva-flux.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://175.146.154.138:39964/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://bridge-e1-light.curva-flux.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://61.54.199.43:58743/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://125.44.252.209:48537/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://61.1.230.165:54923/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://scan-a9-point.curva-flux.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.32.228:58226/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://223.151.75.208:43874/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.39.252.138:45159/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://125.41.225.146:32997/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://rim-k11-outer.polar-axis.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://125.41.225.146:32997/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://125.44.252.209:48537/i",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://115.57.232.210:34947/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://zone-w8-area.polar-axis.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://117.232.188.135:46719/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://field-z2-vast.polar-axis.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://123.14.33.100:59282/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "http://110.37.37.232:59674/bin.sh",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://space-x9-open.polar-axis.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    },
+    {
+      "confidence": "medium",
+      "indicator": "https://orbit-n0-moon.densocore.cfd/verification.google",
+      "indicator_type": "url",
+      "matched_in": "malware_download",
+      "source": "URLhaus"
+    }
+  ],
+  "yara_hits": [
+    {
+      "container": "crawlee_dashboard",
       "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
-      "file_path": "/tmp/.tmpD0M16W/etc/etc/busybox-paths.d/busybox",
+      "file_path": "/tmp/.tmp2FjTZu/etc/etc/busybox-paths.d/busybox",
       "file_size": 3986,
       "rule_name": "container_escape_nsenter",
       "severity": "critical",
-      "vm": "gcp-proxy"
+      "vm": "oci-apps"
     },
     {
-      "container": "rig-agentic",
-      "file_hash": "9350dc463e577a36f7104145b618ec9d7e4f6bdec3e5eb7bbab559ecd1c27360",
-      "file_path": "/tmp/.tmpRWje6Z/app/app/rig-agentic",
-      "file_size": 9192032,
+      "container": "crawlee_api",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmpf3aDqa/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "crawlee_scheduler",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmpymQP27/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "rig-agentic-sonn-14bq8",
+      "file_hash": "9a27f334e5e81840b83c0ab0ca71843ba7d0d9f3a53b6c8a5b2d1e573e466379",
+      "file_path": "/tmp/.tmptnPxwX/app/app/rig-agentic",
+      "file_size": 9192104,
       "rule_name": "container_escape_proc_mount",
       "severity": "critical",
       "vm": "oci-apps"
     },
     {
-      "container": "rig-agentic",
-      "file_hash": "9350dc463e577a36f7104145b618ec9d7e4f6bdec3e5eb7bbab559ecd1c27360",
-      "file_path": "/tmp/.tmpRWje6Z/app/app/rig-agentic",
-      "file_size": 9192032,
+      "container": "rig-agentic-sonn-14bq8",
+      "file_hash": "9a27f334e5e81840b83c0ab0ca71843ba7d0d9f3a53b6c8a5b2d1e573e466379",
+      "file_path": "/tmp/.tmptnPxwX/app/app/rig-agentic",
+      "file_size": 9192104,
       "rule_name": "container_escape_docker_socket",
       "severity": "critical",
       "vm": "oci-apps"
@@ -50,26 +1463,8 @@
     {
       "container": "lgtm_grafana",
       "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
-      "file_path": "/tmp/.tmpYXWfXB/etc/etc/busybox-paths.d/busybox",
+      "file_path": "/tmp/.tmpN9hAPD/etc/etc/busybox-paths.d/busybox",
       "file_size": 3986,
-      "rule_name": "container_escape_nsenter",
-      "severity": "critical",
-      "vm": "oci-apps"
-    },
-    {
-      "container": "lgtm_loki",
-      "file_hash": "9d03182abed51a1eb82ba669f14c3c7a8c8a19c3b57e5f2cc657c77349960c8f",
-      "file_path": "/tmp/.tmpgW14vn/usr_local_bin/bin/busybox",
-      "file_size": 1660152,
-      "rule_name": "container_escape_proc_mount",
-      "severity": "critical",
-      "vm": "oci-apps"
-    },
-    {
-      "container": "lgtm_loki",
-      "file_hash": "9d03182abed51a1eb82ba669f14c3c7a8c8a19c3b57e5f2cc657c77349960c8f",
-      "file_path": "/tmp/.tmpgW14vn/usr_local_bin/bin/busybox",
-      "file_size": 1660152,
       "rule_name": "container_escape_nsenter",
       "severity": "critical",
       "vm": "oci-apps"
@@ -77,26 +1472,125 @@
     {
       "container": "lgtm_tempo",
       "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
-      "file_path": "/tmp/.tmpG5LRQa/etc/etc/busybox-paths.d/busybox",
+      "file_path": "/tmp/.tmpOttavW/etc/etc/busybox-paths.d/busybox",
       "file_size": 3989,
       "rule_name": "container_escape_nsenter",
       "severity": "critical",
       "vm": "oci-apps"
     },
     {
-      "container": "maddy",
+      "container": "lgtm_loki",
+      "file_hash": "9d03182abed51a1eb82ba669f14c3c7a8c8a19c3b57e5f2cc657c77349960c8f",
+      "file_path": "/tmp/.tmpJsjaSm/usr_local_bin/bin/busybox",
+      "file_size": 1660152,
+      "rule_name": "container_escape_proc_mount",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "lgtm_loki",
+      "file_hash": "9d03182abed51a1eb82ba669f14c3c7a8c8a19c3b57e5f2cc657c77349960c8f",
+      "file_path": "/tmp/.tmpJsjaSm/usr_local_bin/bin/busybox",
+      "file_size": 1660152,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "etherpad_app",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmpPYlZ6D/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "gitea",
       "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
-      "file_path": "/tmp/.tmpOmmSvB/etc/etc/busybox-paths.d/busybox",
+      "file_path": "/tmp/.tmpZL4TEs/etc/etc/busybox-paths.d/busybox",
       "file_size": 3989,
       "rule_name": "container_escape_nsenter",
       "severity": "critical",
-      "vm": "oci-mail"
+      "vm": "oci-apps"
+    },
+    {
+      "container": "radicale",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmpYrFoW2/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "ntfy",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmpF6ySSF/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "photoprism_app",
+      "file_hash": "beca8a2259086f841df179c10144feadde9a3f69623df0f1c0c93569cfd2cd34",
+      "file_path": "/tmp/.tmpWRHsFm/etc/etc/ssl/private/photoprism.issuer.key",
+      "file_size": 3272,
+      "rule_name": "exposed_ssh_private_key",
+      "severity": "info",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "photoprism_app",
+      "file_hash": "93ecf469a1f72efe781792deec9e70b032e39220bddabc917d7d5c7c3f54ac0d",
+      "file_path": "/tmp/.tmpWRHsFm/etc/etc/ssl/private/photoprism.key",
+      "file_size": 3268,
+      "rule_name": "exposed_ssh_private_key",
+      "severity": "info",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "photoprism_rclone",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmpJacz53/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "c3-infra-api",
+      "file_hash": "5c98fb66b559d0b4fa82c7a3e39d9ab6840f022c4c73e6b1a73ac6d16ec13fd7",
+      "file_path": "/tmp/.tmp8GwpVI/app/app/node_modules/detect-libc/lib/filesystem.js",
+      "file_size": 1097,
+      "rule_name": "container_escape_proc_mount",
+      "severity": "critical",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "c3-infra-api",
+      "file_hash": "b4e122bd70624cdbca8ca2e002e85540ac6f20e2c5c72c2b4b93e8e8ba4f2f5d",
+      "file_path": "/tmp/.tmp8GwpVI/app/app/node_modules/jose/dist/webapi/key/import.js",
+      "file_size": 2371,
+      "rule_name": "exposed_ssh_private_key",
+      "severity": "info",
+      "vm": "oci-apps"
+    },
+    {
+      "container": "c3-infra-api",
+      "file_hash": "b4e122bd70624cdbca8ca2e002e85540ac6f20e2c5c72c2b4b93e8e8ba4f2f5d",
+      "file_path": "/tmp/.tmp8GwpVI/app/app/node_modules/jose/dist/webapi/key/import.js",
+      "file_size": 2371,
+      "rule_name": "exposed_certificate_key",
+      "severity": "info",
+      "vm": "oci-apps"
     },
     {
       "container": "smtp-proxy",
-      "file_hash": "80141c252ef60113b3c6491e37a59657f296a7e06d2308f49d6fc8fbbdacbf18",
-      "file_path": "/tmp/.tmppLwRZM/usr_local_bin/bin/smtp-proxy",
-      "file_size": 6099528,
+      "file_hash": "d4ec2110793e3d5b7ff4dadfc072468f237c82702c85df2f4421f977a29e8efb",
+      "file_path": "/tmp/.tmpSIvL2s/usr_local_bin/bin/smtp-proxy",
+      "file_size": 6104064,
       "rule_name": "container_escape_proc_mount",
       "severity": "critical",
       "vm": "oci-mail"
@@ -104,16 +1598,34 @@
     {
       "container": "snappymail",
       "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
-      "file_path": "/tmp/.tmphVUA8M/etc/etc/busybox-paths.d/busybox",
+      "file_path": "/tmp/.tmp50jHLV/etc/etc/busybox-paths.d/busybox",
       "file_size": 3989,
       "rule_name": "container_escape_nsenter",
       "severity": "critical",
       "vm": "oci-mail"
     },
     {
+      "container": "maddy",
+      "file_hash": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa",
+      "file_path": "/tmp/.tmpMVfn1M/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3989,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-mail"
+    },
+    {
+      "container": "umami",
+      "file_hash": "ad43f2888aa6679930812faef33672c45e98021d3be0d0ed08d257c1d957a968",
+      "file_path": "/tmp/.tmpA0nKsF/etc/etc/busybox-paths.d/busybox",
+      "file_size": 3986,
+      "rule_name": "container_escape_nsenter",
+      "severity": "critical",
+      "vm": "oci-analytics"
+    },
+    {
       "container": "dozzle",
       "file_hash": "04f0ac7ce3e43ff07b94adb9bcabcaec9db344e107c77c48b2344cced1711f51",
-      "file_path": "/tmp/.tmptlOaDG/opt/opt/cloud-docs/docker-compose.yml",
+      "file_path": "/tmp/.tmpPvck1g/opt/opt/cloud-docs/docker-compose.yml",
       "file_size": 1946,
       "rule_name": "container_escape_docker_socket",
       "severity": "critical",

@@ -50,6 +50,7 @@ pub struct DnsEntry {
 }
 
 #[derive(Clone, Debug)]
+#[allow(dead_code)]
 pub struct DbEntry {
     pub service: String,
     pub db_type: String,
@@ -59,6 +60,9 @@ pub struct DbEntry {
     pub port: u16,
     pub vm: String,
     pub dns_access: String,
+    pub enabled: bool,
+    pub healthcheck: String,
+    pub backup: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -138,6 +142,7 @@ pub struct PrivateResult {
     pub http: bool,
     pub code: String,
     pub resolved_ip: String,
+    pub container_up: bool,
 }
 
 #[derive(Debug, Serialize, Clone)]

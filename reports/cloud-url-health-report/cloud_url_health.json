@@ -1,268 +1,238 @@
 {
-  "generated": "2026-04-16T11:52:56.473906124+00:00",
-  "duration_ms": 5407,
+  "generated": "2026-04-16T21:16:36.760489964+00:00",
+  "duration_ms": 5433,
   "summary": {
     "public_total": 16,
-    "public_healthy": 0,
+    "public_healthy": 15,
     "private_total": 43,
-    "private_healthy": 9
+    "private_healthy": 34
   },
   "public": [
     {
       "domain": "auth.diegonmarcos.com",
       "url": "https://auth.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 155,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 683,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "cal.diegonmarcos.com",
       "url": "https://cal.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 160,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 3122,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "chat.diegonmarcos.com",
       "url": "https://chat.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 162,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 945,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "db.diegonmarcos.com",
       "url": "https://db.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 157,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "fail",
+      "http_code": 502,
+      "latency_ms": 1202,
       "resolved_ips": [
         "35.226.147.64"
       ],
       "errors": [
-        "TCP: Connection refused (os error 111)"
+        "HTTP 502"
       ]
     },
     {
       "domain": "diegonmarcos.com",
       "url": "https://diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 157,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 807,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "git.diegonmarcos.com",
       "url": "https://git.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 155,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 809,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "grafana.diegonmarcos.com",
       "url": "https://grafana.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 155,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 961,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "ide.diegonmarcos.com",
       "url": "https://ide.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 159,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 2879,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "mail.diegonmarcos.com",
       "url": "https://mail.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 157,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 690,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "photos.diegonmarcos.com",
       "url": "https://photos.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 159,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 937,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "sheets.diegonmarcos.com",
       "url": "https://sheets.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 159,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 401,
+      "latency_ms": 1058,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "smtp.diegonmarcos.com",
       "url": "https://smtp.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 187,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 405,
+      "latency_ms": 927,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "vault.diegonmarcos.com",
       "url": "https://vault.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 156,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1183,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "webmail.diegonmarcos.com",
       "url": "https://webmail.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 159,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1429,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "windmill.diegonmarcos.com",
       "url": "https://windmill.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 157,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 857,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "workflows.diegonmarcos.com",
       "url": "https://workflows.diegonmarcos.com",
       "dns": "ok",
-      "tcp": "fail",
-      "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 161,
+      "tcp": "ok",
+      "tls": "ok",
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 931,
       "resolved_ips": [
         "35.226.147.64"
       ],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     }
   ],
   "private": [
@@ -274,7 +244,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 408,
+      "latency_ms": 394,
       "resolved_ips": [],
       "errors": []
     },
@@ -282,85 +252,73 @@
       "domain": "backup-gitea (oci-A1-f_0)",
       "url": "10.0.0.6:3002",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 242,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 732,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "c3-infra-api (oci-A1-f_0)",
       "url": "10.0.0.6:8081",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 242,
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 748,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "c3-infra-mcp (oci-A1-f_0)",
       "url": "10.0.0.6:3100",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 242,
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 732,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "c3-services-api (oci-A1-f_0)",
       "url": "10.0.0.6:8082",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 776,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "c3-services-mcp (oci-A1-f_0)",
       "url": "10.0.0.6:3101",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 732,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "caddy (gcp-E2-f_0)",
       "url": "10.0.0.1:443",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 141,
+      "http": "ok",
+      "http_code": 400,
+      "latency_ms": 391,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "cloud-cgc-mcp (oci-A1-f_0)",
@@ -370,7 +328,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 243,
+      "latency_ms": 248,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -380,43 +338,37 @@
       "domain": "cloud-spec (oci-A1-f_0)",
       "url": "10.0.0.6:3080",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1017,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "code-server (oci-A1-f_0)",
       "url": "10.0.0.6:8443",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1872,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "crawlee-cloud (oci-A1-f_0)",
       "url": "10.0.0.6:3000",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 753,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "dagu (oci-E2-f_1)",
@@ -426,7 +378,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 767,
+      "latency_ms": 732,
       "resolved_ips": [],
       "errors": []
     },
@@ -438,7 +390,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 767,
+      "latency_ms": 769,
       "resolved_ips": [],
       "errors": []
     },
@@ -450,7 +402,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 767,
+      "latency_ms": 737,
       "resolved_ips": [],
       "errors": []
     },
@@ -458,29 +410,25 @@
       "domain": "etherpad (oci-A1-f_0)",
       "url": "10.0.0.6:3012",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 737,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "filebrowser (oci-A1-f_0)",
       "url": "10.0.0.6:3015",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1657,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "fluent-bit (oci-E2-f_1)",
@@ -490,7 +438,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 242,
+      "latency_ms": 245,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -500,57 +448,49 @@
       "domain": "gitea (oci-A1-f_0)",
       "url": "10.0.0.6:3002",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 742,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "google-workspace-mcp (oci-A1-f_0)",
       "url": "10.0.0.6:3104",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 756,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "grist (oci-A1-f_0)",
       "url": "10.0.0.6:3011",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 767,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "hedgedoc (oci-A1-f_0)",
       "url": "10.0.0.6:3018",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1496,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "hickory-dns (gcp-E2-f_0)",
@@ -560,7 +500,7 @@
       "tls": "skip",
       "http": "fail",
       "http_code": null,
-      "latency_ms": 5401,
+      "latency_ms": 5429,
       "resolved_ips": [],
       "errors": [
         "HTTP: error sending request for url (http://10.0.0.1:53/)"
@@ -574,7 +514,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 404,
-      "latency_ms": 410,
+      "latency_ms": 397,
       "resolved_ips": [],
       "errors": []
     },
@@ -586,7 +526,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 1038,
+      "latency_ms": 1791,
       "resolved_ips": [],
       "errors": []
     },
@@ -598,7 +538,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 243,
+      "latency_ms": 248,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -608,15 +548,13 @@
       "domain": "mail-mcp (oci-A1-f_0)",
       "url": "10.0.0.6:3103",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 743,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "matomo (oci-E2-f_1)",
@@ -626,7 +564,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 243,
+      "latency_ms": 245,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -636,29 +574,25 @@
       "domain": "mattermost-bots (oci-A1-f_0)",
       "url": "10.0.0.6:8065",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 743,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "mattermost-mcp (oci-A1-f_0)",
       "url": "10.0.0.6:3102",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 747,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "ntfy (oci-A1-f_0)",
@@ -667,8 +601,8 @@
       "tcp": "ok",
       "tls": "skip",
       "http": "ok",
-      "http_code": 404,
-      "latency_ms": 766,
+      "http_code": 200,
+      "latency_ms": 853,
       "resolved_ips": [],
       "errors": []
     },
@@ -690,29 +624,25 @@
       "domain": "ollama-hai (oci-A1-f_0)",
       "url": "10.0.0.6:11435",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 741,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "photoprism (oci-A1-f_0)",
       "url": "10.0.0.6:3013",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 1323,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "photos-webhook (oci-A1-f_0)",
@@ -722,7 +652,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 243,
+      "latency_ms": 248,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -732,15 +662,13 @@
       "domain": "radicale (oci-A1-f_0)",
       "url": "10.0.0.6:5232",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 2743,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "redis (gcp-E2-f_0)",
@@ -750,7 +678,7 @@
       "tls": "skip",
       "http": "fail",
       "http_code": null,
-      "latency_ms": 408,
+      "latency_ms": 394,
       "resolved_ips": [],
       "errors": [
         "HTTP: error sending request for url (http://10.0.0.1:6379/)"
@@ -764,7 +692,7 @@
       "tls": "skip",
       "http": "skip",
       "http_code": null,
-      "latency_ms": 243,
+      "latency_ms": 249,
       "resolved_ips": [],
       "errors": [
         "TCP: Connection refused (os error 111)"
@@ -774,15 +702,13 @@
       "domain": "rig-agentic-sonn-14bq8 (oci-A1-f_0)",
       "url": "10.0.0.6:8091",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 404,
+      "latency_ms": 748,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "smtp-proxy (oci-E2-f_0)",
@@ -792,7 +718,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 405,
-      "latency_ms": 766,
+      "latency_ms": 737,
       "resolved_ips": [],
       "errors": []
     },
@@ -804,7 +730,7 @@
       "tls": "skip",
       "http": "ok",
       "http_code": 200,
-      "latency_ms": 766,
+      "latency_ms": 741,
       "resolved_ips": [],
       "errors": []
     },
@@ -812,43 +738,37 @@
       "domain": "umami (oci-E2-f_1)",
       "url": "10.0.0.4:3006",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 242,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 840,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "vaultwarden (oci-A1-f_0)",
       "url": "10.0.0.6:8880",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 735,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     },
     {
       "domain": "windmill (oci-A1-f_0)",
       "url": "10.0.0.6:8000",
       "dns": "skip",
-      "tcp": "fail",
+      "tcp": "ok",
       "tls": "skip",
-      "http": "skip",
-      "http_code": null,
-      "latency_ms": 243,
+      "http": "ok",
+      "http_code": 200,
+      "latency_ms": 954,
       "resolved_ips": [],
-      "errors": [
-        "TCP: Connection refused (os error 111)"
-      ]
+      "errors": []
     }
   ]
 }

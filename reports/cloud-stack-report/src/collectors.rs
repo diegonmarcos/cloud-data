@@ -10,6 +10,10 @@ pub async fn collect_all(ctx: &Context) -> LiveData {
     let start = Instant::now();
     let mut timers: HashMap<String, u64> = HashMap::new();
 
+    // Suppress KDE ksshaskpass GUI popups for automated SSH
+    std::env::set_var("SSH_ASKPASS", "");
+    std::env::set_var("SSH_ASKPASS_REQUIRE", "never");
+
     let client = http_client();
     let aclient = ctx.bearer_token.as_ref().map(|t| auth_client(t)).unwrap_or_else(|| client.clone());
     let resolver = hickory_resolver();
@@ -18,16 +22,19 @@ pub async fn collect_all(ctx: &Context) -> LiveData {
     let hickory_up = dns_resolve(&resolver, "authelia.app").await.is_some();
     println!("  Hickory: {}", if hickory_up { "✅" } else { "❌" });
 
-    // Launch ALL parallel groups
-    let (mesh, urls, priv_eps, vm_data, mail_dns, port_scan, db_health) = tokio::join!(
+    // Phase 1: VMs + mesh + public + mail + ports + DBs + storage (all parallel)
+    let (mesh, urls, vm_data, mail_dns, port_scan, db_health, storage) = tokio::join!(
         collect_mesh(ctx),
         collect_public_urls(ctx, &client, &aclient),
-        collect_private(ctx, &client, &resolver, hickory_up),
         collect_vms(ctx),
         collect_mail_dns(&resolver),
         collect_port_scan(ctx),
         collect_databases(ctx),
+        collect_storage_live(ctx),
     );
+
+    // Phase 2: Private URLs — needs VM data for container cross-reference
+    let priv_eps = collect_private(ctx, &client, &resolver, hickory_up, &vm_data.0).await;
 
     timers.insert("mesh".into(), mesh.1);
     timers.insert("public_urls".into(), urls.1);
@@ -36,17 +43,15 @@ pub async fn collect_all(ctx: &Context) -> LiveData {
     timers.insert("mail_dns".into(), mail_dns.1);
     timers.insert("port_scan".into(), port_scan.1);
     timers.insert("databases".into(), db_health.1);
+    timers.insert("storage".into(), storage.1);
     timers.insert("TOTAL".into(), start.elapsed().as_millis() as u64);
-
-    // Storage from consolidated JSON (static, no live check)
-    let storage_health = parse_storage(ctx);
 
     LiveData {
         generated: Utc::now().to_rfc3339(),
         duration_ms: start.elapsed().as_millis() as u64,
         mesh: mesh.0, public_urls: urls.0, private_endpoints: priv_eps.0,
         vm_data: vm_data.0, mail_dns: mail_dns.0, port_scan: port_scan.0,
-        db_health: db_health.0, storage_health,
+        db_health: db_health.0, storage_health: storage.0,
         timers,
     }
 }
@@ -126,14 +131,20 @@ async fn collect_public_urls(ctx: &Context, client: &Client, aclient: &Client) -
     (results, t.elapsed().as_millis() as u64)
 }
 
-async fn collect_private(ctx: &Context, client: &Client, resolver: &trust_dns_resolver::TokioAsyncResolver, hickory_up: bool) -> (Vec<PrivateResult>, u64) {
+async fn collect_private(ctx: &Context, client: &Client, resolver: &trust_dns_resolver::TokioAsyncResolver, hickory_up: bool, vm_data: &[VmLiveData]) -> (Vec<PrivateResult>, u64) {
     let t = Instant::now();
     if !hickory_up {
-        let results: Vec<PrivateResult> = ctx.private_dns.iter().map(|d| PrivateResult {
-            dns: d.dns.clone(), container: d.container.clone(), port: d.port, vm: d.vm.clone(),
-            tcp: false, http: false, code: "---".into(), resolved_ip: String::new(),
+        // Even without Hickory, cross-reference with VM container data
+        let results: Vec<PrivateResult> = ctx.private_dns.iter().map(|d| {
+            let up = is_container_up(vm_data, &d.vm, &d.container);
+            PrivateResult {
+                dns: d.dns.clone(), container: d.container.clone(), port: d.port, vm: d.vm.clone(),
+                tcp: false, http: false, code: if up { "container:Up".into() } else { "---".into() },
+                resolved_ip: String::new(), container_up: up,
+            }
         }).collect();
-        println!("  A2 Private: SKIPPED (Hickory down)");
+        let up_count = results.iter().filter(|p| p.container_up).count();
+        println!("  A2 Private: SKIPPED DNS (containers: {}/{} up)", up_count, results.len());
         return (results, t.elapsed().as_millis() as u64);
     }
     let futs: Vec<_> = ctx.private_dns.iter().map(|d| {
@@ -147,18 +158,38 @@ async fn collect_private(ctx: &Context, client: &Client, resolver: &trust_dns_re
             let ip = dns_resolve(&r, &dns).await;
             match ip {
                 Some(resolved) => {
-                    let http_url = format!("http://{}:{}", resolved, port);
-                    let (tcp_ok, http_r) = tokio::join!(tcp(&resolved, port), http_get(&cl, &http_url));
-                    PrivateResult { dns, container, port, vm, tcp: tcp_ok, http: http_r.0, code: http_r.1, resolved_ip: resolved }
+                    // Check: DNS resolved → HTTPS via Caddy (tls internal, no port)
+                    let https_url = format!("https://{}/", dns);
+                    let (tcp_ok, http_r) = tokio::join!(tcp(&resolved, 443), http_get(&cl, &https_url));
+                    PrivateResult { dns, container, port, vm, tcp: tcp_ok, http: http_r.0, code: http_r.1, resolved_ip: resolved, container_up: false }
                 }
-                None => PrivateResult { dns, container, port, vm, tcp: false, http: false, code: "---".into(), resolved_ip: String::new() },
+                None => PrivateResult { dns, container, port, vm, tcp: false, http: false, code: "---".into(), resolved_ip: String::new(), container_up: false },
             }
         }
     }).collect();
-    let results = futures::future::join_all(futs).await;
-    let tcp_ok = results.iter().filter(|p| p.tcp).count();
-    println!("  A2 Private: {}/{} TCP in {}ms", tcp_ok, results.len(), t.elapsed().as_millis());
+    let mut results = futures::future::join_all(futs).await;
+
+    // Cross-reference with VM container data — if network check failed but container is running, mark it
+    for r in &mut results {
+        let up = is_container_up(vm_data, &r.vm, &r.container);
+        r.container_up = up;
+        if !r.tcp && !r.http && up {
+            r.code = "container:Up".to_string();
+        }
+    }
+
+    let net_ok = results.iter().filter(|p| p.tcp || p.http).count();
+    let ctr_ok = results.iter().filter(|p| p.container_up).count();
+    println!("  A2 Private: {}/{} net, {}/{} containers up in {}ms", net_ok, results.len(), ctr_ok, results.len(), t.elapsed().as_millis());
     (results, t.elapsed().as_millis() as u64)
+}
+
+/// Check if a container is running on a specific VM (from SSH docker ps data)
+fn is_container_up(vm_data: &[VmLiveData], vm: &str, container: &str) -> bool {
+    vm_data.iter()
+        .find(|v| v.alias == vm)
+        .map(|v| v.containers.iter().any(|c| c.name == container && c.status.contains("Up")))
+        .unwrap_or(false)
 }
 
 async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
@@ -188,6 +219,8 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
                        "-o", &format!("ControlPath={}/%r@%h:%p", mux),
                        "-o", "ControlMaster=yes", "-o", "ControlPersist=120",
                        "-fNM", &alias])
+                .env("SSH_ASKPASS", "")
+                .env("SSH_ASKPASS_REQUIRE", "never")
                 .output().await;
         }
     }).collect();
@@ -213,14 +246,20 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
 
             // Live SSH: system stats + docker ps -a + docker stats (via pre-warmed mux)
             let ssh_opts = format!("-o ConnectTimeout=30 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes", mux);
-            let cmd = r#"echo "MEM:$(free -m | awk '/Mem/{printf "%d %d %d", $3, $2, ($2>0?$3*100/$2:0)}')";echo "SWAP:$(free -m | awk '/Swap/{printf "%dM/%dM", $3, $2}')";echo "DISK:$(df -h / | awk 'NR==2{printf "%s %s %s", $3, $2, $5}')";echo "LOAD:$(cut -d' ' -f1-3 /proc/loadavg)";echo "UPTIME:$(awk '{printf "%dd %dh", $1/86400, ($1%86400)/3600}' /proc/uptime)";docker ps -a --format '{{.Names}}|{{.Status}}' 2>/dev/null | sed 's/^/CTR:/';docker stats --no-stream --format '{{.Name}}|{{.CPUPerc}}|{{.MemUsage}}' 2>/dev/null | sed 's/^/STATS:/'"#;
+            // Find docker CLI: PATH → nix profile → derive from dockerd systemd unit
+            let cmd = r#"DOCKER=$(command -v docker 2>/dev/null);[ -z "$DOCKER" ] && for p in /run/current-system/sw/bin/docker /nix/var/nix/profiles/default/bin/docker; do [ -x "$p" ] && DOCKER="$p" && break; done;[ -z "$DOCKER" ] && { DD=$(grep -oP 'ExecStart=\K\S+' /etc/systemd/system/docker.service 2>/dev/null | head -1);[ -n "$DD" ] && D="${DD%/*}/docker";[ -x "$D" ] && DOCKER="$D"; };echo "MEM:$(free -m | awk '/Mem/{printf "%d %d %d", $3, $2, ($2>0?$3*100/$2:0)}')";echo "SWAP:$(free -m | awk '/Swap/{printf "%dM/%dM", $3, $2}')";echo "DISK:$(df -h / | awk 'NR==2{printf "%s %s %s", $3, $2, $5}')";echo "LOAD:$(cut -d' ' -f1-3 /proc/loadavg)";echo "UPTIME:$(awk '{printf "%dd %dh", $1/86400, ($1%86400)/3600}' /proc/uptime)";[ -n "$DOCKER" ] && $DOCKER ps -a --format '{{.Names}}|{{.Status}}' 2>/dev/null | sed 's/^/CTR:/';[ -n "$DOCKER" ] && $DOCKER stats --no-stream --format '{{.Name}}|{{.CPUPerc}}|{{.MemUsage}}' 2>/dev/null | sed 's/^/STATS:/'"#;
 
             let mut ssh_args: Vec<String> = ssh_opts.split_whitespace().map(|s| s.to_string()).collect();
             ssh_args.push(alias.clone());
-            ssh_args.push(cmd.to_string());
+            // Force bash — VMs may have fish as login shell, which breaks $() and {{}}
+            // Must be a SINGLE arg: bash -c '...' (not 3 separate args — SSH concatenates with spaces)
+            let escaped = cmd.replace("'", "'\\''");
+            ssh_args.push(format!("bash -c '{}'", escaped));
 
             let output = tokio::process::Command::new("ssh")
                 .args(&ssh_args)
+                .env("SSH_ASKPASS", "")
+                .env("SSH_ASKPASS_REQUIRE", "never")
                 .output().await;
 
             match output {
@@ -373,7 +412,9 @@ async fn collect_port_scan(ctx: &Context) -> (Vec<PortScanResult>, u64) {
 
 async fn collect_databases(ctx: &Context) -> (Vec<DbHealthResult>, u64) {
     let t = Instant::now();
-    if ctx.databases.is_empty() {
+    // Filter to enabled databases only
+    let enabled_dbs: Vec<&crate::types::DbEntry> = ctx.databases.iter().filter(|db| db.enabled).collect();
+    if enabled_dbs.is_empty() {
         println!("  B2 Databases: 0 declared");
         return (vec![], 0);
     }
@@ -382,12 +423,12 @@ async fn collect_databases(ctx: &Context) -> (Vec<DbHealthResult>, u64) {
 
     // Group databases by VM for batched SSH
     let mut by_vm: HashMap<String, Vec<&crate::types::DbEntry>> = HashMap::new();
-    for db in &ctx.databases {
+    for db in &enabled_dbs {
         by_vm.entry(db.vm.clone()).or_default().push(db);
     }
 
     // TCP checks in parallel (one per database with a port)
-    let tcp_futs: Vec<_> = ctx.databases.iter().filter(|db| db.port > 0).map(|db| {
+    let tcp_futs: Vec<_> = enabled_dbs.iter().filter(|db| db.port > 0).map(|db| {
         let vm = ctx.vms.iter().find(|v| v.alias == db.vm);
         let wg_ip = vm.map(|v| v.wg_ip.clone()).unwrap_or_default();
         let port = db.port;
@@ -405,24 +446,40 @@ async fn collect_databases(ctx: &Context) -> (Vec<DbHealthResult>, u64) {
         let alias = vm_alias.clone();
         let mux = mux_dir.to_string();
         let db_cmds: Vec<(String, String, String, String)> = dbs.iter().map(|db| {
-            let health_cmd = match db.db_type.as_str() {
-                "postgres" => format!(
-                    "docker exec {} pg_isready -U {} 2>&1 && echo OK || echo FAIL",
-                    db.container, if db.db_user.is_empty() { "postgres" } else { &db.db_user }
-                ),
-                "mariadb" => format!(
-                    "docker exec {} mariadb-admin ping --silent 2>&1 && echo OK || echo FAIL",
-                    db.container
-                ),
-                "redis" => format!(
-                    "docker exec {} redis-cli ping 2>&1 | grep -q PONG && echo OK || echo FAIL",
-                    db.container
-                ),
-                "sqlite" => format!(
-                    "docker exec {} test -f {} 2>&1 && echo OK || echo FAIL",
-                    db.container, if db.db_name.is_empty() { "/data/db.sqlite" } else { &db.db_name }
-                ),
-                _ => format!("docker inspect --format '{{{{.State.Running}}}}' {} 2>/dev/null | grep -q true && echo OK || echo FAIL", db.container),
+            // Use declared healthcheck from cloud-data-databases.json when available
+            // Only use for DB CLI commands (pg_isready, redis-cli, mariadb-admin)
+            // Skip: "cmd", HTTP paths ("/"), curl commands, env vars ($)
+            let use_declared = !db.healthcheck.is_empty()
+                && db.healthcheck != "cmd"
+                && !db.healthcheck.starts_with('/')
+                && !db.healthcheck.contains("curl")
+                && !db.healthcheck.contains('$');
+            let health_cmd = if use_declared {
+                // Direct CLI command declared in cloud-data (e.g. "redis-cli -p 6381 ping", "pg_isready -U user")
+                format!(
+                    "docker exec {} {} 2>&1 | tail -1 | grep -qiE 'PONG|accepting|OK' && echo OK || echo FAIL",
+                    db.container, db.healthcheck
+                )
+            } else {
+                match db.db_type.as_str() {
+                    "postgres" => format!(
+                        "docker exec {} pg_isready -U {} >/dev/null 2>&1 && echo OK || echo FAIL",
+                        db.container, if db.db_user.is_empty() { "postgres" } else { &db.db_user }
+                    ),
+                    "mariadb" => format!(
+                        "docker exec {} mariadb-admin ping --silent 2>&1 && echo OK || echo FAIL",
+                        db.container
+                    ),
+                    "redis" => format!(
+                        "docker exec {} redis-cli ping 2>&1 | grep -q PONG && echo OK || echo FAIL",
+                        db.container
+                    ),
+                    "sqlite" => format!(
+                        "docker exec {} test -f {} 2>&1 && echo OK || echo FAIL",
+                        db.container, if db.db_name.is_empty() { "/data/db.sqlite" } else { &db.db_name }
+                    ),
+                    _ => format!("docker inspect --format '{{{{.State.Running}}}}' {} 2>/dev/null | grep -q true && echo OK || echo FAIL", db.container),
+                }
             };
             let size_cmd = match db.db_type.as_str() {
                 "postgres" => format!(
@@ -466,10 +523,14 @@ async fn collect_databases(ctx: &Context) -> (Vec<DbHealthResult>, u64) {
             );
             let mut ssh_args: Vec<String> = ssh_opts.split_whitespace().map(|s| s.to_string()).collect();
             ssh_args.push(alias.clone());
-            ssh_args.push(batch_cmd);
+            // Force bash — VMs may have fish as login shell, which breaks $() multiline
+            let escaped = batch_cmd.replace("'", "'\\''");
+            ssh_args.push(format!("bash -c '{}'", escaped));
 
             let output = tokio::process::Command::new("ssh")
                 .args(&ssh_args)
+                .env("SSH_ASKPASS", "")
+                .env("SSH_ASKPASS_REQUIRE", "never")
                 .output().await;
 
             let mut results: HashMap<String, (bool, String)> = HashMap::new(); // container -> (healthy, size)
@@ -511,11 +572,8 @@ async fn collect_databases(ctx: &Context) -> (Vec<DbHealthResult>, u64) {
         vm_map.insert(alias, (results, running));
     }
 
-    // Check backup declarations from consolidated JSON
-    let backup_set = parse_backup_declared(ctx);
-
     // Assemble final results
-    let db_health: Vec<DbHealthResult> = ctx.databases.iter().map(|db| {
+    let db_health: Vec<DbHealthResult> = enabled_dbs.iter().map(|db| {
         let (vm_results, running_set) = vm_map.get(&db.vm)
             .map(|(r, s)| (r.clone(), s.clone()))
             .unwrap_or_default();
@@ -523,7 +581,6 @@ async fn collect_databases(ctx: &Context) -> (Vec<DbHealthResult>, u64) {
         let running = running_set.contains(&db.container);
         let tcp_ok = tcp_results.get(&db.container).copied().unwrap_or(false);
         let dns = db.dns_access.split(':').next().unwrap_or("").to_string();
-        let backup = backup_set.contains(&db.service);
 
         DbHealthResult {
             service: db.service.clone(),
@@ -537,7 +594,7 @@ async fn collect_databases(ctx: &Context) -> (Vec<DbHealthResult>, u64) {
             size,
             tcp_ok,
             dns,
-            backup,
+            backup: db.backup,
         }
     }).collect();
 
@@ -570,34 +627,84 @@ fn format_db_size(raw: &str) -> String {
     trimmed.to_string()
 }
 
-fn parse_backup_declared(ctx: &Context) -> std::collections::HashSet<String> {
-    let mut set = std::collections::HashSet::new();
-    if let Some(svcs) = ctx.consolidated["services"].as_object() {
-        for (name, svc) in svcs {
-            if svc["backup"].is_object() || svc["backup"].is_string() || svc["backup"].as_bool().unwrap_or(false) {
-                set.insert(name.to_string());
+async fn collect_storage_live(ctx: &Context) -> (Vec<StorageHealthResult>, u64) {
+    let t = Instant::now();
+    let mut results = Vec::new();
+
+    // OCI buckets — live list from OCI CLI (not stale consolidated JSON)
+    let tenancy = std::env::var("OCI_TENANCY").unwrap_or_else(|_| {
+        // Read from ~/.oci/config
+        let home = std::env::var("HOME").unwrap_or("/home/diego".into());
+        std::fs::read_to_string(format!("{}/.oci/config", home))
+            .unwrap_or_default()
+            .lines()
+            .find(|l| l.starts_with("tenancy="))
+            .map(|l| l.trim_start_matches("tenancy=").to_string())
+            .unwrap_or_default()
+    });
+
+    if !tenancy.is_empty() {
+        let list_output = tokio::process::Command::new("oci")
+            .args(["os", "bucket", "list", "--compartment-id", &tenancy, "--output", "json"])
+            .output().await;
+
+        if let Ok(out) = list_output {
+            if out.status.success() {
+                let stdout = String::from_utf8_lossy(&out.stdout);
+                if let Ok(j) = serde_json::from_str::<serde_json::Value>(&stdout) {
+                    let empty = vec![];
+                    let buckets = j["data"].as_array().unwrap_or(&empty);
+
+                    // For each bucket, get size via object list (in parallel)
+                    let futs: Vec<_> = buckets.iter().map(|b| {
+                        let name = b["name"].as_str().unwrap_or("?").to_string();
+                        let tier = b["storage-tier"].as_str().unwrap_or("Standard").to_string();
+                        async move {
+                            let list_output = tokio::process::Command::new("oci")
+                                .args(["os", "object", "list", "--bucket-name", &name,
+                                       "--fields", "size", "--limit", "1000", "--output", "json"])
+                                .output().await;
+                            let (size, objects) = match list_output {
+                                Ok(out) if out.status.success() => {
+                                    let stdout = String::from_utf8_lossy(&out.stdout);
+                                    if let Ok(j) = serde_json::from_str::<serde_json::Value>(&stdout) {
+                                        let empty_objs = vec![];
+                                        let objs = j["data"].as_array().unwrap_or(&empty_objs);
+                                        let total_size: u64 = objs.iter()
+                                            .filter_map(|o| o["size"].as_u64())
+                                            .sum();
+                                        let has_more = j["next-start-with"].is_string();
+                                        let count = if has_more { format!("{}+", objs.len()) } else { objs.len().to_string() };
+                                        (format_db_size(&total_size.to_string()), count)
+                                    } else { ("—".into(), "—".into()) }
+                                }
+                                _ => ("—".into(), "—".into()),
+                            };
+                            StorageHealthResult { name, provider: "OCI".into(), tier, accessible: true, size, objects }
+                        }
+                    }).collect();
+                    results = futures::future::join_all(futs).await;
+                }
             }
         }
     }
-    set
-}
 
-fn parse_storage(ctx: &Context) -> Vec<StorageHealthResult> {
-    let mut results = Vec::new();
-    // Try topology.storage first, then top-level storage
-    let storage = ctx.consolidated["topology"]["storage"].as_array()
-        .or_else(|| ctx.consolidated["storage"].as_array());
-    if let Some(buckets) = storage {
-        for b in buckets {
-            results.push(StorageHealthResult {
-                name: b["name"].as_str().unwrap_or("?").to_string(),
-                provider: b["provider"].as_str().unwrap_or("oci").to_string(),
-                tier: b["tier"].as_str().unwrap_or("Standard").to_string(),
-                accessible: true, // static from JSON, no live check
-                size: b["size"].as_str().unwrap_or("—").to_string(),
-                objects: b["objects"].as_str().or(b["object_count"].as_str()).unwrap_or("—").to_string(),
-            });
+    // MinIO instances from containers (crawlee_minio etc.)
+    if let Some(svcs) = ctx.consolidated["services"].as_object() {
+        for (_svc_name, svc) in svcs {
+            for (_ct_name, ct) in svc["containers"].as_object().unwrap_or(&serde_json::Map::new()) {
+                let img = ct["image"].as_str().unwrap_or("").to_lowercase();
+                if img.contains("minio") {
+                    let name = ct["container_name"].as_str().unwrap_or("minio").to_string();
+                    results.push(StorageHealthResult {
+                        name, provider: "MinIO".into(), tier: "Local".into(),
+                        accessible: true, size: "—".into(), objects: "—".into(),
+                    });
+                }
+            }
         }
     }
-    results
+
+    println!("  B3 Storage: {} buckets in {}ms", results.len(), t.elapsed().as_millis());
+    (results, t.elapsed().as_millis() as u64)
 }

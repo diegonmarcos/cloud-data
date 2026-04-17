@@ -4,6 +4,7 @@ use serde_json::Value;
 use std::collections::{HashMap, HashSet};
 
 const CONSOLIDATED: &str = "../../_cloud-data-consolidated.json";
+const DATABASES_JSON: &str = "../../cloud-data-databases.json";
 
 pub fn load_context() -> Result<Context> {
     let raw = std::fs::read_to_string(CONSOLIDATED)?;
@@ -82,24 +83,29 @@ pub fn load_context() -> Result<Context> {
     }
     private_dns.sort_by(|a, b| a.vm.cmp(&b.vm).then(a.dns.cmp(&b.dns)));
 
-    // Databases from containers with db_user/db_name
+    // Databases from cloud-data-databases.json (authoritative source — 18 declared DBs)
     let mut databases: Vec<DbEntry> = Vec::new();
-    for (svc_name, svc) in c["services"].as_object().unwrap_or(&serde_json::Map::new()) {
-        let vm_alias = vm_alias_map.get(svc["vm"].as_str().unwrap_or("")).cloned().unwrap_or_default();
-        for (_, ct) in svc["containers"].as_object().unwrap_or(&serde_json::Map::new()) {
-            if ct["db_user"].is_string() || ct["db_name"].is_string() || ct["db_path"].is_string() {
-                let img = ct["image"].as_str().unwrap_or("").to_lowercase();
-                let db_type = if img.contains("postgres") { "postgres" } else if img.contains("mariadb") || img.contains("mysql") { "mariadb" } else if img.contains("redis") { "redis" } else if img.contains("sqlite") { "sqlite" } else { "?" };
-                let dns_entry = private_dns.iter().find(|d| d.container == ct["container_name"].as_str().unwrap_or(""));
-                let port = dns_entry.map(|d| d.port).unwrap_or(0);
+    if let Ok(db_raw) = std::fs::read_to_string(DATABASES_JSON) {
+        if let Ok(db_json) = serde_json::from_str::<Value>(&db_raw) {
+            for db in db_json["databases"].as_array().unwrap_or(&vec![]) {
+                let container = db["container"].as_str().unwrap_or("?").to_string();
+                let db_type = db["type"].as_str().unwrap_or("?").to_string();
+                let vm_alias = db["vm_alias"].as_str().unwrap_or("").to_string();
+                let port = db["port"].as_u64().unwrap_or(0) as u16;
+                let dns = db["dns"].as_str().unwrap_or("").to_string();
+                let dns_access = if dns.is_empty() { "embedded".to_string() } else if port > 0 { format!("{}:{}", dns, port) } else { dns.clone() };
                 databases.push(DbEntry {
-                    service: svc_name.to_string(), db_type: db_type.to_string(),
-                    container: ct["container_name"].as_str().unwrap_or("?").to_string(),
-                    db_name: ct["db_name"].as_str().or(ct["db_path"].as_str()).unwrap_or("custom").to_string(),
-                    db_user: ct["db_user"].as_str().unwrap_or("").to_string(),
+                    service: db["service"].as_str().unwrap_or("?").to_string(),
+                    db_type,
+                    container,
+                    db_name: db["db"].as_str().or(db["path"].as_str()).unwrap_or("custom").to_string(),
+                    db_user: db["user"].as_str().unwrap_or("").to_string(),
                     port,
-                    vm: vm_alias.clone(),
-                    dns_access: dns_entry.map(|d| format!("{}:{}", d.dns, d.port)).unwrap_or("embedded".to_string()),
+                    vm: vm_alias,
+                    dns_access,
+                    enabled: db["enabled"].as_bool().unwrap_or(true),
+                    healthcheck: db["healthcheck"].as_str().unwrap_or("").to_string(),
+                    backup: db["backup"].as_bool().unwrap_or(false),
                 });
             }
         }
@@ -147,7 +153,7 @@ pub fn load_context() -> Result<Context> {
 
     // Bearer token
     let home = std::env::var("HOME").unwrap_or("/home/diego".into());
-    let bearer_token = std::fs::read_to_string(format!("{}/Mounts/Git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json", home))
+    let bearer_token = std::fs::read_to_string(format!("{}/git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json", home))
         .ok().and_then(|s| serde_json::from_str::<Value>(&s).ok())
         .and_then(|v| v["access_token"].as_str().map(|s| s.to_string()));
 
