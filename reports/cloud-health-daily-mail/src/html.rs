@@ -2206,27 +2206,41 @@ fn render_analytics_containers(h: &mut String, data: &ReportData) {
         return;
     }
 
-    section_start(h, "Container CPU Usage (Top 20)", 6);
+    section_start(h, "Container Resource Usage (Top 20 by CPU*h)", 9);
 
-    write!(h, "<tr>{}{}{}{}{}{}</tr>",
+    write!(h, "<tr>{}{}{}{}{}{}{}{}{}</tr>",
         th("#", "center"),
         th("Container", "left"),
         th("VM", "left"),
         th("CPU %", "right"),
         th("Mem Usage", "right"),
         th("Mem %", "right"),
+        th("Uptime", "right"),
+        th("CPU*h", "right"),
+        th("MEM*GB*h", "right"),
     ).unwrap();
 
     for entry in &data.container_cpu_ranking {
         let cpu_num: f64 = entry.cpu_pct.trim_end_matches('%').trim().parse().unwrap_or(0.0);
         let cpu_color = if cpu_num > 5.0 { C_CRIT } else if cpu_num > 1.0 { C_WARN } else { C_OK };
-        write!(h, "<tr>{}{}{}{}{}{}</tr>",
+        let cpuh_color = if entry.cpu_hours > 100.0 { C_CRIT } else if entry.cpu_hours > 10.0 { C_WARN } else { C_OK };
+
+        let uptime_str = if entry.uptime_hours >= 24.0 {
+            format!("{:.0}d", entry.uptime_hours / 24.0)
+        } else {
+            format!("{:.1}h", entry.uptime_hours)
+        };
+
+        write!(h, "<tr>{}{}{}{}{}{}{}{}{}</tr>",
             td(&format!("{}", entry.rank), C_DIM, "11px", "center"),
             td(&entry.container, C_TEXT, "11px", "left"),
             td(&entry.vm, C_DIM, "11px", "left"),
             td(&entry.cpu_pct, cpu_color, "11px", "right"),
             td(&entry.mem_usage, C_TEXT, "11px", "right"),
             td(&entry.mem_pct, C_DIM, "11px", "right"),
+            td(&uptime_str, C_DIM, "11px", "right"),
+            td(&format!("{:.1}", entry.cpu_hours), cpuh_color, "11px", "right"),
+            td(&format!("{:.1}", entry.mem_gb_hours), C_TEXT, "11px", "right"),
         ).unwrap();
     }
 

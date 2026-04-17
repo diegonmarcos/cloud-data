@@ -336,31 +336,43 @@ async fn main() -> Result<()> {
 
     // 6b. Compute container CPU ranking (top 20 across all VMs)
     let container_cpu_ranking: Vec<ContainerCpuRank> = {
-        let mut all_stats: Vec<(String, &ContainerStat)> = Vec::new();
+        let mut all_entries: Vec<ContainerCpuRank> = Vec::new();
         for vm in &vms {
             for stat in &vm.container_stats {
-                all_stats.push((vm.name.clone(), stat));
+                // Find uptime from container_list by matching name
+                let uptime_hours = vm.container_list.iter()
+                    .find(|c| c.name == stat.name)
+                    .map(|c| parse_running_for(&c.running_for))
+                    .unwrap_or(0.0);
+
+                let cpu_num: f64 = stat.cpu.trim_end_matches('%').trim().parse().unwrap_or(0.0);
+                let mem_mib = parse_mem_mib(&stat.mem_usage);
+                let cpu_hours = (cpu_num / 100.0) * uptime_hours;
+                let mem_gb_hours = (mem_mib / 1024.0) * uptime_hours;
+
+                all_entries.push(ContainerCpuRank {
+                    rank: 0,
+                    container: stat.name.clone(),
+                    vm: vm.name.clone(),
+                    cpu_pct: stat.cpu.clone(),
+                    mem_usage: stat.mem_usage.clone(),
+                    mem_pct: stat.mem_pct.clone(),
+                    uptime_hours,
+                    cpu_hours,
+                    mem_gb_hours,
+                });
             }
         }
-        // Parse CPU percentage string (e.g. "1.85%") to f64 for sorting
-        all_stats.sort_by(|a, b| {
-            let cpu_a: f64 = a.1.cpu.trim_end_matches('%').trim().parse().unwrap_or(0.0);
-            let cpu_b: f64 = b.1.cpu.trim_end_matches('%').trim().parse().unwrap_or(0.0);
-            cpu_b.partial_cmp(&cpu_a).unwrap_or(std::cmp::Ordering::Equal)
+        // Sort by CPU*hours descending (sustained load matters more than peak %)
+        all_entries.sort_by(|a, b| {
+            b.cpu_hours.partial_cmp(&a.cpu_hours).unwrap_or(std::cmp::Ordering::Equal)
         });
-        all_stats
-            .into_iter()
-            .take(20)
-            .enumerate()
-            .map(|(i, (vm_name, stat))| ContainerCpuRank {
-                rank: (i + 1) as u32,
-                container: stat.name.clone(),
-                vm: vm_name,
-                cpu_pct: stat.cpu.clone(),
-                mem_usage: stat.mem_usage.clone(),
-                mem_pct: stat.mem_pct.clone(),
-            })
-            .collect()
+        all_entries.truncate(20);
+        // Assign ranks after sorting
+        for (i, entry) in all_entries.iter_mut().enumerate() {
+            entry.rank = (i + 1) as u32;
+        }
+        all_entries
     };
 
     // 7. Build report data
@@ -420,4 +432,61 @@ async fn main() -> Result<()> {
     );
 
     Ok(())
+}
+
+/// Parse Docker's "running_for" string (e.g. "12 hours", "2 days", "About an hour") to hours
+fn parse_running_for(s: &str) -> f64 {
+    let s = s.trim().to_lowercase();
+    // "about a minute" / "about an hour"
+    if s.contains("about a minute") || s.contains("less than a second") {
+        return 0.0;
+    }
+    if s.contains("about an hour") {
+        return 1.0;
+    }
+
+    // Try to extract a number + unit pattern
+    let mut hours = 0.0;
+    let parts: Vec<&str> = s.split_whitespace().collect();
+    let mut i = 0;
+    while i < parts.len() {
+        if let Ok(num) = parts[i].parse::<f64>() {
+            let unit = parts.get(i + 1).unwrap_or(&"");
+            if unit.starts_with("second") {
+                hours += num / 3600.0;
+            } else if unit.starts_with("minute") {
+                hours += num / 60.0;
+            } else if unit.starts_with("hour") {
+                hours += num;
+            } else if unit.starts_with("day") {
+                hours += num * 24.0;
+            } else if unit.starts_with("week") {
+                hours += num * 24.0 * 7.0;
+            } else if unit.starts_with("month") {
+                hours += num * 24.0 * 30.0;
+            } else if unit.starts_with("year") {
+                hours += num * 24.0 * 365.0;
+            }
+            i += 2;
+        } else {
+            i += 1;
+        }
+    }
+    hours
+}
+
+/// Parse mem_usage string like "119.7MiB / 23.41GiB" to MiB (first part only)
+fn parse_mem_mib(s: &str) -> f64 {
+    let used_part = s.split('/').next().unwrap_or("").trim();
+    if used_part.ends_with("GiB") {
+        used_part.trim_end_matches("GiB").trim().parse::<f64>().unwrap_or(0.0) * 1024.0
+    } else if used_part.ends_with("MiB") {
+        used_part.trim_end_matches("MiB").trim().parse::<f64>().unwrap_or(0.0)
+    } else if used_part.ends_with("KiB") {
+        used_part.trim_end_matches("KiB").trim().parse::<f64>().unwrap_or(0.0) / 1024.0
+    } else if used_part.ends_with("B") {
+        used_part.trim_end_matches("B").trim().parse::<f64>().unwrap_or(0.0) / (1024.0 * 1024.0)
+    } else {
+        0.0
+    }
 }

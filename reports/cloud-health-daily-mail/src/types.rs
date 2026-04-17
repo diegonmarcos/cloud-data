@@ -409,6 +409,9 @@ pub struct ContainerCpuRank {
     pub cpu_pct: String,
     pub mem_usage: String,
     pub mem_pct: String,
+    pub uptime_hours: f64,
+    pub cpu_hours: f64,
+    pub mem_gb_hours: f64,
 }
 
 // ── Full report data ────────────────────────────────────────────────
