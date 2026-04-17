@@ -1,4 +1,5 @@
 use crate::types::*;
+use chrono::{Datelike, NaiveDate, Utc};
 use reqwest::Client;
 use std::time::Duration;
 use tokio::time::timeout;
@@ -407,4 +408,213 @@ pub async fn fetch_repos() -> Vec<GithubRepo> {
                 .collect()
         })
         .unwrap_or_default()
+}
+
+/// Fetch web analytics from Umami API
+pub async fn fetch_umami_analytics() -> Vec<UmamiSite> {
+    let username = match std::env::var("UMAMI_USERNAME") {
+        Ok(u) if !u.is_empty() => u,
+        _ => {
+            eprintln!("  UMAMI_USERNAME not set, skipping Umami analytics");
+            return vec![];
+        }
+    };
+    let password = match std::env::var("UMAMI_PASSWORD") {
+        Ok(p) if !p.is_empty() => p,
+        _ => {
+            eprintln!("  UMAMI_PASSWORD not set, skipping Umami analytics");
+            return vec![];
+        }
+    };
+
+    let base_url = "http://10.0.0.4:3006";
+    let client = Client::builder()
+        .timeout(Duration::from_secs(10))
+        .build()
+        .unwrap();
+
+    // 1. Authenticate
+    let login_body = serde_json::json!({
+        "username": username,
+        "password": password,
+    });
+
+    let token = match timeout(
+        Duration::from_secs(10),
+        client
+            .post(format!("{}/api/auth/login", base_url))
+            .json(&login_body)
+            .send(),
+    )
+    .await
+    {
+        Ok(Ok(resp)) if resp.status().is_success() => {
+            let j: serde_json::Value = resp.json().await.unwrap_or_default();
+            match j["token"].as_str() {
+                Some(t) => t.to_string(),
+                None => {
+                    eprintln!("  Umami login: no token in response");
+                    return vec![];
+                }
+            }
+        }
+        Ok(Ok(resp)) => {
+            eprintln!("  Umami login failed: HTTP {}", resp.status());
+            return vec![];
+        }
+        _ => {
+            eprintln!("  Umami unreachable at {}", base_url);
+            return vec![];
+        }
+    };
+
+    let auth_client = Client::builder()
+        .timeout(Duration::from_secs(10))
+        .default_headers({
+            let mut headers = reqwest::header::HeaderMap::new();
+            headers.insert(
+                "Authorization",
+                format!("Bearer {}", token).parse().unwrap(),
+            );
+            headers
+        })
+        .build()
+        .unwrap();
+
+    // 2. List websites
+    let websites: serde_json::Value = match timeout(
+        Duration::from_secs(10),
+        auth_client.get(format!("{}/api/websites", base_url)).send(),
+    )
+    .await
+    {
+        Ok(Ok(resp)) if resp.status().is_success() => resp.json().await.unwrap_or_default(),
+        _ => {
+            eprintln!("  Umami: failed to list websites");
+            return vec![];
+        }
+    };
+
+    let site_arr = websites["data"]
+        .as_array()
+        .or_else(|| websites.as_array())
+        .cloned()
+        .unwrap_or_default();
+
+    let now = Utc::now();
+    let mut sites = Vec::new();
+
+    for site_json in &site_arr {
+        let id = site_json["id"].as_str().unwrap_or("").to_string();
+        let name = site_json["name"].as_str().unwrap_or("?").to_string();
+        let domain = site_json["domain"].as_str().unwrap_or("?").to_string();
+
+        if id.is_empty() {
+            continue;
+        }
+
+        // 3a. Current month stats (MTD)
+        let month_start = NaiveDate::from_ymd_opt(now.year(), now.month(), 1)
+            .unwrap()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_utc()
+            .timestamp_millis();
+        let now_ms = now.timestamp_millis();
+
+        let current_month = fetch_umami_stats(&auth_client, base_url, &id, month_start, now_ms).await;
+
+        // 3b. Last 6 months
+        let mut last_6_months = Vec::new();
+        for i in 1..=6 {
+            let (y, m) = {
+                let total_months = (now.year() * 12 + now.month() as i32 - 1) - i;
+                let y = total_months / 12;
+                let m = (total_months % 12 + 1) as u32;
+                (y, m)
+            };
+            let m_start = NaiveDate::from_ymd_opt(y, m, 1)
+                .unwrap()
+                .and_hms_opt(0, 0, 0)
+                .unwrap()
+                .and_utc()
+                .timestamp_millis();
+            let next_m = if m == 12 {
+                NaiveDate::from_ymd_opt(y + 1, 1, 1)
+            } else {
+                NaiveDate::from_ymd_opt(y, m + 1, 1)
+            };
+            let m_end = next_m
+                .unwrap()
+                .and_hms_opt(0, 0, 0)
+                .unwrap()
+                .and_utc()
+                .timestamp_millis();
+
+            let stats = fetch_umami_stats(&auth_client, base_url, &id, m_start, m_end).await;
+            let label = format!("{:04}-{:02}", y, m);
+            last_6_months.push((label, stats));
+        }
+        last_6_months.reverse(); // oldest first
+
+        // 3c. Top pages (current month)
+        let top_pages = fetch_umami_top_pages(&auth_client, base_url, &id, month_start, now_ms).await;
+
+        sites.push(UmamiSite {
+            id,
+            name,
+            domain,
+            current_month,
+            last_6_months,
+            top_pages,
+        });
+    }
+
+    eprintln!("  Umami: loaded {} sites", sites.len());
+    sites
+}
+
+async fn fetch_umami_stats(client: &Client, base_url: &str, site_id: &str, start_ms: i64, end_ms: i64) -> UmamiStats {
+    let url = format!(
+        "{}/api/websites/{}/stats?startAt={}&endAt={}",
+        base_url, site_id, start_ms, end_ms
+    );
+    match timeout(Duration::from_secs(8), client.get(&url).send()).await {
+        Ok(Ok(resp)) if resp.status().is_success() => {
+            let j: serde_json::Value = resp.json().await.unwrap_or_default();
+            UmamiStats {
+                pageviews: j["pageviews"]["value"].as_u64().unwrap_or(0),
+                visitors: j["visitors"]["value"].as_u64().unwrap_or(0),
+                visits: j["visits"]["value"].as_u64().unwrap_or(0),
+                bounces: j["bounces"]["value"].as_u64().unwrap_or(0),
+                total_time: j["totaltime"]["value"].as_u64().unwrap_or(0),
+            }
+        }
+        _ => UmamiStats::default(),
+    }
+}
+
+async fn fetch_umami_top_pages(client: &Client, base_url: &str, site_id: &str, start_ms: i64, end_ms: i64) -> Vec<(String, u64)> {
+    let url = format!(
+        "{}/api/websites/{}/metrics?startAt={}&endAt={}&type=url",
+        base_url, site_id, start_ms, end_ms
+    );
+    match timeout(Duration::from_secs(8), client.get(&url).send()).await {
+        Ok(Ok(resp)) if resp.status().is_success() => {
+            let j: serde_json::Value = resp.json().await.unwrap_or_default();
+            j.as_array()
+                .map(|arr| {
+                    arr.iter()
+                        .take(10)
+                        .map(|item| {
+                            let page = item["x"].as_str().unwrap_or("?").to_string();
+                            let views = item["y"].as_u64().unwrap_or(0);
+                            (page, views)
+                        })
+                        .collect()
+                })
+                .unwrap_or_default()
+        }
+        _ => vec![],
+    }
 }

@@ -91,7 +91,7 @@ async fn main() -> Result<()> {
         .collect();
 
     // Run everything in parallel
-    let (vms, endpoints, certs, dns, gha_runs, (ghcr_packages, ghcr_total, github_disk_kb), dags, cloud_buckets, repos, cloud_costs) = tokio::join!(
+    let (vms, endpoints, certs, dns, gha_runs, (ghcr_packages, ghcr_total, github_disk_kb), dags, cloud_buckets, repos, cloud_costs, umami_sites) = tokio::join!(
         futures::future::join_all(vm_futures),
         futures::future::join_all(ep_futures),
         futures::future::join_all(cert_futures),
@@ -108,6 +108,7 @@ async fn main() -> Result<()> {
         collect::fetch_bucket_sizes(&ctx.cloud_buckets),
         collect::fetch_repos(),
         collect::fetch_cloud_costs(),
+        collect::fetch_umami_analytics(),
     );
 
     // 3. Mark services that responded as has_api (runtime-proven)
@@ -333,6 +334,35 @@ async fn main() -> Result<()> {
         ExecSummary { critical, warnings, ok, top_issues: issues }
     };
 
+    // 6b. Compute container CPU ranking (top 20 across all VMs)
+    let container_cpu_ranking: Vec<ContainerCpuRank> = {
+        let mut all_stats: Vec<(String, &ContainerStat)> = Vec::new();
+        for vm in &vms {
+            for stat in &vm.container_stats {
+                all_stats.push((vm.name.clone(), stat));
+            }
+        }
+        // Parse CPU percentage string (e.g. "1.85%") to f64 for sorting
+        all_stats.sort_by(|a, b| {
+            let cpu_a: f64 = a.1.cpu.trim_end_matches('%').trim().parse().unwrap_or(0.0);
+            let cpu_b: f64 = b.1.cpu.trim_end_matches('%').trim().parse().unwrap_or(0.0);
+            cpu_b.partial_cmp(&cpu_a).unwrap_or(std::cmp::Ordering::Equal)
+        });
+        all_stats
+            .into_iter()
+            .take(20)
+            .enumerate()
+            .map(|(i, (vm_name, stat))| ContainerCpuRank {
+                rank: (i + 1) as u32,
+                container: stat.name.clone(),
+                vm: vm_name,
+                cpu_pct: stat.cpu.clone(),
+                mem_usage: stat.mem_usage.clone(),
+                mem_pct: stat.mem_pct.clone(),
+            })
+            .collect()
+    };
+
     // 7. Build report data
     let report = ReportData {
         date,
@@ -365,6 +395,8 @@ async fn main() -> Result<()> {
         total_domains: ctx.total_domains,
         generation_duration_ms: start.elapsed().as_millis() as u64,
         ai: ctx.ai,
+        umami_sites,
+        container_cpu_ranking,
     };
 
     // 8. Render HTML

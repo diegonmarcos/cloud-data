@@ -128,7 +128,8 @@ td,th{{font-family:{FONT}}}
         ("finops", "F FinOps"),
         ("ai", "G AI"),
         ("others", "H Others"),
-        ("topology", "I Topology"),
+        ("analytics", "I Analytics"),
+        ("topology", "J Topology"),
     ];
     for (i, (anchor, label)) in nav_items.iter().enumerate() {
         if i > 0 {
@@ -231,9 +232,16 @@ td,th{{font-family:{FONT}}}
     render_report_metadata(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // I) TOPOLOGY
+    // I) ANALYTICS
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "I", "TOPOLOGY");
+    section_title(&mut h, "I", "ANALYTICS");
+    render_analytics_web(&mut h, data);
+    render_analytics_containers(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // J) TOPOLOGY
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "J", "TOPOLOGY");
     render_topology(&mut h, data);
 
     // ── Footer ──────────────────────────────────────────────────
@@ -2110,7 +2118,122 @@ fn render_topo_ai(h: &mut String, data: &ReportData) {
     section_end(h);
 }
 
-// ── I) TOPOLOGY Section (5 infrastructure maps) ─────────────────────
+// ── I) ANALYTICS Section ─────────────────────────────────────────────
+
+fn render_analytics_web(h: &mut String, data: &ReportData) {
+    if data.umami_sites.is_empty() {
+        section_start(h, "Web Analytics (Umami)", 1);
+        write!(h, r#"<tr><td style="padding:12px 16px;">
+<span style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:11px;color:{C_DIM};background:{BG_BAR};font-family:{FONT};">Umami analytics unavailable &mdash; check connection</span>
+</td></tr>"#).unwrap();
+        section_end(h);
+        return;
+    }
+
+    for site in &data.umami_sites {
+        // Site header
+        section_start(h, &format!("{} &mdash; {}", site.name, site.domain), 5);
+
+        // MTD stats row
+        let avg_time = if site.current_month.visits > 0 {
+            site.current_month.total_time / site.current_month.visits
+        } else {
+            0
+        };
+        write!(h, r#"<tr>
+{}{}{}{}{}
+</tr>"#,
+            th("Pageviews", "center"),
+            th("Visitors", "center"),
+            th("Visits", "center"),
+            th("Bounces", "center"),
+            th("Avg Time", "center"),
+        ).unwrap();
+        write!(h, r#"<tr>
+{}{}{}{}{}
+</tr>"#,
+            td(&format!("{}", site.current_month.pageviews), C_TEXT, "13px", "center"),
+            td(&format!("{}", site.current_month.visitors), C_OK, "13px", "center"),
+            td(&format!("{}", site.current_month.visits), C_TEXT, "13px", "center"),
+            td(&format!("{}", site.current_month.bounces), if site.current_month.bounces > 0 { C_WARN } else { C_TEXT }, "13px", "center"),
+            td(&format!("{}s", avg_time), C_DIM, "13px", "center"),
+        ).unwrap();
+
+        // Last 6 months table
+        if !site.last_6_months.is_empty() {
+            write!(h, r#"<tr><td colspan="5" style="padding:8px 16px 2px;color:{C_DIM};font-size:10px;font-family:{FONT};letter-spacing:1px;">LAST 6 MONTHS</td></tr>"#).unwrap();
+            write!(h, r#"<tr><td colspan="5" style="padding:0 8px;"><table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+            write!(h, "<tr>{}{}{}{}</tr>",
+                th("Month", "left"),
+                th("Pageviews", "right"),
+                th("Visitors", "right"),
+                th("Visits", "right"),
+            ).unwrap();
+            for (month, stats) in &site.last_6_months {
+                write!(h, "<tr>{}{}{}{}</tr>",
+                    td(month, C_DIM, "11px", "left"),
+                    td(&format!("{}", stats.pageviews), C_TEXT, "11px", "right"),
+                    td(&format!("{}", stats.visitors), C_OK, "11px", "right"),
+                    td(&format!("{}", stats.visits), C_TEXT, "11px", "right"),
+                ).unwrap();
+            }
+            h.push_str("</table></td></tr>");
+        }
+
+        // Top 10 pages
+        if !site.top_pages.is_empty() {
+            write!(h, r#"<tr><td colspan="5" style="padding:8px 16px 2px;color:{C_DIM};font-size:10px;font-family:{FONT};letter-spacing:1px;">TOP PAGES (MTD)</td></tr>"#).unwrap();
+            write!(h, r#"<tr><td colspan="5" style="padding:0 8px;"><table width="100%" cellpadding="0" cellspacing="0">"#).unwrap();
+            write!(h, "<tr>{}{}</tr>",
+                th("URL", "left"),
+                th("Views", "right"),
+            ).unwrap();
+            for (url, views) in &site.top_pages {
+                write!(h, "<tr>{}{}</tr>",
+                    td(url, C_TEXT, "11px", "left"),
+                    td(&format!("{}", views), C_OK, "11px", "right"),
+                ).unwrap();
+            }
+            h.push_str("</table></td></tr>");
+        }
+
+        section_end(h);
+    }
+}
+
+fn render_analytics_containers(h: &mut String, data: &ReportData) {
+    if data.container_cpu_ranking.is_empty() {
+        return;
+    }
+
+    section_start(h, "Container CPU Usage (Top 20)", 6);
+
+    write!(h, "<tr>{}{}{}{}{}{}</tr>",
+        th("#", "center"),
+        th("Container", "left"),
+        th("VM", "left"),
+        th("CPU %", "right"),
+        th("Mem Usage", "right"),
+        th("Mem %", "right"),
+    ).unwrap();
+
+    for entry in &data.container_cpu_ranking {
+        let cpu_num: f64 = entry.cpu_pct.trim_end_matches('%').trim().parse().unwrap_or(0.0);
+        let cpu_color = if cpu_num > 5.0 { C_CRIT } else if cpu_num > 1.0 { C_WARN } else { C_OK };
+        write!(h, "<tr>{}{}{}{}{}{}</tr>",
+            td(&format!("{}", entry.rank), C_DIM, "11px", "center"),
+            td(&entry.container, C_TEXT, "11px", "left"),
+            td(&entry.vm, C_DIM, "11px", "left"),
+            td(&entry.cpu_pct, cpu_color, "11px", "right"),
+            td(&entry.mem_usage, C_TEXT, "11px", "right"),
+            td(&entry.mem_pct, C_DIM, "11px", "right"),
+        ).unwrap();
+    }
+
+    section_end(h);
+}
+
+// ── J) TOPOLOGY Section (5 infrastructure maps) ─────────────────────
 
 fn render_topology(h: &mut String, data: &ReportData) {
     section_start(h, "Infrastructure Topology", 1);

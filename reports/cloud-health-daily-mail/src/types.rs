@@ -380,6 +380,37 @@ pub struct AiSummary {
     pub first_session: String,
 }
 
+// ── Web analytics (Umami) ──────────────────────────────────────────
+
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct UmamiStats {
+    pub pageviews: u64,
+    pub visitors: u64,
+    pub visits: u64,
+    pub bounces: u64,
+    pub total_time: u64,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct UmamiSite {
+    pub id: String,
+    pub name: String,
+    pub domain: String,
+    pub current_month: UmamiStats,
+    pub last_6_months: Vec<(String, UmamiStats)>, // (month, stats)
+    pub top_pages: Vec<(String, u64)>,             // (url, views)
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct ContainerCpuRank {
+    pub rank: u32,
+    pub container: String,
+    pub vm: String,
+    pub cpu_pct: String,
+    pub mem_usage: String,
+    pub mem_pct: String,
+}
+
 // ── Full report data ────────────────────────────────────────────────
 
 #[derive(Debug, Serialize)]
@@ -414,4 +445,6 @@ pub struct ReportData {
     pub total_domains: usize,
     pub generation_duration_ms: u64,
     pub ai: Option<AiSummary>,
+    pub umami_sites: Vec<UmamiSite>,
+    pub container_cpu_ranking: Vec<ContainerCpuRank>,
 }
