@@ -4,3 +4,4 @@ exclude:
   - reports/*/dist
   - secrets/dist
   - "**/dist"
+  - engines
