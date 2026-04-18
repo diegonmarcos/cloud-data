@@ -6,7 +6,7 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-04-18T10:49:50.747217408+00:00
+  CLOUD MAIL FULL — 2026-04-18T13:08:03.523348178+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
@@ -54,17 +54,17 @@
 0. INSTANT KPIs
 ──────────────────────────────────────────────────────────────
   ✅ mail.* HTTPS                   HTTP 301 (0.1s)
-  ✅ webmail HTTPS                  HTTP 200 (0.1s)
+  ✅ webmail HTTPS                  HTTP 200 (0.2s)
   ✅ auth HTTPS                     HTTP 200 (0.1s)
   ✅ MCP endpoint                   HTTP 400 (0.3s)
   ✅ mail:993 TLS                   TLS OK (0.5s)
-  ✅ mail:465 TLS                   TLS OK (0.5s)
-  ✅ mail:587 STARTTLS              TLS OK (0.9s)
+  ✅ mail:465 TLS                   TLS OK (0.4s)
+  ✅ mail:587 STARTTLS              TLS OK (0.8s)
   ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
   ❌ DKIM record                    MISSING (0.0s) [CRITICAL]
   ✅ GHA health                     gh unavailable (skipped)
-  ✅ CF Worker alive                HTTP 500 (0.0s)
-  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.0s)
+  ✅ CF Worker alive                HTTP 500 (0.2s)
+  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.1s)
   ❌ IMAP direct (WG)               10.0.0.3:993 FAIL (3.0s) [CRITICAL]
   ❌ SMTP direct (WG)               10.0.0.3:25 FAIL (3.0s) [CRITICAL]
 
@@ -117,7 +117,7 @@
   ⚠️  mcp->IMAP WG direct            no app data [WARNING]
   ⚠️  mcp->IMAP LOGIN                no app data [WARNING]
   ⚠️  mcp->SMTP AUTH                 no app data [WARNING]
-  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.3s)
+  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.4s)
   ❌ All ports bound                no data [CRITICAL]
 
   Summary: 8/27 passed, 19 failed
@@ -146,9 +146,9 @@
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    49.8s
-  T0_path_checker          39.4s
-  P0_instant_kpis          4.2s
+  TOTAL                    49.5s
+  T0_path_checker          39.2s
+  P0_instant_kpis          4.1s
   P3_network               3.1s
   P4_dns_auth              3.1s
   P2-P5_parallel           3.1s
@@ -157,11 +157,11 @@ PERFORMANCE
   P2_containers            0.0s
   P5_internals             0.0s
 
-  Total: 49.8s | Engine: Rust (native async tokio)
+  Total: 49.5s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════
-RESULT: CRITICAL -- 26/67 passed, 26 critical, 15 warnings
+RESULT: CRITICAL -- 25/67 passed, 27 critical, 15 warnings
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────
