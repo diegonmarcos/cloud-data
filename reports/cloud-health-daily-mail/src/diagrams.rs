@@ -58,7 +58,9 @@ fn pikchr_svg(input: &str) -> String {
 
 /// Sanitize a name for use as a Graphviz node ID
 fn gv_id(name: &str) -> String {
-    name.replace('-', "_").replace('.', "_").replace(' ', "_")
+    name.chars()
+        .map(|c| if c.is_ascii_alphanumeric() || c == '_' { c } else { '_' })
+        .collect()
 }
 
 // Color constants for diagram sources
