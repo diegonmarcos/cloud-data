@@ -85,11 +85,20 @@ export interface NotificationsConfig {
 }
 
 // ── Container spec — per-container declaration in build.json ───────────
+export type PortProtocol = "http" | "https" | "tls" | "starttls" | "tcp" | "udp";
+
+export interface PortSpec {
+  port: number;
+  protocol: PortProtocol;
+}
+
 export interface ContainerSpec {
   container_name: string;
   image: string;
   port?: number | null;
+  protocol?: PortProtocol;       // required when `port` is non-null
   port_env?: string | null;
+  extra_ports?: PortSpec[];      // array of {port, protocol} — additional ports on the same container
   dns?: string | null;
   public: boolean;
   proxy?: ProxyPrimaryConfig | null;
