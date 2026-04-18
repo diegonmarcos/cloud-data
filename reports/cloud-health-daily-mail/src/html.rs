@@ -1,6 +1,29 @@
 use crate::types::*;
 use std::fmt::Write;
 
+#[derive(Clone, Copy, PartialEq)]
+pub enum OutputMode {
+    Web,
+    Email,
+}
+
+fn mermaid_or_css(
+    h: &mut String,
+    mode: OutputMode,
+    mermaid_fn: impl FnOnce() -> String,
+    css_fn: impl FnOnce(&mut String),
+) {
+    match mode {
+        OutputMode::Web => {
+            let diagram = mermaid_fn();
+            if !diagram.is_empty() {
+                write!(h, r#"<div class="mermaid">{}</div>"#, diagram).unwrap();
+            }
+        }
+        OutputMode::Email => css_fn(h),
+    }
+}
+
 // ── Color constants ─────────────────────────────────────────────────
 const C_OK: &str = "#00d68f";
 const C_WARN: &str = "#ffaa00";
@@ -97,11 +120,51 @@ fn td(val: &str, color: &str, size: &str, align: &str) -> String {
 
 // ── Main render function ────────────────────────────────────────────
 
-pub fn render(data: &ReportData) -> String {
+pub fn render(data: &ReportData, mode: OutputMode) -> String {
     let mut h = String::with_capacity(96 * 1024);
 
-    // HTML boilerplate
-    write!(h, r#"<!DOCTYPE html>
+    // HTML boilerplate — differs between Web and Email modes
+    match mode {
+        OutputMode::Web => {
+            write!(h, r#"<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({{
+    theme: 'dark',
+    themeVariables: {{
+        primaryColor: '#16213e',
+        primaryTextColor: '#e0e0e0',
+        primaryBorderColor: '#00d68f',
+        lineColor: '#00d68f',
+        secondaryColor: '#0f3460',
+        tertiaryColor: '#1a1a2e'
+    }},
+    startOnLoad: true
+}});
+</script>
+<style>
+body {{ margin:0; padding:20px; background:{BG_BODY}; color:{C_TEXT}; font-family:{FONT}; }}
+table {{ width:100%; border-collapse:collapse; margin:8px 0; }}
+td, th {{ font-family:{FONT}; }}
+.mermaid {{ margin:16px 0; padding:16px; background:{BG_CARD}; border-radius:8px; border:1px solid {BG_HEAD}; }}
+a {{ color:{C_OK}; text-decoration:none; }}
+a:hover {{ text-decoration:underline; }}
+</style>
+</head>
+<body>
+<div style="max-width:1200px;margin:0 auto;">
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="background:{BG_HEAD};padding:20px 24px;text-align:center;border-radius:8px 8px 0 0;">
+<h1 style="margin:0;font-size:20px;color:{C_TEXT};font-family:{FONT};letter-spacing:1px;">C3 Daily Ops Report</h1>
+<p style="margin:4px 0 0;color:{C_DIM};font-size:12px;font-family:{FONT};">{date} &mdash; Generated at {time}</p>
+</td></tr>
+<tr><td style="background:{BG_CARD};padding:8px 12px;text-align:center;border-bottom:1px solid {BG_HEAD};">"#,
+                date = data.date, time = data.time
+            ).unwrap();
+        }
+        OutputMode::Email => {
+            write!(h, r#"<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><style>
 body{{margin:0;padding:0;background:{BG_BODY}}}
 td,th{{font-family:{FONT}}}
@@ -115,8 +178,10 @@ td,th{{font-family:{FONT}}}
 <p style="margin:4px 0 0;color:{C_DIM};font-size:12px;font-family:{FONT};">{date} &mdash; Generated at {time}</p>
 </td></tr>
 <tr><td style="background:{BG_CARD};padding:8px 12px;text-align:center;border-bottom:1px solid {BG_HEAD};">"#,
-        date = data.date, time = data.time
-    ).unwrap();
+                date = data.date, time = data.time
+            ).unwrap();
+        }
+    }
 
     // Nav bar links
     let nav_items = [
@@ -152,7 +217,10 @@ td,th{{font-family:{FONT}}}
     // A) CONTAINERS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "A", "CONTAINERS");
-    render_topo_containers(&mut h, data);
+    mermaid_or_css(&mut h, mode,
+        || crate::mermaid::containers(data),
+        |h| render_topo_containers(h, data),
+    );
     render_container_inventory(&mut h, data);
     render_container_resources(&mut h, data);
     render_log_errors(&mut h, data);
@@ -164,7 +232,10 @@ td,th{{font-family:{FONT}}}
     // B) DATABASES
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "B", "DATABASES");
-    render_topo_data(&mut h, data);
+    mermaid_or_css(&mut h, mode,
+        || crate::mermaid::data_storage(data),
+        |h| render_topo_data(h, data),
+    );
     render_database_report(&mut h, data);
     render_object_storage(&mut h, data);
     render_ghcr(&mut h, data);
@@ -177,7 +248,10 @@ td,th{{font-family:{FONT}}}
     // C) SECURITY
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "C", "SECURITY");
-    render_topo_security(&mut h, data);
+    mermaid_or_css(&mut h, mode,
+        || crate::mermaid::security_layers(data),
+        |h| render_topo_security(h, data),
+    );
     render_security(&mut h, data);
     render_oom_kills(&mut h, data);
     render_certs(&mut h, data);
@@ -189,7 +263,10 @@ td,th{{font-family:{FONT}}}
     // D) WORKFLOWS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "D", "WORKFLOWS");
-    render_topo_cicd(&mut h, data);
+    mermaid_or_css(&mut h, mode,
+        || crate::mermaid::cicd_pipeline(data),
+        |h| render_topo_cicd(h, data),
+    );
     render_dags(&mut h, data);
     render_gha(&mut h, data);
 
@@ -197,7 +274,10 @@ td,th{{font-family:{FONT}}}
     // E) SERVICES
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "E", "SERVICES");
-    render_topo_routing(&mut h, data);
+    mermaid_or_css(&mut h, mode,
+        || crate::mermaid::service_routing(data),
+        |h| render_topo_routing(h, data),
+    );
     render_services_all_unified(&mut h, data);
     render_services_api_endpoints(&mut h, data);
     render_services_mcps(&mut h, data);
@@ -209,7 +289,10 @@ td,th{{font-family:{FONT}}}
     // F) FINOPS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "F", "FINOPS");
-    render_topo_resources(&mut h, data);
+    mermaid_or_css(&mut h, mode,
+        || crate::mermaid::vm_resources(data),
+        |h| render_topo_resources(h, data),
+    );
     render_finops_costs(&mut h, data);
     render_finops_vms(&mut h, data);
     render_finops_providers(&mut h, data);
@@ -219,7 +302,10 @@ td,th{{font-family:{FONT}}}
     // G) AI
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "G", "AI");
-    render_topo_ai(&mut h, data);
+    mermaid_or_css(&mut h, mode,
+        || crate::mermaid::ai_models(data),
+        |h| render_topo_ai(h, data),
+    );
     render_ai_section(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
@@ -242,20 +328,25 @@ td,th{{font-family:{FONT}}}
     // J) TOPOLOGY
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "J", "TOPOLOGY");
-    render_topology(&mut h, data);
+    render_topology(&mut h, data, mode);
 
     // ── Footer ──────────────────────────────────────────────────
     write!(h, r#"<tr><td style="text-align:center;padding:16px;color:{C_DIM};font-size:11px;font-family:{FONT};">
 C3 Daily Ops Report &mdash; {date} {time}<br>
 <a href="http://10.0.0.3:8070" style="color:{C_OK};">Dagu Dashboard</a>
 </td></tr>
-</table>
-</td></tr></table>
-</center>
-</body>
-</html>"#,
+</table>"#,
         date = data.date, time = data.time
     ).unwrap();
+
+    match mode {
+        OutputMode::Web => {
+            h.push_str("\n</div>\n</body>\n</html>");
+        }
+        OutputMode::Email => {
+            h.push_str("\n</td></tr></table>\n</center>\n</body>\n</html>");
+        }
+    }
 
     h
 }
@@ -2249,14 +2340,29 @@ fn render_analytics_containers(h: &mut String, data: &ReportData) {
 
 // ── J) TOPOLOGY Section (5 infrastructure maps) ─────────────────────
 
-fn render_topology(h: &mut String, data: &ReportData) {
+fn render_topology(h: &mut String, data: &ReportData, mode: OutputMode) {
     section_start(h, "Infrastructure Topology", 1);
 
-    render_topo_i_wireguard(h, data);
-    render_topo_i_traffic_flow(h, data);
-    render_topo_i_service_categories(h, data);
-    render_topo_i_storage_overview(h, data);
-    render_topo_i_provider_map(h, data);
+    mermaid_or_css(h, mode,
+        || crate::mermaid::wireguard_mesh(data),
+        |h| render_topo_i_wireguard(h, data),
+    );
+    mermaid_or_css(h, mode,
+        || crate::mermaid::traffic_flow(data),
+        |h| render_topo_i_traffic_flow(h, data),
+    );
+    mermaid_or_css(h, mode,
+        || crate::mermaid::service_categories(data),
+        |h| render_topo_i_service_categories(h, data),
+    );
+    mermaid_or_css(h, mode,
+        || crate::mermaid::storage_overview(data),
+        |h| render_topo_i_storage_overview(h, data),
+    );
+    mermaid_or_css(h, mode,
+        || crate::mermaid::provider_map(data),
+        |h| render_topo_i_provider_map(h, data),
+    );
 
     section_end(h);
 }

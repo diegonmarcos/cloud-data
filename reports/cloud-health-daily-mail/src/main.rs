@@ -7,6 +7,7 @@
 mod collect;
 mod context;
 mod html;
+mod mermaid;
 mod ssh;
 mod types;
 
@@ -411,24 +412,27 @@ async fn main() -> Result<()> {
         container_cpu_ranking,
     };
 
-    // 8. Render HTML
-    let html = html::render(&report);
+    // 8. Render HTML (email + web)
+    let html_email = html::render(&report, html::OutputMode::Email);
+    let html_web = html::render(&report, html::OutputMode::Web);
 
     // 9. Write to dist/
     let dist = std::path::Path::new("dist");
     std::fs::create_dir_all(dist)?;
     let output_path = dist.join("cloud_health_daily.html");
-    std::fs::write(&output_path, &html)?;
+    std::fs::write(&output_path, &html_email)?;
+    std::fs::write(dist.join("cloud_health_daily_web.html"), &html_web)?;
 
     // 10. Write JSON (for debugging / programmatic access)
     let json = serde_json::to_string_pretty(&report)?;
     std::fs::write(dist.join("cloud_health_daily.json"), &json)?;
 
     println!(
-        "\n=== DONE in {:.1}s === HTML: {} ({} bytes)",
+        "\n=== DONE in {:.1}s === HTML: {} ({} bytes email, {} bytes web)",
         start.elapsed().as_secs_f64(),
         output_path.display(),
-        html.len(),
+        html_email.len(),
+        html_web.len(),
     );
 
     Ok(())
