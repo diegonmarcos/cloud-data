@@ -4,7 +4,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 2
   },
-  "_generated": "2026-04-18T08:43:34.205Z",
+  "_generated": "2026-04-18T10:42:56.606Z",
   "_source": "_cloud-data-consolidated.json via cloud-data-config-derive.ts/caddy-routes",
   "l4_routes": [
     {
@@ -295,8 +295,8 @@
     "analytics": {
       "domain": "analytics.diegonmarcos.com",
       "comment": "Matomo (public tracking + protected admin) + Umami (path-based)",
-      "matomo_upstream": "10.0.0.4:8084",
-      "umami_upstream": "10.0.0.4:3006",
+      "matomo_upstream": "10.0.0.6:8084",
+      "umami_upstream": "10.0.0.6:3006",
       "public_tracking_paths": [
         "/matomo.js",
         "/matomo.php",
@@ -468,7 +468,7 @@
     },
     {
       "service": "matomo.app",
-      "upstream": "10.0.0.4:8084"
+      "upstream": "10.0.0.6:8084"
     },
     {
       "service": "ntfy.app",
@@ -476,7 +476,7 @@
     },
     {
       "service": "umami.app",
-      "upstream": "10.0.0.4:3006"
+      "upstream": "10.0.0.6:3006"
     },
     {
       "service": "windmill-app.app",
