@@ -7,7 +7,6 @@ on:
       - "reports/*/Cargo.toml"
       - "reports/Cargo.toml"
       - "reports/Dockerfile"
-      - "reports/cloud-sec-data-report/yara-rules/**"
     branches: [main]
   workflow_dispatch:
 
@@ -16,22 +15,36 @@ permissions:
   packages: write
 
 jobs:
-  build:
-    name: "Build + push reports image"
+  preflight-symlinks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-
-      - name: Build and push
+      - name: Fail on broken symlinks
         run: |
-          cd reports
-          docker build \
-            --network=host \
-            -t ghcr.io/diegonmarcos/cloud-data-reports:latest \
-            -t ghcr.io/diegonmarcos/cloud-data-reports:${{ github.sha }} \
-            .
-          docker push ghcr.io/diegonmarcos/cloud-data-reports:latest
-          docker push ghcr.io/diegonmarcos/cloud-data-reports:${{ github.sha }}
+          set -e
+          broken=$(find . -xtype l -not -path "./.git/*" 2>/dev/null || true)
+          if [ -n "$broken" ]; then
+            echo "::error::Broken symlinks found:"
+            echo "$broken"
+            exit 1
+          fi
+          echo "No broken symlinks."
+
+  build:
+    name: "Build + push reports image"
+    needs: preflight-symlinks
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
+    steps:
+      - name: Ship via cloud-builder
+        run: |
+          echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          IMAGE="ghcr.io/diegonmarcos/cloud-builder-x-deb-nixhm:latest"
+          docker pull "$IMAGE"
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -e GITHUB_TOKEN \
+            -e GITHUB_ACTOR \
+            "$IMAGE" ship-reports

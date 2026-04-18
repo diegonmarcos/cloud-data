@@ -15,8 +15,24 @@ permissions:
   packages: write
 
 jobs:
+  preflight-symlinks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail on broken symlinks
+        run: |
+          set -e
+          broken=$(find . -xtype l -not -path "./.git/*" 2>/dev/null || true)
+          if [ -n "$broken" ]; then
+            echo "::error::Broken symlinks found:"
+            echo "$broken"
+            exit 1
+          fi
+          echo "No broken symlinks."
+
   build:
     name: "Build + push reports image"
+    needs: preflight-symlinks
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
