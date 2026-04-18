@@ -1,12 +1,32 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><style>
-body{margin:0;padding:0;background:#1a1a2e}
-td,th{font-family:'Courier New',Consolas,monospace}
-</style></head>
-<body style="margin:0;padding:0;background:#1a1a2e;">
-<center>
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#1a1a2e;"><tr><td align="center">
-<table width="700" cellpadding="0" cellspacing="0" style="max-width:700px;width:100%;">
+<html><head><meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    theme: 'dark',
+    themeVariables: {
+        primaryColor: '#16213e',
+        primaryTextColor: '#e0e0e0',
+        primaryBorderColor: '#00d68f',
+        lineColor: '#00d68f',
+        secondaryColor: '#0f3460',
+        tertiaryColor: '#1a1a2e'
+    },
+    startOnLoad: true
+});
+</script>
+<style>
+body { margin:0; padding:20px; background:#1a1a2e; color:#e0e0e0; font-family:'Courier New',Consolas,monospace; }
+table { width:100%; border-collapse:collapse; margin:8px 0; }
+td, th { font-family:'Courier New',Consolas,monospace; }
+.mermaid { margin:16px 0; padding:16px; background:#16213e; border-radius:8px; border:1px solid #0f3460; }
+a { color:#00d68f; text-decoration:none; }
+a:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div style="max-width:1200px;margin:0 auto;">
+<table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background:#0f3460;padding:20px 24px;text-align:center;border-radius:8px 8px 0 0;">
 <h1 style="margin:0;font-size:20px;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;letter-spacing:1px;">C3 Daily Ops Report</h1>
 <p style="margin:4px 0 0;color:#8899aa;font-size:12px;font-family:'Courier New',Consolas,monospace;">2026-04-18 &mdash; Generated at 07:59 UTC</p>
@@ -100,17 +120,12 @@ td,th{font-family:'Courier New',Consolas,monospace}
 <tr><td style="padding:10px 16px;border-bottom:2px solid #00d68f;font-family:'Courier New',Consolas,monospace;">
 <span style="color:#00d68f;font-size:16px;font-weight:bold;letter-spacing:2px;">A</span>
 <span style="color:#e0e0e0;font-size:16px;font-weight:bold;letter-spacing:1px;margin-left:8px;">CONTAINERS</span>
-</td></tr></table></td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
-<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Container Distribution</td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">oci-apps</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">49/50 ctrs</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">↔</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">gcp-proxy</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">14/14 ctrs</div></td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td style="padding:8px;">
+</td></tr></table></td></tr><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph LR
+  oci_apps["oci-apps<br/>49/50 ctrs"]
+  gcp_proxy["gcp-proxy<br/>14/14 ctrs"]
+  gcp_proxy --- oci_apps
+</div><tr><td style="padding:8px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
 <tr><td colspan="4" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Full Container Inventory</td></tr><tr><td colspan="4" style="padding:8px 8px 2px;color:#e0e0e0;font-size:12px;font-weight:bold;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">oci-apps (49/50 running)</td></tr><tr><th style="text-align:left;color:#8899aa;font-size:10px;padding:4px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Name</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:4px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Image</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:4px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Status</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:4px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Uptime</th></tr>
 <tr><td style="padding:3px 8px;color:#e0e0e0;font-size:11px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">cloud-builder-x-cloud-builder-1</td><td style="padding:3px 8px;color:#8899aa;font-size:10px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">...rcos/cloud-builder-x-deb-nixhm:latest</td><td style="padding:3px 8px;color:#ff3d71;font-size:11px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">Exited (0) 16 hours ago</td><td style="padding:3px 8px;color:#8899aa;font-size:11px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">16 hours ago</td></tr>
@@ -423,25 +438,13 @@ td,th{font-family:'Courier New',Consolas,monospace}
 <tr><td style="padding:10px 16px;border-bottom:2px solid #00d68f;font-family:'Courier New',Consolas,monospace;">
 <span style="color:#00d68f;font-size:16px;font-weight:bold;letter-spacing:2px;">B</span>
 <span style="color:#e0e0e0;font-size:16px;font-weight:bold;letter-spacing:1px;margin-left:8px;">DATABASES</span>
-</td></tr></table></td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
-<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Data Storage</td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #FF9900;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">OCI Buckets</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">5 buckets, 407.8G</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Backups</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">restic + S3</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">←</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">VMs</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">5 nodes</div></td></tr>
-<tr><td colspan="5" style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↓</td></tr><tr><td></td><td></td><td style="border:2px solid #4169E1;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Docker Volumes</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">82 volumes</div></td><td></td><td></td></tr>
-<tr><td colspan="5" style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↓</td></tr><tr><td></td><td></td><td style="border:2px solid #DC382D;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Databases</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">23 declared</div></td><td></td><td></td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td style="padding:8px;">
+</td></tr></table></td></tr><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph TD
+  buckets["OCI Buckets<br/>5 buckets"] --> backups["Backups"]
+  vms["VMs"] --> volumes["Docker Volumes<br/>82"]
+  volumes --> dbs["Databases<br/>23"]
+  ghcr["GHCR<br/>100 images"] --> vms
+</div><tr><td style="padding:8px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
 <tr><td colspan="5" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Database Report</td></tr><tr><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Service</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Type</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Container</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Size</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">VM</th></tr>
 <tr><td style="padding:3px 8px;color:#e0e0e0;font-size:11px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">etherpad</td><td style="padding:3px 8px;color:#4169E1;font-size:11px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">postgres</td><td style="padding:3px 8px;color:#8899aa;font-size:10px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">etherpad_postgres</td><td style="padding:3px 8px;color:#e0e0e0;font-size:11px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">7551kB</td><td style="padding:3px 8px;color:#8899aa;font-size:11px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">oci-apps</td></tr>
@@ -727,57 +730,13 @@ td,th{font-family:'Courier New',Consolas,monospace}
 <tr><td style="padding:10px 16px;border-bottom:2px solid #00d68f;font-family:'Courier New',Consolas,monospace;">
 <span style="color:#00d68f;font-size:16px;font-weight:bold;letter-spacing:2px;">C</span>
 <span style="color:#e0e0e0;font-size:16px;font-weight:bold;letter-spacing:1px;margin-left:8px;">SECURITY</span>
-</td></tr></table></td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
-<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Security Topology</td></tr><tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Defense in Depth</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #F46800;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Cloudflare</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">DDoS + CDN</div></td></tr>
-<tr><td colspan="1" style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↓</td></tr><tr><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Caddy</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">TLS + 20/20 certs</div></td></tr>
-<tr><td colspan="1" style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↓</td></tr><tr><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Authelia</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">2FA/OIDC, 28/30 OK</div></td></tr>
-<tr><td colspan="1" style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↓</td></tr><tr><td style="border:2px solid #9B59B6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">introspect</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">Bearer tokens</div></td></tr>
-<tr><td colspan="1" style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↓</td></tr><tr><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Container</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">63 isolated</div></td></tr>
-</table></td></tr>
-<tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Network Zones</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #F46800;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Internet</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">public</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">DMZ: gcp-proxy</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">edge</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #9B59B6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">WG Mesh</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">encrypted</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Private VMs</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">internal</div></td></tr></table></td></tr>
-<tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Auth Flows</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #e0e0e0;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Browser</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">user</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Authelia 2FA</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">TOTP</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Cookie</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">forward_auth</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">App</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">authenticated</div></td></tr></table></td></tr>
-<tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #e0e0e0;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">CLI/API</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">bearer</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #9B59B6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">OIDC Token</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">JWT</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">introspect</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">validated</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">App</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">authenticated</div></td></tr></table></td></tr>
-</table></td></tr>
-<tr><td style="padding:8px;">
+</td></tr></table></td></tr><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph TD
+  cf["Cloudflare<br/>DDoS + CDN"] --> caddy["Caddy<br/>TLS + 20/20 certs"]
+  caddy --> auth["Authelia<br/>2FA / OIDC<br/>28/30 OK"]
+  auth --> introspect["introspect-proxy<br/>Bearer tokens"]
+  introspect --> container["Container<br/>63 isolated"]
+</div><tr><td style="padding:8px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
 <tr><td colspan="4" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Security Events (24h)</td></tr><tr><th style="text-align:left;color:#8899aa;font-size:11px;padding:8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">VM</th><th style="text-align:right;color:#8899aa;font-size:11px;padding:8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">SSH OK</th><th style="text-align:right;color:#8899aa;font-size:11px;padding:8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">SSH Fail</th><th style="text-align:right;color:#8899aa;font-size:11px;padding:8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">sudo</th></tr>
 <tr><td style="padding:3px 8px;color:#e0e0e0;font-size:12px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">oci-mail</td><td style="padding:3px 8px;color:#00d68f;font-size:12px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">0</td><td style="padding:3px 8px;color:#00d68f;font-size:12px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">0</td><td style="padding:3px 8px;color:#e0e0e0;font-size:12px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">0</td></tr>
@@ -860,32 +819,16 @@ td,th{font-family:'Courier New',Consolas,monospace}
 <tr><td style="padding:10px 16px;border-bottom:2px solid #00d68f;font-family:'Courier New',Consolas,monospace;">
 <span style="color:#00d68f;font-size:16px;font-weight:bold;letter-spacing:2px;">D</span>
 <span style="color:#e0e0e0;font-size:16px;font-weight:bold;letter-spacing:1px;margin-left:8px;">WORKFLOWS</span>
-</td></tr></table></td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
-<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">CI/CD Pipeline</td></tr><tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Deployment Pipeline</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #e0e0e0;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Developer</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">git push</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #e0e0e0;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">GitHub</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">20 repos</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">GHA</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">9/10 OK</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #9B59B6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">GHCR</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">100 images</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">VMs</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">docker pull</div></td></tr></table></td></tr>
-<tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Orchestration</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #e0e0e0;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">gen-cloud-data</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">GHA</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #FF9900;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">cloud-data</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">JSON hub</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #8899aa;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Dagu</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">0 DAGs, 0/0 OK</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">VM sync</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">deploy</div></td></tr></table></td></tr>
-</table></td></tr>
-<tr><td style="padding:8px;">
+</td></tr></table></td></tr><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph LR
+  dev["Developer"] --> github["GitHub<br/>20 repos"]
+  github --> gha["GHA<br/>9/10 OK"]
+  gha --> ghcr["GHCR<br/>100 images"]
+  ghcr --> vms["VMs<br/>5"]
+  github --> gendata["gen-cloud-data"]
+  gendata --> dagu["Dagu<br/>0 DAGs"]
+  dagu --> vms
+</div><tr><td style="padding:8px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
 <tr><td colspan="3" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">GHA Workflows (Last 10)</td></tr><tr><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Workflow</th><th style="text-align:center;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Status</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Time</th></tr>
 <tr>
@@ -944,22 +887,13 @@ td,th{font-family:'Courier New',Consolas,monospace}
 <tr><td style="padding:10px 16px;border-bottom:2px solid #00d68f;font-family:'Courier New',Consolas,monospace;">
 <span style="color:#00d68f;font-size:16px;font-weight:bold;letter-spacing:2px;">E</span>
 <span style="color:#e0e0e0;font-size:16px;font-weight:bold;letter-spacing:1px;margin-left:8px;">SERVICES</span>
-</td></tr></table></td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
-<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Service Routing</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #F46800;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">*.diegonmarcos.com</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">28 domains</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #F46800;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Cloudflare</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">DNS</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Caddy</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">30 routes</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #9B59B6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">WireGuard</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">5 VMs</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Container</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">55 services</div></td></tr></table></td></tr>
-</table></td></tr>
-<tr><td style="padding:8px;">
+</td></tr></table></td></tr><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph LR
+  domains["*.diegonmarcos.com<br/>28 domains"] --> cf["Cloudflare"]
+  cf --> caddy["Caddy<br/>30 routes"]
+  caddy --> wg["WireGuard<br/>5 VMs"]
+  wg --> containers["Containers<br/>55 services"]
+</div><tr><td style="padding:8px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
 <tr><td colspan="7" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">All Services (42 enabled)</td></tr><tr><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Service</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Category</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">URL</th><th style="text-align:center;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Status</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Latency</th><th style="text-align:center;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">API</th><th style="text-align:center;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Web</th></tr>
 <tr><td colspan="7" style="padding:6px 8px 2px;color:#8899aa;font-size:10px;font-weight:bold;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Public (29 with domains)</td></tr><tr><td style="padding:3px 8px;color:#e0e0e0;font-size:11px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">authelia</td><td style="padding:3px 8px;color:#DC382D;font-size:10px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">sec</td><td style="padding:3px 8px;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;"><a href="https://auth.diegonmarcos.com" style="color:#00d68f;font-size:10px;text-decoration:none;">auth.diegonmarcos.com</a></td><td style="padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);"><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold;background:#00d68f;color:#1a1a2e;font-family:'Courier New',Consolas,monospace;">200</span></td><td style="padding:3px 8px;color:#ffaa00;font-size:10px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">859ms</td><td style="padding:3px 4px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);"><a href="https://auth.diegonmarcos.com/api/health" style="color:#00d68f;font-size:10px;text-decoration:none;">api</a></td><td style="padding:3px 4px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);"><a href="https://auth.diegonmarcos.com" style="color:#00d68f;font-size:10px;text-decoration:none;">web</a></td></tr>
@@ -1144,26 +1078,22 @@ td,th{font-family:'Courier New',Consolas,monospace}
 <tr><td style="padding:10px 16px;border-bottom:2px solid #00d68f;font-family:'Courier New',Consolas,monospace;">
 <span style="color:#00d68f;font-size:16px;font-weight:bold;letter-spacing:2px;">F</span>
 <span style="color:#e0e0e0;font-size:16px;font-weight:bold;letter-spacing:1px;margin-left:8px;">FINOPS</span>
-</td></tr></table></td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
-<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">VM Resource Map</td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">oci-apps</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">4cpu/24GB FREE</div></td><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">gcp-t4</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">4cpu/15GB PAID</div></td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">gcp-proxy</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">2cpu/2GB FREE</div></td></tr>
-<tr><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">oci-analytics</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">1cpu/1GB FREE</div></td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">oci-mail</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">1cpu/1GB FREE</div></td><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">vast-ollama</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">0cpu/0GB PAID</div></td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td style="padding:8px;">
+</td></tr></table></td></tr><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph LR
+  oci_apps["oci-apps<br/>4cpu / 24GB<br/>FREE"]
+  gcp_t4["gcp-t4<br/>4cpu / 15GB<br/>PAID"]
+  gcp_proxy["gcp-proxy<br/>2cpu / 2GB<br/>FREE"]
+  oci_analytics["oci-analytics<br/>1cpu / 1GB<br/>FREE"]
+  oci_mail["oci-mail<br/>1cpu / 1GB<br/>FREE"]
+  vast_ollama["vast-ollama<br/>0cpu / 0GB<br/>PAID"]
+  infra(("Infrastructure"))
+  infra --- oci_apps
+  infra --- gcp_t4
+  infra --- gcp_proxy
+  infra --- oci_analytics
+  infra --- oci_mail
+  infra --- vast_ollama
+</div><tr><td style="padding:8px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
 <tr><td colspan="5" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Monthly Cloud Costs (5 months)</td></tr><tr><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Month</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Provider</th><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Service</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Usage</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Cost</th></tr>
 <tr>
@@ -1289,34 +1219,14 @@ td,th{font-family:'Courier New',Consolas,monospace}
 <tr><td style="padding:10px 16px;border-bottom:2px solid #00d68f;font-family:'Courier New',Consolas,monospace;">
 <span style="color:#00d68f;font-size:16px;font-weight:bold;letter-spacing:2px;">G</span>
 <span style="color:#e0e0e0;font-size:16px;font-weight:bold;letter-spacing:1px;margin-left:8px;">AI</span>
-</td></tr></table></td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
-<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">AI Token Flow</td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td rowspan="4" style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Claude Code</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">$15173.97 total</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #FF9900;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">opus-4.5</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">model</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #FF9900;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">$12957.47</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">cost</div></td></tr>
-<tr><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #FF9900;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">opus-4.6</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">model</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #FF9900;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">$1898.58</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">cost</div></td></tr>
-<tr><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">sonnet-4.5</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">model</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">$317.80</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">cost</div></td></tr>
-<tr><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">haiku-4.5</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">model</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">$0.13</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">cost</div></td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td style="padding:8px;">
+</td></tr></table></td></tr><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph LR
+  claude["Claude Code<br/>$15173.97 total"]
+  claude --> opus_4.5["opus-4.5<br/>$12957.47"]
+  claude --> opus_4.6["opus-4.6<br/>$1898.58"]
+  claude --> sonnet_4.5["sonnet-4.5<br/>$317.80"]
+  claude --> haiku_4.5["haiku-4.5<br/>$0.13"]
+</div><tr><td style="padding:8px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
 <tr><td colspan="6" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">AI Model Usage (Est. $15174 total)</td></tr><tr><th style="text-align:left;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Model</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Input</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Output</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Cache Read</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Cache Create</th><th style="text-align:right;color:#8899aa;font-size:10px;padding:6px 8px;border-bottom:1px solid #0f3460;font-family:'Courier New',Consolas,monospace;">Est. Cost</th></tr>
 <tr><td style="padding:3px 8px;color:#FF9900;font-size:12px;text-align:left;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">opus-4.5</td><td style="padding:3px 8px;color:#e0e0e0;font-size:11px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">1.2M</td><td style="padding:3px 8px;color:#e0e0e0;font-size:11px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">6.0M</td><td style="padding:3px 8px;color:#8899aa;font-size:11px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">4.8B</td><td style="padding:3px 8px;color:#8899aa;font-size:11px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">284.0M</td><td style="padding:3px 8px;color:#FF9900;font-size:12px;text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);font-family:'Courier New',Consolas,monospace;">$12957.47</td></tr>
@@ -1424,83 +1334,68 @@ td,th{font-family:'Courier New',Consolas,monospace}
 <span style="color:#e0e0e0;font-size:16px;font-weight:bold;letter-spacing:1px;margin-left:8px;">TOPOLOGY</span>
 </td></tr></table></td></tr><tr><td style="padding:8px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#16213e;border-radius:6px;">
-<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Infrastructure Topology</td></tr><tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">1. WIREGUARD MESH</td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td></td><td style="border:2px solid #ff3d71;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">oci-mail</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">10.0.0.3 | 0 ctrs</div></td><td style="border:2px solid #ff3d71;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">oci-analytics</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">10.0.0.4 | 0 ctrs</div></td></tr>
-<tr><td></td><td style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↕</td><td style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↕</td></tr><tr><td style="border:2px solid #8899aa;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Surface</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">10.0.0.2 | offline</div></td><td style="border:3px solid #00d68f;background:#0f3460;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:12px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">GCP-PROXY</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">10.0.0.1 | 14 ctrs | HUB</div></td><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">oci-apps</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">10.0.0.6 | 49 ctrs</div></td></tr>
-<tr><td></td><td style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↕</td><td style="text-align:center;color:#00d68f;font-size:18px;padding:2px 0;font-family:'Courier New',Consolas,monospace;">↕</td></tr><tr><td style="border:2px solid #8899aa;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Termux</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">10.0.0.9 | offline</div></td><td style="border:2px solid #ff3d71;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">gcp-t4</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">10.0.0.8 | 0 ctrs</div></td><td></td></tr>
-</table></td></tr>
-<tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">2. FULL TRAFFIC FLOW</td></tr><tr><td style="padding:8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #e0e0e0;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">User</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">browser/CLI</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #F46800;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Cloudflare</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">DNS + WAF</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Caddy</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">:443 | 10.0.0.1</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #9B59B6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">WireGuard</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">10.0.0.0/24</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #57A6D6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">VM</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">5 nodes</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Container</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">63/64</div></td></tr></table></td></tr>
-<tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">3. SERVICE CATEGORY MAP</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="4"><tr><td style="border:2px solid #57A6D6;background:#16213e;padding:20px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">app: 16</div></td><td style="border:2px solid #F46800;background:#16213e;padding:20px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">tools: 15</div></td><td style="border:2px solid #DC382D;background:#16213e;padding:18px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">sec: 6</div></td><td style="border:2px solid #4169E1;background:#16213e;padding:16px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">data: 5</div></td></tr></table></td></tr>
-<tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="4"><tr><td style="border:2px solid #C0765A;background:#16213e;padding:14px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">agi: 4</div></td><td style="border:2px solid #8899aa;background:#16213e;padding:12px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">cloud: 3</div></td><td style="border:2px solid #F46800;background:#16213e;padding:12px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">obs: 3</div></td><td style="border:2px solid #00d68f;background:#16213e;padding:10px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">fin: 2</div></td></tr></table></td></tr>
-<tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="4"><tr><td style="border:2px solid #9B59B6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">mic: 1</div></td></tr></table></td></tr>
-<tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">4. STORAGE OVERVIEW</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #FF9900;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">OCI S3</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">5 buckets</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #9B59B6;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">GHCR</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">100 imgs, 1.8GB</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #4169E1;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">Volumes</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">82 vols</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">→</td><td style="border:2px solid #DC382D;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">DBs</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">23 declared</div></td></tr></table></td></tr>
-<tr><td colspan="1" style="padding:12px 8px 4px;color:#8899aa;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">5. PROVIDER MAP</td></tr><tr><td style="padding:4px 8px;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">? Paid: 1 VMs</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">vast-ollama</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">↔</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">GCP Free: 1 VMs</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">gcp-proxy</div></td></tr>
-<tr><td style="border:2px solid #ffaa00;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">GCP Paid: 1 VMs</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">gcp-t4</div></td><td style="color:#00d68f;font-size:18px;text-align:center;vertical-align:middle;padding:2px 6px;font-family:'Courier New',Consolas,monospace;">↔</td><td style="border:2px solid #00d68f;background:#16213e;padding:8px 12px;border-radius:6px;text-align:center;vertical-align:middle;">
-<div style="color:#e0e0e0;font-size:11px;font-weight:bold;font-family:'Courier New',Consolas,monospace;">OCI Free: 3 VMs</div>
-<div style="color:#8899aa;font-size:9px;font-family:'Courier New',Consolas,monospace;">oci-apps, oci-analytics, oci-mail</div></td></tr>
-</table></td></tr>
-</table></td></tr>
+<tr><td colspan="1" style="padding:12px 16px;background:#0f3460;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold;color:#e0e0e0;font-family:'Courier New',Consolas,monospace;">Infrastructure Topology</td></tr><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph TD
+  gcp_proxy["gcp-proxy<br/>10.0.0.1<br/>HUB<br/>14 ctrs"]
+  surface["Surface<br/>10.0.0.2"]
+  termux["Termux<br/>10.0.0.9"]
+  oci_mail["oci-mail<br/>10.0.0.3<br/>0 ctrs"]
+  oci_analytics["oci-analytics<br/>10.0.0.4<br/>0 ctrs"]
+  oci_apps["oci-apps<br/>10.0.0.6<br/>49 ctrs"]
+  gcp_t4["gcp-t4<br/>10.0.0.8<br/>0 ctrs"]
+  surface --- gcp_proxy
+  termux --- gcp_proxy
+  gcp_proxy --- oci_mail
+  gcp_proxy --- oci_analytics
+  gcp_proxy --- oci_apps
+  gcp_proxy --- gcp_t4
+</div><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph LR
+  user["User<br/>browser/CLI"]
+  cf["Cloudflare<br/>DNS + WAF"]
+  caddy["Caddy<br/>:443 | 10.0.0.1"]
+  wg["WireGuard<br/>10.0.0.0/24"]
+  vm["VM<br/>5 nodes"]
+  ctr["Container<br/>63/64"]
+  user --> cf --> caddy --> wg --> vm --> ctr
+</div><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+pie title Service Categories
+  "app" : 16
+  "tools" : 15
+  "sec" : 6
+  "data" : 5
+  "agi" : 4
+  "cloud" : 3
+  "obs" : 3
+  "fin" : 2
+  "mic" : 1
+</div><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph LR
+  oci_s3["OCI S3<br/>5 buckets"] --> ghcr["GHCR<br/>100 imgs, 1.8GB"]
+  ghcr --> volumes["Volumes<br/>82 vols"]
+  volumes --> dbs["DBs<br/>23 declared"]
+</div><div class="mermaid">%%{init: {'theme': 'dark'}}%%
+graph TD
+  subgraph ? [?]
+    vast_ollama["vast-ollama<br/>0cpu/0GB<br/>PAID"]
+  end
+  subgraph GCP [GCP]
+    gcp_t4["gcp-t4<br/>4cpu/15GB<br/>PAID"]
+    gcp_proxy["gcp-proxy<br/>2cpu/2GB<br/>FREE"]
+  end
+  subgraph OCI [OCI]
+    oci_apps["oci-apps<br/>4cpu/24GB<br/>FREE"]
+    oci_analytics["oci-analytics<br/>1cpu/1GB<br/>FREE"]
+    oci_mail["oci-mail<br/>1cpu/1GB<br/>FREE"]
+  end
+  ? --- GCP
+  GCP --- OCI
+</div></table></td></tr>
 <tr><td style="text-align:center;padding:16px;color:#8899aa;font-size:11px;font-family:'Courier New',Consolas,monospace;">
 C3 Daily Ops Report &mdash; 2026-04-18 07:59 UTC<br>
 <a href="http://10.0.0.3:8070" style="color:#00d68f;">Dagu Dashboard</a>
 </td></tr>
 </table>
-</td></tr></table>
-</center>
+</div>
 </body>
 </html>
