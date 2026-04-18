@@ -37,14 +37,15 @@ import { parseMailu } from "./parsers/mailu.js";
 // ═══════════════════════════════════════════════════════════════════════════
 
 const ENGINE_DIR = import.meta.dirname!;
-const CLOUD_ROOT_DEFAULT = resolve(ENGINE_DIR, "../../../..");
-const GIT_BASE = process.env.GIT_BASE ?? resolve(CLOUD_ROOT_DEFAULT, "..");
-const CLOUD_ROOT = process.env.GIT_BASE ? join(GIT_BASE, "cloud") : CLOUD_ROOT_DEFAULT;
+// Script lives at: cloud-data/1_workflows/src/scripts — 3 levels up = cloud-data root
+const CLOUD_DATA_ROOT_DEFAULT = resolve(ENGINE_DIR, "../../..");
+const GIT_BASE = process.env.GIT_BASE ?? resolve(CLOUD_DATA_ROOT_DEFAULT, "..");
+const CLOUD_ROOT = join(GIT_BASE, "cloud");
 const SOLUTIONS_DIR = join(CLOUD_ROOT, "a_solutions");
 const INFRA_DIR = join(CLOUD_ROOT, "c_vps");
 const CONFIG_JSON = join(CLOUD_ROOT, "config.json");
 
-const CLOUD_DATA_DIR = join(GIT_BASE, "cloud-data");          // standalone repo — sole write target (cloud/cloud-data/ is read-only HTTPS submodule)
+const CLOUD_DATA_DIR = join(GIT_BASE, "cloud-data");          // standalone repo — sole write target
 const OUTPUT_JSON = join(CLOUD_DATA_DIR, "_cloud-data-consolidated.json");
 const VAULT_WG_DIR = join(GIT_BASE, "vault", "A0_keys", "providers", "wireguard");
 

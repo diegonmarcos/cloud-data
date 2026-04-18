@@ -55,7 +55,7 @@ pub fn load_context() -> Result<Context> {
                             else { "app" };
                         let domain = svc["domain"].as_str().unwrap_or("").to_string();
                         let port = svc["port"].as_u64().unwrap_or(0) as u16;
-                        // API classification from consolidated (derived by gen-cloud-data.ts)
+                        // API classification from consolidated (derived by cloud-data-config-consolidated.ts)
                         let api_info = &svc["api"];
                         let has_api_declared = api_info["has_api"].as_bool().unwrap_or(false);
                         let has_web_ui = api_info["has_web_ui"].as_bool().unwrap_or(!domain.is_empty());

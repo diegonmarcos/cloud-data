@@ -149,7 +149,7 @@ pub fn cicd_pipeline(data: &ReportData) -> String {
     writeln!(s, r#"  github --> gha["GHA<br/>{}/{} OK"]"#, gha_ok, gha_count).unwrap();
     writeln!(s, r#"  gha --> ghcr["GHCR<br/>{} images"]"#, data.ghcr_total).unwrap();
     writeln!(s, r#"  ghcr --> vms["VMs<br/>{}"]"#, data.vms.len()).unwrap();
-    writeln!(s, r#"  github --> gendata["gen-cloud-data"]"#).unwrap();
+    writeln!(s, r#"  github --> gendata["cloud-data-config"]"#).unwrap();
     writeln!(s, r#"  gendata --> dagu["Dagu<br/>{} DAGs"]"#, dag_count).unwrap();
     writeln!(s, r#"  dagu --> vms"#).unwrap();
 

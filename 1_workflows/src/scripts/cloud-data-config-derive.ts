@@ -13,9 +13,10 @@ import { resolve, join } from "path";
 // ═══════════════════════════════════════════════════════════════════════════
 
 const ENGINE_DIR = import.meta.dirname!;
-const CLOUD_ROOT_DEFAULT = resolve(ENGINE_DIR, "../../../..");
-const GIT_BASE = process.env.GIT_BASE ?? resolve(CLOUD_ROOT_DEFAULT, "..");
-const CLOUD_ROOT = process.env.GIT_BASE ? join(GIT_BASE, "cloud") : CLOUD_ROOT_DEFAULT;
+// Script lives at: cloud-data/1_workflows/src/scripts — 3 levels up = cloud-data root
+const CLOUD_DATA_ROOT_DEFAULT = resolve(ENGINE_DIR, "../../..");
+const GIT_BASE = process.env.GIT_BASE ?? resolve(CLOUD_DATA_ROOT_DEFAULT, "..");
+const CLOUD_ROOT = join(GIT_BASE, "cloud");
 const CLOUD_DATA_DIR = join(GIT_BASE, "cloud-data");          // standalone repo — read + write target
 const INPUT_JSON = join(CLOUD_DATA_DIR, "_cloud-data-consolidated.json");
 
