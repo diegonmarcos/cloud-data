@@ -84,13 +84,17 @@ else
   echo "[setup] WARNING: no SOPS age key (not mounted, not in env, or config dir RO)" >&2
 fi
 
-# ── 4. GHCR login ─────────────────────────────────────────────────
-if [ -n "${GITHUB_TOKEN:-}" ]; then
-  echo "$GITHUB_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR:-diegonmarcos}" --password-stdin 2>/dev/null
-  echo "[setup] GHCR authenticated"
+# ── 4. GHCR login (optional — only if docker client is in image) ──
+if ! command -v docker >/dev/null 2>&1; then
+  echo "[setup] docker client not in image — skipping GHCR login (reports don't need it)"
+elif [ -n "${GITHUB_TOKEN:-}" ]; then
+  echo "$GITHUB_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR:-diegonmarcos}" --password-stdin 2>/dev/null \
+    && echo "[setup] GHCR authenticated" \
+    || echo "[setup] GHCR login failed (non-fatal)"
 elif command -v gh >/dev/null 2>&1 && gh auth token >/dev/null 2>&1; then
-  gh auth token 2>/dev/null | docker login ghcr.io -u "$(gh api user --jq .login 2>/dev/null || echo diegonmarcos)" --password-stdin 2>/dev/null
-  echo "[setup] GHCR authenticated via gh CLI"
+  gh auth token 2>/dev/null | docker login ghcr.io -u "$(gh api user --jq .login 2>/dev/null || echo diegonmarcos)" --password-stdin 2>/dev/null \
+    && echo "[setup] GHCR authenticated via gh CLI" \
+    || echo "[setup] GHCR login failed (non-fatal)"
 fi
 
 # ── 5. WireGuard (if key provided) ────────────────────────────────
