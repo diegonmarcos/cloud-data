@@ -10,6 +10,7 @@ pub enum OutputMode {
 fn mermaid_or_css(
     h: &mut String,
     mode: OutputMode,
+    title: &str,
     mermaid_fn: impl FnOnce() -> String,
     css_fn: impl FnOnce(&mut String),
 ) {
@@ -17,7 +18,13 @@ fn mermaid_or_css(
         OutputMode::Web => {
             let diagram = mermaid_fn();
             if !diagram.is_empty() {
-                write!(h, r#"<tr><td style="padding:8px;"><div class="mermaid">{}</div></td></tr>"#, diagram).unwrap();
+                write!(h, r#"<tr><td style="padding:12px 8px;">
+<div style="border-left:3px solid {C_OK};padding:6px 12px;background:{BG_CARD};border-radius:0 4px 4px 0;margin-bottom:8px;">
+<span style="color:{C_TEXT};font-size:13px;font-weight:bold;font-family:{FONT};">{title}</span>
+<span style="color:{C_DIM};font-size:10px;font-family:{FONT};margin-left:8px;">rendered by mermaid</span>
+</div>
+<div class="mermaid">{diagram}</div>
+</td></tr>"#).unwrap();
             }
         }
         OutputMode::Email => css_fn(h),
@@ -26,12 +33,19 @@ fn mermaid_or_css(
 
 fn embed_diagram(h: &mut String, title: &str, tool: &str, svg: &str) {
     if svg.is_empty() {
-        write!(h, r#"<tr><td style="padding:8px;color:{C_DIM};font-size:10px;">{title} — {tool} not available</td></tr>"#).unwrap();
+        write!(h, r#"<tr><td style="padding:12px 8px;">
+<div style="border-left:3px solid {C_DIM};padding:6px 12px;background:{BG_CARD};border-radius:0 4px 4px 0;">
+<span style="color:{C_DIM};font-size:12px;font-family:{FONT};">{title}</span>
+<span style="color:{C_CRIT};font-size:10px;font-family:{FONT};margin-left:8px;">({tool} not available)</span>
+</div></td></tr>"#).unwrap();
         return;
     }
-    write!(h, r#"<tr><td style="padding:8px;">
-<div style="text-align:center;color:{C_DIM};font-size:10px;margin-bottom:4px;">{title} ({tool})</div>
-<div style="text-align:center;overflow-x:auto;">{svg}</div>
+    write!(h, r#"<tr><td style="padding:12px 8px;">
+<div style="border-left:3px solid {C_OK};padding:6px 12px;background:{BG_CARD};border-radius:0 4px 4px 0;margin-bottom:8px;">
+<span style="color:{C_TEXT};font-size:13px;font-weight:bold;font-family:{FONT};">{title}</span>
+<span style="color:{C_DIM};font-size:10px;font-family:{FONT};margin-left:8px;">rendered by {tool}</span>
+</div>
+<div style="text-align:center;overflow-x:auto;padding:4px;">{svg}</div>
 </td></tr>"#).unwrap();
 }
 
@@ -228,7 +242,7 @@ td,th{{font-family:{FONT}}}
     // A) CONTAINERS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "A", "CONTAINERS");
-    mermaid_or_css(&mut h, mode,
+    mermaid_or_css(&mut h, mode, "Container Distribution",
         || crate::mermaid::containers(data),
         |h| render_topo_containers(h, data),
     );
@@ -243,7 +257,7 @@ td,th{{font-family:{FONT}}}
     // B) DATABASES
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "B", "DATABASES");
-    mermaid_or_css(&mut h, mode,
+    mermaid_or_css(&mut h, mode, "Data Storage Topology",
         || crate::mermaid::data_storage(data),
         |h| render_topo_data(h, data),
     );
@@ -259,7 +273,7 @@ td,th{{font-family:{FONT}}}
     // C) SECURITY
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "C", "SECURITY");
-    mermaid_or_css(&mut h, mode,
+    mermaid_or_css(&mut h, mode, "Security Layers",
         || crate::mermaid::security_layers(data),
         |h| render_topo_security(h, data),
     );
@@ -274,7 +288,7 @@ td,th{{font-family:{FONT}}}
     // D) WORKFLOWS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "D", "WORKFLOWS");
-    mermaid_or_css(&mut h, mode,
+    mermaid_or_css(&mut h, mode, "CI/CD Pipeline",
         || crate::mermaid::cicd_pipeline(data),
         |h| render_topo_cicd(h, data),
     );
@@ -285,7 +299,7 @@ td,th{{font-family:{FONT}}}
     // E) SERVICES
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "E", "SERVICES");
-    mermaid_or_css(&mut h, mode,
+    mermaid_or_css(&mut h, mode, "Service Routing",
         || crate::mermaid::service_routing(data),
         |h| render_topo_routing(h, data),
     );
@@ -300,7 +314,7 @@ td,th{{font-family:{FONT}}}
     // F) FINOPS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "F", "FINOPS");
-    mermaid_or_css(&mut h, mode,
+    mermaid_or_css(&mut h, mode, "VM Resource Allocation",
         || crate::mermaid::vm_resources(data),
         |h| render_topo_resources(h, data),
     );
@@ -313,7 +327,7 @@ td,th{{font-family:{FONT}}}
     // G) AI
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "G", "AI");
-    mermaid_or_css(&mut h, mode,
+    mermaid_or_css(&mut h, mode, "AI Model Usage",
         || crate::mermaid::ai_models(data),
         |h| render_topo_ai(h, data),
     );
