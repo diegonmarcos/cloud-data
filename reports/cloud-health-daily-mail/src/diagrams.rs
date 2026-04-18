@@ -45,7 +45,7 @@ fn dot_svg(input: &str) -> String {
 }
 
 fn d2_svg(input: &str) -> String {
-    render_svg("d2", &["-", "-", "--theme", "200"], input)
+    render_svg("d2", &["-", "-", "--theme", "200", "--pad", "10", "--layout", "elk"], input)
 }
 
 fn plantuml_svg(input: &str) -> String {
@@ -125,7 +125,7 @@ pub fn security_layers_d2(data: &ReportData) -> String {
         .count();
 
     let mut src = String::new();
-    writeln!(src, "direction: down").unwrap();
+    writeln!(src, "direction: right").unwrap();
     writeln!(src, "cloudflare: \"Cloudflare\\nDDoS + CDN\" {{ shape: cloud; style.fill: \"{}\"; style.font-color: \"{}\" }}", D_HEAD, D_TEXT).unwrap();
     writeln!(src, "caddy: \"Caddy\\nTLS {}/{} certs\" {{ shape: hexagon; style.fill: \"{}\"; style.font-color: \"{}\" }}",
         certs_ok, certs_total, D_CARD, D_TEXT).unwrap();
@@ -416,7 +416,7 @@ pub fn vm_resource_d2(data: &ReportData) -> String {
     }
 
     let mut src = String::new();
-    writeln!(src, "direction: down").unwrap();
+    writeln!(src, "direction: right").unwrap();
 
     let mut sorted: Vec<&VmFinops> = data.vm_finops.iter().collect();
     sorted.sort_by(|a, b| {

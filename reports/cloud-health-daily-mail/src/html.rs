@@ -7,28 +7,31 @@ pub enum OutputMode {
     Email,
 }
 
-fn mermaid_or_css(
+fn diagram_or_css(
     h: &mut String,
     mode: OutputMode,
     title: &str,
-    mermaid_fn: impl FnOnce() -> String,
+    diagram_fn: impl FnOnce() -> (String, &'static str),
     css_fn: impl FnOnce(&mut String),
 ) {
     match mode {
         OutputMode::Web => {
-            let diagram = mermaid_fn();
-            if !diagram.is_empty() {
-                write!(h, r#"<tr><td style="padding:12px 8px;">
-<div style="border-left:3px solid {C_OK};padding:6px 12px;background:{BG_CARD};border-radius:0 4px 4px 0;margin-bottom:8px;">
-<span style="color:{C_TEXT};font-size:13px;font-weight:bold;font-family:{FONT};">{title}</span>
-<span style="color:{C_DIM};font-size:10px;font-family:{FONT};margin-left:8px;">rendered by mermaid</span>
-</div>
-<div class="mermaid">{diagram}</div>
-</td></tr>"#).unwrap();
-            }
+            let (svg, tool) = diagram_fn();
+            embed_diagram(h, title, tool, &svg);
         }
         OutputMode::Email => css_fn(h),
     }
+}
+
+fn topo_topic_header(h: &mut String, title: &str) {
+    write!(h, r#"<tr><td style="padding:16px 8px 4px;border-bottom:1px solid {BG_HEAD};">
+<span style="color:{C_OK};font-size:14px;font-weight:bold;font-family:{FONT};letter-spacing:1px;">{title}</span>
+</td></tr>"#).unwrap();
+}
+
+fn mermaid_to_div(mermaid_src: &str) -> String {
+    if mermaid_src.is_empty() { return String::new(); }
+    format!(r#"<div class="mermaid">{}</div>"#, mermaid_src)
 }
 
 fn embed_diagram(h: &mut String, title: &str, tool: &str, svg: &str) {
@@ -40,13 +43,24 @@ fn embed_diagram(h: &mut String, title: &str, tool: &str, svg: &str) {
 </div></td></tr>"#).unwrap();
         return;
     }
-    write!(h, r#"<tr><td style="padding:12px 8px;">
+    if tool == "mermaid" {
+        // Mermaid renders client-side — wrap source in a <div class="mermaid">
+        write!(h, r#"<tr><td style="padding:12px 8px;">
 <div style="border-left:3px solid {C_OK};padding:6px 12px;background:{BG_CARD};border-radius:0 4px 4px 0;margin-bottom:8px;">
 <span style="color:{C_TEXT};font-size:13px;font-weight:bold;font-family:{FONT};">{title}</span>
 <span style="color:{C_DIM};font-size:10px;font-family:{FONT};margin-left:8px;">rendered by {tool}</span>
 </div>
-<div style="text-align:center;overflow-x:auto;padding:4px;">{svg}</div>
+{svg}
 </td></tr>"#).unwrap();
+    } else {
+        write!(h, r#"<tr><td style="padding:12px 8px;">
+<div style="border-left:3px solid {C_OK};padding:6px 12px;background:{BG_CARD};border-radius:0 4px 4px 0;margin-bottom:8px;">
+<span style="color:{C_TEXT};font-size:13px;font-weight:bold;font-family:{FONT};">{title}</span>
+<span style="color:{C_DIM};font-size:10px;font-family:{FONT};margin-left:8px;">rendered by {tool}</span>
+</div>
+<div style="text-align:center;overflow-x:auto;padding:4px;max-height:500px;">{svg}</div>
+</td></tr>"#).unwrap();
+    }
 }
 
 // ── Color constants ─────────────────────────────────────────────────
@@ -242,8 +256,8 @@ td,th{{font-family:{FONT}}}
     // A) CONTAINERS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "A", "CONTAINERS");
-    mermaid_or_css(&mut h, mode, "Container Distribution",
-        || crate::mermaid::containers(data),
+    diagram_or_css(&mut h, mode, "Container Distribution",
+        || (crate::diagrams::container_distribution_dot(data), "graphviz"),
         |h| render_topo_containers(h, data),
     );
     render_container_inventory(&mut h, data);
@@ -257,8 +271,8 @@ td,th{{font-family:{FONT}}}
     // B) DATABASES
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "B", "DATABASES");
-    mermaid_or_css(&mut h, mode, "Data Storage Topology",
-        || crate::mermaid::data_storage(data),
+    diagram_or_css(&mut h, mode, "Data Flow",
+        || (crate::diagrams::data_flow_plantuml(data), "plantuml"),
         |h| render_topo_data(h, data),
     );
     render_database_report(&mut h, data);
@@ -273,8 +287,8 @@ td,th{{font-family:{FONT}}}
     // C) SECURITY
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "C", "SECURITY");
-    mermaid_or_css(&mut h, mode, "Security Layers",
-        || crate::mermaid::security_layers(data),
+    diagram_or_css(&mut h, mode, "Full Security Stack",
+        || (crate::diagrams::security_layers_d2(data), "d2"),
         |h| render_topo_security(h, data),
     );
     render_security(&mut h, data);
@@ -288,8 +302,8 @@ td,th{{font-family:{FONT}}}
     // D) WORKFLOWS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "D", "WORKFLOWS");
-    mermaid_or_css(&mut h, mode, "CI/CD Pipeline",
-        || crate::mermaid::cicd_pipeline(data),
+    diagram_or_css(&mut h, mode, "CI/CD Pipeline",
+        || (crate::diagrams::cicd_pipeline_d2(data), "d2"),
         |h| render_topo_cicd(h, data),
     );
     render_dags(&mut h, data);
@@ -299,8 +313,8 @@ td,th{{font-family:{FONT}}}
     // E) SERVICES
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "E", "SERVICES");
-    mermaid_or_css(&mut h, mode, "Service Routing",
-        || crate::mermaid::service_routing(data),
+    diagram_or_css(&mut h, mode, "Service Mesh",
+        || (crate::diagrams::service_mesh_dot(data), "graphviz"),
         |h| render_topo_routing(h, data),
     );
     render_services_all_unified(&mut h, data);
@@ -314,8 +328,8 @@ td,th{{font-family:{FONT}}}
     // F) FINOPS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "F", "FINOPS");
-    mermaid_or_css(&mut h, mode, "VM Resource Allocation",
-        || crate::mermaid::vm_resources(data),
+    diagram_or_css(&mut h, mode, "VM Resource Allocation",
+        || (crate::diagrams::vm_resource_d2(data), "d2"),
         |h| render_topo_resources(h, data),
     );
     render_finops_costs(&mut h, data);
@@ -327,8 +341,8 @@ td,th{{font-family:{FONT}}}
     // G) AI
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "G", "AI");
-    mermaid_or_css(&mut h, mode, "AI Model Usage",
-        || crate::mermaid::ai_models(data),
+    diagram_or_css(&mut h, mode, "Model Usage",
+        || (mermaid_to_div(&crate::mermaid::ai_models(data)), "mermaid"),
         |h| render_topo_ai(h, data),
     );
     render_ai_section(&mut h, data);
@@ -2370,11 +2384,42 @@ fn render_topology(h: &mut String, data: &ReportData, mode: OutputMode) {
 
     match mode {
         OutputMode::Web => {
-            // Pre-rendered SVG diagrams (graphviz, d2, plantuml, pikchr)
-            let diagrams = crate::diagrams::generate_all(data);
-            for (title, tool, svg) in &diagrams {
-                embed_diagram(h, title, tool, svg);
-            }
+            // 1. NETWORK
+            topo_topic_header(h, "1. NETWORK");
+            embed_diagram(h, "WireGuard Mesh", "graphviz", &crate::diagrams::wireguard_mesh_dot(data));
+            embed_diagram(h, "Traffic Flow", "mermaid", &mermaid_to_div(&crate::mermaid::traffic_flow(data)));
+            embed_diagram(h, "DNS Resolution", "pikchr", &crate::diagrams::dns_chain_pikchr(data));
+
+            // 2. SECURITY
+            topo_topic_header(h, "2. SECURITY");
+            embed_diagram(h, "Full Security Stack", "d2", &crate::diagrams::security_layers_d2(data));
+            embed_diagram(h, "Auth Flow (OIDC)", "plantuml", &crate::diagrams::auth_flow_plantuml(data));
+            embed_diagram(h, "Network Zones", "mermaid", &mermaid_to_div(&crate::mermaid::network_zones(data)));
+
+            // 3. COMPUTE
+            topo_topic_header(h, "3. COMPUTE");
+            embed_diagram(h, "Container Distribution", "graphviz", &crate::diagrams::container_distribution_dot(data));
+            embed_diagram(h, "VM Resources", "d2", &crate::diagrams::vm_resource_d2(data));
+            embed_diagram(h, "Provider Map", "graphviz", &crate::diagrams::provider_map_dot(data));
+
+            // 4. DATA
+            topo_topic_header(h, "4. DATA");
+            embed_diagram(h, "Data Flow", "plantuml", &crate::diagrams::data_flow_plantuml(data));
+            embed_diagram(h, "Storage Map", "d2", &crate::diagrams::storage_map_d2(data));
+            embed_diagram(h, "Backup Pipeline", "plantuml", &crate::diagrams::backup_flow_plantuml(data));
+
+            // 5. SERVICES
+            topo_topic_header(h, "5. SERVICES");
+            embed_diagram(h, "Service Mesh", "graphviz", &crate::diagrams::service_mesh_dot(data));
+            embed_diagram(h, "Service Categories", "mermaid", &mermaid_to_div(&crate::mermaid::service_categories(data)));
+
+            // 6. WORKFLOWS
+            topo_topic_header(h, "6. WORKFLOWS");
+            embed_diagram(h, "CI/CD Pipeline", "d2", &crate::diagrams::cicd_pipeline_d2(data));
+
+            // 7. AI
+            topo_topic_header(h, "7. AI");
+            embed_diagram(h, "Model Usage", "mermaid", &mermaid_to_div(&crate::mermaid::ai_models(data)));
         }
         OutputMode::Email => {
             // CSS fallback diagrams for email clients

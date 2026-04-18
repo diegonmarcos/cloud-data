@@ -410,7 +410,28 @@ pub fn storage_overview(data: &ReportData) -> String {
     s
 }
 
-// ── 12. Provider Map ───────────────────────────────────────────────
+// ── 12. Network Zones ─────────────────────────────────────────────
+
+pub fn network_zones(data: &ReportData) -> String {
+    let mut s = String::new();
+    writeln!(s, "{}", DARK_INIT).unwrap();
+    writeln!(s, "graph LR").unwrap();
+
+    let vm_count = data.vms.len();
+    let container_count = data.fleet_running;
+
+    writeln!(s, r#"  internet["Internet"]"#).unwrap();
+    writeln!(s, r#"  dmz["DMZ<br/>gcp-proxy"]"#).unwrap();
+    writeln!(s, r#"  wg["WireGuard<br/>Mesh"]"#).unwrap();
+    writeln!(s, r#"  private["Private<br/>{} VMs"]"#, vm_count).unwrap();
+    writeln!(s, r#"  containers["Containers<br/>{} running"]"#, container_count).unwrap();
+
+    writeln!(s, "  internet --> dmz --> wg --> private --> containers").unwrap();
+
+    s
+}
+
+// ── 13. Provider Map ───────────────────────────────────────────────
 
 pub fn provider_map(data: &ReportData) -> String {
     let mut s = String::new();
