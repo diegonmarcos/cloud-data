@@ -427,7 +427,10 @@ pub async fn fetch_umami_analytics() -> Vec<UmamiSite> {
         }
     };
 
-    let base_url = "http://10.0.0.4:3006";
+    // Read Umami URL from UMAMI_URL env var, or default to oci-apps WG IP
+    let base_url_owned = std::env::var("UMAMI_URL")
+        .unwrap_or_else(|_| "http://10.0.0.6:3006".to_string());
+    let base_url = base_url_owned.as_str();
     let client = Client::builder()
         .timeout(Duration::from_secs(10))
         .build()

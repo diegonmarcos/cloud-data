@@ -68,6 +68,8 @@ const D_BG: &str = "#1a1a2e";
 const D_CARD: &str = "#16213e";
 const D_HEAD: &str = "#0f3460";
 const D_OK: &str = "#00d68f";
+const D_WARN: &str = "#ffaa00";
+const D_CRIT: &str = "#ff3d71";
 const D_TEXT: &str = "#e0e0e0";
 const D_DIM: &str = "#8899aa";
 
@@ -120,22 +122,48 @@ pub fn wireguard_mesh_dot(data: &ReportData) -> String {
 pub fn security_layers_d2(data: &ReportData) -> String {
     let certs_ok = data.certs.iter().filter(|c| c.days_left >= 7).count();
     let certs_total = data.certs.len();
-    let endpoints_ok = data.endpoints.iter()
-        .filter(|e| (200..=399).contains(&e.status_code))
-        .count();
+    let wg_peers: usize = data.vms.iter().map(|v| v.wg_peers.len()).sum();
+    let wg_only_count = data.firewalls.iter().filter(|f| f.wg_only).count();
+    let dns_ok = data.dns.iter().filter(|d| !d.value.is_empty()).count();
 
     let mut src = String::new();
     writeln!(src, "direction: right").unwrap();
-    writeln!(src, "cloudflare: \"Cloudflare\\nDDoS + CDN\" {{ shape: cloud; style.fill: \"{}\"; style.font-color: \"{}\" }}", D_HEAD, D_TEXT).unwrap();
-    writeln!(src, "caddy: \"Caddy\\nTLS {}/{} certs\" {{ shape: hexagon; style.fill: \"{}\"; style.font-color: \"{}\" }}",
+
+    // Row 1: External → Edge
+    writeln!(src, "cloud_fw: \"Cloud Firewalls\\nOCI + GCP rules\" {{ shape: hexagon; style.fill: \"{}\"; style.font-color: \"{}\" }}", D_HEAD, D_TEXT).unwrap();
+    writeln!(src, "cloudflare: \"Cloudflare\\nDDoS + CDN + DNS\" {{ shape: cloud; style.fill: \"{}\"; style.font-color: \"{}\" }}", D_HEAD, D_TEXT).unwrap();
+
+    // Row 2: Network encryption
+    writeln!(src, "wireguard: \"WireGuard VPN\\n10.0.0.0/24\\n{} peers\\n{} VMs WG-only\" {{ shape: cylinder; style.fill: \"{}\"; style.font-color: \"{}\"; style.stroke: \"{}\" }}",
+        wg_peers, wg_only_count, D_CARD, D_TEXT, "#57A6D6").unwrap();
+
+    // Row 3: Application auth
+    writeln!(src, "caddy: \"Caddy\\nTLS termination\\n{}/{} certs\" {{ shape: hexagon; style.fill: \"{}\"; style.font-color: \"{}\" }}",
         certs_ok, certs_total, D_CARD, D_TEXT).unwrap();
-    writeln!(src, "authelia: \"Authelia\\n2FA / OIDC\\n{}/{} OK\" {{ shape: diamond; style.fill: \"{}\"; style.font-color: \"{}\" }}",
-        endpoints_ok, data.endpoints.len(), D_CARD, D_TEXT).unwrap();
-    writeln!(src, "introspect: \"introspect-proxy\\nBearer tokens\" {{ shape: hexagon; style.fill: \"{}\"; style.font-color: \"{}\" }}",
+    writeln!(src, "authelia: \"Authelia\\n2FA TOTP/WebAuthn\\nOIDC Provider\" {{ shape: diamond; style.fill: \"{}\"; style.font-color: \"{}\" }}",
         D_CARD, D_TEXT).unwrap();
-    writeln!(src, "container: \"Containers\\n{} isolated\" {{ shape: rectangle; style.fill: \"{}\"; style.font-color: \"{}\" }}",
+    writeln!(src, "introspect: \"introspect-proxy\\nBearer token validation\" {{ shape: hexagon; style.fill: \"{}\"; style.font-color: \"{}\" }}",
+        D_CARD, D_TEXT).unwrap();
+
+    // Row 4: Container isolation + secrets
+    writeln!(src, "docker: \"Docker Isolation\\ncgroups + namespaces\\n{} containers\" {{ shape: rectangle; style.fill: \"{}\"; style.font-color: \"{}\" }}",
         data.fleet_running, D_CARD, D_TEXT).unwrap();
-    writeln!(src, "cloudflare -> caddy -> authelia -> introspect -> container").unwrap();
+    writeln!(src, "sops: \"SOPS\\nage encryption\\nsecrets at rest\" {{ shape: page; style.fill: \"{}\"; style.font-color: \"{}\" }}",
+        D_CARD, D_TEXT).unwrap();
+
+    // Row 5: Email security
+    writeln!(src, "email: \"Email Security\\nDKIM + SPF + DMARC\\n{}/4 DNS OK\" {{ shape: page; style.fill: \"{}\"; style.font-color: \"{}\" }}",
+        dns_ok, D_CARD, D_TEXT).unwrap();
+
+    // Connections
+    writeln!(src, "cloud_fw -> wireguard: \"encrypted tunnel\"").unwrap();
+    writeln!(src, "cloudflare -> caddy: \"HTTPS\"").unwrap();
+    writeln!(src, "wireguard -> caddy: \"mesh traffic\"").unwrap();
+    writeln!(src, "caddy -> authelia: \"forward_auth\"").unwrap();
+    writeln!(src, "authelia -> introspect: \"OIDC token\"").unwrap();
+    writeln!(src, "introspect -> docker: \"validated request\"").unwrap();
+    writeln!(src, "docker -> sops: \"reads secrets\"").unwrap();
+    writeln!(src, "caddy -> email: \"mail routing\"").unwrap();
 
     d2_svg(&src)
 }
@@ -195,37 +223,74 @@ pub fn dns_chain_pikchr(data: &ReportData) -> String {
 // ── 5. Container Distribution (Graphviz) ──────────────────────────
 
 pub fn container_distribution_dot(data: &ReportData) -> String {
+    let total_ctrs = data.vms.iter().map(|v| v.containers_running).sum::<u32>();
+    let total_declared = data.vms.iter().map(|v| v.containers_total).sum::<u32>();
+
     let mut src = String::new();
-    writeln!(src, "digraph Containers {{").unwrap();
+    writeln!(src, "digraph ContainerFlow {{").unwrap();
     writeln!(src, "  bgcolor=\"{}\";", D_BG).unwrap();
-    writeln!(src, "  node [style=filled,fillcolor=\"{}\",fontcolor=\"{}\",color=\"{}\",fontname=\"Courier\",fontsize=9];",
-        D_CARD, D_TEXT, D_OK).unwrap();
-    writeln!(src, "  edge [color=\"{}\"];", D_OK).unwrap();
     writeln!(src, "  rankdir=LR;").unwrap();
+    writeln!(src, "  node [style=filled,fillcolor=\"{}\",fontcolor=\"{}\",color=\"{}\",fontname=\"Courier\",fontsize=10,shape=box];",
+        D_CARD, D_TEXT, D_OK).unwrap();
+    writeln!(src, "  edge [color=\"{}\",fontcolor=\"{}\",fontsize=9,fontname=\"Courier\"];", D_OK, D_DIM).unwrap();
+    writeln!(src, "  newrank=true;").unwrap();
+
+    // ── PUBLIC PATH (top) ──
+    writeln!(src, "  subgraph cluster_public {{").unwrap();
+    writeln!(src, "    label=\"PUBLIC PATH\"; style=dashed; color=\"{}\"; fontcolor=\"{}\"; fontsize=11;", D_OK, D_OK).unwrap();
+    writeln!(src, "    internet [label=\"Internet\",shape=ellipse,fillcolor=\"{}\"];", D_HEAD).unwrap();
+    writeln!(src, "    cloudflare [label=\"Cloudflare\\nDNS + CDN\",shape=ellipse,fillcolor=\"{}\"];", D_HEAD).unwrap();
+    writeln!(src, "    caddy_pub [label=\"Caddy :443\\ngcp-proxy\\n{} routes\",shape=hexagon];",
+        data.endpoints.len()).unwrap();
+    writeln!(src, "    internet -> cloudflare [label=\"HTTPS\"];").unwrap();
+    writeln!(src, "    cloudflare -> caddy_pub [label=\"proxy\"];").unwrap();
+    writeln!(src, "  }}").unwrap();
+
+    // ── PRIVATE PATH (bottom) ──
+    writeln!(src, "  subgraph cluster_private {{").unwrap();
+    writeln!(src, "    label=\"PRIVATE PATH (WireGuard)\"; style=dashed; color=\"{}\"; fontcolor=\"{}\"; fontsize=11;", "#57A6D6", "#57A6D6").unwrap();
+    writeln!(src, "    wg [label=\"WireGuard\\n10.0.0.0/24\",shape=cylinder,fillcolor=\"{}\",color=\"{}\"];", D_CARD, "#57A6D6").unwrap();
+    writeln!(src, "    hickory [label=\"Hickory DNS\\n*.app zones\",shape=diamond,fillcolor=\"{}\",color=\"{}\"];", D_CARD, "#57A6D6").unwrap();
+    writeln!(src, "    caddy_int [label=\"Caddy internal\\nforward_auth\",shape=hexagon,fillcolor=\"{}\",color=\"{}\"];", D_CARD, "#57A6D6").unwrap();
+    writeln!(src, "    wg -> hickory [label=\"resolve\",color=\"{}\"];", "#57A6D6").unwrap();
+    writeln!(src, "    hickory -> caddy_int [label=\"route\",color=\"{}\"];", "#57A6D6").unwrap();
+    writeln!(src, "  }}").unwrap();
+
+    // ── VM TARGETS (right side) ──
+    writeln!(src, "  subgraph cluster_vms {{").unwrap();
+    writeln!(src, "    label=\"CONTAINERS ({}/{})\"; style=filled; fillcolor=\"{}\"; fontcolor=\"{}\"; color=\"{}\"; fontsize=11;",
+        total_ctrs, total_declared, D_HEAD, D_TEXT, D_OK).unwrap();
 
     for vm in &data.vms {
-        if vm.containers_total == 0 { continue; }
-        let cluster_id = gv_id(&vm.name);
-        writeln!(src, "  subgraph cluster_{} {{", cluster_id).unwrap();
-        writeln!(src, "    label=\"{}\\n{}/{} ctrs\";", vm.name, vm.containers_running, vm.containers_total).unwrap();
-        writeln!(src, "    style=filled; fillcolor=\"{}\"; fontcolor=\"{}\"; color=\"{}\";", D_HEAD, D_TEXT, D_OK).unwrap();
+        let id = gv_id(&vm.name);
+        let color = match vm.status {
+            crate::types::VmStatus::Healthy => D_OK,
+            crate::types::VmStatus::Warning => D_WARN,
+            crate::types::VmStatus::Critical => D_CRIT,
+            _ => D_DIM,
+        };
+        if vm.containers_total > 0 {
+            writeln!(src, "    {} [label=\"{}\\n{}/{} ctrs\",color=\"{}\"];",
+                id, vm.name, vm.containers_running, vm.containers_total, color).unwrap();
+        } else if vm.status != crate::types::VmStatus::Critical {
+            writeln!(src, "    {} [label=\"{}\\n{}/{} ctrs\",color=\"{}\",style=\"filled,dashed\"];",
+                id, vm.name, vm.containers_running, vm.containers_total, D_DIM).unwrap();
+        }
+    }
+    writeln!(src, "  }}").unwrap();
 
-        // Show up to 8 containers per VM to keep it readable
-        let limit = std::cmp::min(vm.container_list.len(), 8);
-        for (i, ctr) in vm.container_list.iter().take(limit).enumerate() {
-            let ctr_id = format!("{}_{}", cluster_id, i);
-            let short_name = if ctr.name.len() > 20 {
-                &ctr.name[..20]
-            } else {
-                &ctr.name
-            };
-            writeln!(src, "    {} [label=\"{}\",shape=box];", ctr_id, short_name).unwrap();
-        }
-        if vm.container_list.len() > limit {
-            writeln!(src, "    {}_more [label=\"+{} more\",shape=plaintext,fontcolor=\"{}\"];",
-                cluster_id, vm.container_list.len() - limit, D_DIM).unwrap();
-        }
-        writeln!(src, "  }}").unwrap();
+    // ── EDGES: public path → VMs ──
+    for vm in &data.vms {
+        if vm.containers_total == 0 { continue; }
+        let id = gv_id(&vm.name);
+        writeln!(src, "  caddy_pub -> {} [label=\"{}\"];", id, vm.ip).unwrap();
+    }
+
+    // ── EDGES: private path → VMs ──
+    for vm in &data.vms {
+        if vm.containers_total == 0 { continue; }
+        let id = gv_id(&vm.name);
+        writeln!(src, "  caddy_int -> {} [style=dashed,color=\"{}\"];", id, "#57A6D6").unwrap();
     }
 
     writeln!(src, "}}").unwrap();
