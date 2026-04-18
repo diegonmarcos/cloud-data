@@ -29,13 +29,15 @@ build() {
 run() {
   echo ""
   echo "═══ Running $BINARY ═══"
-  # Prefer: dist/ (just-built) > cargo target > PATH
-  if [ -x "$ROOT/dist/$BINARY" ] || [ -L "$ROOT/dist/$BINARY" ]; then
+  # Prefer: PATH (container-installed) > dist/ resolved symlink > cargo target.
+  # -x dereferences symlinks so a dangling dist/$BINARY symlink falls through
+  # instead of being executed (which just yields "not found").
+  if command -v "$BINARY" >/dev/null 2>&1; then
+    (cd "$ROOT" && "$BINARY")
+  elif [ -x "$ROOT/dist/$BINARY" ]; then
     (cd "$ROOT" && "$ROOT/dist/$BINARY")
   elif [ -x "$CARGO_TARGET_DIR/release/$BINARY" ]; then
     (cd "$ROOT" && "$CARGO_TARGET_DIR/release/$BINARY")
-  elif command -v "$BINARY" >/dev/null 2>&1; then
-    (cd "$ROOT" && "$BINARY")
   else
     echo "ERROR: $BINARY not found" >&2; exit 1
   fi
