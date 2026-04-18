@@ -18,6 +18,8 @@ pub struct Context {
     pub vm_finops: Vec<VmFinops>,
     pub total_domains: usize,
     pub ai: Option<AiSummary>,
+    pub firewalls: Vec<VmFirewall>,
+    pub global_firewall: GlobalFirewall,
 }
 
 pub fn load_context() -> Result<Context> {
@@ -45,7 +47,7 @@ pub fn load_context() -> Result<Context> {
     };
 
     // Load cloud buckets + services from consolidated JSON
-    let (cloud_buckets, services, vps_providers, vm_finops, total_domains) = if Path::new(CONSOLIDATED).exists() {
+    let (cloud_buckets, services, vps_providers, vm_finops, total_domains, firewalls, global_firewall) = if Path::new(CONSOLIDATED).exists() {
         match std::fs::read_to_string(CONSOLIDATED) {
             Ok(raw) => match serde_json::from_str::<ConsolidatedJson>(&raw) {
                 Ok(c) => {
@@ -115,14 +117,55 @@ pub fn load_context() -> Result<Context> {
                         .collect::<std::collections::HashSet<_>>()
                         .len();
 
-                    (c.storage, svc_list, vps_list, vm_fin, total_domains)
+                    // Parse firewalls
+                    let gfw = {
+                        let g = &c.firewalls["global"];
+                        GlobalFirewall {
+                            docker_iptables: g["docker_iptables"].as_bool().unwrap_or(false),
+                            forward_policy: g["forward_policy"].as_str().unwrap_or("?").to_string(),
+                            docker_subnet: g["docker_subnet"].as_str().unwrap_or("?").to_string(),
+                            wg_subnet: g["wg_subnet"].as_str().unwrap_or("?").to_string(),
+                        }
+                    };
+
+                    let fw_os = c.firewalls["os"].as_object();
+                    let mut fw_list = Vec::new();
+                    for (vm_id, vm) in c.vms.iter() {
+                        let alias = vm["ssh_alias"].as_str().unwrap_or(vm_id);
+                        let pub_ports: Vec<FirewallRule> = vm["public_ports"].as_array()
+                            .map(|arr| arr.iter().map(|p| FirewallRule {
+                                port: p["port"].as_u64().unwrap_or(0) as u16,
+                                proto: p["proto"].as_str().unwrap_or("tcp").to_string(),
+                                desc: p["desc"].as_str().unwrap_or("").to_string(),
+                            }).collect())
+                            .unwrap_or_default();
+                        let os_rules: Vec<FirewallRule> = fw_os
+                            .and_then(|m| m.get(alias))
+                            .and_then(|v| v.as_array())
+                            .map(|arr| arr.iter().map(|r| FirewallRule {
+                                port: r["port"].as_u64().unwrap_or(0) as u16,
+                                proto: r["proto"].as_str().unwrap_or("tcp").to_string(),
+                                desc: r["desc"].as_str().unwrap_or("").to_string(),
+                            }).collect())
+                            .unwrap_or_default();
+                        let wg_only = pub_ports.is_empty();
+                        fw_list.push(VmFirewall {
+                            vm_name: alias.to_string(),
+                            public_ports: pub_ports,
+                            os_rules,
+                            wg_only,
+                        });
+                    }
+                    fw_list.sort_by(|a, b| a.vm_name.cmp(&b.vm_name));
+
+                    (c.storage, svc_list, vps_list, vm_fin, total_domains, fw_list, gfw)
                 }
-                Err(e) => { eprintln!("  Failed to parse consolidated: {}", e); (vec![], vec![], vec![], vec![], 0) }
+                Err(e) => { eprintln!("  Failed to parse consolidated: {}", e); (vec![], vec![], vec![], vec![], 0, vec![], GlobalFirewall::default()) }
             },
-            Err(_) => (vec![], vec![], vec![], vec![], 0),
+            Err(_) => (vec![], vec![], vec![], vec![], 0, vec![], GlobalFirewall::default()),
         }
     } else {
-        (vec![], vec![], vec![], vec![], 0)
+        (vec![], vec![], vec![], vec![], 0, vec![], GlobalFirewall::default())
     };
 
     // Load per-VM container manifests
@@ -183,7 +226,7 @@ pub fn load_context() -> Result<Context> {
     // Load AI usage data from Claude stats-cache.json
     let ai = load_ai_summary();
 
-    Ok(Context { monitoring, databases, manifests, cloud_buckets, services, mcp_servers, vps_providers, vm_finops, total_domains, ai })
+    Ok(Context { monitoring, databases, manifests, cloud_buckets, services, mcp_servers, vps_providers, vm_finops, total_domains, ai, firewalls, global_firewall })
 }
 
 // ── AI pricing per 1M tokens ────────────────────────────────────────

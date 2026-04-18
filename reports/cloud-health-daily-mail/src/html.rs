@@ -292,6 +292,7 @@ td,th{{font-family:{FONT}}}
         |h| render_topo_security(h, data),
     );
     render_security(&mut h, data);
+    render_firewall_summary(&mut h, data);
     render_oom_kills(&mut h, data);
     render_certs(&mut h, data);
     render_dns(&mut h, data);
@@ -2377,6 +2378,110 @@ fn render_analytics_containers(h: &mut String, data: &ReportData) {
     section_end(h);
 }
 
+// ── Firewall Summary Table (C section) ──────────────────────────────
+
+fn render_firewall_summary(h: &mut String, data: &ReportData) {
+    if data.firewalls.is_empty() { return; }
+
+    section_start(h, "Firewall Rules", 4);
+    h.push_str("<tr>");
+    for (label, align) in &[("VM","left"),("Public Ports","right"),("OS Rules","right"),("Status","center")] {
+        write!(h, r#"<th style="text-align:{align};color:{C_DIM};font-size:10px;padding:6px 8px;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">{label}</th>"#).unwrap();
+    }
+    h.push_str("</tr>\n");
+
+    for fw in &data.firewalls {
+        let pub_count = fw.public_ports.len();
+        let (badge_label, badge_color) = if pub_count == 0 {
+            ("WG-ONLY", C_OK)
+        } else if pub_count < 5 {
+            ("LOW", C_OK)
+        } else if pub_count < 10 {
+            ("MEDIUM", C_WARN)
+        } else {
+            ("HIGH", C_CRIT)
+        };
+
+        // Format port lists compactly
+        let pub_desc = if fw.public_ports.is_empty() {
+            "none".to_string()
+        } else {
+            fw.public_ports.iter()
+                .map(|p| format!("{}/{}", p.port, p.proto))
+                .collect::<Vec<_>>()
+                .join(", ")
+        };
+        let os_desc = if fw.os_rules.is_empty() {
+            "none".to_string()
+        } else {
+            fw.os_rules.iter()
+                .map(|r| format!("{}/{}", r.port, r.proto))
+                .collect::<Vec<_>>()
+                .join(", ")
+        };
+
+        write!(h, "<tr>{}{}{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{}</td></tr>\n",
+            td(&fw.vm_name, C_TEXT, "12px", "left"),
+            td(&pub_desc, C_DIM, "11px", "right"),
+            td(&os_desc, C_DIM, "11px", "right"),
+            label_badge(badge_label, badge_color),
+        ).unwrap();
+    }
+
+    // Global settings row
+    let gfw = &data.global_firewall;
+    write!(h, r#"<tr><td colspan="4" style="padding:8px;border-top:2px solid {BG_HEAD};color:{C_DIM};font-size:11px;font-family:{FONT};">
+<b style="color:{C_TEXT};">Global:</b> forward={fwd} | docker={docker_subnet} (iptables={iptables}) | wg={wg_subnet}
+</td></tr>"#,
+        fwd = gfw.forward_policy,
+        docker_subnet = gfw.docker_subnet,
+        iptables = if gfw.docker_iptables { "on" } else { "off" },
+        wg_subnet = gfw.wg_subnet,
+    ).unwrap();
+
+    section_end(h);
+}
+
+// ── Port Layers Diagram (Topology section) ──────────────────────────
+
+fn render_topo_port_layers(h: &mut String, data: &ReportData) {
+    if data.firewalls.is_empty() { return; }
+
+    topo_sub_header(h, 1, "PORT LAYERS");
+
+    // Build per-VM summary strings
+    let vm_summaries: Vec<String> = data.firewalls.iter().map(|fw| {
+        if fw.wg_only {
+            format!("{}: WG-ONLY", fw.vm_name)
+        } else {
+            format!("{}: {} public", fw.vm_name, fw.public_ports.len())
+        }
+    }).collect();
+    let vm_line = vm_summaries.join(" | ");
+
+    let layer_box = |color: &str, title: &str, subtitle: &str| -> String {
+        format!(r#"<div style="border:2px solid {};background:{};padding:10px 16px;border-radius:6px;text-align:center;margin:2px 8px;">
+<div style="color:{};font-size:12px;font-weight:bold;font-family:{};">{}</div>
+<div style="color:{};font-size:10px;font-family:{};">{}</div></div>"#,
+            color, BG_CARD, C_TEXT, FONT, title, C_DIM, FONT, subtitle)
+    };
+
+    let arrow_down = format!(
+        r#"<div style="text-align:center;color:{};font-size:20px;padding:2px 0;font-family:{};">{}</div>"#,
+        C_OK, FONT, "\u{2193}"
+    );
+
+    write!(h, r#"<tr><td style="padding:8px;">"#).unwrap();
+    h.push_str(&layer_box("#F46800", "Layer 1: Cloudflare", "DNS + CDN + DDoS protection"));
+    h.push_str(&arrow_down);
+    h.push_str(&layer_box(C_WARN, "Layer 2: Cloud Firewalls", &vm_line));
+    h.push_str(&arrow_down);
+    h.push_str(&layer_box(C_OK, "Layer 3: WireGuard", &format!("{} encrypted mesh", data.global_firewall.wg_subnet)));
+    h.push_str(&arrow_down);
+    h.push_str(&layer_box("#57A6D6", "Layer 4: Docker", &format!("{}, forward={}", data.global_firewall.docker_subnet, data.global_firewall.forward_policy)));
+    h.push_str("</td></tr>\n");
+}
+
 // ── J) TOPOLOGY Section (5 infrastructure maps) ─────────────────────
 
 fn render_topology(h: &mut String, data: &ReportData, mode: OutputMode) {
@@ -2395,6 +2500,7 @@ fn render_topology(h: &mut String, data: &ReportData, mode: OutputMode) {
             embed_diagram(h, "Full Security Stack", "d2", &crate::diagrams::security_layers_d2(data));
             embed_diagram(h, "Auth Flow (OIDC)", "plantuml", &crate::diagrams::auth_flow_plantuml(data));
             embed_diagram(h, "Network Zones", "mermaid", &mermaid_to_div(&crate::mermaid::network_zones(data)));
+            render_topo_port_layers(h, data);
 
             // 3. COMPUTE
             topo_topic_header(h, "3. COMPUTE");
@@ -2425,6 +2531,7 @@ fn render_topology(h: &mut String, data: &ReportData, mode: OutputMode) {
             // CSS fallback diagrams for email clients
             render_topo_i_wireguard(h, data);
             render_topo_i_traffic_flow(h, data);
+            render_topo_port_layers(h, data);
             render_topo_i_service_categories(h, data);
             render_topo_i_storage_overview(h, data);
             render_topo_i_provider_map(h, data);

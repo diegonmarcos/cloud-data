@@ -69,6 +69,31 @@ pub struct CloudBucket {
     pub size_bytes: u64,
 }
 
+// ── Firewall data ───────────────────────────────────────────────────
+
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct FirewallRule {
+    pub port: u16,
+    pub proto: String,
+    pub desc: String,
+}
+
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct VmFirewall {
+    pub vm_name: String,
+    pub public_ports: Vec<FirewallRule>,
+    pub os_rules: Vec<FirewallRule>,
+    pub wg_only: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct GlobalFirewall {
+    pub docker_iptables: bool,
+    pub forward_policy: String,
+    pub docker_subnet: String,
+    pub wg_subnet: String,
+}
+
 // ── Consolidated JSON (partial — only fields we need) ───────────────
 
 #[derive(Debug, Deserialize)]
@@ -81,6 +106,8 @@ pub struct ConsolidatedJson {
     pub vms: std::collections::HashMap<String, serde_json::Value>,
     #[serde(default)]
     pub vpss: std::collections::HashMap<String, serde_json::Value>,
+    #[serde(default)]
+    pub firewalls: serde_json::Value,
 }
 
 // ── Service inventory (parsed from consolidated.services) ───────────
@@ -450,4 +477,6 @@ pub struct ReportData {
     pub ai: Option<AiSummary>,
     pub umami_sites: Vec<UmamiSite>,
     pub container_cpu_ranking: Vec<ContainerCpuRank>,
+    pub firewalls: Vec<VmFirewall>,
+    pub global_firewall: GlobalFirewall,
 }

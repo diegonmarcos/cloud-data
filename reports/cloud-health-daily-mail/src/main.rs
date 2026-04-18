@@ -411,6 +411,8 @@ async fn main() -> Result<()> {
         ai: ctx.ai,
         umami_sites,
         container_cpu_ranking,
+        firewalls: ctx.firewalls.clone(),
+        global_firewall: ctx.global_firewall.clone(),
     };
 
     // 8. Render HTML (email + web)
