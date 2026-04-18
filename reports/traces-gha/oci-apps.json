@@ -16833,5 +16833,243 @@
         "duration_s": 9
       }
     ]
+  },
+  {
+    "vm": "oci-apps",
+    "run_id": "24604965144",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/24604965144",
+    "sha": "ff4d019ce5761b1671d2c347c9ffdd983ca2ae00",
+    "trigger": "workflow_dispatch",
+    "ts": "2026-04-18T12:51:46Z",
+    "duration_s": 294,
+    "total": 37,
+    "ok": 0,
+    "fail": 37,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "code-server",
+        "dir": "aa-sui_code-server",
+        "status": "fail",
+        "duration_s": 19
+      },
+      {
+        "name": "etherpad",
+        "dir": "aa-sui_etherpad",
+        "status": "fail",
+        "duration_s": 31
+      },
+      {
+        "name": "filebrowser",
+        "dir": "aa-sui_filebrowser",
+        "status": "fail",
+        "duration_s": 11
+      },
+      {
+        "name": "google-workspace-mcp",
+        "dir": "aa-sui_google-workspace-mcp",
+        "status": "fail",
+        "duration_s": 7
+      },
+      {
+        "name": "grist",
+        "dir": "aa-sui_grist",
+        "status": "fail",
+        "duration_s": 42
+      },
+      {
+        "name": "hedgedoc",
+        "dir": "aa-sui_hedgedoc",
+        "status": "fail",
+        "duration_s": 30
+      },
+      {
+        "name": "mail-mcp",
+        "dir": "aa-sui_mail-mcp",
+        "status": "fail",
+        "duration_s": 14
+      },
+      {
+        "name": "mattermost-bots",
+        "dir": "aa-sui_mattermost-bots",
+        "status": "fail",
+        "duration_s": 9
+      },
+      {
+        "name": "mattermost-mcp",
+        "dir": "aa-sui_mattermost-mcp",
+        "status": "fail",
+        "duration_s": 14
+      },
+      {
+        "name": "photoprism",
+        "dir": "aa-sui_photoprism",
+        "status": "fail",
+        "duration_s": 61
+      },
+      {
+        "name": "photos-webhook",
+        "dir": "aa-sui_photos-webhook",
+        "status": "fail",
+        "duration_s": 59
+      },
+      {
+        "name": "radicale",
+        "dir": "aa-sui_radicale",
+        "status": "fail",
+        "duration_s": 12
+      },
+      {
+        "name": "revealmd",
+        "dir": "aa-sui_revealmd",
+        "status": "fail",
+        "duration_s": 28
+      },
+      {
+        "name": "vaultwarden",
+        "dir": "ab-mic_vaultwarden",
+        "status": "fail",
+        "duration_s": 12
+      },
+      {
+        "name": "crawlee-cloud",
+        "dir": "ac-fin_crawlee-cloud",
+        "status": "fail",
+        "duration_s": 2
+      },
+      {
+        "name": "quant-lab-light",
+        "dir": "ac-fin_quant-lab-light",
+        "status": "fail",
+        "duration_s": 88
+      },
+      {
+        "name": "ollama-hai",
+        "dir": "ad-agi_ollama-hai",
+        "status": "fail",
+        "duration_s": 77
+      },
+      {
+        "name": "rig-agentic-hai-1.5bq4",
+        "dir": "ad-agi_rig-agentic-hai-1.5bq4",
+        "status": "fail",
+        "duration_s": 19
+      },
+      {
+        "name": "rig-agentic-sonn-14bq8",
+        "dir": "ad-agi_rig-agentic-sonn-14bq8",
+        "status": "fail",
+        "duration_s": 10
+      },
+      {
+        "name": "sauron-central",
+        "dir": "bb-sec_sauron-central",
+        "status": "fail",
+        "duration_s": 21
+      },
+      {
+        "name": "c3-infra-api",
+        "dir": "bc-obs_c3-infra-api",
+        "status": "fail",
+        "duration_s": 13
+      },
+      {
+        "name": "c3-infra-mcp",
+        "dir": "bc-obs_c3-infra-mcp",
+        "status": "fail",
+        "duration_s": 13
+      },
+      {
+        "name": "c3-services-api",
+        "dir": "bc-obs_c3-services-api",
+        "status": "fail",
+        "duration_s": 8
+      },
+      {
+        "name": "c3-services-mcp",
+        "dir": "bc-obs_c3-services-mcp",
+        "status": "fail",
+        "duration_s": 8
+      },
+      {
+        "name": "cloud-cgc-mcp",
+        "dir": "bc-obs_cloud-cgc-mcp",
+        "status": "fail",
+        "duration_s": 7
+      },
+      {
+        "name": "cloud-spec",
+        "dir": "bc-obs_cloud-spec",
+        "status": "fail",
+        "duration_s": 8
+      },
+      {
+        "name": "dbgate",
+        "dir": "bc-obs_dbgate",
+        "status": "fail",
+        "duration_s": 34
+      },
+      {
+        "name": "lgtm",
+        "dir": "bc-obs_lgtm",
+        "status": "fail",
+        "duration_s": 3
+      },
+      {
+        "name": "news-gdelt",
+        "dir": "bc-obs_news-gdelt",
+        "status": "fail",
+        "duration_s": 5
+      },
+      {
+        "name": "ntfy",
+        "dir": "bc-obs_ntfy",
+        "status": "fail",
+        "duration_s": 16
+      },
+      {
+        "name": "windmill",
+        "dir": "bc-obs_windmill",
+        "status": "fail",
+        "duration_s": 67
+      },
+      {
+        "name": "cloud-builder-x",
+        "dir": "bd-cloud-builder-x",
+        "status": "fail",
+        "duration_s": 2
+      },
+      {
+        "name": "backup-borg",
+        "dir": "ca-dat_backup-borg",
+        "status": "fail",
+        "duration_s": 8
+      },
+      {
+        "name": "backup-bup",
+        "dir": "ca-dat_backup-bup",
+        "status": "fail",
+        "duration_s": 8
+      },
+      {
+        "name": "backup-gitea",
+        "dir": "ca-dat_backup-gitea",
+        "status": "fail",
+        "duration_s": 10
+      },
+      {
+        "name": "gitea",
+        "dir": "ca-dat_gitea",
+        "status": "fail",
+        "duration_s": 9
+      },
+      {
+        "name": "kg-graph",
+        "dir": "ca-dat_kg-graph",
+        "status": "fail",
+        "duration_s": 8
+      }
+    ]
   }
 ]
