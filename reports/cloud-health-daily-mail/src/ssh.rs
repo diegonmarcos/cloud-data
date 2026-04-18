@@ -253,13 +253,45 @@ echo "===END==="
             r
         }
         Err(e) => {
-            eprintln!("  SSH {} FAILED: {}", vm.name, e);
-            return VmData {
-                name: vm.name.clone(),
-                ip: vm.ip.clone(),
-                status: VmStatus::Critical,
-                ..Default::default()
-            };
+            eprintln!("  SSH {} full batch FAILED: {} — trying lightweight fallback", vm.name, e);
+            // Lightweight fallback: just get basic health (uptime, mem, disk, container count)
+            let fallback_script = r#"
+export PATH="/run/current-system/sw/bin:/usr/bin:/usr/local/bin:$PATH"
+echo "===UPTIME==="
+uptime -p 2>/dev/null || uptime 2>/dev/null || echo "N/A"
+echo "===LOAD==="
+cat /proc/loadavg 2>/dev/null | awk '{print $1, $2, $3}' || echo "N/A"
+echo "===DISK==="
+df -h / 2>/dev/null | awk 'NR==2 {print $3 "/" $2 " (" $5 ")"}'  || echo "N/A"
+echo "===DISK_PCT==="
+df / 2>/dev/null | awk 'NR==2 {gsub(/%/,"",$5); print $5}' || echo "0"
+echo "===MEM==="
+free -h 2>/dev/null | awk '/Mem:/ {print $3 "/" $2}' || echo "N/A"
+echo "===MEM_PCT==="
+free 2>/dev/null | awk '/Mem:/ {printf "%.0f\n", ($3/$2)*100}' || echo "0"
+echo "===CONTAINER_COUNTS==="
+R=$(docker ps -q 2>/dev/null | wc -l); T=$(docker ps -aq 2>/dev/null | wc -l); U=$(docker ps --filter health=unhealthy -q 2>/dev/null | wc -l); echo "$R|$T|$U"
+echo "===KERNEL==="
+uname -r 2>/dev/null || echo "?"
+echo "===SWAP==="
+free 2>/dev/null | awk '/Swap:/ {total=$2; used=$3; if(total>0) printf "%s|%s|%.0f\n", used, total, (used/total)*100; else print "0|0|0"}'
+echo "===END==="
+"#;
+            match ssh_exec(&vm.name, &vm.user, &vm.ip, fallback_script).await {
+                Ok(r) => {
+                    eprintln!("  SSH {} fallback OK ({} bytes)", vm.name, r.len());
+                    r
+                }
+                Err(e2) => {
+                    eprintln!("  SSH {} UNREACHABLE: {}", vm.name, e2);
+                    return VmData {
+                        name: vm.name.clone(),
+                        ip: vm.ip.clone(),
+                        status: VmStatus::Critical,
+                        ..Default::default()
+                    };
+                }
+            }
         }
     };
 
