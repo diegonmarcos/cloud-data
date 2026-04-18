@@ -42,8 +42,13 @@ jobs:
           mkdir -p ~/.config/sops/age
           echo "$SOPS_AGE_KEY" > ~/.config/sops/age/keys.txt
           REPORT="${{ github.event.inputs.report || 'all' }}"
+          # docker-compose.yml mounts $HOME/git/cloud-data → /root/git/cloud-data.
+          # On GHA runners the checkout lives at $GITHUB_WORKSPACE, not $HOME/git/cloud-data.
+          # Symlink so the compose volume binds to the real checkout.
+          mkdir -p "$HOME/git"
+          [ -e "$HOME/git/cloud-data" ] || ln -sfn "$GITHUB_WORKSPACE" "$HOME/git/cloud-data"
           cd reports
-          docker compose run --rm reports bash build.sh "$REPORT"
+          docker compose run --rm reports "$REPORT"
 
       - name: Commit and push reports
         run: |

@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       report:
-        description: "Report to run (all, cloud, mail, url, stack, sec-net, sec-data, sec)"
+        description: "Report to run (all, cloud, mail, url, stack)"
         required: false
         default: "all"
 
@@ -29,8 +29,6 @@ jobs:
       GCP_T4_SSH_KEY: ${{ secrets.GCP_T4_SSH_KEY }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_ACTOR: ${{ github.actor }}
-      BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
-      SIEM_API_URL: https://api.diegonmarcos.com/siem-api
     steps:
       - uses: actions/checkout@v4
 
@@ -44,8 +42,13 @@ jobs:
           mkdir -p ~/.config/sops/age
           echo "$SOPS_AGE_KEY" > ~/.config/sops/age/keys.txt
           REPORT="${{ github.event.inputs.report || 'all' }}"
+          # docker-compose.yml mounts $HOME/git/cloud-data → /root/git/cloud-data.
+          # On GHA runners the checkout lives at $GITHUB_WORKSPACE, not $HOME/git/cloud-data.
+          # Symlink so the compose volume binds to the real checkout.
+          mkdir -p "$HOME/git"
+          [ -e "$HOME/git/cloud-data" ] || ln -sfn "$GITHUB_WORKSPACE" "$HOME/git/cloud-data"
           cd reports
-          docker compose run --rm reports bash build.sh "$REPORT"
+          docker compose run --rm reports "$REPORT"
 
       - name: Commit and push reports
         run: |
