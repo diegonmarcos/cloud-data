@@ -1,1 +1,0 @@
-../../cloud/a_solutions/bc-obs_c3-infra-api/src/shared/engines/derive-cloud-data.ts

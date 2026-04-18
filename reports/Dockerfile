@@ -18,7 +18,20 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates openssh-client curl dnsutils iputils-ping netcat-openbsd \
     openssl yara rsync \
+    graphviz plantuml \
     && rm -rf /var/lib/apt/lists/*
+
+# Install D2 (architecture diagrams) — binary release
+RUN ARCH=$(dpkg --print-architecture) && \
+    curl -sfL "https://github.com/terrastruct/d2/releases/latest/download/d2-linux-${ARCH}.tar.gz" | \
+    tar xz -C /usr/local/bin --strip-components=1 --wildcards '*/d2' || true
+
+# Install Pikchr (inline SVG diagrams) — single C file, compile from source
+RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev && \
+    curl -sfL "https://pikchr.org/home/raw/pikchr.c?name=trunk" -o /tmp/pikchr.c && \
+    gcc -DPIKCHR_SHELL -o /usr/local/bin/pikchr /tmp/pikchr.c -lm && \
+    rm /tmp/pikchr.c && \
+    apt-get purge -y gcc libc6-dev && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
 # Fetch community YARA rules at build time
 RUN mkdir -p /usr/local/share/yara-rules/community && \

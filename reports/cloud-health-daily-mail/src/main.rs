@@ -6,6 +6,7 @@
 
 mod collect;
 mod context;
+mod diagrams;
 mod html;
 mod mermaid;
 mod ssh;

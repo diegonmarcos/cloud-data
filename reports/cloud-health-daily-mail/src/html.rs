@@ -17,11 +17,22 @@ fn mermaid_or_css(
         OutputMode::Web => {
             let diagram = mermaid_fn();
             if !diagram.is_empty() {
-                write!(h, r#"<div class="mermaid">{}</div>"#, diagram).unwrap();
+                write!(h, r#"<tr><td style="padding:8px;"><div class="mermaid">{}</div></td></tr>"#, diagram).unwrap();
             }
         }
         OutputMode::Email => css_fn(h),
     }
+}
+
+fn embed_diagram(h: &mut String, title: &str, tool: &str, svg: &str) {
+    if svg.is_empty() {
+        write!(h, r#"<tr><td style="padding:8px;color:{C_DIM};font-size:10px;">{title} — {tool} not available</td></tr>"#).unwrap();
+        return;
+    }
+    write!(h, r#"<tr><td style="padding:8px;">
+<div style="text-align:center;color:{C_DIM};font-size:10px;margin-bottom:4px;">{title} ({tool})</div>
+<div style="text-align:center;overflow-x:auto;">{svg}</div>
+</td></tr>"#).unwrap();
 }
 
 // ── Color constants ─────────────────────────────────────────────────
@@ -2097,12 +2108,12 @@ fn render_topo_cicd(h: &mut String, data: &ReportData) {
     h.push_str(&topo_box("#57A6D6", "VMs", "docker pull"));
     h.push_str("</tr></table></td></tr>\n");
 
-    // Orchestration sub-flow: [gen-cloud-data] -> [Dagu] -> [VMs]
+    // Orchestration sub-flow: [cloud-data-config] -> [Dagu] -> [VMs]
     topo_sub_header(h, 1, "Orchestration");
 
     write!(h, r#"<tr><td style="padding:4px 8px;">
 <table width="100%" cellpadding="0" cellspacing="0"><tr>"#).unwrap();
-    h.push_str(&topo_box(C_TEXT, "gen-cloud-data", "GHA"));
+    h.push_str(&topo_box(C_TEXT, "cloud-data-config", "GHA"));
     h.push_str(&topo_arrow("right"));
     h.push_str(&topo_box("#FF9900", "cloud-data", "JSON hub"));
     h.push_str(&topo_arrow("right"));
@@ -2343,26 +2354,23 @@ fn render_analytics_containers(h: &mut String, data: &ReportData) {
 fn render_topology(h: &mut String, data: &ReportData, mode: OutputMode) {
     section_start(h, "Infrastructure Topology", 1);
 
-    mermaid_or_css(h, mode,
-        || crate::mermaid::wireguard_mesh(data),
-        |h| render_topo_i_wireguard(h, data),
-    );
-    mermaid_or_css(h, mode,
-        || crate::mermaid::traffic_flow(data),
-        |h| render_topo_i_traffic_flow(h, data),
-    );
-    mermaid_or_css(h, mode,
-        || crate::mermaid::service_categories(data),
-        |h| render_topo_i_service_categories(h, data),
-    );
-    mermaid_or_css(h, mode,
-        || crate::mermaid::storage_overview(data),
-        |h| render_topo_i_storage_overview(h, data),
-    );
-    mermaid_or_css(h, mode,
-        || crate::mermaid::provider_map(data),
-        |h| render_topo_i_provider_map(h, data),
-    );
+    match mode {
+        OutputMode::Web => {
+            // Pre-rendered SVG diagrams (graphviz, d2, plantuml, pikchr)
+            let diagrams = crate::diagrams::generate_all(data);
+            for (title, tool, svg) in &diagrams {
+                embed_diagram(h, title, tool, svg);
+            }
+        }
+        OutputMode::Email => {
+            // CSS fallback diagrams for email clients
+            render_topo_i_wireguard(h, data);
+            render_topo_i_traffic_flow(h, data);
+            render_topo_i_service_categories(h, data);
+            render_topo_i_storage_overview(h, data);
+            render_topo_i_provider_map(h, data);
+        }
+    }
 
     section_end(h);
 }
