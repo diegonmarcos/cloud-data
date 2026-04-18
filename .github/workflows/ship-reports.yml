@@ -19,16 +19,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fail on broken symlinks
+      - name: Fail on broken symlinks (source trees only)
         run: |
           set -e
-          broken=$(find . -xtype l -not -path "./.git/*" 2>/dev/null || true)
+          # Scope: source files used in builds. Skip dist/target/node_modules/.git —
+          # those are build outputs, not inputs, and can legitimately contain
+          # machine-local symlinks (e.g. cargo deps symlinked into ~/.cargo).
+          broken=$(find . -xtype l \
+            -not -path "./.git/*" \
+            -not -path "*/dist/*" \
+            -not -path "*/target/*" \
+            -not -path "*/node_modules/*" 2>/dev/null || true)
           if [ -n "$broken" ]; then
-            echo "::error::Broken symlinks found:"
+            echo "::error::Broken symlinks found in source tree:"
             echo "$broken"
             exit 1
           fi
-          echo "No broken symlinks."
+          echo "No broken symlinks in source tree."
 
   build:
     name: "Build + push reports image"
