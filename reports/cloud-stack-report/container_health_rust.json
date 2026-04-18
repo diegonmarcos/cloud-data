@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-18T13:06:26.390257356+00:00",
-  "duration_ms": 58044,
+  "generated": "2026-04-18T18:55:28.982676442+00:00",
+  "duration_ms": 58040,
   "mesh": [
     {
       "name": "oci-mail",
@@ -119,16 +119,6 @@
       "auth_code": "200"
     },
     {
-      "url": "git.diegonmarcos.com",
-      "upstream": "10.0.0.6:3002",
-      "tcp": true,
-      "http": false,
-      "https": true,
-      "auth": true,
-      "code": "302",
-      "auth_code": "302"
-    },
-    {
       "url": "api.diegonmarcos.com/c3-api",
       "upstream": "10.0.0.6:8081",
       "tcp": false,
@@ -239,6 +229,16 @@
       "auth_code": "200"
     },
     {
+      "url": "git.diegonmarcos.com",
+      "upstream": "10.0.0.6:3002",
+      "tcp": true,
+      "http": false,
+      "https": true,
+      "auth": true,
+      "code": "302",
+      "auth_code": "302"
+    },
+    {
       "url": "sheets.diegonmarcos.com",
       "upstream": "10.0.0.6:3011",
       "tcp": true,
@@ -280,7 +280,7 @@
     },
     {
       "url": "analytics.diegonmarcos.com",
-      "upstream": "10.0.0.4:8084",
+      "upstream": "10.0.0.6:8084",
       "tcp": true,
       "http": false,
       "https": true,
@@ -333,10 +333,10 @@
       "upstream": "10.0.0.3:8080",
       "tcp": true,
       "http": false,
-      "https": true,
-      "auth": true,
-      "code": "405",
-      "auth_code": "405"
+      "https": false,
+      "auth": false,
+      "code": "502",
+      "auth_code": "502"
     },
     {
       "url": "webmail.diegonmarcos.com",
@@ -353,10 +353,10 @@
       "upstream": "10.0.0.3:2443",
       "tcp": true,
       "http": false,
-      "https": true,
-      "auth": true,
-      "code": "200",
-      "auth_code": "200"
+      "https": false,
+      "auth": false,
+      "code": "502",
+      "auth_code": "502"
     },
     {
       "url": "vault.diegonmarcos.com",
@@ -367,15 +367,6 @@
       "auth": true,
       "code": "200",
       "auth_code": "200"
-    },
-    {
-      "upstream": "10.0.0.6:8000",
-      "tcp": true,
-      "http": false,
-      "https": true,
-      "auth": true,
-      "code": "302",
-      "auth_code": "302"
     },
     {
       "url": "app.diegonmarcos.com/etherpad",
@@ -410,15 +401,6 @@
     {
       "url": "app.diegonmarcos.com/dozzle",
       "upstream": "10.0.0.4:9999",
-      "tcp": false,
-      "http": false,
-      "https": true,
-      "auth": true,
-      "code": "404",
-      "auth_code": "404"
-    },
-    {
-      "upstream": "10.0.0.6:8000",
       "tcp": false,
       "http": false,
       "https": true,
@@ -611,50 +593,6 @@
       "container": "dozzle",
       "port": 9999,
       "vm": "oci-analytics",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": "",
-      "container_up": false
-    },
-    {
-      "dns": "matomo.app",
-      "container": "matomo-hybrid",
-      "port": 8084,
-      "vm": "oci-analytics",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": "",
-      "container_up": false
-    },
-    {
-      "dns": "umami-db.app",
-      "container": "umami-db",
-      "port": 5442,
-      "vm": "oci-analytics",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": "",
-      "container_up": false
-    },
-    {
-      "dns": "umami.app",
-      "container": "umami",
-      "port": 3006,
-      "vm": "oci-analytics",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": "",
-      "container_up": false
-    },
-    {
-      "dns": "backup-gitea.app",
-      "container": "gitea",
-      "port": 3002,
-      "vm": "oci-apps",
       "tcp": false,
       "http": false,
       "code": "---",
@@ -948,6 +886,17 @@
       "container_up": false
     },
     {
+      "dns": "matomo.app",
+      "container": "matomo-hybrid",
+      "port": 8084,
+      "vm": "oci-apps",
+      "tcp": false,
+      "http": false,
+      "code": "---",
+      "resolved_ip": "",
+      "container_up": false
+    },
+    {
       "dns": "mattermost-mcp.app",
       "container": "mattermost-mcp",
       "port": 3102,
@@ -1091,27 +1040,31 @@
       "container_up": false
     },
     {
+      "dns": "umami-db.app",
+      "container": "umami-db",
+      "port": 5442,
+      "vm": "oci-apps",
+      "tcp": false,
+      "http": false,
+      "code": "---",
+      "resolved_ip": "",
+      "container_up": false
+    },
+    {
+      "dns": "umami.app",
+      "container": "umami",
+      "port": 3006,
+      "vm": "oci-apps",
+      "tcp": false,
+      "http": false,
+      "code": "---",
+      "resolved_ip": "",
+      "container_up": false
+    },
+    {
       "dns": "vaultwarden.app",
       "container": "vaultwarden",
       "port": 8880,
-      "vm": "oci-apps",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": "",
-      "container_up": false
-    },
-    {
-      "port": 8000,
-      "vm": "oci-apps",
-      "tcp": false,
-      "http": false,
-      "code": "---",
-      "resolved_ip": "",
-      "container_up": false
-    },
-    {
-      "port": 5440,
       "vm": "oci-apps",
       "tcp": false,
       "http": false,
@@ -1354,34 +1307,6 @@
       "size": "?",
       "tcp_ok": false,
       "dns": "redis.app",
-      "backup": false
-    },
-    {
-      "service": "matomo",
-      "db_type": "custom",
-      "container": "matomo-hybrid",
-      "vm": "oci-analytics",
-      "port": 8084,
-      "declared": true,
-      "running": false,
-      "healthy": false,
-      "size": "?",
-      "tcp_ok": false,
-      "dns": "matomo.app",
-      "backup": true
-    },
-    {
-      "service": "umami",
-      "db_type": "postgres",
-      "container": "umami-db",
-      "vm": "oci-analytics",
-      "port": 5442,
-      "declared": true,
-      "running": false,
-      "healthy": false,
-      "size": "?",
-      "tcp_ok": false,
-      "dns": "umami-db.app",
       "backup": true
     },
     {
@@ -1539,6 +1464,20 @@
       "backup": false
     },
     {
+      "service": "matomo",
+      "db_type": "custom",
+      "container": "matomo-hybrid",
+      "vm": "oci-apps",
+      "port": 8084,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "matomo.app",
+      "backup": true
+    },
+    {
       "service": "mattermost-bots",
       "db_type": "postgres",
       "container": "mattermost-postgres",
@@ -1595,6 +1534,20 @@
       "backup": true
     },
     {
+      "service": "umami",
+      "db_type": "postgres",
+      "container": "umami-db",
+      "vm": "oci-apps",
+      "port": 5442,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "umami-db.app",
+      "backup": true
+    },
+    {
       "service": "vaultwarden",
       "db_type": "sqlite",
       "container": "vaultwarden",
@@ -1606,17 +1559,6 @@
       "size": "?",
       "tcp_ok": false,
       "dns": "vaultwarden.app",
-      "backup": true
-    },
-    {
-      "db_type": "postgres",
-      "vm": "oci-apps",
-      "port": 5440,
-      "declared": true,
-      "running": false,
-      "healthy": false,
-      "size": "?",
-      "tcp_ok": false,
       "backup": true
     },
     {
@@ -1645,14 +1587,14 @@
     }
   ],
   "timers": {
-    "databases": 3015,
-    "public_urls": 1228,
-    "mesh": 3001,
+    "public_urls": 612,
+    "port_scan": 3003,
+    "mail_dns": 55013,
+    "TOTAL": 58040,
     "private": 0,
-    "vm_ssh": 583,
-    "storage": 0,
-    "mail_dns": 55016,
-    "TOTAL": 58044,
-    "port_scan": 3006
+    "databases": 3030,
+    "mesh": 3002,
+    "vm_ssh": 542,
+    "storage": 0
   }
 }

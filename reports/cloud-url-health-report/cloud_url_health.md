@@ -6,21 +6,22 @@
   ██║   ██║██╔══██╗██║          ██╔══██║██╔══╝  ██╔══██║██║     ██║   ██╔══██║
   ╚██████╔╝██║  ██║███████╗     ██║  ██║███████╗██║  ██║███████╗██║   ██║  ██║
    ╚═════╝ ╚═╝  ╚═╝╚══════╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝
-  CLOUD URL HEALTH — 2026-04-18T13:08:08.534000066+00:00
+  CLOUD URL HEALTH — 2026-04-18T18:57:11.613794484+00:00
 ══════════════════════════════════════════════════════════════
 
   SUMMARY
 ══════════════════════════════════════════════════════════════
-  Public:  16/16 healthy
-  Private: 0/47 healthy
+  Public:  13/15 healthy
+  Private: 0/45 healthy
   Duration: 5.0s
 
   ISSUES
 ══════════════════════════════════════════════════════════════
+  ❌  mail-stalwart.diegonmarcos.com  HTTP 502
+  ❌  smtp.diegonmarcos.com  HTTP 502
   ❌  authelia (gcp-E2-f_0)  TCP: timeout 5s
   ❌  backup-borg (oci-A1-f_0)  TCP: timeout 5s
   ❌  backup-bup (oci-A1-f_0)  TCP: timeout 5s
-  ❌  backup-gitea (oci-A1-f_0)  TCP: timeout 5s
   ❌  c3-infra-api (oci-A1-f_0)  TCP: timeout 5s
   ❌  c3-infra-mcp (oci-A1-f_0)  TCP: timeout 5s
   ❌  c3-services-api (oci-A1-f_0)  TCP: timeout 5s
@@ -45,7 +46,7 @@
   ❌  kg-graph (oci-A1-f_0)  TCP: timeout 5s
   ❌  lgtm (oci-A1-f_0)  TCP: timeout 5s
   ❌  mail-mcp (oci-A1-f_0)  TCP: timeout 5s
-  ❌  matomo (oci-E2-f_1)  TCP: timeout 5s
+  ❌  matomo (oci-A1-f_0)  TCP: timeout 5s
   ❌  mattermost-bots (oci-A1-f_0)  TCP: timeout 5s
   ❌  mattermost-mcp (oci-A1-f_0)  TCP: timeout 5s
   ❌  ntfy (oci-A1-f_0)  TCP: timeout 5s
@@ -61,7 +62,7 @@
   ❌  smtp-proxy (oci-E2-f_0)  TCP: timeout 5s
   ❌  snappymail (oci-E2-f_0)  TCP: timeout 5s
   ❌  stalwart (oci-E2-f_0)  TCP: timeout 5s
-  ❌  umami (oci-E2-f_1)  TCP: timeout 5s
+  ❌  umami (oci-A1-f_0)  TCP: timeout 5s
   ❌  vaultwarden (oci-A1-f_0)  TCP: timeout 5s
 
 
@@ -69,21 +70,21 @@
 ──────────────────────────────────────────────────────────────
   DOMAIN                                    DNS  TCP  TLS  HTTP    ms  DETAIL
   ------------------------------------------------------------------------------------------
-  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 106ms  200
-  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 178ms  200
-  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 175ms  200
-  db.diegonmarcos.com                         ✅    ✅    ✅     ✅ 166ms  200
-  diegonmarcos.com                            ✅    ✅    ✅     ✅ 177ms  200
-  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 188ms  200
-  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 188ms  200
-  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 189ms  200
-  mail-stalwart.diegonmarcos.com              ✅    ✅    ✅     ✅ 735ms  200
-  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 132ms  200
-  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 176ms  200
-  smtp.diegonmarcos.com                       ✅    ✅    ✅     ✅ 512ms  405
-  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 315ms  200
-  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅  91ms  200
-  workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 164ms  200
+  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 271ms  200
+  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 436ms  200
+  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 438ms  200
+  db.diegonmarcos.com                         ✅    ✅    ✅     ✅ 452ms  200
+  diegonmarcos.com                            ✅    ✅    ✅     ✅ 322ms  200
+  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 455ms  200
+  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 429ms  200
+  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 457ms  200
+  mail-stalwart.diegonmarcos.com              ✅    ✅    ✅     ❌ 336ms  HTTP 502
+  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 241ms  200
+  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 434ms  200
+  smtp.diegonmarcos.com                       ✅    ✅    ✅     ❌ 372ms  HTTP 502
+  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 484ms  200
+  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅ 267ms  200
+  workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 459ms  200
 
 
 2. PRIVATE URLS (WireGuard -> Container)
@@ -93,7 +94,6 @@
   authelia (gcp-E2-f_0)          10.0.0.1:9091             ❌    ⬚  5001ms  TCP: timeout 5s
   backup-borg (oci-A1-f_0)       10.0.0.6:2224             ❌    ⬚  5001ms  TCP: timeout 5s
   backup-bup (oci-A1-f_0)        10.0.0.6:2223             ❌    ⬚  5001ms  TCP: timeout 5s
-  backup-gitea (oci-A1-f_0)      10.0.0.6:3002             ❌    ⬚  5001ms  TCP: timeout 5s
   c3-infra-api (oci-A1-f_0)      10.0.0.6:8081             ❌    ⬚  5001ms  TCP: timeout 5s
   c3-infra-mcp (oci-A1-f_0)      10.0.0.6:3100             ❌    ⬚  5001ms  TCP: timeout 5s
   c3-services-api (oci-A1-f_0)   10.0.0.6:8082             ❌    ⬚  5001ms  TCP: timeout 5s
@@ -118,7 +118,7 @@
   kg-graph (oci-A1-f_0)          10.0.0.6:8001             ❌    ⬚  5001ms  TCP: timeout 5s
   lgtm (oci-A1-f_0)              10.0.0.6:3200             ❌    ⬚  5001ms  TCP: timeout 5s
   mail-mcp (oci-A1-f_0)          10.0.0.6:3103             ❌    ⬚  5001ms  TCP: timeout 5s
-  matomo (oci-E2-f_1)            10.0.0.4:8084             ❌    ⬚  5001ms  TCP: timeout 5s
+  matomo (oci-A1-f_0)            10.0.0.6:8084             ❌    ⬚  5001ms  TCP: timeout 5s
   mattermost-bots (oci-A1-f_0)   10.0.0.6:8065             ❌    ⬚  5001ms  TCP: timeout 5s
   mattermost-mcp (oci-A1-f_0)    10.0.0.6:3102             ❌    ⬚  5001ms  TCP: timeout 5s
   ntfy (oci-A1-f_0)              10.0.0.6:8090             ❌    ⬚  5001ms  TCP: timeout 5s
@@ -134,12 +134,12 @@
   smtp-proxy (oci-E2-f_0)        10.0.0.3:8080             ❌    ⬚  5001ms  TCP: timeout 5s
   snappymail (oci-E2-f_0)        10.0.0.3:8888             ❌    ⬚  5001ms  TCP: timeout 5s
   stalwart (oci-E2-f_0)          10.0.0.3:2443             ❌    ⬚  5001ms  TCP: timeout 5s
-  umami (oci-E2-f_1)             10.0.0.4:3006             ❌    ⬚  5001ms  TCP: timeout 5s
+  umami (oci-A1-f_0)             10.0.0.6:3006             ❌    ⬚  5001ms  TCP: timeout 5s
   vaultwarden (oci-A1-f_0)       10.0.0.6:8880             ❌    ⬚  5001ms  TCP: timeout 5s
 
 
 ══════════════════════════════════════════════════════════════
-RESULT: 16/63 healthy (47 failed) in 5.0s
+RESULT: 13/60 healthy (47 failed) in 5.0s
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────

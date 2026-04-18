@@ -6,7 +6,7 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-04-18T13:08:03.523348178+00:00
+  CLOUD MAIL FULL — 2026-04-18T18:57:06.602872279+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
@@ -53,18 +53,18 @@
 
 0. INSTANT KPIs
 ──────────────────────────────────────────────────────────────
-  ✅ mail.* HTTPS                   HTTP 301 (0.1s)
+  ✅ mail.* HTTPS                   HTTP 301 (0.2s)
   ✅ webmail HTTPS                  HTTP 200 (0.2s)
-  ✅ auth HTTPS                     HTTP 200 (0.1s)
-  ✅ MCP endpoint                   HTTP 400 (0.3s)
-  ✅ mail:993 TLS                   TLS OK (0.5s)
-  ✅ mail:465 TLS                   TLS OK (0.4s)
-  ✅ mail:587 STARTTLS              TLS OK (0.8s)
+  ✅ auth HTTPS                     HTTP 200 (0.2s)
+  ✅ MCP endpoint                   HTTP 400 (0.4s)
+  ✅ mail:993 TLS                   TLS OK (0.3s)
+  ✅ mail:465 TLS                   TLS OK (0.2s)
+  ✅ mail:587 STARTTLS              TLS OK (0.3s)
   ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
   ❌ DKIM record                    MISSING (0.0s) [CRITICAL]
   ✅ GHA health                     gh unavailable (skipped)
   ✅ CF Worker alive                HTTP 500 (0.2s)
-  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.1s)
+  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.0s)
   ❌ IMAP direct (WG)               10.0.0.3:993 FAIL (3.0s) [CRITICAL]
   ❌ SMTP direct (WG)               10.0.0.3:25 FAIL (3.0s) [CRITICAL]
 
@@ -92,22 +92,22 @@
 
 3. NETWORK + AUTH
 ──────────────────────────────────────────────────────────────
-  ✅ Caddy (gcp-proxy)              HTTPS OK (no DNS) (3.1s)
+  ✅ Caddy (gcp-proxy)              HTTPS OK (no DNS) (3.2s)
   ❌ Hickory DNS                    FAIL: no response (3.0s) [CRITICAL]
   ❌ TLS WG direct                  SSH down [CRITICAL]
   ❌ Caddy L4 -> IMAP               no proxy data [CRITICAL]
   ❌ Caddy L4 -> SMTPS              no proxy data [CRITICAL]
   ❌ Caddy L4 -> SMTP               no proxy data [CRITICAL]
-  ✅ mail:993 (IMAP)                TLS OK (0.5s)
-  ✅ mail:465 (SMTPS)               TLS OK (0.5s)
-  ✅ mail:587 (SMTP Sub)            TLS OK (0.9s)
+  ✅ mail:993 (IMAP)                TLS OK (0.3s)
+  ✅ mail:465 (SMTPS)               TLS OK (0.3s)
+  ✅ mail:587 (SMTP Sub)            TLS OK (0.3s)
   ⚠️  SMTP :25 relay                 no data [WARNING]
   ⚠️  SMTP :587 local TLS            no data [WARNING]
-  ✅ Webmail HTTPS                  HTTP 301 (0.1s)
+  ✅ Webmail HTTPS                  HTTP 301 (0.2s)
   ⚠️  Webmail internal               no data [WARNING]
   ⚠️  SnappyMail internal            no data [WARNING]
-  ✅ mail.*/webmail/ route          HTTP 301 (0.1s)
-  ⚠️  webmail.* redirect             200 →  (0.1s) [WARNING]
+  ✅ mail.*/webmail/ route          HTTP 301 (0.2s)
+  ⚠️  webmail.* redirect             200 →  (0.2s) [WARNING]
   ⚠️  Authelia health                no proxy data [WARNING]
   ⚠️  OIDC bearer -> webmail         no OIDC token [WARNING]
   ✅ Mail Admin via Bearer          N/A — Maddy CLI-only (no web admin)
@@ -147,21 +147,21 @@
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
   TOTAL                    49.5s
-  T0_path_checker          39.2s
-  P0_instant_kpis          4.1s
-  P3_network               3.1s
-  P4_dns_auth              3.1s
-  P2-P5_parallel           3.1s
+  T0_path_checker          39.6s
+  P0_instant_kpis          3.7s
+  P4_dns_auth              3.2s
+  P2-P5_parallel           3.2s
+  P3_network               3.2s
   P1_preflight             3.0s
-  P6_e2e_delivery          0.0s
-  P2_containers            0.0s
   P5_internals             0.0s
+  P2_containers            0.0s
+  P6_e2e_delivery          0.0s
 
   Total: 49.5s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════
-RESULT: CRITICAL -- 25/67 passed, 27 critical, 15 warnings
+RESULT: CRITICAL -- 26/67 passed, 26 critical, 15 warnings
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────

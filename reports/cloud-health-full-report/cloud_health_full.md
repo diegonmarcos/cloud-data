@@ -6,12 +6,12 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-  CLOUD HEALTH FULL — 2026-04-18T13:07:13.998680269+00:00
+  CLOUD HEALTH FULL — 2026-04-18T18:56:17.094945746+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-  231 issues: 11 critical, 147 warnings, 73 info
+  220 issues: 11 critical, 138 warnings, 71 info
 
   CRITICAL:
     ❌ C3 API (mesh): http://10.0.0.6:8081/health -> err: error sending request for url (http://10.0.0.6:8081/health)
@@ -29,13 +29,11 @@
     ⚠️  SSH agent: no SSH agent or no keys
     ⚠️  Container authelia/authelia: authelia on gcp-proxy: VM unreachable
     ⚠️  Container authelia/authelia-redis: authelia-redis on gcp-proxy: VM unreachable
-    ⚠️  Container backup-gitea/gitea: gitea on oci-apps: VM unreachable
     ⚠️  Container c3-infra-api/c3-infra-api: c3-infra-api on oci-apps: VM unreachable
     ⚠️  Container c3-infra-mcp/c3-infra-mcp: c3-infra-mcp on oci-apps: VM unreachable
     ⚠️  Container c3-services-api/c3-services-api: c3-services-api on oci-apps: VM unreachable
     ⚠️  Container c3-services-mcp/c3-services-mcp: c3-services-mcp on oci-apps: VM unreachable
     ⚠️  Container caddy/caddy: caddy on gcp-proxy: VM unreachable
-    ⚠️  Container caddy/introspect-proxy: introspect-proxy on gcp-proxy: VM unreachable
     ⚠️  Container cloud-builder-x/cloud-builder-x: cloud-builder-x on oci-apps: VM unreachable
     ⚠️  Container cloud-cgc-mcp/cloud-cgc-mcp: cloud-cgc-mcp on oci-apps: VM unreachable
     ⚠️  Container cloud-spec/cloud-spec: cloud-spec on oci-apps: VM unreachable
@@ -67,7 +65,7 @@
     ⚠️  Container lgtm/lgtm_tempo: lgtm_tempo on oci-apps: VM unreachable
     ⚠️  Container maddy/maddy: maddy on oci-mail: VM unreachable
     ⚠️  Container mail-mcp/mail-mcp: mail-mcp on oci-apps: VM unreachable
-    ⚠️  Container matomo/matomo-hybrid: matomo-hybrid on oci-analytics: VM unreachable
+    ⚠️  Container matomo/matomo-hybrid: matomo-hybrid on oci-apps: VM unreachable
     ⚠️  Container mattermost-bots/mattermost: mattermost on oci-apps: VM unreachable
     ⚠️  Container mattermost-bots/mattermost-bots: mattermost-bots on oci-apps: VM unreachable
     ⚠️  Container mattermost-bots/mattermost-postgres: mattermost-postgres on oci-apps: VM unreachable
@@ -93,13 +91,12 @@
     ⚠️  Container snappymail/snappymail: snappymail on oci-mail: VM unreachable
     ⚠️  Container stalwart/stalwart: stalwart on oci-mail: VM unreachable
     ⚠️  Container syslog-forwarder/syslog-forwarder: syslog-forwarder on oci-mail: VM unreachable
-    ⚠️  Container umami/umami: umami on oci-analytics: VM unreachable
-    ⚠️  Container umami/umami-db: umami-db on oci-analytics: VM unreachable
-    ⚠️  Container umami/umami-setup: umami-setup on oci-analytics: VM unreachable
+    ⚠️  Container umami/umami: umami on oci-apps: VM unreachable
+    ⚠️  Container umami/umami-db: umami-db on oci-apps: VM unreachable
+    ⚠️  Container umami/umami-setup: umami-setup on oci-apps: VM unreachable
     ⚠️  Container vaultwarden/vaultwarden: vaultwarden on oci-apps: VM unreachable
     ⚠️  Private URLs (Hickory): Hickory DNS at 10.0.0.1 is down — falling back to WG IPs
     ⚠️  authelia.app:9091: authelia.app:9091 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip
-    ⚠️  backup-gitea.app:3002: backup-gitea.app:3002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip
     ⚠️  c3-infra-api.app:8081: c3-infra-api.app:8081 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip
     ⚠️  c3-infra-mcp.app:3100: c3-infra-mcp.app:3100 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip
     ⚠️  c3-services-api.app:8082: c3-services-api.app:8082 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip
@@ -138,8 +135,9 @@
     ⚠️  stalwart.app:2443: stalwart.app:2443 DNS=ok(151.101.1.195) TCP=FAIL HTTP=skip
     ⚠️  umami.app:3006: umami.app:3006 DNS=ok(76.76.21.21) TCP=FAIL HTTP=skip
     ⚠️  vaultwarden.app:8880: vaultwarden.app:8880 DNS=ok(78.46.170.179) TCP=FAIL HTTP=skip
+    ⚠️  Public smtp.diegonmarcos.com: smtp.diegonmarcos.com: HTTPS=502 AUTH=502 (no-auth=502, auth=502)
+    ⚠️  Public mail-stalwart.diegonmarcos.com: mail-stalwart.diegonmarcos.com: HTTPS=502 AUTH=502 (no-auth=502, auth=502)
     ⚠️  Cross authelia: public up, container down: authelia: public URL responds but container is down — stale cache or wrong routing
-    ⚠️  Cross backup-gitea: public up, container down: backup-gitea: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross c3-infra-api: public up, container down: c3-infra-api: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross c3-infra-mcp: public up, container down: c3-infra-mcp: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross c3-services-api: public up, container down: c3-services-api: public URL responds but container is down — stale cache or wrong routing
@@ -161,9 +159,7 @@
     ⚠️  Cross ntfy: public up, container down: ntfy: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross photoprism: public up, container down: photoprism: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross radicale: public up, container down: radicale: public URL responds but container is down — stale cache or wrong routing
-    ⚠️  Cross smtp-proxy: public up, container down: smtp-proxy: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross snappymail: public up, container down: snappymail: public URL responds but container is down — stale cache or wrong routing
-    ⚠️  Cross stalwart: public up, container down: stalwart: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross umami: public up, container down: umami: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross vaultwarden: public up, container down: vaultwarden: public URL responds but container is down — stale cache or wrong routing
     ⚠️  GHA workflows: gh CLI failed
@@ -197,7 +193,6 @@
     ℹ️  Drift no-port-in-build: authelia: authelia has port in topology but missing ports.app in build.json
     ℹ️  Drift no-port-in-build: backup-borg: backup-borg has port in topology but missing ports.app in build.json
     ℹ️  Drift no-port-in-build: backup-bup: backup-bup has port in topology but missing ports.app in build.json
-    ℹ️  Drift no-port-in-build: backup-gitea: backup-gitea has port in topology but missing ports.app in build.json
     ℹ️  Drift no-port-in-build: c3-infra-api: c3-infra-api has port in topology but missing ports.app in build.json
     ℹ️  Drift no-port-in-build: c3-infra-mcp: c3-infra-mcp has port in topology but missing ports.app in build.json
     ℹ️  Drift no-port-in-build: c3-services-api: c3-services-api has port in topology but missing ports.app in build.json
@@ -251,30 +246,30 @@
     1. Self-check        ⚠️ 2/7                                          
     2. WG Mesh           ❌ 0/1            ❌ 0/1            ❌ 0/1            ❌ 0/1           
     3. Platform          ❌ 0/1            ❌ 0/1            ❌ 0/1            ❌ 0/1           
-    4. Containers        ❌ 0/7            ❌ 0/5            ❌ 0/52           ❌ 0/8           
-    5. Private URLs      ❌ 0/5            ❌ 0/2            ❌ 0/21           ❌ 0/3           
-    6. Public URLs       ✅ 29/29                                         
-    7. Cross-checks      ❌ 0/29                                          
+    4. Containers        ❌ 0/6            ❌ 0/5            ❌ 0/52           ❌ 0/4           
+    5. Private URLs      ❌ 0/5            ❌ 0/2            ❌ 0/19           ❌ 0/3           
+    6. Public URLs       ⚠️ 25/27                                        
+    7. Cross-checks      ❌ 0/25                                          
     8. External          ⚠️ 8/10                                         
-    9. Drift             ❌ 0/72                                          
+    9. Drift             ❌ 0/70                                          
     10. Security         ✅ 19/19                                         
     11. E2E Email        ✅ 1/1                                           
 
 1. SELF-CHECK
 ──────────────────────────────────────────────────────────────
   ❌ C3 API (mesh)                  http://10.0.0.6:8081/health -> err: error sending request for url (http://10.0.0.6:8081/health) (8.0s) [CRITICAL]
-  ✅ C3 API (public)                https://api.diegonmarcos.com/c3-api/health -> 302 (0.1s)
+  ✅ C3 API (public)                https://api.diegonmarcos.com/c3-api/health -> 302 (0.2s)
   ❌ WireGuard interface            TCP 10.0.0.1:22 -> closed (3.0s) [CRITICAL]
   ℹ️  Local docker                   error: No such file or directory (os error 2) [INFO]
   ⚠️  SSH agent                      no SSH agent or no keys (0.0s) [WARNING]
-  ✅ cloud-data freshness           generated 2026-04-18T08:43:33.689Z (4h ago)
+  ✅ cloud-data freshness           generated 2026-04-18T15:04:46.311Z (3h ago)
   ❌ Hickory DNS resolver           dig caddy.app @10.0.0.1 -> NXDOMAIN (3.0s) [CRITICAL]
 
   Summary: 2/7 passed, 5 failed
 
 2. WIREGUARD MESH
 ──────────────────────────────────────────────────────────────
-  ❌ WG gcp-proxy                   gcp-proxy (10.0.0.1): VPS=? Dropbear=fail WG:TCP=fail SSH=fail (3.0s) [CRITICAL]
+  ❌ WG gcp-proxy                   gcp-proxy (10.0.0.1): VPS=? Dropbear=fail WG:TCP=fail SSH=fail (3.1s) [CRITICAL]
   ✅ WG gcp-t4                      gcp-t4 (10.0.0.8): VPS=? Dropbear=fail WG:TCP=fail SSH=fail [spot instance] (6.0s)
   ❌ WG oci-apps                    oci-apps (10.0.0.6): VPS=? Dropbear=fail WG:TCP=fail SSH=fail (6.0s) [CRITICAL]
   ❌ WG oci-mail                    oci-mail (10.0.0.3): VPS=? Dropbear=fail WG:TCP=fail SSH=fail (6.0s) [CRITICAL]
@@ -296,13 +291,11 @@
 ──────────────────────────────────────────────────────────────
   ⚠️  Container authelia/authelia    authelia on gcp-proxy: VM unreachable [WARNING]
   ⚠️  Container authelia/authelia-redis authelia-redis on gcp-proxy: VM unreachable [WARNING]
-  ⚠️  Container backup-gitea/gitea   gitea on oci-apps: VM unreachable [WARNING]
   ⚠️  Container c3-infra-api/c3-infra-api c3-infra-api on oci-apps: VM unreachable [WARNING]
   ⚠️  Container c3-infra-mcp/c3-infra-mcp c3-infra-mcp on oci-apps: VM unreachable [WARNING]
   ⚠️  Container c3-services-api/c3-services-api c3-services-api on oci-apps: VM unreachable [WARNING]
   ⚠️  Container c3-services-mcp/c3-services-mcp c3-services-mcp on oci-apps: VM unreachable [WARNING]
   ⚠️  Container caddy/caddy          caddy on gcp-proxy: VM unreachable [WARNING]
-  ⚠️  Container caddy/introspect-proxy introspect-proxy on gcp-proxy: VM unreachable [WARNING]
   ⚠️  Container cloud-builder-x/cloud-builder-x cloud-builder-x on oci-apps: VM unreachable [WARNING]
   ⚠️  Container cloud-cgc-mcp/cloud-cgc-mcp cloud-cgc-mcp on oci-apps: VM unreachable [WARNING]
   ⚠️  Container cloud-spec/cloud-spec cloud-spec on oci-apps: VM unreachable [WARNING]
@@ -334,7 +327,7 @@
   ⚠️  Container lgtm/lgtm_tempo      lgtm_tempo on oci-apps: VM unreachable [WARNING]
   ⚠️  Container maddy/maddy          maddy on oci-mail: VM unreachable [WARNING]
   ⚠️  Container mail-mcp/mail-mcp    mail-mcp on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container matomo/matomo-hybrid matomo-hybrid on oci-analytics: VM unreachable [WARNING]
+  ⚠️  Container matomo/matomo-hybrid matomo-hybrid on oci-apps: VM unreachable [WARNING]
   ⚠️  Container mattermost-bots/mattermost mattermost on oci-apps: VM unreachable [WARNING]
   ⚠️  Container mattermost-bots/mattermost-bots mattermost-bots on oci-apps: VM unreachable [WARNING]
   ⚠️  Container mattermost-bots/mattermost-postgres mattermost-postgres on oci-apps: VM unreachable [WARNING]
@@ -360,97 +353,94 @@
   ⚠️  Container snappymail/snappymail snappymail on oci-mail: VM unreachable [WARNING]
   ⚠️  Container stalwart/stalwart    stalwart on oci-mail: VM unreachable [WARNING]
   ⚠️  Container syslog-forwarder/syslog-forwarder syslog-forwarder on oci-mail: VM unreachable [WARNING]
-  ⚠️  Container umami/umami          umami on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container umami/umami-db       umami-db on oci-analytics: VM unreachable [WARNING]
-  ⚠️  Container umami/umami-setup    umami-setup on oci-analytics: VM unreachable [WARNING]
+  ⚠️  Container umami/umami          umami on oci-apps: VM unreachable [WARNING]
+  ⚠️  Container umami/umami-db       umami-db on oci-apps: VM unreachable [WARNING]
+  ⚠️  Container umami/umami-setup    umami-setup on oci-apps: VM unreachable [WARNING]
   ⚠️  Container vaultwarden/vaultwarden vaultwarden on oci-apps: VM unreachable [WARNING]
 
-  Summary: 0/73 passed, 73 failed
+  Summary: 0/68 passed, 68 failed
 
 5. PRIVATE URLS
 ──────────────────────────────────────────────────────────────
   ⚠️  Private URLs (Hickory)         Hickory DNS at 10.0.0.1 is down — falling back to WG IPs [WARNING]
   ⚠️  authelia.app:9091              authelia.app:9091 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  backup-gitea.app:3002          backup-gitea.app:3002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  c3-infra-api.app:8081          c3-infra-api.app:8081 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  c3-infra-mcp.app:3100          c3-infra-mcp.app:3100 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  c3-infra-mcp.app:3100          c3-infra-mcp.app:3100 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  c3-services-api.app:8082       c3-services-api.app:8082 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  c3-services-mcp.app:3101       c3-services-mcp.app:3101 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ✅ caddy.app:443                  caddy.app:443 DNS=ok(204.69.207.1) TCP=ok HTTP=n/a (0.1s)
-  ⚠️  cloud-cgc-mcp.app:3105         cloud-cgc-mcp.app:3105 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
-  ⚠️  cloud-spec.app:3080            c3-spec.app:3080 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
-  ⚠️  code-server.app:8443           code-server.app:8443 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  cloud-cgc-mcp.app:3105         cloud-cgc-mcp.app:3105 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  cloud-spec.app:3080            c3-spec.app:3080 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  code-server.app:8443           code-server.app:8443 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  crawlee-cloud.app:3000         crawlee.app:3000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
   ⚠️  dagu.app:8070                  dagu.app:8070 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  dbgate.app:8086                dbgate.app:8086 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  dozzle.app:9999                dozzle.app:9999 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  etherpad.app:3012              etherpad.app:3012 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  etherpad.app:3012              etherpad.app:3012 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  filebrowser.app:3015           filebrowser.app:3015 DNS=ok(15.197.225.128) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  fluent-bit.app:2020            fluent-bit.app:2020 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  gitea.app:3002                 gitea.app:3002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (16.0s) [WARNING]
   ⚠️  google-workspace-mcp.app:3104  g-workspace-mcp.app:3104 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
   ⚠️  grist.app:3011                 grist.app:3011 DNS=ok(35.188.208.237) TCP=FAIL HTTP=skip (3.1s) [WARNING]
-  ⚠️  hedgedoc.app:3018              hedgedoc.app:3018 DNS=ok(192.145.46.12) TCP=FAIL HTTP=skip (3.1s) [WARNING]
+  ⚠️  hedgedoc.app:3018              hedgedoc.app:3018 DNS=ok(192.145.46.12) TCP=FAIL HTTP=skip (3.2s) [WARNING]
   ⚠️  hickory-dns.app:53             hickory-dns.app:53 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  introspect-proxy.app:4182      introspect-proxy.app:4182 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  lgtm.app:3200                  grafana.app:3200 DNS=ok(216.40.34.41) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  mail-mcp.app:3103              mail-mcp.app:3103 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  matomo.app:8084                matomo.app:8084 DNS=ok(213.186.33.5) TCP=ok HTTP=err: error sending request for url (http://213.186.33.5:8084/) (8.3s) [WARNING]
-  ⚠️  mattermost-bots.app:8065       mattermost.app:8065 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  mattermost-bots.app:8065       mattermost.app:8065 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  mattermost-mcp.app:3102        mattermost-mcp.app:3102 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  ntfy.app:8090                  ntfy.app:8090 DNS=ok(35.176.213.46) TCP=FAIL HTTP=skip (3.0s) [WARNING]
+  ⚠️  ntfy.app:8090                  ntfy.app:8090 DNS=ok(35.176.213.46) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  ollama.app:11434               ollama.app:11434 DNS=SYS-FAIL→hickory(10.0.0.8) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  ollama-hai.app:11435           ollama-hai.app:11435 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  ollama-hai.app:11435           ollama-hai.app:11435 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  photoprism.app:3013            photoprism.app:3013 DNS=ok(176.9.111.126) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  photos-webhook.app:5002        photos-webhook.app:5002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  radicale.app:5232              radicale.app:5232 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
   ⚠️  redis.app:6379                 redis.app:6379 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  rig-agentic-sonn-14bq8.app:8091 rig-agentic-sonn-14bq8.app:8091 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  smtp-proxy.app:8080            smtp-proxy.app:8080 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  snappymail.app:8888            snappymail.app:8888 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  snappymail.app:8888            snappymail.app:8888 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  stalwart.app:2443              stalwart.app:2443 DNS=ok(151.101.1.195) TCP=FAIL HTTP=skip (3.1s) [WARNING]
-  ⚠️  umami.app:3006                 umami.app:3006 DNS=ok(76.76.21.21) TCP=FAIL HTTP=skip (3.1s) [WARNING]
+  ⚠️  umami.app:3006                 umami.app:3006 DNS=ok(76.76.21.21) TCP=FAIL HTTP=skip (3.0s) [WARNING]
   ⚠️  vaultwarden.app:8880           vaultwarden.app:8880 DNS=ok(78.46.170.179) TCP=FAIL HTTP=skip (0.2s) [WARNING]
 
-  Summary: 1/43 passed, 42 failed
+  Summary: 1/41 passed, 40 failed
 
 6. PUBLIC URLS
 ──────────────────────────────────────────────────────────────
   ✅ Public auth.diegonmarcos.com   auth.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
-  ✅ Public git.diegonmarcos.com    git.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public api.diegonmarcos.com/c3-api api.diegonmarcos.com/c3-api: HTTPS=404 AUTH=404 (no-auth=404, auth=404) (0.3s)
-  ✅ Public mcp.diegonmarcos.com/c3-infra-mcp mcp.diegonmarcos.com/c3-infra-mcp: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
+  ✅ Public mcp.diegonmarcos.com/c3-infra-mcp mcp.diegonmarcos.com/c3-infra-mcp: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
   ✅ Public api.diegonmarcos.com/services api.diegonmarcos.com/services: HTTPS=404 AUTH=404 (no-auth=404, auth=404) (0.3s)
-  ✅ Public proxy.diegonmarcos.com  proxy.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
+  ✅ Public proxy.diegonmarcos.com  proxy.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public ide.diegonmarcos.com    ide.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public api.diegonmarcos.com    api.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
   ✅ Public workflows.diegonmarcos.com workflows.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
-  ✅ Public db.diegonmarcos.com     db.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
+  ✅ Public db.diegonmarcos.com     db.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public logs.diegonmarcos.com   logs.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
-  ✅ Public pad.diegonmarcos.com    pad.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
+  ✅ Public pad.diegonmarcos.com    pad.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
   ✅ Public files.diegonmarcos.com  files.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
   ✅ Public git.diegonmarcos.com    git.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
-  ✅ Public sheets.diegonmarcos.com sheets.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.1s)
-  ✅ Public doc.diegonmarcos.com    doc.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
+  ✅ Public sheets.diegonmarcos.com sheets.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
+  ✅ Public doc.diegonmarcos.com    doc.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
   ✅ Public grafana.diegonmarcos.com grafana.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public mail.diegonmarcos.com   mail.diegonmarcos.com: HTTPS=301 AUTH=301 (no-auth=301, auth=301) (0.3s)
   ✅ Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
-  ✅ Public chat.diegonmarcos.com   chat.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
-  ✅ Public rss.diegonmarcos.com    rss.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
-  ✅ Public photos.diegonmarcos.com photos.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
-  ✅ Public cal.diegonmarcos.com    cal.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
-  ✅ Public smtp.diegonmarcos.com   smtp.diegonmarcos.com: HTTPS=405 AUTH=405 (no-auth=405, auth=405) (0.4s)
+  ✅ Public chat.diegonmarcos.com   chat.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
+  ✅ Public rss.diegonmarcos.com    rss.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
+  ✅ Public photos.diegonmarcos.com photos.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.4s)
+  ✅ Public cal.diegonmarcos.com    cal.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
+  ⚠️  Public smtp.diegonmarcos.com   smtp.diegonmarcos.com: HTTPS=502 AUTH=502 (no-auth=502, auth=502) (0.5s) [WARNING]
   ✅ Public webmail.diegonmarcos.com webmail.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
-  ✅ Public mail-stalwart.diegonmarcos.com mail-stalwart.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.4s)
-  ✅ Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
+  ⚠️  Public mail-stalwart.diegonmarcos.com mail-stalwart.diegonmarcos.com: HTTPS=502 AUTH=502 (no-auth=502, auth=502) (0.5s) [WARNING]
+  ✅ Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public vault.diegonmarcos.com  vault.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.7s)
 
-  Summary: 29/29 passed, 0 failed
+  Summary: 25/27 passed, 2 failed
 
 7. CROSS-CHECKS
 ──────────────────────────────────────────────────────────────
   ⚠️  Cross authelia: public up, container down authelia: public URL responds but container is down — stale cache or wrong routing [WARNING]
-  ⚠️  Cross backup-gitea: public up, container down backup-gitea: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross c3-infra-api: public up, container down c3-infra-api: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross c3-infra-mcp: public up, container down c3-infra-mcp: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross c3-services-api: public up, container down c3-services-api: public URL responds but container is down — stale cache or wrong routing [WARNING]
@@ -472,20 +462,18 @@
   ⚠️  Cross ntfy: public up, container down ntfy: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross photoprism: public up, container down photoprism: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross radicale: public up, container down radicale: public URL responds but container is down — stale cache or wrong routing [WARNING]
-  ⚠️  Cross smtp-proxy: public up, container down smtp-proxy: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross snappymail: public up, container down snappymail: public URL responds but container is down — stale cache or wrong routing [WARNING]
-  ⚠️  Cross stalwart: public up, container down stalwart: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross umami: public up, container down umami: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross vaultwarden: public up, container down vaultwarden: public URL responds but container is down — stale cache or wrong routing [WARNING]
 
-  Summary: 0/29 passed, 29 failed
+  Summary: 0/25 passed, 25 failed
 
 8. EXTERNAL
 ──────────────────────────────────────────────────────────────
   ✅ Cloudflare DNS A               dig diegonmarcos.com @1.1.1.1 -> 35.226.147.64 (0.0s)
-  ✅ GHCR registry                  ghcr.io/v2/ -> 401 (0.1s)
-  ⚠️  GHA workflows                  gh CLI failed (0.0s) [WARNING]
-  ✅ GitHub API                     api.github.com/zen -> 403 (0.1s)
+  ✅ GHCR registry                  ghcr.io/v2/ -> 401 (0.2s)
+  ⚠️  GHA workflows                  gh CLI failed [WARNING]
+  ✅ GitHub API                     api.github.com/zen -> 403 (0.2s)
   ✅ MX record                      MX diegonmarcos.com -> 22 route1.mx.cloudflare.net., 85 route2.mx.cloudflare.net., 97 route3.mx.cloudflare.net. (0.0s)
   ✅ A mail                         mail.diegonmarcos.com -> 35.226.147.64 (0.0s)
   ⚠️  DKIM dkim._domainkey           DKIM: NOT FOUND (0.0s) [WARNING]
@@ -524,7 +512,6 @@
   ℹ️  Drift no-port-in-build: authelia authelia has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: backup-borg backup-borg has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: backup-bup backup-bup has port in topology but missing ports.app in build.json [INFO]
-  ℹ️  Drift no-port-in-build: backup-gitea backup-gitea has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: c3-infra-api c3-infra-api has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: c3-infra-mcp c3-infra-mcp has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: c3-services-api c3-services-api has port in topology but missing ports.app in build.json [INFO]
@@ -569,29 +556,29 @@
   ℹ️  Drift no-port-in-build: umami  umami has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: vaultwarden vaultwarden has port in topology but missing ports.app in build.json [INFO]
 
-  Summary: 0/72 passed, 72 failed
+  Summary: 0/70 passed, 70 failed
 
 10. SECURITY
 ──────────────────────────────────────────────────────────────
-  ✅ TLS cert diegonmarcos.com      expires Jun 29 22:11:40 2026 GMT (72d) (0.1s)
-  ✅ TLS cert api.diegonmarcos.com  expires Jun 29 22:10:39 2026 GMT (72d) (0.2s)
-  ✅ TLS cert auth.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (72d) (0.2s)
-  ✅ TLS cert mail.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (72d) (0.2s)
-  ✅ TLS cert vault.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (72d) (0.2s)
+  ✅ TLS cert diegonmarcos.com      expires Jun 29 22:11:40 2026 GMT (72d) (0.2s)
+  ✅ TLS cert api.diegonmarcos.com  expires Jun 29 22:10:39 2026 GMT (72d) (0.3s)
+  ✅ TLS cert auth.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (72d) (0.3s)
+  ✅ TLS cert mail.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (72d) (0.3s)
+  ✅ TLS cert vault.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (72d) (0.3s)
   ✅ DMARC policy                   DMARC: v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.0s)
   ✅ SPF strict (-all)              SPF: present (strict=-all) (0.0s)
-  ✅ Authelia health                auth.diegonmarcos.com/api/health -> 200 (0.1s)
+  ✅ Authelia health                auth.diegonmarcos.com/api/health -> 200 (0.2s)
   ✅ Firewall gcp-proxy             gcp-proxy: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall gcp-t4                gcp-t4: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-apps              oci-apps: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-mail              oci-mail: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-analytics         oci-analytics: no unexpected dangerous ports exposed (3.0s)
-  ✅ SSH ports gcp-proxy            gcp-proxy: SSH:22=open Dropbear:2200=closed (0.0s)
+  ✅ SSH ports gcp-proxy            gcp-proxy: SSH:22=open Dropbear:2200=closed (0.1s)
   ✅ SSH ports gcp-t4               gcp-t4: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
   ✅ SSH ports oci-apps             oci-apps: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
   ✅ SSH ports oci-mail             oci-mail: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
   ✅ SSH ports oci-analytics        oci-analytics: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
-  ✅ Caddy TLS                      proxy.diegonmarcos.com -> 302 (0.1s)
+  ✅ Caddy TLS                      proxy.diegonmarcos.com -> 302 (0.2s)
 
   Summary: 19/19 passed, 0 failed
 
@@ -604,25 +591,25 @@
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    47.6s
-  L5_private_urls          27.5s
-  L6_public_urls           27.5s
-  L8_external              27.5s
-  L10_security             27.5s
-  L11_email_e2e            27.5s
-  L4-L11_parallel          27.5s
-  L1_self_check            14.1s
+  TOTAL                    48.1s
+  L6_public_urls           27.9s
+  L5_private_urls          27.9s
+  L10_security             27.9s
+  L4-L11_parallel          27.9s
+  L8_external              27.9s
+  L11_email_e2e            27.9s
+  L1_self_check            14.2s
   L2_wg_mesh               6.0s
+  L7_cross_checks          0.0s
   L9_drift                 0.0s
   L3_platform              0.0s
-  L7_cross_checks          0.0s
   L4_containers            0.0s
 
-  Total: 47.6s | Engine: Rust (native async tokio)
+  Total: 48.1s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(rsync+mux)
 
 ══════════════════════════════════════════════════════════════
-RESULT: CRITICAL -- 62/293 passed, 11 critical, 147 warnings
+RESULT: CRITICAL -- 58/278 passed, 11 critical, 138 warnings
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────
