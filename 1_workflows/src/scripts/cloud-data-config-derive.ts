@@ -584,6 +584,81 @@ function deriveCaddyRoutes(c: any): DerivedFile {
   const introspectSvc = services["introspect-proxy"];
   if (introspectSvc?.upstream) authUpstreams.introspect_proxy = introspectSvc.upstream;
 
+  // ── all_app_urls: canonical per-container, per-port .app URL synthesis ──
+  // Naming rules (zero heuristics — all declared):
+  //   {container}.app                          → HTTPS redirect to first canonical URL
+  //   {container}-{protocol}-{port}.app        → canonical per-port entry
+  //   {container}-null.app                     → portless workers/sidecars
+  // Protocol is read from build.json (containers.<x>.protocol / extra_ports[].protocol / l4_ports[].protocol).
+  const allAppUrls: any[] = [];
+  for (const [svcName, svc] of Object.entries(services) as [string, any][]) {
+    const vm = vms[svc.vm];
+    if (!vm?.wg_ip) continue;
+    const containers = svc.containers ?? {};
+    const containerEntries = Object.entries(containers) as [string, any][];
+    const isSingle = containerEntries.length === 1;
+    for (const [ck, c] of containerEntries) {
+      if (!c.container_name) continue;
+      const ports: Array<{ port: number; protocol: string; source: string }> = [];
+      const seen = new Set<number>();
+      const add = (p: number, proto: string, source: string) => {
+        if (seen.has(p)) return;
+        seen.add(p);
+        ports.push({ port: p, protocol: proto, source });
+      };
+      if (typeof c.port === "number" && c.protocol) add(c.port, c.protocol, `containers.${ck}.port`);
+      for (const ep of (c.extra_ports ?? []) as any[]) {
+        if (typeof ep === "object" && typeof ep.port === "number" && ep.protocol) {
+          add(ep.port, ep.protocol, `containers.${ck}.extra_ports`);
+        }
+      }
+      if (isSingle) {
+        for (const l4 of (svc.proxy?.primary?.l4_ports ?? []) as any[]) {
+          if (typeof l4.port === "number" && l4.protocol) add(l4.port, l4.protocol, `proxy.primary.l4_ports`);
+        }
+      }
+      // Redirect target: first canonical URL (or -null for portless)
+      const redirectTarget = ports.length > 0
+        ? `${c.container_name}-${ports[0].protocol}-${ports[0].port}.app`
+        : `${c.container_name}-null.app`;
+      // Short alias → HTTPS redirect
+      allAppUrls.push({
+        kind: "redirect",
+        service: `${c.container_name}.app`,
+        redirect_to: `https://${redirectTarget}`,
+        container: c.container_name,
+        container_key: ck,
+        svc: svcName,
+        vm: svc.vm,
+      });
+      if (ports.length === 0) {
+        allAppUrls.push({
+          kind: "portless",
+          service: `${c.container_name}-null.app`,
+          container: c.container_name,
+          container_key: ck,
+          svc: svcName,
+          vm: svc.vm,
+        });
+      } else {
+        for (const { port, protocol, source } of ports) {
+          allAppUrls.push({
+            kind: "canonical",
+            service: `${c.container_name}-${protocol}-${port}.app`,
+            container: c.container_name,
+            container_key: ck,
+            svc: svcName,
+            vm: svc.vm,
+            port,
+            protocol,
+            upstream: `${vm.wg_ip}:${port}`,
+            source,
+          });
+        }
+      }
+    }
+  }
+
   return {
     name: "cloud-data-caddy-routes.json",
     data: {
@@ -603,6 +678,7 @@ function deriveCaddyRoutes(c: any): DerivedFile {
       internal_routes: internalRoutes,
       s3_routes: s3Routes,
       auth_upstreams: authUpstreams,
+      all_app_urls: allAppUrls,
     },
   };
 }

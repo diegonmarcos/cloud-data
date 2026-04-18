@@ -40,7 +40,6 @@
     ❌ B2       oci-apps/photoprism_mariadb (mariadb) — not running
     ❌ B2       oci-apps/quant_light_db (postgres) — not running
     ❌ B2       oci-apps/vaultwarden (sqlite) — not running
-    ❌ B2       oci-apps/windmill-db (postgres) — not running
     ❌ B2       oci-mail/stalwart (custom) — not running
 
 
@@ -95,12 +94,10 @@ PUBLIC URLs (Caddy routes)
 ✅ webmail.diegonmarcos.com         ✅  ❌  ✅  ✅  10.0.0.3:8888          [200] 
 ✅ mail-stalwart.diegonmarcos.com   ✅  ❌  ✅  ✅  10.0.0.3:2443          [200] 
 ✅ vault.diegonmarcos.com           ✅  ❌  ✅  ✅  10.0.0.6:8880          [200] 
-✅ windmill.diegonmarcos.com        ✅  ❌  ✅  ✅  10.0.0.6:8000          [302] 
 ⚠️ app.diegonmarcos.com/etherpad    ❌  ❌  ✅  ✅  10.0.0.6:3012          [404] 
 ⚠️ app.diegonmarcos.com/filebrowser ❌  ❌  ✅  ✅  10.0.0.6:3015          [404] 
 ⚠️ app.diegonmarcos.com/hedgedoc    ❌  ❌  ✅  ✅  10.0.0.6:3018          [404] 
 ⚠️ app.diegonmarcos.com/dozzle      ❌  ❌  ✅  ✅  10.0.0.4:9999          [404] 
-⚠️ app.diegonmarcos.com/windmill    ❌  ❌  ✅  ✅  10.0.0.6:8000          [404] 
 ⚠️ app.diegonmarcos.com/revealmd    ❌  ❌  ✅  ✅  10.0.0.6:3014          [404] 
 ⚠️ app.diegonmarcos.com/grafana     ❌  ❌  ✅  ✅  10.0.0.6:3016          [404] 
 ⚠️ app.diegonmarcos.com/gitea       ❌  ❌  ✅  ✅  10.0.0.6:3017          [404] 
@@ -192,8 +189,6 @@ REPOS & REGISTRIES
 ❌ radicale.app                 ⏸️   ⏸️   ❌    5232 oci-apps       radicale               [---]
 ❌ revealmd.app                 ⏸️   ⏸️   ❌    3014 oci-apps       revealmd_app           [---]
 ❌ vaultwarden.app              ⏸️   ⏸️   ❌    8880 oci-apps       vaultwarden            [---]
-❌ windmill-app.app             ⏸️   ⏸️   ❌    8000 oci-apps       windmill-server        [---]
-❌ windmill-db.app              ⏸️   ⏸️   ❌    5440 oci-apps       windmill-db            [---]
 ❌ smtp-proxy.app               ⏸️   ⏸️   ❌    8080 oci-mail       smtp-proxy             [---]
 ❌ snappymail.app               ⏸️   ⏸️   ❌    8888 oci-mail       snappymail             [---]
 ❌ stalwart.app                 ⏸️   ⏸️   ❌    2443 oci-mail       stalwart               [---]
@@ -345,7 +340,6 @@ STORAGE
     quant-lab-full       postgres   quant_full_db          oci-apps
     quant-lab-light      postgres   quant_light_db         oci-apps
     vaultwarden          sqlite     vaultwarden            oci-apps
-    windmill             postgres   windmill-db            oci-apps
     stalwart             custom     stalwart               oci-mail
 
 ── B2) Databases (live) ──────────────────────────────────
@@ -373,7 +367,6 @@ DECLARED DATABASES — 23 total (2 custom, 1 loki, 1 mariadb, 1 tempo, 1 s3, 1 m
 ❌ photoprism           mariadb    photoprism_mariadb     oci-apps         —      —   ❌   ?          ✅
 ❌ quant-lab-light      postgres   quant_light_db         oci-apps         5443   ❌   ❌   ?          ✅
 ❌ vaultwarden          sqlite     vaultwarden            oci-apps         8880   ❌   ❌   ?          ✅
-❌ windmill             postgres   windmill-db            oci-apps         5440   ❌   ❌   ?          ✅
 ❌ stalwart             custom     stalwart               oci-mail         2443   ❌   ❌   ?          ✅
 
   Healthy: 0/23  Running: 0/23
@@ -432,7 +425,6 @@ BACKUPS / DATABASES
    quant-lab-full       postgres   quant_full_db          custom         oci-apps         quant-full-db.app:5437
    quant-lab-light      postgres   quant_light_db         quantlab       oci-apps         quant-light-db.app:5443
    vaultwarden          sqlite     vaultwarden            /data/db.sqlite3 oci-apps         vaultwarden.app:8880
-   windmill             postgres   windmill-db            windmill       oci-apps         windmill-db.app:5440
    stalwart             custom     stalwart               custom         oci-mail         stalwart.app:2443
 
 DOCKER NETWORKS

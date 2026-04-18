@@ -205,8 +205,6 @@
       "errors": []
     },
     {
-      "domain": "windmill.diegonmarcos.com",
-      "url": "https://windmill.diegonmarcos.com",
       "dns": "ok",
       "tcp": "ok",
       "tls": "ok",
@@ -879,7 +877,6 @@
       ]
     },
     {
-      "domain": "windmill (oci-A1-f_0)",
       "url": "10.0.0.6:8000",
       "dns": "skip",
       "tcp": "fail",

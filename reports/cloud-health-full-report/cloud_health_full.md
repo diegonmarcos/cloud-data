@@ -97,9 +97,6 @@
     ⚠️  Container umami/umami-db: umami-db on oci-analytics: VM unreachable
     ⚠️  Container umami/umami-setup: umami-setup on oci-analytics: VM unreachable
     ⚠️  Container vaultwarden/vaultwarden: vaultwarden on oci-apps: VM unreachable
-    ⚠️  Container windmill/windmill-server: windmill-server on oci-apps: VM unreachable
-    ⚠️  Container windmill/windmill-db: windmill-db on oci-apps: VM unreachable
-    ⚠️  Container windmill/windmill-worker: windmill-worker on oci-apps: VM unreachable
     ⚠️  Private URLs (Hickory): Hickory DNS at 10.0.0.1 is down — falling back to WG IPs
     ⚠️  authelia.app:9091: authelia.app:9091 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip
     ⚠️  backup-gitea.app:3002: backup-gitea.app:3002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip
@@ -141,7 +138,6 @@
     ⚠️  stalwart.app:2443: stalwart.app:2443 DNS=ok(151.101.1.195) TCP=FAIL HTTP=skip
     ⚠️  umami.app:3006: umami.app:3006 DNS=ok(76.76.21.21) TCP=FAIL HTTP=skip
     ⚠️  vaultwarden.app:8880: vaultwarden.app:8880 DNS=ok(78.46.170.179) TCP=FAIL HTTP=skip
-    ⚠️  windmill.app:8000: windmill-app.app:8000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip
     ⚠️  Cross authelia: public up, container down: authelia: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross backup-gitea: public up, container down: backup-gitea: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross c3-infra-api: public up, container down: c3-infra-api: public URL responds but container is down — stale cache or wrong routing
@@ -170,7 +166,6 @@
     ⚠️  Cross stalwart: public up, container down: stalwart: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross umami: public up, container down: umami: public URL responds but container is down — stale cache or wrong routing
     ⚠️  Cross vaultwarden: public up, container down: vaultwarden: public URL responds but container is down — stale cache or wrong routing
-    ⚠️  Cross windmill: public up, container down: windmill: public URL responds but container is down — stale cache or wrong routing
     ⚠️  GHA workflows: gh CLI failed
     ⚠️  DKIM dkim._domainkey: DKIM: NOT FOUND
   INFO:
@@ -246,7 +241,6 @@
     ℹ️  Drift no-port-in-build: stalwart: stalwart has port in topology but missing ports.app in build.json
     ℹ️  Drift no-port-in-build: umami: umami has port in topology but missing ports.app in build.json
     ℹ️  Drift no-port-in-build: vaultwarden: vaultwarden has port in topology but missing ports.app in build.json
-    ℹ️  Drift no-port-in-build: windmill: windmill has port in topology but missing ports.app in build.json
 
 
 0. TIER DASHBOARD
@@ -370,9 +364,6 @@
   ⚠️  Container umami/umami-db       umami-db on oci-analytics: VM unreachable [WARNING]
   ⚠️  Container umami/umami-setup    umami-setup on oci-analytics: VM unreachable [WARNING]
   ⚠️  Container vaultwarden/vaultwarden vaultwarden on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container windmill/windmill-server windmill-server on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container windmill/windmill-db windmill-db on oci-apps: VM unreachable [WARNING]
-  ⚠️  Container windmill/windmill-worker windmill-worker on oci-apps: VM unreachable [WARNING]
 
   Summary: 0/73 passed, 73 failed
 
@@ -420,7 +411,6 @@
   ⚠️  stalwart.app:2443              stalwart.app:2443 DNS=ok(151.101.1.195) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  umami.app:3006                 umami.app:3006 DNS=ok(76.76.21.21) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  vaultwarden.app:8880           vaultwarden.app:8880 DNS=ok(78.46.170.179) TCP=FAIL HTTP=skip (0.2s) [WARNING]
-  ⚠️  windmill.app:8000              windmill-app.app:8000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
 
   Summary: 1/43 passed, 42 failed
 
@@ -454,7 +444,6 @@
   ✅ Public mail-stalwart.diegonmarcos.com mail-stalwart.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.4s)
   ✅ Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
   ✅ Public vault.diegonmarcos.com  vault.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.7s)
-  ✅ Public windmill.diegonmarcos.com windmill.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
 
   Summary: 29/29 passed, 0 failed
 
@@ -488,7 +477,6 @@
   ⚠️  Cross stalwart: public up, container down stalwart: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross umami: public up, container down umami: public URL responds but container is down — stale cache or wrong routing [WARNING]
   ⚠️  Cross vaultwarden: public up, container down vaultwarden: public URL responds but container is down — stale cache or wrong routing [WARNING]
-  ⚠️  Cross windmill: public up, container down windmill: public URL responds but container is down — stale cache or wrong routing [WARNING]
 
   Summary: 0/29 passed, 29 failed
 
@@ -580,7 +568,6 @@
   ℹ️  Drift no-port-in-build: stalwart stalwart has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: umami  umami has port in topology but missing ports.app in build.json [INFO]
   ℹ️  Drift no-port-in-build: vaultwarden vaultwarden has port in topology but missing ports.app in build.json [INFO]
-  ℹ️  Drift no-port-in-build: windmill windmill has port in topology but missing ports.app in build.json [INFO]
 
   Summary: 0/72 passed, 72 failed
 

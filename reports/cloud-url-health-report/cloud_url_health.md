@@ -63,7 +63,6 @@
   ❌  stalwart (oci-E2-f_0)  TCP: timeout 5s
   ❌  umami (oci-E2-f_1)  TCP: timeout 5s
   ❌  vaultwarden (oci-A1-f_0)  TCP: timeout 5s
-  ❌  windmill (oci-A1-f_0)  TCP: timeout 5s
 
 
 1. PUBLIC URLS (Cloudflare -> Caddy -> Backend)
@@ -84,7 +83,6 @@
   smtp.diegonmarcos.com                       ✅    ✅    ✅     ✅ 512ms  405
   vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 315ms  200
   webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅  91ms  200
-  windmill.diegonmarcos.com                   ✅    ✅    ✅     ✅ 185ms  200
   workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 164ms  200
 
 
@@ -138,7 +136,6 @@
   stalwart (oci-E2-f_0)          10.0.0.3:2443             ❌    ⬚  5001ms  TCP: timeout 5s
   umami (oci-E2-f_1)             10.0.0.4:3006             ❌    ⬚  5001ms  TCP: timeout 5s
   vaultwarden (oci-A1-f_0)       10.0.0.6:8880             ❌    ⬚  5001ms  TCP: timeout 5s
-  windmill (oci-A1-f_0)          10.0.0.6:8000             ❌    ⬚  5001ms  TCP: timeout 5s
 
 
 ══════════════════════════════════════════════════════════════

@@ -420,8 +420,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 0
       },
@@ -640,8 +638,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 0
       },
@@ -860,8 +856,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 0
       },
@@ -1080,8 +1074,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 0
       },
@@ -1300,8 +1292,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 0
       },
@@ -1520,8 +1510,6 @@
         "duration_s": 10
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 8
       },
@@ -1740,8 +1728,6 @@
         "duration_s": 12
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 7
       },
@@ -1960,8 +1946,6 @@
         "duration_s": 42
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "ok",
         "duration_s": 145
       },
@@ -2180,8 +2164,6 @@
         "duration_s": 54
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "ok",
         "duration_s": 139
       },
@@ -2400,8 +2382,6 @@
         "duration_s": 44
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "ok",
         "duration_s": 56
       },
@@ -2620,8 +2600,6 @@
         "duration_s": 41
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "ok",
         "duration_s": 53
       },
@@ -2840,8 +2818,6 @@
         "duration_s": 32
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "ok",
         "duration_s": 43
       },
@@ -3054,8 +3030,6 @@
         "duration_s": 24
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "ok",
         "duration_s": 134
       },
@@ -3268,8 +3242,6 @@
         "duration_s": 156
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "ok",
         "duration_s": 255
       },
@@ -3482,8 +3454,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -3696,8 +3666,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -3910,8 +3878,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -4124,8 +4090,6 @@
         "duration_s": 7
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "ok",
         "duration_s": 250
       },
@@ -4338,8 +4302,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -4552,8 +4514,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -4766,8 +4726,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -4980,8 +4938,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -5194,8 +5150,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -5408,8 +5362,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -5622,8 +5574,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -5836,8 +5786,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -6050,8 +5998,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -6264,8 +6210,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -6478,8 +6422,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -6692,8 +6634,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -6906,8 +6846,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -7120,8 +7058,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -7334,8 +7270,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -7548,8 +7482,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -7762,8 +7694,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -7976,8 +7906,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -8190,8 +8118,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -8404,8 +8330,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -8618,8 +8542,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -8832,8 +8754,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -9046,8 +8966,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -9260,8 +9178,6 @@
         "duration_s": 17
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 21
       },
@@ -9474,8 +9390,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -9688,8 +9602,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -9902,8 +9814,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -10116,8 +10026,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -10330,8 +10238,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -10544,8 +10450,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -10758,8 +10662,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -10972,8 +10874,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -11186,8 +11086,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -11400,8 +11298,6 @@
         "duration_s": 423
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -11614,8 +11510,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -11828,8 +11722,6 @@
         "duration_s": 409
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 414
       },
@@ -12042,8 +11934,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -12256,8 +12146,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -12470,8 +12358,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -12684,8 +12570,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -12898,8 +12782,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -13112,8 +12994,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -13326,8 +13206,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -13540,8 +13418,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -13754,8 +13630,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 541
       },
@@ -13968,8 +13842,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -14182,8 +14054,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -14396,8 +14266,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 541
       },
@@ -14622,8 +14490,6 @@
         "duration_s": 543
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 541
       },
@@ -14848,8 +14714,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -15074,8 +14938,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -15300,8 +15162,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -15526,8 +15386,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -15839,8 +15697,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -16077,8 +15933,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -16315,8 +16169,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -16553,8 +16405,6 @@
         "duration_s": 16
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 71
       },
@@ -16791,8 +16641,6 @@
         "duration_s": 13
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 75
       },
@@ -17029,8 +16877,6 @@
         "duration_s": 16
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 67
       },
@@ -17267,8 +17113,6 @@
         "duration_s": 15
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "fail",
         "duration_s": 67
       },
@@ -17505,8 +17349,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -17743,8 +17585,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -17981,8 +17821,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },
@@ -18219,8 +18057,6 @@
         "duration_s": 0
       },
       {
-        "name": "windmill",
-        "dir": "bc-obs_windmill",
         "status": "skip",
         "duration_s": 0
       },

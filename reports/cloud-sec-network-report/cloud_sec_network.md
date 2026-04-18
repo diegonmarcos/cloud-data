@@ -58,7 +58,6 @@
   ✅ ext:tls:workflows.diegonmarcos.com workflows.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (72 days) (0.1s)
   ✅ ext:tls:db.diegonmarcos.com    db.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (72 days) (0.1s)
   ✅ ext:tls:grafana.diegonmarcos.com grafana.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (72 days) (0.1s)
-  ✅ ext:tls:windmill.diegonmarcos.com windmill.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (72 days) (0.1s)
   ✅ ext:tls:git.diegonmarcos.com   git.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (72 days) (0.1s)
 
   Summary: 15/15 passed, 0 failed
@@ -84,7 +83,6 @@
   ✅ ext:dns:A:workflows.diegonmarcos.com A=35.226.147.64 (0.0s)
   ✅ ext:dns:A:db.diegonmarcos.com  A=35.226.147.64 (0.1s)
   ✅ ext:dns:A:grafana.diegonmarcos.com A=35.226.147.64 (0.0s)
-  ✅ ext:dns:A:windmill.diegonmarcos.com A=35.226.147.64 (0.1s)
   ✅ ext:dns:A:git.diegonmarcos.com A=35.226.147.64 (0.0s)
   ⚠️  ext:dns:MX:webmail.diegonmarcos.com No MX records found (0.0s) [WARNING]
   ⚠️  ext:dns:SPF:webmail.diegonmarcos.com No SPF record (0.0s) [WARNING]

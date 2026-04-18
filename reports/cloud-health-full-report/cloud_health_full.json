@@ -705,25 +705,19 @@
       "severity": "Warning"
     },
     {
-      "name": "Container windmill/windmill-server",
       "passed": false,
-      "details": "windmill-server on oci-apps: VM unreachable",
       "duration_ms": 0,
       "error": "VM unreachable",
       "severity": "Warning"
     },
     {
-      "name": "Container windmill/windmill-db",
       "passed": false,
-      "details": "windmill-db on oci-apps: VM unreachable",
       "duration_ms": 0,
       "error": "VM unreachable",
       "severity": "Warning"
     },
     {
-      "name": "Container windmill/windmill-worker",
       "passed": false,
-      "details": "windmill-worker on oci-apps: VM unreachable",
       "duration_ms": 0,
       "error": "VM unreachable",
       "severity": "Warning"
@@ -1067,11 +1061,8 @@
       "severity": "Warning"
     },
     {
-      "name": "windmill.app:8000",
       "passed": false,
-      "details": "windmill-app.app:8000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "duration_ms": 6044,
-      "error": "windmill-app.app:8000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     }
   ],
@@ -1301,9 +1292,7 @@
       "severity": "Info"
     },
     {
-      "name": "Public windmill.diegonmarcos.com",
       "passed": true,
-      "details": "windmill.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
       "duration_ms": 232,
       "error": null,
       "severity": "Info"
@@ -1535,9 +1524,7 @@
       "severity": "Warning"
     },
     {
-      "name": "Cross windmill: public up, container down",
       "passed": false,
-      "details": "windmill: public URL responds but container is down — stale cache or wrong routing",
       "duration_ms": 0,
       "error": "stale routing: public responds but container down",
       "severity": "Warning"
@@ -2195,9 +2182,7 @@
       "severity": "Info"
     },
     {
-      "name": "Drift no-port-in-build: windmill",
       "passed": false,
-      "details": "windmill has port in topology but missing ports.app in build.json",
       "duration_ms": 0,
       "error": "build.json missing ports.app",
       "severity": "Info"

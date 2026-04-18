@@ -369,7 +369,6 @@
       "auth_code": "200"
     },
     {
-      "url": "windmill.diegonmarcos.com",
       "upstream": "10.0.0.6:8000",
       "tcp": true,
       "http": false,
@@ -419,7 +418,6 @@
       "auth_code": "404"
     },
     {
-      "url": "app.diegonmarcos.com/windmill",
       "upstream": "10.0.0.6:8000",
       "tcp": false,
       "http": false,
@@ -1104,8 +1102,6 @@
       "container_up": false
     },
     {
-      "dns": "windmill-app.app",
-      "container": "windmill-server",
       "port": 8000,
       "vm": "oci-apps",
       "tcp": false,
@@ -1115,8 +1111,6 @@
       "container_up": false
     },
     {
-      "dns": "windmill-db.app",
-      "container": "windmill-db",
       "port": 5440,
       "vm": "oci-apps",
       "tcp": false,
@@ -1615,9 +1609,7 @@
       "backup": true
     },
     {
-      "service": "windmill",
       "db_type": "postgres",
-      "container": "windmill-db",
       "vm": "oci-apps",
       "port": 5440,
       "declared": true,
@@ -1625,7 +1617,6 @@
       "healthy": false,
       "size": "?",
       "tcp_ok": false,
-      "dns": "windmill-db.app",
       "backup": true
     },
     {
