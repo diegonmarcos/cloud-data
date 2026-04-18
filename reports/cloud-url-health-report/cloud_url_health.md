@@ -6,102 +6,143 @@
   ██║   ██║██╔══██╗██║          ██╔══██║██╔══╝  ██╔══██║██║     ██║   ██╔══██║
   ╚██████╔╝██║  ██║███████╗     ██║  ██║███████╗██║  ██║███████╗██║   ██║  ██║
    ╚═════╝ ╚═╝  ╚═╝╚══════╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝
-  CLOUD URL HEALTH — 2026-04-16T21:16:36.760489964+00:00
+  CLOUD URL HEALTH — 2026-04-18T10:49:55.758770563+00:00
 ══════════════════════════════════════════════════════════════
 
   SUMMARY
 ══════════════════════════════════════════════════════════════
-  Public:  15/16 healthy
-  Private: 34/43 healthy
-  Duration: 5.4s
+  Public:  16/16 healthy
+  Private: 0/47 healthy
+  Duration: 5.0s
 
   ISSUES
 ══════════════════════════════════════════════════════════════
-  ❌  db.diegonmarcos.com  HTTP 502
-  ❌  cloud-cgc-mcp (oci-A1-f_0)  TCP: Connection refused (os error 111)
-  ❌  fluent-bit (oci-E2-f_1)  TCP: Connection refused (os error 111)
-  ❌  hickory-dns (gcp-E2-f_0)  HTTP: error sending request for url (http://10.0.0.1:53/)
-  ❌  maddy (oci-E2-f_0)  TCP: Connection refused (os error 111)
-  ❌  matomo (oci-E2-f_1)  TCP: Connection refused (os error 111)
+  ❌  authelia (gcp-E2-f_0)  TCP: timeout 5s
+  ❌  backup-borg (oci-A1-f_0)  TCP: timeout 5s
+  ❌  backup-bup (oci-A1-f_0)  TCP: timeout 5s
+  ❌  backup-gitea (oci-A1-f_0)  TCP: timeout 5s
+  ❌  c3-infra-api (oci-A1-f_0)  TCP: timeout 5s
+  ❌  c3-infra-mcp (oci-A1-f_0)  TCP: timeout 5s
+  ❌  c3-services-api (oci-A1-f_0)  TCP: timeout 5s
+  ❌  c3-services-mcp (oci-A1-f_0)  TCP: timeout 5s
+  ❌  caddy (gcp-E2-f_0)  TCP: timeout 5s
+  ❌  cloud-cgc-mcp (oci-A1-f_0)  TCP: timeout 5s
+  ❌  cloud-spec (oci-A1-f_0)  TCP: timeout 5s
+  ❌  code-server (oci-A1-f_0)  TCP: timeout 5s
+  ❌  crawlee-cloud (oci-A1-f_0)  TCP: timeout 5s
+  ❌  dagu (oci-E2-f_1)  TCP: timeout 5s
+  ❌  dbgate (oci-A1-f_0)  TCP: timeout 5s
+  ❌  dozzle (oci-E2-f_1)  TCP: timeout 5s
+  ❌  etherpad (oci-A1-f_0)  TCP: timeout 5s
+  ❌  filebrowser (oci-A1-f_0)  TCP: timeout 5s
+  ❌  fluent-bit (oci-E2-f_1)  TCP: timeout 5s
+  ❌  gitea (oci-A1-f_0)  TCP: timeout 5s
+  ❌  google-workspace-mcp (oci-A1-f_0)  TCP: timeout 5s
+  ❌  grist (oci-A1-f_0)  TCP: timeout 5s
+  ❌  hedgedoc (oci-A1-f_0)  TCP: timeout 5s
+  ❌  hickory-dns (gcp-E2-f_0)  TCP: timeout 5s
+  ❌  introspect-proxy (gcp-E2-f_0)  TCP: timeout 5s
+  ❌  kg-graph (oci-A1-f_0)  TCP: timeout 5s
+  ❌  lgtm (oci-A1-f_0)  TCP: timeout 5s
+  ❌  mail-mcp (oci-A1-f_0)  TCP: timeout 5s
+  ❌  matomo (oci-E2-f_1)  TCP: timeout 5s
+  ❌  mattermost-bots (oci-A1-f_0)  TCP: timeout 5s
+  ❌  mattermost-mcp (oci-A1-f_0)  TCP: timeout 5s
+  ❌  ntfy (oci-A1-f_0)  TCP: timeout 5s
   ❌  ollama (gcp-T4-p_0)  TCP: timeout 5s
-  ❌  photos-webhook (oci-A1-f_0)  TCP: Connection refused (os error 111)
-  ❌  redis (gcp-E2-f_0)  HTTP: error sending request for url (http://10.0.0.1:6379/)
-  ❌  revealmd (oci-A1-f_0)  TCP: Connection refused (os error 111)
+  ❌  ollama-hai (oci-A1-f_0)  TCP: timeout 5s
+  ❌  photoprism (oci-A1-f_0)  TCP: timeout 5s
+  ❌  photos-webhook (oci-A1-f_0)  TCP: timeout 5s
+  ❌  radicale (oci-A1-f_0)  TCP: timeout 5s
+  ❌  redis (gcp-E2-f_0)  TCP: timeout 5s
+  ❌  revealmd (oci-A1-f_0)  TCP: timeout 5s
+  ❌  rig-agentic-hai-1.5bq4 (oci-A1-f_0)  TCP: timeout 5s
+  ❌  rig-agentic-sonn-14bq8 (oci-A1-f_0)  TCP: timeout 5s
+  ❌  smtp-proxy (oci-E2-f_0)  TCP: timeout 5s
+  ❌  snappymail (oci-E2-f_0)  TCP: timeout 5s
+  ❌  stalwart (oci-E2-f_0)  TCP: timeout 5s
+  ❌  umami (oci-E2-f_1)  TCP: timeout 5s
+  ❌  vaultwarden (oci-A1-f_0)  TCP: timeout 5s
+  ❌  windmill (oci-A1-f_0)  TCP: timeout 5s
 
 
 1. PUBLIC URLS (Cloudflare -> Caddy -> Backend)
 ──────────────────────────────────────────────────────────────
   DOMAIN                                    DNS  TCP  TLS  HTTP    ms  DETAIL
   ------------------------------------------------------------------------------------------
-  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 683ms  200
-  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 3122ms  200
-  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 945ms  200
-  db.diegonmarcos.com                         ✅    ✅    ✅     ❌ 1202ms  HTTP 502
-  diegonmarcos.com                            ✅    ✅    ✅     ✅ 807ms  200
-  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 809ms  200
-  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 961ms  200
-  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 2879ms  200
-  mail.diegonmarcos.com                       ✅    ✅    ✅     ✅ 690ms  200
-  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 937ms  200
-  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 1058ms  401
-  smtp.diegonmarcos.com                       ✅    ✅    ✅     ✅ 927ms  405
-  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 1183ms  200
-  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅ 1429ms  200
-  windmill.diegonmarcos.com                   ✅    ✅    ✅     ✅ 857ms  200
-  workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 931ms  200
+  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 161ms  200
+  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 286ms  200
+  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 304ms  200
+  db.diegonmarcos.com                         ✅    ✅    ✅     ✅ 306ms  200
+  diegonmarcos.com                            ✅    ✅    ✅     ✅ 233ms  200
+  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 295ms  200
+  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 290ms  200
+  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 306ms  200
+  mail-stalwart.diegonmarcos.com              ✅    ✅    ✅     ✅ 278ms  200
+  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 179ms  200
+  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 301ms  200
+  smtp.diegonmarcos.com                       ✅    ✅    ✅     ✅ 270ms  405
+  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 269ms  200
+  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅ 161ms  200
+  windmill.diegonmarcos.com                   ✅    ✅    ✅     ✅ 261ms  200
+  workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 283ms  200
 
 
 2. PRIVATE URLS (WireGuard -> Container)
 ──────────────────────────────────────────────────────────────
   SERVICE                        UPSTREAM                TCP  HTTP    ms  DETAIL
   ------------------------------------------------------------------------------------------
-  authelia (gcp-E2-f_0)          10.0.0.1:9091             ✅     ✅ 394ms  200
-  backup-gitea (oci-A1-f_0)      10.0.0.6:3002             ✅     ✅ 732ms  200
-  c3-infra-api (oci-A1-f_0)      10.0.0.6:8081             ✅     ✅ 748ms  404
-  c3-infra-mcp (oci-A1-f_0)      10.0.0.6:3100             ✅     ✅ 732ms  404
-  c3-services-api (oci-A1-f_0)   10.0.0.6:8082             ✅     ✅ 776ms  200
-  c3-services-mcp (oci-A1-f_0)   10.0.0.6:3101             ✅     ✅ 732ms  404
-  caddy (gcp-E2-f_0)             10.0.0.1:443              ✅     ✅ 391ms  400
-  cloud-cgc-mcp (oci-A1-f_0)     10.0.0.6:3105             ❌    ⬚  248ms  TCP: Connection refused (os erro...
-  cloud-spec (oci-A1-f_0)        10.0.0.6:3080             ✅     ✅ 1017ms  200
-  code-server (oci-A1-f_0)       10.0.0.6:8443             ✅     ✅ 1872ms  200
-  crawlee-cloud (oci-A1-f_0)     10.0.0.6:3000             ✅     ✅ 753ms  404
-  dagu (oci-E2-f_1)              10.0.0.4:8070             ✅     ✅ 732ms  200
-  dbgate (oci-A1-f_0)            10.0.0.6:8086             ✅     ✅ 769ms  200
-  dozzle (oci-E2-f_1)            10.0.0.4:9999             ✅     ✅ 737ms  200
-  etherpad (oci-A1-f_0)          10.0.0.6:3012             ✅     ✅ 737ms  200
-  filebrowser (oci-A1-f_0)       10.0.0.6:3015             ✅     ✅ 1657ms  200
-  fluent-bit (oci-E2-f_1)        10.0.0.4:2020             ❌    ⬚  245ms  TCP: Connection refused (os erro...
-  gitea (oci-A1-f_0)             10.0.0.6:3002             ✅     ✅ 742ms  200
-  google-workspace-mcp (oci-A1-f_0) 10.0.0.6:3104             ✅     ✅ 756ms  200
-  grist (oci-A1-f_0)             10.0.0.6:3011             ✅     ✅ 767ms  200
-  hedgedoc (oci-A1-f_0)          10.0.0.6:3018             ✅     ✅ 1496ms  200
-  hickory-dns (gcp-E2-f_0)       10.0.0.1:53               ✅     ❌ 5429ms  HTTP: error sending request for ...
-  introspect-proxy (gcp-E2-f_0)  10.0.0.1:4182             ✅     ✅ 397ms  404
-  lgtm (oci-A1-f_0)              10.0.0.6:3200             ✅     ✅ 1791ms  200
-  maddy (oci-E2-f_0)             10.0.0.3:443              ❌    ⬚  248ms  TCP: Connection refused (os erro...
-  mail-mcp (oci-A1-f_0)          10.0.0.6:3103             ✅     ✅ 743ms  404
-  matomo (oci-E2-f_1)            10.0.0.4:8084             ❌    ⬚  245ms  TCP: Connection refused (os erro...
-  mattermost-bots (oci-A1-f_0)   10.0.0.6:8065             ✅     ✅ 743ms  200
-  mattermost-mcp (oci-A1-f_0)    10.0.0.6:3102             ✅     ✅ 747ms  404
-  ntfy (oci-A1-f_0)              10.0.0.6:8090             ✅     ✅ 853ms  200
+  authelia (gcp-E2-f_0)          10.0.0.1:9091             ❌    ⬚  5001ms  TCP: timeout 5s
+  backup-borg (oci-A1-f_0)       10.0.0.6:2224             ❌    ⬚  5001ms  TCP: timeout 5s
+  backup-bup (oci-A1-f_0)        10.0.0.6:2223             ❌    ⬚  5001ms  TCP: timeout 5s
+  backup-gitea (oci-A1-f_0)      10.0.0.6:3002             ❌    ⬚  5000ms  TCP: timeout 5s
+  c3-infra-api (oci-A1-f_0)      10.0.0.6:8081             ❌    ⬚  5000ms  TCP: timeout 5s
+  c3-infra-mcp (oci-A1-f_0)      10.0.0.6:3100             ❌    ⬚  5000ms  TCP: timeout 5s
+  c3-services-api (oci-A1-f_0)   10.0.0.6:8082             ❌    ⬚  5000ms  TCP: timeout 5s
+  c3-services-mcp (oci-A1-f_0)   10.0.0.6:3101             ❌    ⬚  5000ms  TCP: timeout 5s
+  caddy (gcp-E2-f_0)             10.0.0.1:443              ❌    ⬚  5000ms  TCP: timeout 5s
+  cloud-cgc-mcp (oci-A1-f_0)     10.0.0.6:3105             ❌    ⬚  5000ms  TCP: timeout 5s
+  cloud-spec (oci-A1-f_0)        10.0.0.6:3080             ❌    ⬚  5000ms  TCP: timeout 5s
+  code-server (oci-A1-f_0)       10.0.0.6:8443             ❌    ⬚  5000ms  TCP: timeout 5s
+  crawlee-cloud (oci-A1-f_0)     10.0.0.6:3000             ❌    ⬚  5000ms  TCP: timeout 5s
+  dagu (oci-E2-f_1)              10.0.0.4:8070             ❌    ⬚  5001ms  TCP: timeout 5s
+  dbgate (oci-A1-f_0)            10.0.0.6:8086             ❌    ⬚  5001ms  TCP: timeout 5s
+  dozzle (oci-E2-f_1)            10.0.0.4:9999             ❌    ⬚  5001ms  TCP: timeout 5s
+  etherpad (oci-A1-f_0)          10.0.0.6:3012             ❌    ⬚  5001ms  TCP: timeout 5s
+  filebrowser (oci-A1-f_0)       10.0.0.6:3015             ❌    ⬚  5001ms  TCP: timeout 5s
+  fluent-bit (oci-E2-f_1)        10.0.0.4:2020             ❌    ⬚  5001ms  TCP: timeout 5s
+  gitea (oci-A1-f_0)             10.0.0.6:3002             ❌    ⬚  5001ms  TCP: timeout 5s
+  google-workspace-mcp (oci-A1-f_0) 10.0.0.6:3104             ❌    ⬚  5001ms  TCP: timeout 5s
+  grist (oci-A1-f_0)             10.0.0.6:3011             ❌    ⬚  5001ms  TCP: timeout 5s
+  hedgedoc (oci-A1-f_0)          10.0.0.6:3018             ❌    ⬚  5001ms  TCP: timeout 5s
+  hickory-dns (gcp-E2-f_0)       10.0.0.1:53               ❌    ⬚  5001ms  TCP: timeout 5s
+  introspect-proxy (gcp-E2-f_0)  10.0.0.1:4182             ❌    ⬚  5001ms  TCP: timeout 5s
+  kg-graph (oci-A1-f_0)          10.0.0.6:8001             ❌    ⬚  5001ms  TCP: timeout 5s
+  lgtm (oci-A1-f_0)              10.0.0.6:3200             ❌    ⬚  5001ms  TCP: timeout 5s
+  mail-mcp (oci-A1-f_0)          10.0.0.6:3103             ❌    ⬚  5001ms  TCP: timeout 5s
+  matomo (oci-E2-f_1)            10.0.0.4:8084             ❌    ⬚  5001ms  TCP: timeout 5s
+  mattermost-bots (oci-A1-f_0)   10.0.0.6:8065             ❌    ⬚  5001ms  TCP: timeout 5s
+  mattermost-mcp (oci-A1-f_0)    10.0.0.6:3102             ❌    ⬚  5001ms  TCP: timeout 5s
+  ntfy (oci-A1-f_0)              10.0.0.6:8090             ❌    ⬚  5001ms  TCP: timeout 5s
   ollama (gcp-T4-p_0)            10.0.0.8:11434            ❌    ⬚  5001ms  TCP: timeout 5s
-  ollama-hai (oci-A1-f_0)        10.0.0.6:11435            ✅     ✅ 741ms  200
-  photoprism (oci-A1-f_0)        10.0.0.6:3013             ✅     ✅ 1323ms  200
-  photos-webhook (oci-A1-f_0)    10.0.0.6:5002             ❌    ⬚  248ms  TCP: Connection refused (os erro...
-  radicale (oci-A1-f_0)          10.0.0.6:5232             ✅     ✅ 2743ms  200
-  redis (gcp-E2-f_0)             10.0.0.1:6379             ✅     ❌ 394ms  HTTP: error sending request for ...
-  revealmd (oci-A1-f_0)          10.0.0.6:3014             ❌    ⬚  249ms  TCP: Connection refused (os erro...
-  rig-agentic-sonn-14bq8 (oci-A1-f_0) 10.0.0.6:8091             ✅     ✅ 748ms  404
-  smtp-proxy (oci-E2-f_0)        10.0.0.3:8080             ✅     ✅ 737ms  405
-  snappymail (oci-E2-f_0)        10.0.0.3:8888             ✅     ✅ 741ms  200
-  umami (oci-E2-f_1)             10.0.0.4:3006             ✅     ✅ 840ms  200
-  vaultwarden (oci-A1-f_0)       10.0.0.6:8880             ✅     ✅ 735ms  200
-  windmill (oci-A1-f_0)          10.0.0.6:8000             ✅     ✅ 954ms  200
+  ollama-hai (oci-A1-f_0)        10.0.0.6:11435            ❌    ⬚  5001ms  TCP: timeout 5s
+  photoprism (oci-A1-f_0)        10.0.0.6:3013             ❌    ⬚  5001ms  TCP: timeout 5s
+  photos-webhook (oci-A1-f_0)    10.0.0.6:5002             ❌    ⬚  5001ms  TCP: timeout 5s
+  radicale (oci-A1-f_0)          10.0.0.6:5232             ❌    ⬚  5001ms  TCP: timeout 5s
+  redis (gcp-E2-f_0)             10.0.0.1:6379             ❌    ⬚  5001ms  TCP: timeout 5s
+  revealmd (oci-A1-f_0)          10.0.0.6:3014             ❌    ⬚  5001ms  TCP: timeout 5s
+  rig-agentic-hai-1.5bq4 (oci-A1-f_0) 10.0.0.6:8091             ❌    ⬚  5001ms  TCP: timeout 5s
+  rig-agentic-sonn-14bq8 (oci-A1-f_0) 10.0.0.6:8091             ❌    ⬚  5001ms  TCP: timeout 5s
+  smtp-proxy (oci-E2-f_0)        10.0.0.3:8080             ❌    ⬚  5001ms  TCP: timeout 5s
+  snappymail (oci-E2-f_0)        10.0.0.3:8888             ❌    ⬚  5001ms  TCP: timeout 5s
+  stalwart (oci-E2-f_0)          10.0.0.3:2443             ❌    ⬚  5001ms  TCP: timeout 5s
+  umami (oci-E2-f_1)             10.0.0.4:3006             ❌    ⬚  5001ms  TCP: timeout 5s
+  vaultwarden (oci-A1-f_0)       10.0.0.6:8880             ❌    ⬚  5001ms  TCP: timeout 5s
+  windmill (oci-A1-f_0)          10.0.0.6:8000             ❌    ⬚  5001ms  TCP: timeout 5s
 
 
 ══════════════════════════════════════════════════════════════
-RESULT: 49/59 healthy (10 failed) in 5.4s
+RESULT: 16/63 healthy (47 failed) in 5.0s
 ══════════════════════════════════════════════════════════════
 
 ────────────────────────────────────────────────────────────
