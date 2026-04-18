@@ -72,15 +72,16 @@ elif [ -f ~/.ssh/config ]; then
   echo "[setup] SSH config from mounted ~/.ssh/config"
 fi
 
-# ── 3. SOPS setup (env var OR mounted file) ───────────────────────
-if [ -n "${SOPS_AGE_KEY:-}" ]; then
-  mkdir -p ~/.config/sops/age
-  echo "$SOPS_AGE_KEY" > ~/.config/sops/age/keys.txt
-  export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
-  echo "[setup] SOPS age key from env var"
-elif [ -f ~/.config/sops/age/keys.txt ]; then
+# ── 3. SOPS setup (mounted file takes precedence; env var only if dir writable) ──
+if [ -f ~/.config/sops/age/keys.txt ]; then
   export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
   echo "[setup] SOPS age key from mounted file"
+elif [ -n "${SOPS_AGE_KEY:-}" ] && mkdir -p ~/.config/sops/age 2>/dev/null && [ -w ~/.config/sops/age ]; then
+  printf '%s' "$SOPS_AGE_KEY" > ~/.config/sops/age/keys.txt
+  export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
+  echo "[setup] SOPS age key from env var"
+else
+  echo "[setup] WARNING: no SOPS age key (not mounted, not in env, or config dir RO)" >&2
 fi
 
 # ── 4. GHCR login ─────────────────────────────────────────────────

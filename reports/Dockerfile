@@ -26,12 +26,20 @@ RUN ARCH=$(dpkg --print-architecture) && \
     curl -sfL "https://github.com/terrastruct/d2/releases/latest/download/d2-linux-${ARCH}.tar.gz" | \
     tar xz -C /usr/local/bin --strip-components=1 --wildcards '*/d2' || true
 
-# Install Pikchr (inline SVG diagrams) — single C file, compile from source
-RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev && \
-    curl -sfL "https://pikchr.org/home/raw/pikchr.c?name=trunk" -o /tmp/pikchr.c && \
-    gcc -DPIKCHR_SHELL -o /usr/local/bin/pikchr /tmp/pikchr.c -lm && \
-    rm /tmp/pikchr.c && \
-    apt-get purge -y gcc libc6-dev && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+# Install Pikchr (inline SVG diagrams) — pinned fossil tarball → make
+# Source of truth: reports/build-deps.json (URL + sha256 + version hash).
+COPY build-deps.json /tmp/build-deps.json
+RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev make jq && \
+    URL=$(jq -r .pikchr.url /tmp/build-deps.json) && \
+    SHA=$(jq -r .pikchr.sha256 /tmp/build-deps.json) && \
+    DEST=$(jq -r .pikchr.install_path /tmp/build-deps.json) && \
+    curl -fsSL "$URL" -o /tmp/pikchr.tar.gz && \
+    echo "$SHA  /tmp/pikchr.tar.gz" | sha256sum -c - && \
+    mkdir -p /tmp/pikchr-src && tar xzf /tmp/pikchr.tar.gz -C /tmp/pikchr-src --strip-components=1 && \
+    (cd /tmp/pikchr-src && make pikchr) && \
+    install -m 0755 /tmp/pikchr-src/pikchr "$DEST" && \
+    rm -rf /tmp/pikchr-src /tmp/pikchr.tar.gz /tmp/build-deps.json && \
+    apt-get purge -y gcc libc6-dev make jq && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
 # Fetch community YARA rules at build time
 RUN mkdir -p /usr/local/share/yara-rules/community && \
