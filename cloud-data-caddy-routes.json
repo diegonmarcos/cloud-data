@@ -4,7 +4,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 2
   },
-  "_generated": "2026-04-19T14:18:54.649Z",
+  "_generated": "2026-04-19T14:28:50.360Z",
   "_source": "_cloud-data-consolidated.json via cloud-data-config-derive.ts/caddy-routes",
   "l4_routes": [
     {
@@ -1959,18 +1959,6 @@
       "source": "containers.app.port"
     },
     {
-      "kind": "canonical",
-      "service": "matomo-hybrid-tcp-3306.app",
-      "container": "matomo-hybrid",
-      "container_key": "app",
-      "svc": "matomo",
-      "vm": "oci-A1-f_0",
-      "port": 3306,
-      "protocol": "tcp",
-      "upstream": "10.0.0.6:3306",
-      "source": "containers.app.extra_ports"
-    },
-    {
       "kind": "redirect",
       "service": "news-gdelt.app",
       "redirect_to": "https://news-gdelt-null.app",
@@ -2511,7 +2499,7 @@
       "engine": "mariadb",
       "port": 3306,
       "upstream": "10.0.0.6:3306",
-      "note": "embedded engine inside app container, exposed via extra_ports"
+      "path": "/var/lib/mysql"
     },
     {
       "kind": "embedded",
@@ -2545,6 +2533,17 @@
       "engine": "sqlite",
       "port": null,
       "path": "/data/gitea/gitea.db"
+    },
+    {
+      "kind": "container",
+      "service": "surrealdb-surrealdb-8001.db",
+      "container": "surrealdb",
+      "container_key": "app",
+      "svc": "kg-graph",
+      "vm": "oci-A1-f_0",
+      "engine": "surrealdb",
+      "port": 8001,
+      "upstream": "10.0.0.6:8001"
     },
     {
       "kind": "container",

@@ -659,101 +659,60 @@ function deriveCaddyRoutes(c: any): DerivedFile {
     }
   }
 
-  // ── all_db_urls: {container}-{engine}-{port}.db catalog for every DB endpoint ──
-  //   - DB container (image matches pg/maria/redis/mongo/surrealdb/minio/…) → engine from regex, port from containers.<x>.port
-  //   - Embedded DB (containers.<x>.embedded_dbs[]) → engine from declaration, port "null"
-  //   - Plus: extra_ports on "monolith" images that bundle an engine (matomo-hybrid MariaDB on 3306)
-  const DB_ENGINES: Array<{ rx: RegExp; name: string }> = [
-    { rx: /postgres|postlite/i, name: "postgres" },
-    { rx: /mariadb/i,            name: "mariadb" },
-    { rx: /mysql/i,              name: "mysql" },
-    { rx: /mongo/i,              name: "mongo" },
-    { rx: /redis|valkey/i,       name: "redis" },
-    { rx: /memcached/i,          name: "memcached" },
-    { rx: /surrealdb/i,          name: "surrealdb" },
-    { rx: /minio/i,              name: "minio" },
-    { rx: /clickhouse/i,         name: "clickhouse" },
-    { rx: /etcd/i,               name: "etcd" },
-  ];
-  const imageToEngine = (image: string | null | undefined): string | null => {
-    if (!image || typeof image !== "string") return null;
-    for (const { rx, name } of DB_ENGINES) if (rx.test(image)) return name;
-    return null;
-  };
-
+  // ── all_db_urls: {container}-{engine}-{port}.db catalog ─────────────────────
+  // 100% data-driven — reads only fields DECLARED in build.json:
+  //   - containers.<x>.db_engine   → container IS a DB engine
+  //   - containers.<x>.port        → network port of the DB container (may be null)
+  //   - containers.<x>.embedded_dbs[] { engine, path?, port? }
+  //                                → DB running inside an app container, optionally exposed via `port`
+  // Zero regex. Zero port-to-engine guessing. Zero hardcoded tables.
   const allDbUrls: any[] = [];
   for (const [svcName, svc] of Object.entries(services) as [string, any][]) {
     const vm = vms[svc.vm];
     if (!vm?.wg_ip) continue;
     for (const [ck, c] of Object.entries(svc.containers ?? {}) as [string, any][]) {
       if (!c.container_name) continue;
-      // Case A — container IS a DB engine (image match)
-      const engine = imageToEngine(c.image);
-      if (engine) {
+      const common = { container: c.container_name, container_key: ck, svc: svcName, vm: svc.vm };
+
+      // A) Declared DB container
+      if (c.db_engine) {
+        const engine = c.db_engine;
         if (typeof c.port === "number") {
           allDbUrls.push({
             kind: "container",
             service: `${c.container_name}-${engine}-${c.port}.db`,
-            container: c.container_name,
-            container_key: ck,
-            svc: svcName,
-            vm: svc.vm,
-            engine,
-            port: c.port,
+            ...common, engine, port: c.port,
             upstream: `${vm.wg_ip}:${c.port}`,
           });
         } else {
-          // DB image but no network port exposed (docker-net only)
           allDbUrls.push({
             kind: "container",
             service: `${c.container_name}-${engine}-null.db`,
-            container: c.container_name,
-            container_key: ck,
-            svc: svcName,
-            vm: svc.vm,
-            engine,
-            port: null,
+            ...common, engine, port: null,
             note: "DB container on docker-internal network only (no host port)",
           });
         }
       }
-      // Case B — embedded DBs inside an app container (no network port)
+
+      // B) Embedded DBs — optionally with a port (covers "bundled" case like matomo-hybrid)
       for (const edb of (c.embedded_dbs ?? []) as any[]) {
         if (!edb?.engine) continue;
-        allDbUrls.push({
-          kind: "embedded",
-          service: `${c.container_name}-${edb.engine}-null.db`,
-          container: c.container_name,
-          container_key: ck,
-          svc: svcName,
-          vm: svc.vm,
-          engine: edb.engine,
-          port: null,
-          ...(edb.path ? { path: edb.path } : {}),
-        });
-      }
-      // Case C — extra_ports on a non-DB image may still carry a DB protocol (e.g. matomo-hybrid :3306 mariadb)
-      for (const ep of (c.extra_ports ?? []) as any[]) {
-        if (typeof ep !== "object" || typeof ep.port !== "number") continue;
-        // Only emit a .db entry when the protocol is tcp AND the port is a well-known DB port
-        const WELL_KNOWN_DB_PORTS: Record<number, string> = {
-          5432: "postgres", 3306: "mariadb", 6379: "redis", 27017: "mongo", 11211: "memcached", 9000: "minio",
-        };
-        const epEngine = WELL_KNOWN_DB_PORTS[ep.port];
-        if (!epEngine || ep.protocol !== "tcp") continue;
-        if (engine) continue; // already emitted as Case A
-        allDbUrls.push({
-          kind: "bundled",
-          service: `${c.container_name}-${epEngine}-${ep.port}.db`,
-          container: c.container_name,
-          container_key: ck,
-          svc: svcName,
-          vm: svc.vm,
-          engine: epEngine,
-          port: ep.port,
-          upstream: `${vm.wg_ip}:${ep.port}`,
-          note: "embedded engine inside app container, exposed via extra_ports",
-        });
+        if (typeof edb.port === "number") {
+          allDbUrls.push({
+            kind: "bundled",
+            service: `${c.container_name}-${edb.engine}-${edb.port}.db`,
+            ...common, engine: edb.engine, port: edb.port,
+            upstream: `${vm.wg_ip}:${edb.port}`,
+            ...(edb.path ? { path: edb.path } : {}),
+          });
+        } else {
+          allDbUrls.push({
+            kind: "embedded",
+            service: `${c.container_name}-${edb.engine}-null.db`,
+            ...common, engine: edb.engine, port: null,
+            ...(edb.path ? { path: edb.path } : {}),
+          });
+        }
       }
     }
   }

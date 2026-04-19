@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-04-19T14:18:54.401Z",
+    "generated_at": "2026-04-19T14:28:50.018Z",
     "generated_by": "cloud-data-config-consolidated.ts"
   },
   "owner": {
@@ -1059,7 +1059,8 @@
           "read_only": false,
           "db_user": "etherpad",
           "db_name": "etherpad",
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "postgres"
         }
       },
       "container_names": [
@@ -1439,7 +1440,8 @@
           "read_only": false,
           "db_user": "hedgedoc",
           "db_name": "hedgedoc",
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "postgres"
         }
       },
       "container_names": [
@@ -1636,7 +1638,8 @@
           "read_only": false,
           "db_user": "mattermost",
           "db_name": "mattermost",
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "postgres"
         },
         "bots": {
           "container_name": "mattermost-bots",
@@ -1862,7 +1865,8 @@
           "resources": null,
           "read_only": false,
           "db_user": "root",
-          "db_name": "photoprism"
+          "db_name": "photoprism",
+          "db_engine": "mariadb"
         },
         "rclone": {
           "container_name": "photoprism_rclone",
@@ -2760,7 +2764,8 @@
           "read_only": false,
           "db_user": "crawlee",
           "db_name": "crawlee",
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "postgres"
         },
         "redis": {
           "container_name": "crawlee_redis",
@@ -2776,7 +2781,8 @@
           "env_file": false,
           "resources": null,
           "read_only": false,
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "redis"
         },
         "minio": {
           "container_name": "crawlee_minio",
@@ -2792,7 +2798,8 @@
           "env_file": true,
           "resources": null,
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "db_engine": "minio"
         }
       },
       "container_names": [
@@ -2990,7 +2997,8 @@
           "depends_on": [],
           "resources": null,
           "read_only": false,
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "postgres"
         }
       },
       "container_names": [
@@ -3106,7 +3114,8 @@
           "read_only": false,
           "db_user": "quant_user",
           "db_name": "quantlab",
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "postgres"
         }
       },
       "container_names": [
@@ -3600,7 +3609,8 @@
           "env_file": true,
           "resources": null,
           "read_only": false,
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "redis"
         }
       },
       "container_names": [
@@ -4904,12 +4914,7 @@
           "container_name": "matomo-hybrid",
           "image": null,
           "port": 8084,
-          "extra_ports": [
-            {
-              "port": 3306,
-              "protocol": "tcp"
-            }
-          ],
+          "extra_ports": [],
           "port_env": null,
           "dns": "matomo.app",
           "public": true,
@@ -4937,7 +4942,14 @@
           },
           "read_only": false,
           "dump_cmd": "mysqldump -u matomo matomo",
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "mariadb",
+              "port": 3306,
+              "path": "/var/lib/mysql"
+            }
+          ]
         }
       },
       "container_names": [
@@ -5346,7 +5358,8 @@
           "read_only": false,
           "db_user": "umami",
           "db_name": "umami",
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "postgres"
         },
         "setup": {
           "container_name": "umami-setup",
@@ -5781,7 +5794,8 @@
         "app": {
           "container_name": "surrealdb",
           "port": 8001,
-          "protocol": "http"
+          "protocol": "http",
+          "db_engine": "surrealdb"
         }
       },
       "container_names": [
@@ -5841,7 +5855,8 @@
           "depends_on": [],
           "resources": null,
           "read_only": false,
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "db_engine": "redis"
         }
       },
       "container_names": [

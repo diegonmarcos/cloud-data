@@ -102,6 +102,7 @@ export type EmbeddedDbEngine =
 export interface EmbeddedDbSpec {
   engine: EmbeddedDbEngine;
   path?: string;  // file/dir inside the container for backup tools
+  port?: number;  // optional — set when a bundled DB is also network-exposed (e.g. matomo-hybrid mariadb:3306)
 }
 
 export interface ContainerSpec {
@@ -112,6 +113,7 @@ export interface ContainerSpec {
   port_env?: string | null;
   extra_ports?: PortSpec[];      // array of {port, protocol} — additional ports on the same container
   embedded_dbs?: EmbeddedDbSpec[];  // DBs living inside this container, no network port exposed
+  db_engine?: EmbeddedDbEngine;     // declared when the container IS a DB (used by .db zone)
   dns?: string | null;
   public: boolean;
   proxy?: ProxyPrimaryConfig | null;
