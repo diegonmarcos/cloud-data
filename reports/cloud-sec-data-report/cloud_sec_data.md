@@ -1,6 +1,6 @@
 # Cloud Security: Data Scan Report
 
-> Generated: 2026-04-19 02:52:00 UTC
+> Generated: 2026-04-19 07:25:00 UTC
 
 ---
 
@@ -45,7 +45,7 @@
 
 ## Threat Intelligence
 
-  ✅ URLhaus feed                   200 indicators fetched (0.2s)
+  ✅ URLhaus feed                   200 indicators fetched (0.1s)
 
   Summary: 1/1 passed, 0 failed
 
@@ -91,11 +91,11 @@
 
 ## Performance
 
-  YARA+SIEM+ThreatIntel+Journal+Runtime+Diff 0.6s
+  YARA+SIEM+ThreatIntel+Journal+Runtime+Diff 0.2s
   Correlation              0.0s
   Container export + evidence 0.0s
 
-  Total: 3.6s | Engine: Rust (native async tokio)
+  Total: 3.2s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux)
 
 ---

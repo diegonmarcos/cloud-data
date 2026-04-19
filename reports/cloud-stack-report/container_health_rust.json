@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-19T02:49:54.596910896+00:00",
-  "duration_ms": 58040,
+  "generated": "2026-04-19T07:22:52.786585711+00:00",
+  "duration_ms": 58019,
   "mesh": [
     {
       "name": "oci-mail",
@@ -1587,14 +1587,14 @@
     }
   ],
   "timers": {
-    "TOTAL": 58040,
-    "public_urls": 538,
-    "storage": 0,
+    "mesh": 3002,
+    "mail_dns": 55013,
     "private": 0,
-    "databases": 3024,
-    "port_scan": 3002,
-    "vm_ssh": 551,
-    "mesh": 3001,
-    "mail_dns": 55014
+    "public_urls": 751,
+    "storage": 0,
+    "databases": 3018,
+    "port_scan": 3008,
+    "TOTAL": 58019,
+    "vm_ssh": 544
   }
 }

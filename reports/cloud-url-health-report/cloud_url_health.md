@@ -6,7 +6,7 @@
   ██║   ██║██╔══██╗██║          ██╔══██║██╔══╝  ██╔══██║██║     ██║   ██╔══██║
   ╚██████╔╝██║  ██║███████╗     ██║  ██║███████╗██║  ██║███████╗██║   ██║  ██║
    ╚═════╝ ╚═╝  ╚═╝╚══════╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝
-  CLOUD URL HEALTH — 2026-04-19T02:51:36.528818488+00:00
+  CLOUD URL HEALTH — 2026-04-19T07:24:35.586662985+00:00
 ══════════════════════════════════════════════════════════════
 
   SUMMARY
@@ -70,21 +70,21 @@
 ──────────────────────────────────────────────────────────────
   DOMAIN                                    DNS  TCP  TLS  HTTP    ms  DETAIL
   ------------------------------------------------------------------------------------------
-  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 182ms  200
-  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 293ms  200
-  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 281ms  200
-  db.diegonmarcos.com                         ✅    ✅    ✅     ✅ 285ms  200
-  diegonmarcos.com                            ✅    ✅    ✅     ✅ 247ms  200
-  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 291ms  200
-  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 296ms  200
-  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 293ms  200
-  mail-stalwart.diegonmarcos.com              ✅    ✅    ✅     ❌ 266ms  HTTP 502
-  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 168ms  200
-  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 272ms  200
-  smtp.diegonmarcos.com                       ✅    ✅    ✅     ❌ 256ms  HTTP 502
-  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 399ms  200
-  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅ 175ms  200
-  workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 276ms  200
+  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 254ms  200
+  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 452ms  200
+  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 422ms  200
+  db.diegonmarcos.com                         ✅    ✅    ✅     ✅ 467ms  200
+  diegonmarcos.com                            ✅    ✅    ✅     ✅ 828ms  200
+  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 470ms  200
+  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 471ms  200
+  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 458ms  200
+  mail-stalwart.diegonmarcos.com              ✅    ✅    ✅     ❌ 360ms  HTTP 502
+  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 284ms  200
+  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 429ms  200
+  smtp.diegonmarcos.com                       ✅    ✅    ✅     ❌ 393ms  HTTP 502
+  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 499ms  200
+  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅ 301ms  200
+  workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 419ms  200
 
 
 2. PRIVATE URLS (WireGuard -> Container)
@@ -96,13 +96,13 @@
   backup-bup (oci-A1-f_0)        10.0.0.6:2223             ❌    ⬚  5000ms  TCP: timeout 5s
   c3-infra-api (oci-A1-f_0)      10.0.0.6:8081             ❌    ⬚  5000ms  TCP: timeout 5s
   c3-infra-mcp (oci-A1-f_0)      10.0.0.6:3100             ❌    ⬚  5000ms  TCP: timeout 5s
-  c3-services-api (oci-A1-f_0)   10.0.0.6:8082             ❌    ⬚  5000ms  TCP: timeout 5s
-  c3-services-mcp (oci-A1-f_0)   10.0.0.6:3101             ❌    ⬚  5000ms  TCP: timeout 5s
-  caddy (gcp-E2-f_0)             10.0.0.1:443              ❌    ⬚  5000ms  TCP: timeout 5s
-  cloud-cgc-mcp (oci-A1-f_0)     10.0.0.6:3105             ❌    ⬚  5000ms  TCP: timeout 5s
-  cloud-spec (oci-A1-f_0)        10.0.0.6:3080             ❌    ⬚  5000ms  TCP: timeout 5s
-  code-server (oci-A1-f_0)       10.0.0.6:8443             ❌    ⬚  5000ms  TCP: timeout 5s
-  crawlee-cloud (oci-A1-f_0)     10.0.0.6:3000             ❌    ⬚  5000ms  TCP: timeout 5s
+  c3-services-api (oci-A1-f_0)   10.0.0.6:8082             ❌    ⬚  5001ms  TCP: timeout 5s
+  c3-services-mcp (oci-A1-f_0)   10.0.0.6:3101             ❌    ⬚  5001ms  TCP: timeout 5s
+  caddy (gcp-E2-f_0)             10.0.0.1:443              ❌    ⬚  5001ms  TCP: timeout 5s
+  cloud-cgc-mcp (oci-A1-f_0)     10.0.0.6:3105             ❌    ⬚  5001ms  TCP: timeout 5s
+  cloud-spec (oci-A1-f_0)        10.0.0.6:3080             ❌    ⬚  5001ms  TCP: timeout 5s
+  code-server (oci-A1-f_0)       10.0.0.6:8443             ❌    ⬚  5001ms  TCP: timeout 5s
+  crawlee-cloud (oci-A1-f_0)     10.0.0.6:3000             ❌    ⬚  5001ms  TCP: timeout 5s
   dagu (oci-E2-f_1)              10.0.0.4:8070             ❌    ⬚  5001ms  TCP: timeout 5s
   dbgate (oci-A1-f_0)            10.0.0.6:8086             ❌    ⬚  5001ms  TCP: timeout 5s
   dozzle (oci-E2-f_1)            10.0.0.4:9999             ❌    ⬚  5001ms  TCP: timeout 5s

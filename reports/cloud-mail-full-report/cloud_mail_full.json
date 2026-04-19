@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-19T02:51:31.517970912+00:00",
-  "duration_ms": 49252,
+  "generated": "2026-04-19T07:24:30.575358264+00:00",
+  "duration_ms": 49685,
   "path_checks": [
     {
       "name": "OUT→1 Maddy :465 (SMTPS)",
@@ -14,7 +14,7 @@
       "name": "OUT→2 OCI relay :587",
       "passed": true,
       "details": "tcp smtp.email.eu-marseille-1.oci.oraclecloud.com:587 OPEN",
-      "duration_ms": 132,
+      "duration_ms": 208,
       "error": null,
       "severity": "Info"
     },
@@ -22,7 +22,7 @@
       "name": "OUT→3 AWS relay :587 (fallback)",
       "passed": true,
       "details": "tcp email-smtp.us-east-1.amazonaws.com:587 OPEN",
-      "duration_ms": 113,
+      "duration_ms": 160,
       "error": null,
       "severity": "Info"
     },
@@ -30,7 +30,7 @@
       "name": "IN→1 Cloudflare MX",
       "passed": false,
       "details": "no MX records",
-      "duration_ms": 9003,
+      "duration_ms": 9004,
       "error": "MX DNS missing",
       "severity": "Critical"
     },
@@ -38,7 +38,7 @@
       "name": "IN→2 smtp.diegonmarcos.com HTTPS",
       "passed": true,
       "details": "HTTP 502 (502)",
-      "duration_ms": 206,
+      "duration_ms": 330,
       "error": null,
       "severity": "Info"
     },
@@ -46,7 +46,7 @@
       "name": "IN→3 Hickory DNS smtp-proxy.app",
       "passed": false,
       "details": "NXDOMAIN",
-      "duration_ms": 18008,
+      "duration_ms": 18007,
       "error": "Hickory DNS not resolving smtp-proxy.app",
       "severity": "Critical"
     },
@@ -54,7 +54,7 @@
       "name": "IN→4 smtp-proxy :8080 (oci-mail)",
       "passed": false,
       "details": "tcp 10.0.0.3:8080 CLOSED",
-      "duration_ms": 3000,
+      "duration_ms": 3001,
       "error": "smtp-proxy not running on oci-mail",
       "severity": "Critical"
     },
@@ -62,7 +62,7 @@
       "name": "IN→5 Maddy :25 (oci-mail)",
       "passed": false,
       "details": "tcp 10.0.0.3:25 CLOSED",
-      "duration_ms": 3001,
+      "duration_ms": 3000,
       "error": "Maddy SMTP not listening",
       "severity": "Critical"
     },
@@ -70,7 +70,7 @@
       "name": "IN→6 IMAP :993 (INBOX)",
       "passed": false,
       "details": "tcp 10.0.0.3:993 CLOSED",
-      "duration_ms": 3000,
+      "duration_ms": 3001,
       "error": "IMAP not accessible",
       "severity": "Critical"
     }
@@ -80,7 +80,7 @@
       "name": "mail.* HTTPS",
       "passed": true,
       "details": "HTTP 301",
-      "duration_ms": 86,
+      "duration_ms": 192,
       "error": null,
       "severity": "Critical"
     },
@@ -88,7 +88,7 @@
       "name": "webmail HTTPS",
       "passed": true,
       "details": "HTTP 200",
-      "duration_ms": 108,
+      "duration_ms": 218,
       "error": null,
       "severity": "Critical"
     },
@@ -96,7 +96,7 @@
       "name": "auth HTTPS",
       "passed": true,
       "details": "HTTP 200",
-      "duration_ms": 103,
+      "duration_ms": 180,
       "error": null,
       "severity": "Warning"
     },
@@ -104,7 +104,7 @@
       "name": "MCP endpoint",
       "passed": true,
       "details": "HTTP 400",
-      "duration_ms": 334,
+      "duration_ms": 436,
       "error": null,
       "severity": "Warning"
     },
@@ -112,7 +112,7 @@
       "name": "mail:993 TLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 282,
+      "duration_ms": 289,
       "error": null,
       "severity": "Critical"
     },
@@ -120,7 +120,7 @@
       "name": "mail:465 TLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 208,
+      "duration_ms": 288,
       "error": null,
       "severity": "Critical"
     },
@@ -128,7 +128,7 @@
       "name": "mail:587 STARTTLS",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 281,
+      "duration_ms": 284,
       "error": null,
       "severity": "Critical"
     },
@@ -136,7 +136,7 @@
       "name": "MX record",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 10,
+      "duration_ms": 13,
       "error": null,
       "severity": "Critical"
     },
@@ -144,7 +144,7 @@
       "name": "DKIM record",
       "passed": false,
       "details": "MISSING",
-      "duration_ms": 26,
+      "duration_ms": 20,
       "error": "DKIM TXT record missing",
       "severity": "Critical"
     },
@@ -160,7 +160,7 @@
       "name": "CF Worker alive",
       "passed": true,
       "details": "HTTP 500",
-      "duration_ms": 58,
+      "duration_ms": 65,
       "error": null,
       "severity": "Critical"
     },
@@ -168,7 +168,7 @@
       "name": "Google OAuth reachable",
       "passed": true,
       "details": "HTTP 404 (token endpoint)",
-      "duration_ms": 19,
+      "duration_ms": 42,
       "error": null,
       "severity": "Warning"
     },
@@ -278,7 +278,7 @@
       "name": "Caddy (gcp-proxy)",
       "passed": true,
       "details": "HTTPS OK (no DNS)",
-      "duration_ms": 3145,
+      "duration_ms": 3227,
       "error": null,
       "severity": "Critical"
     },
@@ -326,7 +326,7 @@
       "name": "mail:993 (IMAP)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 224,
+      "duration_ms": 334,
       "error": null,
       "severity": "Critical"
     },
@@ -334,7 +334,7 @@
       "name": "mail:465 (SMTPS)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 215,
+      "duration_ms": 327,
       "error": null,
       "severity": "Critical"
     },
@@ -342,7 +342,7 @@
       "name": "mail:587 (SMTP Sub)",
       "passed": true,
       "details": "TLS OK",
-      "duration_ms": 223,
+      "duration_ms": 338,
       "error": null,
       "severity": "Critical"
     },
@@ -366,7 +366,7 @@
       "name": "Webmail HTTPS",
       "passed": true,
       "details": "HTTP 301",
-      "duration_ms": 92,
+      "duration_ms": 193,
       "error": null,
       "severity": "Warning"
     },
@@ -390,7 +390,7 @@
       "name": "mail.*/webmail/ route",
       "passed": true,
       "details": "HTTP 301",
-      "duration_ms": 93,
+      "duration_ms": 191,
       "error": null,
       "severity": "Warning"
     },
@@ -398,7 +398,7 @@
       "name": "webmail.* redirect",
       "passed": false,
       "details": "200 → ",
-      "duration_ms": 108,
+      "duration_ms": 191,
       "error": "200 → ",
       "severity": "Warning"
     },
@@ -478,7 +478,7 @@
       "name": "mail-mcp MCP",
       "passed": true,
       "details": "HTTP 400 (alive)",
-      "duration_ms": 327,
+      "duration_ms": 462,
       "error": null,
       "severity": "Warning"
     },
@@ -496,7 +496,7 @@
       "name": "MX",
       "passed": true,
       "details": "22 route1.mx.cloudflare.net.",
-      "duration_ms": 13,
+      "duration_ms": 12,
       "error": null,
       "severity": "Critical"
     },
@@ -504,7 +504,7 @@
       "name": "DKIM",
       "passed": false,
       "details": "missing",
-      "duration_ms": 14,
+      "duration_ms": 17,
       "error": "DKIM missing",
       "severity": "Critical"
     },
@@ -512,7 +512,7 @@
       "name": "SPF",
       "passed": true,
       "details": "v=spf1",
-      "duration_ms": 14,
+      "duration_ms": 12,
       "error": null,
       "severity": "Critical"
     },
@@ -520,7 +520,7 @@
       "name": "DMARC",
       "passed": true,
       "details": "v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 12,
+      "duration_ms": 23,
       "error": null,
       "severity": "Critical"
     }
@@ -563,15 +563,15 @@
     "critical": 26
   },
   "timers": {
-    "TOTAL": 49252,
-    "T0_path_checker": 39469,
-    "P4_dns_auth": 3145,
-    "P1_preflight": 3018,
-    "P2-P5_parallel": 3145,
     "P2_containers": 0,
-    "P5_internals": 0,
-    "P3_network": 3145,
     "P6_e2e_delivery": 0,
-    "P0_instant_kpis": 3618
+    "P4_dns_auth": 3227,
+    "TOTAL": 49685,
+    "P1_preflight": 3013,
+    "P0_instant_kpis": 3727,
+    "P2-P5_parallel": 3227,
+    "P5_internals": 0,
+    "T0_path_checker": 39716,
+    "P3_network": 3227
   }
 }
