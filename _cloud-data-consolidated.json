@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-04-19T14:28:50.018Z",
+    "generated_at": "2026-04-19T14:48:27.404Z",
     "generated_by": "cloud-data-config-consolidated.ts"
   },
   "owner": {
@@ -415,7 +415,7 @@
         "introspect-proxy",
         "redis"
       ],
-      "container_count": 6
+      "container_count": 7
     },
     "vast-RTX-p_0": {
       "ip": "TBD",
@@ -3611,11 +3611,35 @@
           "read_only": false,
           "protocol": "tcp",
           "db_engine": "redis"
+        },
+        "postlite": {
+          "container_name": "postlite-authelia",
+          "image": "ghcr.io/diegonmarcos/postlite:latest",
+          "port": null,
+          "port_env": null,
+          "public": false,
+          "healthcheck": null,
+          "volumes": [],
+          "env_file": false,
+          "depends_on": [
+            "app"
+          ],
+          "resources": {
+            "limits": {
+              "memory": "64M"
+            },
+            "reservations": {
+              "memory": "16M"
+            }
+          },
+          "read_only": false,
+          "protocol": "tcp"
         }
       },
       "container_names": [
         "authelia",
-        "authelia-redis"
+        "authelia-redis",
+        "postlite-authelia"
       ],
       "all_ports": [
         "9091",
@@ -5795,7 +5819,8 @@
           "container_name": "surrealdb",
           "port": 8001,
           "protocol": "http",
-          "db_engine": "surrealdb"
+          "db_engine": "surrealdb",
+          "image": "ghcr.io/diegonmarcos/kg-graph:latest"
         }
       },
       "container_names": [

@@ -109,32 +109,19 @@ function deriveDatabases(c: any): DerivedFile {
   const vms = c.vms as Record<string, any>;
   const vmIdToAlias = buildVmIdToAlias(vms);
 
-  // ── Data store type detection ────────────────────────────────────────────
-  const DB_IMAGE_RE: [RegExp, string][] = [
-    [/^(postgres|ghcr\.io\/.*postgres)/i, "postgres"],
-    [/^(mariadb|mysql)/i, "mariadb"],
-    [/^(redis|valkey)/i, "redis"],
-    [/^(surrealdb|ghcr\.io\/.*surrealdb)/i, "surrealdb"],
-    [/^(mongo)/i, "mongo"],
-    [/^(minio|ghcr\.io\/.*minio)/i, "s3"],
-    [/grafana\/loki/i, "loki"],
-    [/grafana\/mimir/i, "mimir"],
-    [/grafana\/tempo/i, "tempo"],
-    [/grafana\/grafana/i, "grafana"],
-  ];
-
+  // ── Data store type detection (100% declared, zero image regex) ─────────
+  // Priority: containers.<x>.db_engine > containers.<x>.embedded_dbs[0].engine
+  //         > legacy ct.db_path signals sqlite > ct.dump_cmd signals "custom"
   function inferDbType(ct: any): string | null {
+    if (ct.db_engine) return ct.db_engine;
+    if (Array.isArray(ct.embedded_dbs) && ct.embedded_dbs[0]?.engine) return ct.embedded_dbs[0].engine;
     if (ct.db_path) return "sqlite";
-    const img = ct.image ?? "";
-    for (const [re, type] of DB_IMAGE_RE) {
-      if (re.test(img)) return type;
-    }
     if (ct.dump_cmd) return "custom";
     return null;
   }
 
   function isDataStore(ct: any): boolean {
-    return !!(ct.db_user || ct.db_name || ct.db_path || ct.dump_cmd || inferDbType(ct));
+    return !!(ct.db_engine || ct.embedded_dbs?.length || ct.db_user || ct.db_name || ct.db_path || ct.dump_cmd);
   }
 
   // ── Scan all services ──────────────────────────────────────────────────
@@ -1025,22 +1012,24 @@ function deriveBackupTargets(c: any): DerivedFile {
     const vmAlias = vmIdToAlias[svc.vm] ?? svc.vm;
     const vm = vmById[svc.vm];
 
-    // Scan containers for DB metadata
+    // Scan containers for DB metadata (100% declared — no image regex)
     const databases: any[] = [];
     if (svc.containers) {
       for (const [ctKey, ct] of Object.entries(svc.containers) as [string, any][]) {
-        const hasDbFields = ct.db_user || ct.db_name || ct.db_path || ct.dump_cmd;
-        const isDbImage = /^(postgres|mariadb|mysql):/.test(ct.image ?? "");
+        const hasDbFields = ct.db_engine || ct.embedded_dbs?.length
+          || ct.db_user || ct.db_name || ct.db_path || ct.dump_cmd;
+        if (!hasDbFields) continue;
 
-        if (!hasDbFields && !isDbImage) continue;
+        // Dump-type resolution: declared db_engine → embedded_dbs[0] → legacy db_path → dump_cmd
+        let type: string;
+        if (ct.db_engine) type = ct.db_engine;
+        else if (Array.isArray(ct.embedded_dbs) && ct.embedded_dbs[0]?.engine) type = ct.embedded_dbs[0].engine;
+        else if (ct.db_path) type = "sqlite";
+        else type = "custom";
 
-        // Infer dump type from image
-        let type = "custom";
-        if (ct.db_path) type = "sqlite";
-        else if (ct.dump_cmd) type = "custom";
-        else if (/^postgres:/.test(ct.image ?? "")) type = "postgres";
-        else if (/^mariadb:/.test(ct.image ?? "")) type = "mariadb";
-        else if (/^mysql:/.test(ct.image ?? "")) type = "mariadb";
+        // Path resolution: prefer embedded_dbs[0].path when present (new schema)
+        const embPath = Array.isArray(ct.embedded_dbs) ? ct.embedded_dbs[0]?.path : undefined;
+        const path = ct.db_path ?? embPath;
 
         databases.push({
           service: svcName,
@@ -1049,7 +1038,7 @@ function deriveBackupTargets(c: any): DerivedFile {
           type,
           ...(ct.db_user ? { user: ct.db_user } : {}),
           ...(ct.db_name ? { db: ct.db_name } : {}),
-          ...(ct.db_path ? { path: ct.db_path } : {}),
+          ...(path ? { path } : {}),
           ...(ct.dump_cmd ? { dump_cmd: ct.dump_cmd } : {}),
         });
       }
