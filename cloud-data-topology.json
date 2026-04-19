@@ -1399,7 +1399,13 @@
           "depends_on": [],
           "resources": null,
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "sqlite",
+              "path": "/data/filebrowser.db"
+            }
+          ]
         }
       },
       "container_names": [
@@ -2141,7 +2147,13 @@
           "depends_on": [],
           "resources": null,
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "files",
+              "path": "/data/collections"
+            }
+          ]
         }
       },
       "container_names": [
@@ -2265,7 +2277,13 @@
             "mem_reservation": "16M"
           },
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "files",
+              "path": "/var/lib/snappymail"
+            }
+          ]
         }
       },
       "container_names": [
@@ -2330,7 +2348,13 @@
               "memory": "32M"
             }
           },
-          "read_only": false
+          "read_only": false,
+          "embedded_dbs": [
+            {
+              "engine": "sqlite",
+              "path": "/data/imapsql.db"
+            }
+          ]
         }
       },
       "container_names": [
@@ -2516,7 +2540,13 @@
           },
           "read_only": false,
           "dump_cmd": "sh -c 'stalwart-mail --export /tmp/stalwart-export && tar cf - -C /tmp stalwart-export && rm -rf /tmp/stalwart-export'",
-          "protocol": "https"
+          "protocol": "https",
+          "embedded_dbs": [
+            {
+              "engine": "rocksdb",
+              "path": "/opt/stalwart-mail/data"
+            }
+          ]
         }
       },
       "container_names": [
@@ -2591,7 +2621,13 @@
           "resources": null,
           "read_only": false,
           "db_path": "/data/db.sqlite3",
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "sqlite",
+              "path": "/data/db.sqlite3"
+            }
+          ]
         }
       },
       "container_names": [
@@ -3435,7 +3471,13 @@
           "resources": null,
           "read_only": false,
           "db_path": "/config/db.sqlite3",
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "sqlite",
+              "path": "/var/lib/authelia/db.sqlite3"
+            }
+          ]
         },
         "redis": {
           "container_name": "authelia-redis",
@@ -4136,7 +4178,13 @@
             "mem_limit": "256m"
           },
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "sqlite",
+              "path": "/var/lib/dagu/dagu.db"
+            }
+          ]
         }
       },
       "container_names": [
@@ -4405,7 +4453,13 @@
           ],
           "resources": null,
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "sqlite",
+              "path": "/var/lib/grafana/grafana.db"
+            }
+          ]
         },
         "loki": {
           "container_name": "lgtm_loki",
@@ -4422,7 +4476,13 @@
           "env_file": false,
           "resources": null,
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "boltdb",
+              "path": "/loki/index"
+            }
+          ]
         },
         "tempo": {
           "container_name": "lgtm_tempo",
@@ -4439,7 +4499,13 @@
           "env_file": false,
           "resources": null,
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "wal",
+              "path": "/var/tempo"
+            }
+          ]
         },
         "mimir": {
           "container_name": "lgtm_mimir",
@@ -4456,7 +4522,13 @@
           "env_file": false,
           "resources": null,
           "read_only": false,
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "tsdb",
+              "path": "/var/mimir"
+            }
+          ]
         }
       },
       "container_names": [
@@ -4658,7 +4730,13 @@
           "resources": null,
           "read_only": false,
           "db_path": "/var/cache/ntfy/cache.db",
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "sqlite",
+              "path": "/var/cache/ntfy/cache.db"
+            }
+          ]
         },
         "syslog-bridge": {
           "container_name": "syslog-bridge",
@@ -4862,10 +4940,10 @@
           ],
           "resources": {
             "limits": {
-              "memory": "512M"
+              "memory": "1G"
             },
             "reservations": {
-              "memory": "128M"
+              "memory": "256M"
             }
           },
           "read_only": false,
@@ -4885,10 +4963,10 @@
           "env_file": false,
           "resources": {
             "limits": {
-              "memory": "256M"
+              "memory": "512M"
             },
             "reservations": {
-              "memory": "64M"
+              "memory": "128M"
             }
           },
           "read_only": false,
@@ -5137,7 +5215,13 @@
           "resources": null,
           "read_only": false,
           "db_path": "/data/gitea/gitea.db",
-          "protocol": "http"
+          "protocol": "http",
+          "embedded_dbs": [
+            {
+              "engine": "sqlite",
+              "path": "/data/gitea/gitea.db"
+            }
+          ]
         }
       },
       "container_names": [

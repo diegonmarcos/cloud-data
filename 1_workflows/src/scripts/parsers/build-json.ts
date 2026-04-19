@@ -92,6 +92,18 @@ export interface PortSpec {
   protocol: PortProtocol;
 }
 
+// Embedded DB engines that live INSIDE an application container (no network port).
+// Declared per-container so the .db zone can surface them alongside real DB containers.
+export type EmbeddedDbEngine =
+  | "sqlite" | "rocksdb" | "leveldb" | "boltdb"
+  | "mariadb" | "mysql" | "postgres"   // sometimes bundled inside an "all-in-one" image
+  | "tsdb" | "wal" | "files";
+
+export interface EmbeddedDbSpec {
+  engine: EmbeddedDbEngine;
+  path?: string;  // file/dir inside the container for backup tools
+}
+
 export interface ContainerSpec {
   container_name: string;
   image: string;
@@ -99,6 +111,7 @@ export interface ContainerSpec {
   protocol?: PortProtocol;       // required when `port` is non-null
   port_env?: string | null;
   extra_ports?: PortSpec[];      // array of {port, protocol} — additional ports on the same container
+  embedded_dbs?: EmbeddedDbSpec[];  // DBs living inside this container, no network port exposed
   dns?: string | null;
   public: boolean;
   proxy?: ProxyPrimaryConfig | null;

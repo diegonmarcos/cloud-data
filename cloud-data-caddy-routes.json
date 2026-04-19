@@ -4,7 +4,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 2
   },
-  "_generated": "2026-04-18T15:04:46.585Z",
+  "_generated": "2026-04-19T14:18:54.649Z",
   "_source": "_cloud-data-consolidated.json via cloud-data-config-derive.ts/caddy-routes",
   "l4_routes": [
     {
@@ -2256,6 +2256,306 @@
       "protocol": "tcp",
       "upstream": "10.0.0.1:6379",
       "source": "containers.app.port"
+    }
+  ],
+  "all_db_urls": [
+    {
+      "kind": "container",
+      "service": "etherpad_postgres-postgres-5436.db",
+      "container": "etherpad_postgres",
+      "container_key": "db",
+      "svc": "etherpad",
+      "vm": "oci-A1-f_0",
+      "engine": "postgres",
+      "port": 5436,
+      "upstream": "10.0.0.6:5436"
+    },
+    {
+      "kind": "embedded",
+      "service": "filebrowser_app-sqlite-null.db",
+      "container": "filebrowser_app",
+      "container_key": "app",
+      "svc": "filebrowser",
+      "vm": "oci-A1-f_0",
+      "engine": "sqlite",
+      "port": null,
+      "path": "/data/filebrowser.db"
+    },
+    {
+      "kind": "container",
+      "service": "hedgedoc_postgres-postgres-5439.db",
+      "container": "hedgedoc_postgres",
+      "container_key": "db",
+      "svc": "hedgedoc",
+      "vm": "oci-A1-f_0",
+      "engine": "postgres",
+      "port": 5439,
+      "upstream": "10.0.0.6:5439"
+    },
+    {
+      "kind": "container",
+      "service": "mattermost-postgres-postgres-5435.db",
+      "container": "mattermost-postgres",
+      "container_key": "db",
+      "svc": "mattermost-bots",
+      "vm": "oci-A1-f_0",
+      "engine": "postgres",
+      "port": 5435,
+      "upstream": "10.0.0.6:5435"
+    },
+    {
+      "kind": "container",
+      "service": "photoprism_mariadb-mariadb-null.db",
+      "container": "photoprism_mariadb",
+      "container_key": "db",
+      "svc": "photoprism",
+      "vm": "oci-A1-f_0",
+      "engine": "mariadb",
+      "port": null,
+      "note": "DB container on docker-internal network only (no host port)"
+    },
+    {
+      "kind": "embedded",
+      "service": "radicale-files-null.db",
+      "container": "radicale",
+      "container_key": "app",
+      "svc": "radicale",
+      "vm": "oci-A1-f_0",
+      "engine": "files",
+      "port": null,
+      "path": "/data/collections"
+    },
+    {
+      "kind": "embedded",
+      "service": "snappymail-files-null.db",
+      "container": "snappymail",
+      "container_key": "app",
+      "svc": "snappymail",
+      "vm": "oci-E2-f_0",
+      "engine": "files",
+      "port": null,
+      "path": "/var/lib/snappymail"
+    },
+    {
+      "kind": "embedded",
+      "service": "maddy-sqlite-null.db",
+      "container": "maddy",
+      "container_key": "app",
+      "svc": "maddy",
+      "vm": "oci-E2-f_0",
+      "engine": "sqlite",
+      "port": null,
+      "path": "/data/imapsql.db"
+    },
+    {
+      "kind": "embedded",
+      "service": "stalwart-rocksdb-null.db",
+      "container": "stalwart",
+      "container_key": "app",
+      "svc": "stalwart",
+      "vm": "oci-E2-f_0",
+      "engine": "rocksdb",
+      "port": null,
+      "path": "/opt/stalwart-mail/data"
+    },
+    {
+      "kind": "embedded",
+      "service": "vaultwarden-sqlite-null.db",
+      "container": "vaultwarden",
+      "container_key": "app",
+      "svc": "vaultwarden",
+      "vm": "oci-A1-f_0",
+      "engine": "sqlite",
+      "port": null,
+      "path": "/data/db.sqlite3"
+    },
+    {
+      "kind": "container",
+      "service": "crawlee_db-postgres-5433.db",
+      "container": "crawlee_db",
+      "container_key": "db",
+      "svc": "crawlee-cloud",
+      "vm": "oci-A1-f_0",
+      "engine": "postgres",
+      "port": 5433,
+      "upstream": "10.0.0.6:5433"
+    },
+    {
+      "kind": "container",
+      "service": "crawlee_redis-redis-6381.db",
+      "container": "crawlee_redis",
+      "container_key": "redis",
+      "svc": "crawlee-cloud",
+      "vm": "oci-A1-f_0",
+      "engine": "redis",
+      "port": 6381,
+      "upstream": "10.0.0.6:6381"
+    },
+    {
+      "kind": "container",
+      "service": "crawlee_minio-minio-9000.db",
+      "container": "crawlee_minio",
+      "container_key": "minio",
+      "svc": "crawlee-cloud",
+      "vm": "oci-A1-f_0",
+      "engine": "minio",
+      "port": 9000,
+      "upstream": "10.0.0.6:9000"
+    },
+    {
+      "kind": "container",
+      "service": "quant_full_db-postgres-5437.db",
+      "container": "quant_full_db",
+      "container_key": "db",
+      "svc": "quant-lab-full",
+      "vm": "oci-A1-f_0",
+      "engine": "postgres",
+      "port": 5437,
+      "upstream": "10.0.0.6:5437"
+    },
+    {
+      "kind": "container",
+      "service": "quant_light_db-postgres-5443.db",
+      "container": "quant_light_db",
+      "container_key": "db",
+      "svc": "quant-lab-light",
+      "vm": "oci-A1-f_0",
+      "engine": "postgres",
+      "port": 5443,
+      "upstream": "10.0.0.6:5443"
+    },
+    {
+      "kind": "embedded",
+      "service": "authelia-sqlite-null.db",
+      "container": "authelia",
+      "container_key": "app",
+      "svc": "authelia",
+      "vm": "gcp-E2-f_0",
+      "engine": "sqlite",
+      "port": null,
+      "path": "/var/lib/authelia/db.sqlite3"
+    },
+    {
+      "kind": "container",
+      "service": "authelia-redis-redis-6380.db",
+      "container": "authelia-redis",
+      "container_key": "redis",
+      "svc": "authelia",
+      "vm": "gcp-E2-f_0",
+      "engine": "redis",
+      "port": 6380,
+      "upstream": "10.0.0.1:6380"
+    },
+    {
+      "kind": "embedded",
+      "service": "dagu-sqlite-null.db",
+      "container": "dagu",
+      "container_key": "app",
+      "svc": "dagu",
+      "vm": "oci-E2-f_1",
+      "engine": "sqlite",
+      "port": null,
+      "path": "/var/lib/dagu/dagu.db"
+    },
+    {
+      "kind": "embedded",
+      "service": "lgtm_grafana-sqlite-null.db",
+      "container": "lgtm_grafana",
+      "container_key": "grafana",
+      "svc": "lgtm",
+      "vm": "oci-A1-f_0",
+      "engine": "sqlite",
+      "port": null,
+      "path": "/var/lib/grafana/grafana.db"
+    },
+    {
+      "kind": "embedded",
+      "service": "lgtm_loki-boltdb-null.db",
+      "container": "lgtm_loki",
+      "container_key": "loki",
+      "svc": "lgtm",
+      "vm": "oci-A1-f_0",
+      "engine": "boltdb",
+      "port": null,
+      "path": "/loki/index"
+    },
+    {
+      "kind": "embedded",
+      "service": "lgtm_tempo-wal-null.db",
+      "container": "lgtm_tempo",
+      "container_key": "tempo",
+      "svc": "lgtm",
+      "vm": "oci-A1-f_0",
+      "engine": "wal",
+      "port": null,
+      "path": "/var/tempo"
+    },
+    {
+      "kind": "embedded",
+      "service": "lgtm_mimir-tsdb-null.db",
+      "container": "lgtm_mimir",
+      "container_key": "mimir",
+      "svc": "lgtm",
+      "vm": "oci-A1-f_0",
+      "engine": "tsdb",
+      "port": null,
+      "path": "/var/mimir"
+    },
+    {
+      "kind": "bundled",
+      "service": "matomo-hybrid-mariadb-3306.db",
+      "container": "matomo-hybrid",
+      "container_key": "app",
+      "svc": "matomo",
+      "vm": "oci-A1-f_0",
+      "engine": "mariadb",
+      "port": 3306,
+      "upstream": "10.0.0.6:3306",
+      "note": "embedded engine inside app container, exposed via extra_ports"
+    },
+    {
+      "kind": "embedded",
+      "service": "ntfy-sqlite-null.db",
+      "container": "ntfy",
+      "container_key": "app",
+      "svc": "ntfy",
+      "vm": "oci-A1-f_0",
+      "engine": "sqlite",
+      "port": null,
+      "path": "/var/cache/ntfy/cache.db"
+    },
+    {
+      "kind": "container",
+      "service": "umami-db-postgres-5442.db",
+      "container": "umami-db",
+      "container_key": "db",
+      "svc": "umami",
+      "vm": "oci-A1-f_0",
+      "engine": "postgres",
+      "port": 5442,
+      "upstream": "10.0.0.6:5442"
+    },
+    {
+      "kind": "embedded",
+      "service": "gitea-sqlite-null.db",
+      "container": "gitea",
+      "container_key": "app",
+      "svc": "gitea",
+      "vm": "oci-A1-f_0",
+      "engine": "sqlite",
+      "port": null,
+      "path": "/data/gitea/gitea.db"
+    },
+    {
+      "kind": "container",
+      "service": "redis-redis-6379.db",
+      "container": "redis",
+      "container_key": "app",
+      "svc": "redis",
+      "vm": "gcp-E2-f_0",
+      "engine": "redis",
+      "port": 6379,
+      "upstream": "10.0.0.1:6379"
     }
   ]
 }
