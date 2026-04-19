@@ -704,27 +704,123 @@ function deriveCaddyRoutes(c: any): DerivedFile {
     }
   }
 
+  // ── caddy_config passthrough: global, snippets, auth, wkd, mta_sts, etc. ──
+  // Source: services.caddy.caddy_config (via entry.extra in consolidated.ts)
+  // All hardcoded flake values now live here → 100% data-driven Caddyfile.
+  const caddyCfg: any = services["caddy"]?.caddy_config ?? {};
+
+  // ── Taxonomy views (derived from functional keys — for humans/debugging) ──
+  const hubDomains = new Set(["mcp.diegonmarcos.com", "api.diegonmarcos.com", "app.diegonmarcos.com"]);
+  const publicAMcp: any[] = [];
+  const publicBApis: any[] = [];
+  const publicCAppPaths: any[] = [];
+  const publicDOthers: any[] = [];
+
+  const makeRow = (host: string, path: string | null, upstream: string, kind: string, tls: string, service: string | null, notes: string | null) =>
+    ({ host, path, upstream, kind, tls, zone: "com", service, notes });
+
+  for (const r of dedupedRoutes) {
+    const row = makeRow(r.domain, null, r.upstream ?? "?", "reverse_proxy", "public", null, r.comment ?? null);
+    if (r.domain === "mcp.diegonmarcos.com") publicAMcp.push({ ...row, kind: "hub_root" });
+    else if (r.domain === "api.diegonmarcos.com") publicBApis.push({ ...row, kind: "hub_root" });
+    else if (r.domain === "app.diegonmarcos.com") publicCAppPaths.push({ ...row, kind: "hub_root" });
+    else publicDOthers.push(row);
+  }
+  for (const group of filteredPathRoutes) {
+    for (const p of group.paths ?? []) {
+      const row = makeRow(group.parent_domain, p.base_path, p.upstream ?? "?", "reverse_proxy", "public", null, p.comment ?? null);
+      if (group.parent_domain === "mcp.diegonmarcos.com") publicAMcp.push(row);
+      else if (group.parent_domain === "api.diegonmarcos.com") publicBApis.push(row);
+      else if (group.parent_domain === "app.diegonmarcos.com") publicCAppPaths.push(row);
+      else publicDOthers.push(row);
+    }
+  }
+  for (const mcpGroup of mcpRoutes) {
+    for (const ep of mcpGroup.endpoints ?? []) {
+      publicAMcp.push(makeRow(mcpGroup.parent_domain, ep.base_path, ep.upstream, "reverse_proxy", "public", null, ep.comment ?? null));
+    }
+  }
+  for (const g of githubPagesProxies) {
+    publicDOthers.push(makeRow(g.domain, null, "https://diegonmarcos.github.io", "reverse_proxy", "public", null, `github_path=${g.github_path ?? "?"}`));
+  }
+  for (const red of redirects) {
+    publicDOthers.push(makeRow(red.domain, null, red.target, "redirect", "public", null, red.comment ?? null));
+  }
+
+  const privateA0AppShort = internalRoutes.map((r: any) => makeRow(r.service, null, r.upstream, "reverse_proxy", "internal", null, null));
+  const privateA1AppCanonical = (allAppUrls.filter((u: any) => u.kind === "canonical") as any[]).map(u =>
+    makeRow(u.service, null, u.upstream, "reverse_proxy", "on_demand", u.svc, (u.container.includes("_") ? "underscore → TLS broken" : null)));
+  const privateA2AppPortless = (allAppUrls.filter((u: any) => u.kind === "portless") as any[]).map(u =>
+    ({ host: u.service, path: null, upstream: "204", kind: "portless", tls: "on_demand", zone: "app", service: u.svc, notes: (u.container.includes("_") ? "underscore → TLS broken" : null) }));
+
+  const privateB0Db = allDbUrls.map((u: any) =>
+    ({ host: u.service, path: u.path ?? null, upstream: u.upstream ?? "embedded", kind: "catalog", tls: "on_demand", zone: "db", service: u.svc,
+       notes: `engine=${u.engine}${u.vm ? ` vm=${u.vm}` : ""}${(u.container ?? "").includes("_") ? " underscore → TLS broken" : ""}${u.note ? ` ${u.note}` : ""}` }));
+
+  const privateB1S3 = s3Routes.map((r: any) =>
+    ({ host: r.service, path: null, upstream: r.s3_endpoint, kind: "reverse_proxy", tls: "internal", zone: "app", service: null, notes: `OCI bucket: ${r.bucket}` }));
+
+  const l4Listeners = l4Routes.map((r: any) =>
+    ({ host: `:${r.port}`, path: null, upstream: r.upstream, kind: "l4_forward", tls: "none", zone: "l4", service: null, notes: r.comment ?? null }));
+
+  const others: any[] = [
+    { host: "<global>",       path: null, upstream: caddyCfg.global?.admin_bind ?? "?", kind: "directive",    tls: "none",   zone: "global", service: "caddy", notes: "admin bind" },
+    { host: "<global>",       path: null, upstream: caddyCfg.global?.auto_https ?? "?", kind: "directive",    tls: "none",   zone: "global", service: "caddy", notes: "auto_https" },
+    { host: "<global>",       path: null, upstream: caddyCfg.on_demand_tls?.ask_url ?? "?", kind: "directive", tls: "none",  zone: "global", service: "caddy", notes: "on_demand_tls ask" },
+    { host: caddyCfg.on_demand_tls?.ask_bind ?? "?", path: null, upstream: "200", kind: "ask_endpoint", tls: "none", zone: "helper", service: "caddy", notes: "on-demand TLS approver" },
+    { host: caddyCfg.catch_all?.domain ?? "?", path: null, upstream: caddyCfg.catch_all?.page ?? "?", kind: "catch_all", tls: "public", zone: "com", service: "caddy", notes: "catch-all" },
+    { host: caddyCfg.mta_sts?.domain ?? "?", path: caddyCfg.mta_sts?.policy_path ?? "?", upstream: "(inline)", kind: "static", tls: "public", zone: "com", service: "caddy", notes: "MTA-STS policy" },
+  ];
+  for (const wkdDomain of (caddyCfg.wkd?.domains ?? []) as string[]) {
+    others.push({ host: wkdDomain, path: caddyCfg.wkd.path, upstream: `/srv/wkd/hu/${caddyCfg.wkd.hash}`, kind: "file_server", tls: "public", zone: "com", service: "caddy", notes: "PGP WKD" });
+  }
+
   return {
     name: "cloud-data-caddy-routes.json",
     data: {
       _meta: {
         description: "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
-        format_version: 2,
+        format_version: 3,
       },
       _generated: now(),
       _source: "_cloud-data-consolidated.json via cloud-data-config-derive.ts/caddy-routes",
-      l4_routes: l4Routes,
+
+      // ── Functional keys (consumed by flake.nix renderers) ──
+      global:           caddyCfg.global           ?? {},
+      on_demand_tls:    caddyCfg.on_demand_tls    ?? {},
+      security_snippets:caddyCfg.security_snippets?? {},
+      auth:             caddyCfg.auth             ?? {},
+      error_handler:    caddyCfg.error_handler    ?? {},
+      static_files:     caddyCfg.static_files     ?? [],
+      wkd:              caddyCfg.wkd              ?? {},
+      mta_sts:          caddyCfg.mta_sts          ?? {},
+      catch_all:        caddyCfg.catch_all        ?? {},
+      messages:         caddyCfg.messages         ?? {},
+      l4_routes:        l4Routes,
       redirects,
-      routes: dedupedRoutes,
-      path_routes: filteredPathRoutes,
+      routes:           dedupedRoutes,
+      path_routes:      filteredPathRoutes,
       github_pages_proxies: githubPagesProxies,
-      mcp_routes: mcpRoutes,
+      mcp_routes:       mcpRoutes,
       special,
-      internal_routes: internalRoutes,
-      s3_routes: s3Routes,
-      auth_upstreams: authUpstreams,
-      all_app_urls: allAppUrls,
-      all_db_urls: allDbUrls,
+      internal_routes:  internalRoutes,
+      s3_routes:        s3Routes,
+      auth_upstreams:   authUpstreams,
+      all_app_urls:     allAppUrls,
+      all_db_urls:      allDbUrls,
+
+      // ── Taxonomy views (derived from functional keys — humans/docs only) ──
+      public_A_mcp:             publicAMcp,
+      public_B_apis:            publicBApis,
+      public_C_app_paths:       publicCAppPaths,
+      public_D_others:          publicDOthers,
+      private_A0_app_short:     privateA0AppShort,
+      private_A1_app_canonical: privateA1AppCanonical,
+      private_A2_app_portless:  privateA2AppPortless,
+      private_B0_db:            privateB0Db,
+      private_B1_s3:            privateB1S3,
+      l4_listeners:             l4Listeners,
+      others,
     },
   };
 }

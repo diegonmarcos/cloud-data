@@ -4,7 +4,7 @@
     "generated_by": "cloud-data-config-derive.ts",
     "api_route": "GET /c3-api/cloud-data/configs",
     "source": "_cloud-data-consolidated.json",
-    "generated_at": "2026-04-19T14:18:54.659Z"
+    "generated_at": "2026-04-19T16:56:54.841Z"
   },
   "services": [
     {
@@ -21,7 +21,8 @@
       ],
       "containers": [
         "authelia",
-        "authelia-redis"
+        "authelia-redis",
+        "postlite-authelia"
       ]
     },
     {
@@ -794,7 +795,8 @@
       ],
       "containers": [
         "authelia",
-        "authelia-redis"
+        "authelia-redis",
+        "postlite-authelia"
       ]
     },
     {
