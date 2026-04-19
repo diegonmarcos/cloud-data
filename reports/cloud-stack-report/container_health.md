@@ -6,21 +6,19 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-04-19T07:22:52.786585711+00:00
+         CONTAINER HEALTH — 2026-04-19T13:05:38.661637149+00:00
 ════════════════════════════════════════════════════════════
 
 
 ══════════════════════════════════════════════════════════════
   ⚠️  ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-28 critical, 0 warnings — 28 total
+26 critical, 0 warnings — 26 total
 
     ❌ A3       VM gcp-proxy — UNREACHABLE
     ❌ A3       VM oci-apps — UNREACHABLE
     ❌ A3       VM oci-mail — UNREACHABLE
     ❌ A3       VM oci-analytics — UNREACHABLE
-    ❌ A1       smtp.diegonmarcos.com — [502]
-    ❌ A1       mail-stalwart.diegonmarcos.com — [502]
     ❌ B2       gcp-proxy/authelia (sqlite) — not running
     ❌ B2       gcp-proxy/authelia-redis (redis) — not running
     ❌ B2       gcp-proxy/redis (redis) — not running
@@ -92,9 +90,9 @@ PUBLIC URLs (Caddy routes)
 ✅ rss.diegonmarcos.com             ✅  ❌  ✅  ✅  10.0.0.6:8090          [302] 
 ✅ photos.diegonmarcos.com          ✅  ❌  ✅  ✅  10.0.0.6:3013          [200] 
 ✅ cal.diegonmarcos.com             ✅  ❌  ✅  ✅  10.0.0.6:5232          [302] 
-⚠️ smtp.diegonmarcos.com            ✅  ❌  ❌  ❌  10.0.0.3:8080          [502] auth:[502]
+✅ smtp.diegonmarcos.com            ✅  ❌  ✅  ✅  10.0.0.3:8080          [405] 
 ✅ webmail.diegonmarcos.com         ✅  ❌  ✅  ✅  10.0.0.3:8888          [200] 
-⚠️ mail-stalwart.diegonmarcos.com   ✅  ❌  ❌  ❌  10.0.0.3:2443          [502] auth:[502]
+✅ mail-stalwart.diegonmarcos.com   ✅  ❌  ✅  ✅  10.0.0.3:2443          [200] 
 ✅ vault.diegonmarcos.com           ✅  ❌  ✅  ✅  10.0.0.6:8880          [200] 
 ⚠️ app.diegonmarcos.com/etherpad    ❌  ❌  ✅  ✅  10.0.0.6:3012          [404] 
 ⚠️ app.diegonmarcos.com/filebrowser ❌  ❌  ✅  ✅  10.0.0.6:3015          [404] 
@@ -344,7 +342,7 @@ STORAGE
     stalwart             custom     stalwart               oci-mail
 
 ── B2) Databases (live) ──────────────────────────────────
-DECLARED DATABASES — 22 total (1 s3, 1 tempo, 6 postgres, 2 custom, 3 redis, 1 mimir, 1 grafana, 1 loki, 1 mariadb, 5 sqlite)
+DECLARED DATABASES — 22 total (5 sqlite, 6 postgres, 1 grafana, 1 tempo, 1 mariadb, 2 custom, 3 redis, 1 mimir, 1 loki, 1 s3)
     Service              Type       Container              VM               Port   TCP  Health   Size       Backup
     ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 ❌ authelia             sqlite     authelia               gcp-proxy        9091   ❌   ❌   ?          ✅

@@ -6,7 +6,7 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-04-19T07:24:30.575358264+00:00
+  CLOUD MAIL FULL — 2026-04-19T13:07:17.042228636+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
@@ -57,9 +57,9 @@
   ✅ webmail HTTPS                  HTTP 200 (0.2s)
   ✅ auth HTTPS                     HTTP 200 (0.2s)
   ✅ MCP endpoint                   HTTP 400 (0.4s)
-  ✅ mail:993 TLS                   TLS OK (0.3s)
-  ✅ mail:465 TLS                   TLS OK (0.3s)
-  ✅ mail:587 STARTTLS              TLS OK (0.3s)
+  ✅ mail:993 TLS                   TLS OK (0.6s)
+  ✅ mail:465 TLS                   TLS OK (0.6s)
+  ✅ mail:587 STARTTLS              TLS OK (1.1s)
   ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
   ❌ DKIM record                    MISSING (0.0s) [CRITICAL]
   ✅ GHA health                     gh unavailable (skipped)
@@ -98,9 +98,9 @@
   ❌ Caddy L4 -> IMAP               no proxy data [CRITICAL]
   ❌ Caddy L4 -> SMTPS              no proxy data [CRITICAL]
   ❌ Caddy L4 -> SMTP               no proxy data [CRITICAL]
-  ✅ mail:993 (IMAP)                TLS OK (0.3s)
-  ✅ mail:465 (SMTPS)               TLS OK (0.3s)
-  ✅ mail:587 (SMTP Sub)            TLS OK (0.3s)
+  ✅ mail:993 (IMAP)                TLS OK (0.5s)
+  ✅ mail:465 (SMTPS)               TLS OK (0.5s)
+  ✅ mail:587 (SMTP Sub)            TLS OK (1.0s)
   ⚠️  SMTP :25 relay                 no data [WARNING]
   ⚠️  SMTP :587 local TLS            no data [WARNING]
   ✅ Webmail HTTPS                  HTTP 301 (0.2s)
@@ -117,7 +117,7 @@
   ⚠️  mcp->IMAP WG direct            no app data [WARNING]
   ⚠️  mcp->IMAP LOGIN                no app data [WARNING]
   ⚠️  mcp->SMTP AUTH                 no app data [WARNING]
-  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.5s)
+  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.4s)
   ❌ All ports bound                no data [CRITICAL]
 
   Summary: 8/27 passed, 19 failed
@@ -146,18 +146,18 @@
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    49.7s
-  T0_path_checker          39.7s
-  P0_instant_kpis          3.7s
-  P4_dns_auth              3.2s
+  TOTAL                    50.4s
+  T0_path_checker          39.6s
+  P0_instant_kpis          4.5s
   P2-P5_parallel           3.2s
   P3_network               3.2s
+  P4_dns_auth              3.2s
   P1_preflight             3.0s
+  P5_internals             0.0s
   P2_containers            0.0s
   P6_e2e_delivery          0.0s
-  P5_internals             0.0s
 
-  Total: 49.7s | Engine: Rust (native async tokio)
+  Total: 50.4s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════
