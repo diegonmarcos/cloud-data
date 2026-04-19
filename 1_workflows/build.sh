@@ -22,6 +22,27 @@ build() {
     log "Built: src/ → dist/"
 }
 
+test_stage() {
+    # Auto-discover and run every src/scripts/test-*.sh.
+    # Each tester is self-contained, read-only, exits non-zero on failure.
+    [ -d "$SRC_DIR/scripts" ] || { log "No src/scripts/ — skipping tests"; return 0; }
+    set +e
+    fails=0
+    for t in "$SRC_DIR/scripts/"test-*.sh; do
+        [ -f "$t" ] || continue
+        log "TEST: $(basename "$t")"
+        bash "$t"
+        rc=$?
+        if [ $rc -ne 0 ]; then
+            log "FAIL: $(basename "$t") (exit $rc)"
+            fails=$((fails + 1))
+        fi
+    done
+    set -e
+    [ $fails -eq 0 ] || { log "Tests failed: $fails"; exit 1; }
+    log "All tests passed"
+}
+
 deploy() {
     [ -d "$DIST_DIR" ] || { log "No dist/ — run build first"; exit 1; }
 
@@ -74,7 +95,8 @@ deploy() {
 
 case "${1:-all}" in
     build)  build ;;
+    test)   test_stage ;;
     deploy) deploy ;;
-    all)    build; deploy ;;
-    *)      echo "Usage: $0 [build|deploy|all]" ;;
+    all)    build; test_stage; deploy ;;
+    *)      echo "Usage: $0 [build|test|deploy|all]" ;;
 esac
