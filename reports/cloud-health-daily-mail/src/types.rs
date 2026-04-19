@@ -192,6 +192,12 @@ pub struct VmData {
     pub mail_queue: Option<u32>,
     pub mail_delivered: Option<u32>,
     pub mail_failed: Option<u32>,
+    pub imap_check: String,
+    pub smtp25_banner: String,
+    pub mail_ports_bound: String,
+    pub maddy_accounts: u32,
+    pub maddy_domains: String,
+    pub webmail_internal_code: u16,
     pub runtime_volumes: Vec<RuntimeVolume>,
     pub oom_kills: Vec<String>,
     pub swap: String,
@@ -266,8 +272,20 @@ pub struct DnsResult {
 #[derive(Debug, Clone, Serialize)]
 pub struct GhaRun {
     pub name: String,
+    pub repo: String,
     pub conclusion: String,
     pub created_at: String,
+    pub html_url: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct GhaWorkflow {
+    pub name: String,
+    pub repo: String,
+    pub state: String,       // "active", "disabled_manually", etc.
+    pub path: String,        // e.g. ".github/workflows/ship-oci-apps.yml"
+    pub last_conclusion: String,  // from most recent run
+    pub last_run_at: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -281,6 +299,7 @@ pub struct DagStatus {
     pub name: String,
     pub status: String,
     pub started_at: String,
+    pub schedule: String,
 }
 
 // ── GitHub repos ────────────────────────────────────────────────────
@@ -441,6 +460,57 @@ pub struct ContainerCpuRank {
     pub mem_gb_hours: f64,
 }
 
+// ── Web analytics (Matomo — comparison source) ───────────────────
+
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct MatomoMonthly {
+    pub month: String,
+    pub visits: u64,
+    pub pageviews: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct MatomoSite {
+    pub id: u32,
+    pub name: String,
+    pub url: String,
+    pub total_visits: u64,
+    pub total_pageviews: u64,
+    pub monthly: Vec<MatomoMonthly>,
+}
+
+// ── Mail health data (incorporated from cloud-mail-full-report) ──
+
+#[derive(Debug, Clone, Serialize)]
+pub struct MailCheck {
+    pub name: String,
+    pub passed: bool,
+    pub details: String,
+    pub severity: String, // "critical", "warning", "info"
+    pub duration_ms: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct MailHealthData {
+    pub outbound_path: Vec<MailCheck>,
+    pub inbound_path: Vec<MailCheck>,
+    pub dns_auth: Vec<MailCheck>,
+    pub tls_ports: Vec<MailCheck>,
+    pub containers: Vec<MailCheck>,
+    pub internals: Vec<MailCheck>,
+    pub stalwart: Vec<MailCheck>,
+    pub summary: MailHealthSummary,
+}
+
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct MailHealthSummary {
+    pub total: usize,
+    pub passed: usize,
+    pub failed: usize,
+    pub critical: usize,
+    pub warnings: usize,
+}
+
 // ── Full report data ────────────────────────────────────────────────
 
 #[derive(Debug, Serialize)]
@@ -452,6 +522,7 @@ pub struct ReportData {
     pub certs: Vec<CertResult>,
     pub dns: Vec<DnsResult>,
     pub gha_runs: Vec<GhaRun>,
+    pub gha_workflows: Vec<GhaWorkflow>,
     pub ghcr_packages: Vec<GhcrPackage>,
     pub ghcr_total: usize,
     pub github_disk_kb: u64,
@@ -479,4 +550,6 @@ pub struct ReportData {
     pub container_cpu_ranking: Vec<ContainerCpuRank>,
     pub firewalls: Vec<VmFirewall>,
     pub global_firewall: GlobalFirewall,
+    pub mail_health: Option<MailHealthData>,
+    pub matomo_sites: Vec<MatomoSite>,
 }

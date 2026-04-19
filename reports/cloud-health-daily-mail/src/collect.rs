@@ -135,36 +135,137 @@ pub async fn check_dns() -> Vec<DnsResult> {
     results
 }
 
-/// Fetch GHA workflow runs
+/// Fetch GHA workflow runs from multiple repos (cloud + front + cloud-data)
 pub async fn fetch_gha(github_token: &str) -> Vec<GhaRun> {
     let client = auth_client(github_token);
-    let resp = timeout(
-        Duration::from_secs(10),
-        client
-            .get("https://api.github.com/repos/diegonmarcos/cloud/actions/runs?per_page=10&status=completed")
-            .header("User-Agent", "cloud-health-daily-mail")
-            .send(),
-    )
-    .await;
+    let repos = ["diegonmarcos/cloud", "diegonmarcos/front", "diegonmarcos/cloud-data"];
 
-    let json: serde_json::Value = match resp {
-        Ok(Ok(r)) => r.json().await.unwrap_or_default(),
-        _ => return vec![],
-    };
+    let futs: Vec<_> = repos.iter().map(|repo| {
+        let c = client.clone();
+        let repo = repo.to_string();
+        async move {
+            let url = format!(
+                "https://api.github.com/repos/{}/actions/runs?per_page=20&status=completed",
+                repo
+            );
+            let resp = timeout(
+                Duration::from_secs(10),
+                c.get(&url)
+                    .header("User-Agent", "cloud-health-daily-mail")
+                    .send(),
+            )
+            .await;
 
-    json["workflow_runs"]
-        .as_array()
-        .map(|runs| {
-            runs.iter()
-                .take(10)
-                .map(|r| GhaRun {
-                    name: r["name"].as_str().unwrap_or("?").to_string(),
-                    conclusion: r["conclusion"].as_str().unwrap_or("?").to_string(),
-                    created_at: r["created_at"].as_str().unwrap_or("").to_string(),
+            let json: serde_json::Value = match resp {
+                Ok(Ok(r)) if r.status().is_success() => r.json().await.unwrap_or_default(),
+                _ => return vec![],
+            };
+
+            let repo_short = repo.split('/').last().unwrap_or("?").to_string();
+            json["workflow_runs"]
+                .as_array()
+                .map(|runs| {
+                    runs.iter()
+                        .take(20)
+                        .map(|r| GhaRun {
+                            name: r["name"].as_str().unwrap_or("?").to_string(),
+                            repo: repo_short.clone(),
+                            conclusion: r["conclusion"].as_str().unwrap_or("?").to_string(),
+                            created_at: r["created_at"].as_str().unwrap_or("").to_string(),
+                            html_url: r["html_url"].as_str().unwrap_or("").to_string(),
+                        })
+                        .collect::<Vec<_>>()
                 })
-                .collect()
-        })
-        .unwrap_or_default()
+                .unwrap_or_default()
+        }
+    }).collect();
+
+    let results = futures::future::join_all(futs).await;
+    let mut all_runs: Vec<GhaRun> = results.into_iter().flatten().collect();
+    // Sort by created_at descending (most recent first)
+    all_runs.sort_by(|a, b| b.created_at.cmp(&a.created_at));
+    all_runs
+}
+
+/// Fetch GHA workflow definitions from multiple repos
+pub async fn fetch_gha_workflows(github_token: &str) -> Vec<GhaWorkflow> {
+    let client = auth_client(github_token);
+    let repos = ["diegonmarcos/cloud", "diegonmarcos/front", "diegonmarcos/cloud-data"];
+
+    let futs: Vec<_> = repos.iter().map(|repo| {
+        let c = client.clone();
+        let repo = repo.to_string();
+        async move {
+            let url = format!(
+                "https://api.github.com/repos/{}/actions/workflows?per_page=50",
+                repo
+            );
+            let resp = timeout(
+                Duration::from_secs(10),
+                c.get(&url)
+                    .header("User-Agent", "cloud-health-daily-mail")
+                    .send(),
+            )
+            .await;
+
+            let json: serde_json::Value = match resp {
+                Ok(Ok(r)) if r.status().is_success() => r.json().await.unwrap_or_default(),
+                _ => return vec![],
+            };
+
+            let repo_short = repo.split('/').last().unwrap_or("?").to_string();
+
+            // For each workflow, fetch latest run to get conclusion
+            let workflows = json["workflows"].as_array().cloned().unwrap_or_default();
+            let mut results = Vec::new();
+
+            for wf in &workflows {
+                let wf_id = wf["id"].as_u64().unwrap_or(0);
+                let name = wf["name"].as_str().unwrap_or("?").to_string();
+                let state = wf["state"].as_str().unwrap_or("unknown").to_string();
+                let path = wf["path"].as_str().unwrap_or("").to_string();
+
+                // Fetch latest run for this workflow
+                let run_url = format!(
+                    "https://api.github.com/repos/{}/actions/workflows/{}/runs?per_page=1&status=completed",
+                    repo, wf_id
+                );
+                let (last_conclusion, last_run_at) = match timeout(
+                    Duration::from_secs(8),
+                    c.get(&run_url)
+                        .header("User-Agent", "cloud-health-daily-mail")
+                        .send(),
+                ).await {
+                    Ok(Ok(r)) if r.status().is_success() => {
+                        let rj: serde_json::Value = r.json().await.unwrap_or_default();
+                        let runs = rj["workflow_runs"].as_array();
+                        match runs.and_then(|a| a.first()) {
+                            Some(run) => (
+                                run["conclusion"].as_str().unwrap_or("none").to_string(),
+                                run["created_at"].as_str().unwrap_or("").to_string(),
+                            ),
+                            None => ("never_run".to_string(), String::new()),
+                        }
+                    }
+                    _ => ("unknown".to_string(), String::new()),
+                };
+
+                results.push(GhaWorkflow {
+                    name,
+                    repo: repo_short.clone(),
+                    state,
+                    path,
+                    last_conclusion,
+                    last_run_at,
+                });
+            }
+
+            results
+        }
+    }).collect();
+
+    let results = futures::future::join_all(futs).await;
+    results.into_iter().flatten().collect()
 }
 
 /// Fetch GHCR packages + GitHub disk usage
@@ -211,26 +312,71 @@ pub async fn fetch_ghcr(github_token: &str) -> (Vec<GhcrPackage>, usize, u64) {
     (pkgs, total, disk_kb)
 }
 
-/// Fetch Dagu DAG status via v2 API at WG IP 10.0.0.4:8070
+/// Fetch Dagu DAG status via API at WG IP 10.0.0.4:8070
+/// Supports DAGU_USERNAME / DAGU_PASSWORD env vars for basic auth.
 pub async fn fetch_dags() -> Vec<DagStatus> {
-    let client = http_client();
+    let dagu_user = std::env::var("DAGU_USERNAME").unwrap_or_default();
+    let dagu_pass = std::env::var("DAGU_PASSWORD").unwrap_or_default();
+    let has_auth = !dagu_user.is_empty() && !dagu_pass.is_empty();
+
+    // Build client — with or without basic auth
+    let client = if has_auth {
+        Client::builder()
+            .timeout(HTTP_TIMEOUT)
+            .danger_accept_invalid_certs(true)
+            .redirect(reqwest::redirect::Policy::none())
+            .build()
+            .unwrap()
+    } else {
+        http_client()
+    };
+
     // Try WG mesh first (production), then localhost (when running inside Dagu container)
     let urls = [
         "http://10.0.0.4:8070/api/v2/dags",
         "http://localhost:8070/api/v2/dags",
+        "http://10.0.0.4:8070/api/v1/dags",
         "http://localhost:8070/api/v1/dags",
     ];
 
     for url in &urls {
-        let resp = timeout(Duration::from_secs(5), client.get(*url).send()).await;
+        let mut req = client.get(*url);
+        if has_auth {
+            req = req.basic_auth(&dagu_user, Some(&dagu_pass));
+        }
+
+        let resp = timeout(Duration::from_secs(5), req.send()).await;
         let json: serde_json::Value = match resp {
             Ok(Ok(r)) if r.status().is_success() => r.json().await.unwrap_or_default(),
-            _ => continue,
+            Ok(Ok(r)) => {
+                eprintln!("  Dagu {}: HTTP {}", url, r.status());
+                continue;
+            }
+            Ok(Err(e)) => {
+                eprintln!("  Dagu {}: {}", url, e);
+                continue;
+            }
+            Err(_) => {
+                eprintln!("  Dagu {}: timeout", url);
+                continue;
+            }
         };
 
-        // v2 format: { "dags": [{ "dag": { "name": ... }, "latestDAGRun": { "statusLabel": ... } }] }
+        // v2 format: { "dags": [{ "dag": { "name": ..., "schedule": ... }, "latestDAGRun": { "statusLabel": ... } }] }
         if let Some(dags) = json["dags"].as_array() {
+            eprintln!("  Dagu: loaded {} DAGs from {}", dags.len(), url);
             return dags.iter().map(|d| {
+                // schedule can be in dag.schedule or dag.schedule[0].expression
+                let schedule = d["dag"]["schedule"].as_str()
+                    .map(|s| s.to_string())
+                    .or_else(|| {
+                        d["dag"]["schedule"].as_array()
+                            .and_then(|a| a.first())
+                            .and_then(|s| s["expression"].as_str().or(s.as_str()))
+                            .map(|s| s.to_string())
+                    })
+                    .unwrap_or_default();
+
                 DagStatus {
                     name: d["dag"]["name"].as_str()
                         .or(d["fileName"].as_str())
@@ -239,13 +385,25 @@ pub async fn fetch_dags() -> Vec<DagStatus> {
                         .unwrap_or("not_started").to_string(),
                     started_at: d["latestDAGRun"]["startedAt"].as_str()
                         .unwrap_or("").to_string(),
+                    schedule,
                 }
             }).collect();
         }
 
-        // v1 format: { "DAGs": [{ "DAG": { "Name": ... }, "Status": { "Status": ... } }] }
+        // v1 format: { "DAGs": [{ "DAG": { "Name": ..., "Schedule": ... }, "Status": { "Status": ... } }] }
         if let Some(dags) = json["DAGs"].as_array() {
+            eprintln!("  Dagu: loaded {} DAGs from {} (v1)", dags.len(), url);
             return dags.iter().map(|d| {
+                let schedule = d["DAG"]["Schedule"].as_str()
+                    .map(|s| s.to_string())
+                    .or_else(|| {
+                        d["DAG"]["Schedule"].as_array()
+                            .and_then(|a| a.first())
+                            .and_then(|s| s["Expression"].as_str().or(s.as_str()))
+                            .map(|s| s.to_string())
+                    })
+                    .unwrap_or_default();
+
                 DagStatus {
                     name: d["DAG"]["Name"].as_str()
                         .or(d["File"].as_str())
@@ -254,11 +412,15 @@ pub async fn fetch_dags() -> Vec<DagStatus> {
                         .unwrap_or("none").to_string(),
                     started_at: d["Status"]["StartedAt"].as_str()
                         .unwrap_or("").to_string(),
+                    schedule,
                 }
             }).collect();
         }
+
+        eprintln!("  Dagu {}: unexpected JSON format", url);
     }
 
+    eprintln!("  Dagu: all endpoints failed, returning empty");
     vec![]
 }
 
@@ -408,6 +570,122 @@ pub async fn fetch_repos() -> Vec<GithubRepo> {
                 .collect()
         })
         .unwrap_or_default()
+}
+
+/// Fetch Matomo analytics via MariaDB on oci-apps (SSH)
+pub async fn fetch_matomo_analytics() -> Vec<MatomoSite> {
+    // Matomo runs on oci-apps, MariaDB embedded in matomo-hybrid container
+    let db_pass = std::env::var("MATOMO_DB_PASSWORD")
+        .unwrap_or_else(|_| "MatomoDB2025!".to_string());
+
+    let sql = format!(
+        r#"mysql -u matomo -p{} matomo -N -B -e "
+SELECT idsite, name, main_url FROM matomo_site;
+SELECT '---VISITS---';
+SELECT DATE_FORMAT(visit_first_action_time, '%Y-%m') AS m, COUNT(*) FROM matomo_log_visit GROUP BY m ORDER BY m;
+SELECT '---PAGEVIEWS---';
+SELECT DATE_FORMAT(server_time, '%Y-%m') AS m, COUNT(*) FROM matomo_log_link_visit_action GROUP BY m ORDER BY m;
+SELECT '---TOTALS---';
+SELECT COUNT(*) FROM matomo_log_visit;
+SELECT COUNT(*) FROM matomo_log_link_visit_action;
+" 2>/dev/null"#,
+        db_pass
+    );
+
+    let ssh_cmd = format!("docker exec matomo-hybrid sh -c '{}'", sql.replace('\'', "'\\''"));
+
+    let result = timeout(
+        Duration::from_secs(15),
+        tokio::process::Command::new("ssh")
+            .args([
+                "-o", "ConnectTimeout=5",
+                "-o", "BatchMode=yes",
+                "-o", "StrictHostKeyChecking=no",
+                "-o", "LogLevel=ERROR",
+                "oci-apps",
+                &ssh_cmd,
+            ])
+            .output(),
+    )
+    .await;
+
+    let output = match result {
+        Ok(Ok(o)) if o.status.success() => String::from_utf8_lossy(&o.stdout).to_string(),
+        _ => {
+            eprintln!("  Matomo: SSH/DB query failed");
+            return vec![];
+        }
+    };
+
+    // Parse output
+    let mut sites: Vec<MatomoSite> = Vec::new();
+    let mut monthly_visits: Vec<MatomoMonthly> = Vec::new();
+    let mut monthly_pv: std::collections::HashMap<String, u64> = std::collections::HashMap::new();
+    let mut total_visits: u64 = 0;
+    let mut total_pv: u64 = 0;
+    let mut section = "sites";
+
+    for line in output.lines() {
+        let line = line.trim();
+        if line.is_empty() { continue; }
+        if line == "---VISITS---" { section = "visits"; continue; }
+        if line == "---PAGEVIEWS---" { section = "pageviews"; continue; }
+        if line == "---TOTALS---" { section = "totals"; continue; }
+
+        match section {
+            "sites" => {
+                let parts: Vec<&str> = line.splitn(3, '\t').collect();
+                if parts.len() >= 3 {
+                    sites.push(MatomoSite {
+                        id: parts[0].parse().unwrap_or(0),
+                        name: parts[1].trim().to_string(),
+                        url: parts[2].trim().to_string(),
+                        ..Default::default()
+                    });
+                }
+            }
+            "visits" => {
+                let parts: Vec<&str> = line.split('\t').collect();
+                if parts.len() >= 2 {
+                    let month = parts[0].to_string();
+                    let count: u64 = parts[1].parse().unwrap_or(0);
+                    monthly_visits.push(MatomoMonthly { month, visits: count, pageviews: 0 });
+                }
+            }
+            "pageviews" => {
+                let parts: Vec<&str> = line.split('\t').collect();
+                if parts.len() >= 2 {
+                    let month = parts[0].to_string();
+                    let count: u64 = parts[1].parse().unwrap_or(0);
+                    monthly_pv.insert(month, count);
+                }
+            }
+            "totals" => {
+                if let Ok(n) = line.parse::<u64>() {
+                    if total_visits == 0 { total_visits = n; }
+                    else { total_pv = n; }
+                }
+            }
+            _ => {}
+        }
+    }
+
+    // Merge pageviews into monthly_visits
+    for mv in &mut monthly_visits {
+        if let Some(pv) = monthly_pv.get(&mv.month) {
+            mv.pageviews = *pv;
+        }
+    }
+
+    // Attach to first site (Matomo usually has one main site)
+    if let Some(site) = sites.first_mut() {
+        site.total_visits = total_visits;
+        site.total_pageviews = total_pv;
+        site.monthly = monthly_visits;
+    }
+
+    eprintln!("  Matomo: loaded {} sites, {} total visits", sites.len(), total_visits);
+    sites
 }
 
 /// Fetch web analytics from Umami API
@@ -583,12 +861,19 @@ async fn fetch_umami_stats(client: &Client, base_url: &str, site_id: &str, start
     match timeout(Duration::from_secs(8), client.get(&url).send()).await {
         Ok(Ok(resp)) if resp.status().is_success() => {
             let j: serde_json::Value = resp.json().await.unwrap_or_default();
+            // Umami v2 API returns flat numbers: {"pageviews": 719, ...}
+            // Older versions return nested: {"pageviews": {"value": 719}, ...}
+            let extract = |key: &str| -> u64 {
+                j[key].as_u64()
+                    .or_else(|| j[key]["value"].as_u64())
+                    .unwrap_or(0)
+            };
             UmamiStats {
-                pageviews: j["pageviews"]["value"].as_u64().unwrap_or(0),
-                visitors: j["visitors"]["value"].as_u64().unwrap_or(0),
-                visits: j["visits"]["value"].as_u64().unwrap_or(0),
-                bounces: j["bounces"]["value"].as_u64().unwrap_or(0),
-                total_time: j["totaltime"]["value"].as_u64().unwrap_or(0),
+                pageviews: extract("pageviews"),
+                visitors: extract("visitors"),
+                visits: extract("visits"),
+                bounces: extract("bounces"),
+                total_time: extract("totaltime"),
             }
         }
         _ => UmamiStats::default(),

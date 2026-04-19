@@ -1,4 +1,5 @@
 use crate::types::*;
+use chrono::Datelike;
 use std::fmt::Write;
 
 #[derive(Clone, Copy, PartialEq)]
@@ -222,31 +223,29 @@ td,th{{font-family:{FONT}}}
         }
     }
 
-    // Nav bar links
-    let nav_items = [
-        ("a0-services", "A0 Services"),
-        ("a1-containers", "A1 Containers"),
-        ("a2-databases", "A2 Databases"),
-        ("a3-secrets", "A3 Secrets"),
-        ("a4-workflows", "A4 Workflows"),
-        ("a5-topology", "A5 Topology"),
-        ("b0-security", "B0 Security"),
-        ("c0-finops", "C0 FinOps"),
-        ("c1-analytics", "C1 Analytics"),
-        ("d0-mail", "D0 Mail"),
-        ("d1-ai", "D1 AI"),
-        ("d2-backups", "D2 Backups"),
-        ("d3-others", "D3 Others"),
+    // Nav bar links — grouped by hierarchy level, left-aligned within centered container
+    h.push_str(&format!("<div style=\"display:inline-block;text-align:left;line-height:1.8;\">"));
+    let nav_groups: &[&[(&str, &str)]] = &[
+        &[("a0-services","A0 Services"),("a1-containers","A1 Containers"),("a2-databases","A2 Databases"),("a3-secrets","A3 Secrets"),("a4-workflows","A4 Workflows"),("a5-topology","A5 Topology")],
+        &[("b0-security-infos","B0 Sec Infos"),("b1-security-data","B1 Sec Data"),("b2-security-network","B2 Sec Network")],
+        &[("c0-finops","C0 FinOps"),("c1-analytics","C1 Analytics")],
+        &[("d0-mail","D0 Mail"),("d1-ai","D1 AI"),("d2-backups","D2 Backups"),("d3-others","D3 Others")],
     ];
-    for (i, (anchor, label)) in nav_items.iter().enumerate() {
-        if i > 0 {
-            h.push_str(&format!("<span style=\"color:{};\"> &middot; </span>", C_DIM));
+    for (gi, group) in nav_groups.iter().enumerate() {
+        if gi > 0 {
+            h.push_str("<br/>");
         }
-        h.push_str(&format!(
-            "<a href=\"#sec-{}\" style=\"color:{};font-size:11px;font-family:{};text-decoration:none;\">{}</a>",
-            anchor, C_OK, FONT, label
-        ));
+        for (i, (anchor, label)) in group.iter().enumerate() {
+            if i > 0 {
+                h.push_str(&format!("<span style=\"color:{};\"> &middot; </span>", C_DIM));
+            }
+            h.push_str(&format!(
+                "<a href=\"#sec-{}\" style=\"color:{};font-size:11px;font-family:{};text-decoration:none;\">{}</a>",
+                anchor, C_OK, FONT, label
+            ));
+        }
     }
+    h.push_str("</div>");
     h.push_str("</td></tr>");
 
     // Executive Summary (NEW)
@@ -298,12 +297,10 @@ td,th{{font-family:{FONT}}}
     render_drift(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // A3) SECRETS
+    // A3) SECRETS — sops-encrypted secrets inventory
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "A3", "SECRETS");
-    render_firewall_summary(&mut h, data);
-    render_certs(&mut h, data);
-    render_dns(&mut h, data);
+    render_secrets_inventory(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
     // A4) WORKFLOWS
@@ -314,6 +311,7 @@ td,th{{font-family:{FONT}}}
         |h| render_topo_cicd(h, data),
     );
     render_dags(&mut h, data);
+    render_gha_workflows(&mut h, data);
     render_gha(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
@@ -323,17 +321,30 @@ td,th{{font-family:{FONT}}}
     render_topology(&mut h, data, mode);
 
     // ═══════════════════════════════════════════════════════════
-    // B0) SECURITY
+    // B0) SECURITY INFOS — topology stack, firewall, certs
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "B0", "SECURITY");
+    section_title(&mut h, "B0", "SECURITY INFOS");
     diagram_or_css(&mut h, mode, "Full Security Stack",
         || (crate::diagrams::security_layers_d2(data), "d2"),
         |h| render_topo_security(h, data),
     );
-    render_security(&mut h, data);
-    render_oom_kills(&mut h, data);
+    render_firewall_summary(&mut h, data);
+    render_certs(&mut h, data);
+    render_dns(&mut h, data);
     render_wireguard(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // B1) SECURITY DATA — secrets, OOM, failed units
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "B1", "SECURITY DATA");
+    render_oom_kills(&mut h, data);
     render_failed_units(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // B2) SECURITY NETWORK — SSH events, login attempts
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "B2", "SECURITY NETWORK");
+    render_security(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
     // C0) FINOPS
@@ -353,13 +364,14 @@ td,th{{font-family:{FONT}}}
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "C1", "ANALYTICS");
     render_analytics_web(&mut h, data);
+    render_matomo_comparison(&mut h, data);
     render_analytics_containers(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // D0) MAIL
+    // D0) MAIL — full mail health (incorporated from cloud-mail-full-report)
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "D0", "MAIL");
-    render_mail(&mut h, data);
+    render_mail_health(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
     // D1) AI
@@ -375,6 +387,8 @@ td,th{{font-family:{FONT}}}
     // D2) BACKUPS
     // ═══════════════════════════════════════════════════════════
     section_title(&mut h, "D2", "BACKUPS");
+    render_backup_dags(&mut h, data);
+    render_backup_buckets(&mut h, data);
     render_backup_status(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
@@ -616,8 +630,10 @@ fn render_object_storage(h: &mut String, data: &ReportData) {
 
     // ── Cloud Provider Buckets (sorted by tier) ───────────────────
     if has_buckets {
-        write!(h, r#"<tr><td colspan="5" style="padding:8px 8px 2px;color:{C_TEXT};font-size:12px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">Cloud Provider Buckets ({} via Terraform)</td></tr>"#,
-            data.cloud_buckets.len()).unwrap();
+        let bucket_total: u64 = data.cloud_buckets.iter().map(|b| b.size_bytes).sum();
+        let bucket_total_str = if bucket_total > 0 { format!(" — {}", human_size(bucket_total)) } else { String::new() };
+        write!(h, r#"<tr><td colspan="5" style="padding:8px 8px 2px;color:{C_TEXT};font-size:12px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">Cloud Provider Buckets ({} via Terraform{})</td></tr>"#,
+            data.cloud_buckets.len(), bucket_total_str).unwrap();
         h.push_str("<tr>");
         for (label, align) in &[("Bucket","left"),("Provider","left"),("Tier","left"),("Size","right"),("Retrieval","left")] {
             h.push_str(&th(label, align));
@@ -645,7 +661,7 @@ fn render_object_storage(h: &mut String, data: &ReportData) {
                 "DeepArchive" => (C_DIM, "12-48 hours"),
                 other => (C_DIM, other),
             };
-            let size_str = if bucket.size_bytes > 0 { human_size(bucket.size_bytes) } else { "—".into() };
+            let size_str = if bucket.size_bytes > 0 { human_size(bucket.size_bytes) } else { "0 B".into() };
             write!(h, "<tr>{}{}{}{}{}</tr>\n",
                 td(&bucket.name, "#FF9900", "11px", "left"),
                 td(&bucket.provider.to_uppercase(), C_DIM, "11px", "left"),
@@ -683,6 +699,73 @@ fn render_object_storage(h: &mut String, data: &ReportData) {
         }
     }
 
+    section_end(h);
+}
+
+fn render_backup_dags(h: &mut String, data: &ReportData) {
+    let backup_dags: Vec<&DagStatus> = data.dags.iter()
+        .filter(|d| {
+            let n = d.name.to_lowercase();
+            n.contains("backup") || n.contains("restic") || n.contains("dump") || n.contains("snapshot")
+        })
+        .collect();
+
+    if backup_dags.is_empty() { return; }
+
+    let ok = backup_dags.iter().filter(|d| d.status == "done" || d.status == "success").count();
+    let failed = backup_dags.iter().filter(|d| d.status == "failed" || d.status == "error").count();
+    section_start(h, &format!("Backup DAGs ({} total, {} OK, {} failed)", backup_dags.len(), ok, failed), 4);
+    h.push_str("<tr>");
+    for (label, align) in &[("DAG","left"),("Schedule","left"),("Status","center"),("Last Run","left")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+    for dag in &backup_dags {
+        let (label, color) = match dag.status.as_str() {
+            "done" | "success" => ("OK", C_OK),
+            "failed" | "error" => ("FAIL", C_CRIT),
+            "running" => ("RUN", C_WARN),
+            other => (other, C_DIM),
+        };
+        let badge = label_badge(label, color);
+        write!(h, "<tr>{}{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{badge}</td>{}</tr>\n",
+            td(&dag.name, C_TEXT, "11px", "left"),
+            td(&dag.schedule, C_DIM, "10px", "left"),
+            td(&dag.started_at, C_DIM, "10px", "left"),
+        ).unwrap();
+    }
+    section_end(h);
+}
+
+fn render_backup_buckets(h: &mut String, data: &ReportData) {
+    let backup_buckets: Vec<&CloudBucket> = data.cloud_buckets.iter()
+        .filter(|b| b.name.contains("backup"))
+        .collect();
+
+    if backup_buckets.is_empty() { return; }
+
+    let total_bytes: u64 = backup_buckets.iter().map(|b| b.size_bytes).sum();
+    let total_str = if total_bytes > 0 { human_size(total_bytes) } else { "0 B".into() };
+    section_start(h, &format!("Backup S3 Buckets ({} — {} total)", backup_buckets.len(), total_str), 4);
+    h.push_str("<tr>");
+    for (label, align) in &[("Bucket","left"),("Provider","left"),("Size","right"),("Tier","left")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+    for bucket in &backup_buckets {
+        let size_str = if bucket.size_bytes > 0 { human_size(bucket.size_bytes) } else { "0 B".into() };
+        let (tier_color, _) = match bucket.tier.as_str() {
+            "Standard" => (C_OK, "Instant"),
+            "Archive" => (C_WARN, "3-5h"),
+            _ => (C_DIM, "?"),
+        };
+        write!(h, "<tr>{}{}{}{}</tr>\n",
+            td(&bucket.name, "#FF9900", "11px", "left"),
+            td(&bucket.provider.to_uppercase(), C_DIM, "11px", "left"),
+            td(&size_str, C_TEXT, "11px", "right"),
+            td(&bucket.tier, tier_color, "11px", "left"),
+        ).unwrap();
+    }
     section_end(h);
 }
 
@@ -736,6 +819,67 @@ fn render_endpoints(h: &mut String, data: &ReportData) {
 "#,
             td(&ep.service, C_TEXT, "11px", "left"),
             td(&ep.url, C_DIM, "10px", "left"),
+        ).unwrap();
+    }
+    section_end(h);
+}
+
+fn render_secrets_inventory(h: &mut String, data: &ReportData) {
+    // List services that use .secrets files (env_file: true in cloud-data)
+    // Also scan the cloud repo filesystem if accessible
+    let cloud_root = std::path::Path::new("../../a_solutions");
+    let mut secrets_files: Vec<(String, String, bool)> = Vec::new(); // (service, vm, sops_encrypted)
+
+    if cloud_root.exists() {
+        // Scan cloud repo for secrets.yaml and .secrets files
+        if let Ok(entries) = std::fs::read_dir(cloud_root) {
+            for entry in entries.flatten() {
+                let svc_dir = entry.path();
+                let svc_name = entry.file_name().to_string_lossy()
+                    .trim_start_matches(|c: char| c.is_ascii_alphanumeric() || c == '-')
+                    .to_string();
+                let svc_name = entry.file_name().to_string_lossy().to_string();
+
+                let has_secrets_yaml = svc_dir.join("src/secrets.yaml").exists();
+                let has_dot_secrets = svc_dir.join("dist/.secrets").exists();
+                if has_secrets_yaml || has_dot_secrets {
+                    let vm = data.services.iter()
+                        .find(|s| svc_name.contains(&s.name) || s.name.contains(svc_name.split('_').last().unwrap_or("")))
+                        .map(|s| s.vm.clone())
+                        .unwrap_or_else(|| "?".into());
+                    secrets_files.push((svc_name, vm, has_secrets_yaml));
+                }
+            }
+        }
+    } else {
+        // Fallback: derive from service data (services with env_file containers)
+        for svc in &data.services {
+            if svc.enabled {
+                secrets_files.push((svc.name.clone(), svc.vm.clone(), true));
+            }
+        }
+    }
+
+    secrets_files.sort_by(|a, b| a.1.cmp(&b.1).then(a.0.cmp(&b.0)));
+
+    let total = secrets_files.len();
+    let sops_count = secrets_files.iter().filter(|(_, _, sops)| *sops).count();
+    section_start(h, &format!("SOPS Secrets Inventory ({} services, {} sops-encrypted)", total, sops_count), 3);
+    h.push_str("<tr>");
+    for (label, align) in &[("Service","left"),("VM","left"),("SOPS","center")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
+    for (svc, vm, sops) in &secrets_files {
+        let sops_badge = if *sops {
+            label_badge("SOPS", C_OK)
+        } else {
+            label_badge("PLAIN", C_WARN)
+        };
+        write!(h, "<tr>{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{sops_badge}</td>{}</tr>\n",
+            td(svc, C_TEXT, "11px", "left"),
+            td(vm, C_DIM, "11px", "left"),
         ).unwrap();
     }
     section_end(h);
@@ -800,53 +944,202 @@ fn render_dns(h: &mut String, data: &ReportData) {
     section_end(h);
 }
 
-fn render_mail(h: &mut String, data: &ReportData) {
-    let mail_vm = data.vms.iter().find(|v| v.mail_queue.is_some());
-    let Some(vm) = mail_vm else { return; };
+fn render_mail_health(h: &mut String, data: &ReportData) {
+    let mh = match &data.mail_health {
+        Some(m) => m,
+        None => {
+            // Fallback: just show queue stats if no mail health data
+            let mail_vm = data.vms.iter().find(|v| v.mail_queue.is_some());
+            if let Some(vm) = mail_vm {
+                let mq = vm.mail_queue.unwrap_or(0);
+                let md = vm.mail_delivered.unwrap_or(0);
+                let mf = vm.mail_failed.unwrap_or(0);
+                section_start(h, "Mail Queue &amp; Stats (24h)", 2);
+                let mq_color = if mq > 20 { C_CRIT } else if mq > 5 { C_WARN } else { C_OK };
+                let mf_color = if mf > 5 { C_CRIT } else if mf > 0 { C_WARN } else { C_OK };
+                for (label, val, color) in &[("Queued", mq, mq_color), ("Delivered (24h)", md, C_OK), ("Failed (24h)", mf, mf_color)] {
+                    write!(h, "<tr>{}{}</tr>\n",
+                        td(label, C_DIM, "12px", "left"),
+                        td(&val.to_string(), color, "12px", "left"),
+                    ).unwrap();
+                }
+                section_end(h);
+            }
+            return;
+        }
+    };
 
-    let mq = vm.mail_queue.unwrap_or(0);
-    let md = vm.mail_delivered.unwrap_or(0);
-    let mf = vm.mail_failed.unwrap_or(0);
-
-    section_start(h, "Mail Queue &amp; Stats (24h)", 2);
-    let mq_color = if mq > 20 { C_CRIT } else if mq > 5 { C_WARN } else { C_OK };
-    let mf_color = if mf > 5 { C_CRIT } else if mf > 0 { C_WARN } else { C_OK };
-    for (label, val, color) in &[("Queued", mq, mq_color), ("Delivered (24h)", md, C_OK), ("Failed (24h)", mf, mf_color)] {
-        write!(h, "<tr>{}{}</tr>\n",
-            td(label, C_DIM, "12px", "left"),
-            td(&val.to_string(), color, "12px", "left"),
-        ).unwrap();
-    }
+    // Summary bar
+    let s = &mh.summary;
+    section_start(h, &format!("Mail Health — {} checks ({} passed, {} failed, {} critical)",
+        s.total, s.passed, s.failed, s.critical), 1);
+    let summary_color = if s.critical > 0 { C_CRIT } else if s.failed > 0 { C_WARN } else { C_OK };
+    write!(h, r#"<tr><td style="padding:8px 16px;">
+<div style="display:flex;gap:12px;flex-wrap:wrap;font-family:{FONT};font-size:12px;">
+<span style="color:{C_OK};">PASS {passed}</span>
+<span style="color:{C_WARN};">WARN {warnings}</span>
+<span style="color:{C_CRIT};">CRIT {critical}</span>
+<span style="color:{summary_color};font-weight:bold;">{pct:.0}% healthy</span>
+</div></td></tr>"#,
+        passed = s.passed, warnings = s.warnings, critical = s.critical,
+        pct = if s.total > 0 { s.passed as f64 / s.total as f64 * 100.0 } else { 0.0 },
+    ).unwrap();
     section_end(h);
+
+    // Check group renderer
+    fn render_check_group(h: &mut String, title: &str, checks: &[crate::types::MailCheck]) {
+        if checks.is_empty() { return; }
+        section_start(h, title, 4);
+        h.push_str("<tr>");
+        for (label, align) in &[("Check","left"),("Status","center"),("Details","left"),("ms","right")] {
+            h.push_str(&th(label, align));
+        }
+        h.push_str("</tr>\n");
+        for c in checks {
+            let badge = if c.passed {
+                label_badge("PASS", C_OK)
+            } else {
+                match c.severity.as_str() {
+                    "critical" => label_badge("CRIT", C_CRIT),
+                    "warning" => label_badge("WARN", C_WARN),
+                    _ => label_badge("FAIL", C_WARN),
+                }
+            };
+            write!(h, "<tr>{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{badge}</td>{}{}</tr>\n",
+                td(&c.name, C_TEXT, "11px", "left"),
+                td(&c.details, C_DIM, "10px", "left"),
+                td(&format!("{}", c.duration_ms), C_DIM, "10px", "right"),
+            ).unwrap();
+        }
+        section_end(h);
+    }
+
+    // Outbound path
+    render_check_group(h, "Outbound Path — Maddy → OCI Relay → Destination", &mh.outbound_path);
+
+    // Inbound path
+    render_check_group(h, "Inbound Path — Resend/CF → Worker → Caddy → smtp-proxy → Maddy → INBOX", &mh.inbound_path);
+
+    // DNS Authentication
+    render_check_group(h, "DNS Authentication (MX · DKIM · SPF · DMARC)", &mh.dns_auth);
+
+    // TLS Ports
+    render_check_group(h, "TLS Port Checks (mail.diegonmarcos.com)", &mh.tls_ports);
+
+    // Container Health
+    render_check_group(h, "Mail Containers (oci-mail)", &mh.containers);
+
+    // Mail Internals
+    render_check_group(h, "Mail Internals", &mh.internals);
+
+    // Stalwart + JMAP
+    render_check_group(h, "Stalwart Shadow Mode (JMAP · IMAP · SMTP · ManageSieve · WebAdmin)", &mh.stalwart);
 }
 
 fn render_gha(h: &mut String, data: &ReportData) {
     if data.gha_runs.is_empty() { return; }
-    section_start(h, "GHA Workflows (Last 10)", 3);
+
+    // Group runs by repo
+    let mut by_repo: std::collections::BTreeMap<String, Vec<&GhaRun>> = std::collections::BTreeMap::new();
+    for run in &data.gha_runs {
+        by_repo.entry(run.repo.clone()).or_default().push(run);
+    }
+
+    let total = data.gha_runs.len();
+    let ok = data.gha_runs.iter().filter(|r| r.conclusion == "success").count();
+    let failed = data.gha_runs.iter().filter(|r| r.conclusion == "failure").count();
+
+    section_start(h, &format!("GHA Recent Runs ({} total, {} OK, {} failed)", total, ok, failed), 4);
     h.push_str("<tr>");
-    for (label, align) in &[("Workflow","left"),("Status","center"),("Time","left")] {
+    for (label, align) in &[("Workflow","left"),("Repo","left"),("Status","center"),("Time","left")] {
         h.push_str(&th(label, align));
     }
     h.push_str("</tr>\n");
 
-    for run in &data.gha_runs {
-        let (label, color) = match run.conclusion.as_str() {
-            "success" => ("SUCCESS", C_OK),
-            "failure" => ("FAILED", C_CRIT),
-            "cancelled" => ("CANCEL", C_WARN),
-            other => (other, C_DIM),
-        };
-        let badge = label_badge(label, color);
-        let time = run.created_at.replace('T', " ").replace('Z', "");
-        write!(h, r#"<tr>
+    for (repo, runs) in &by_repo {
+        // Repo sub-header
+        write!(h, r#"<tr><td colspan="4" style="padding:5px 8px;font-weight:bold;font-size:11px;color:{C_TEXT};background:rgba(15,52,96,0.15);font-family:{FONT};border-bottom:1px solid rgba(15,52,96,0.3);">{repo} ({} runs)</td></tr>"#, runs.len()).unwrap();
+
+        for run in runs.iter().take(10) {
+            let (label, color) = match run.conclusion.as_str() {
+                "success" => ("OK", C_OK),
+                "failure" => ("FAIL", C_CRIT),
+                "cancelled" => ("SKIP", C_WARN),
+                other => (other, C_DIM),
+            };
+            let badge = label_badge(label, color);
+            let time = run.created_at.replace('T', " ").replace('Z', "");
+            // Trim time to just date + HH:MM
+            let time_short = if time.len() > 16 { &time[..16] } else { &time };
+            write!(h, r#"<tr>
+{}
 {}
 <td style="padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);">{badge}</td>
 {}
 </tr>
 "#,
-            td(&run.name, C_TEXT, "11px", "left"),
-            td(&time, C_DIM, "10px", "left"),
-        ).unwrap();
+                td(&run.name, C_TEXT, "11px", "left"),
+                td(&run.repo, C_DIM, "10px", "left"),
+                td(time_short, C_DIM, "10px", "left"),
+            ).unwrap();
+        }
+        if runs.len() > 10 {
+            write!(h, r#"<tr><td colspan="4" style="padding:2px 8px;font-size:10px;color:{C_DIM};font-family:{FONT};text-align:right;border-bottom:1px solid rgba(15,52,96,0.3);">... and {} more</td></tr>"#, runs.len() - 10).unwrap();
+        }
+    }
+    section_end(h);
+}
+
+fn render_gha_workflows(h: &mut String, data: &ReportData) {
+    if data.gha_workflows.is_empty() { return; }
+
+    // Group by repo
+    let mut by_repo: std::collections::BTreeMap<String, Vec<&GhaWorkflow>> = std::collections::BTreeMap::new();
+    for wf in &data.gha_workflows {
+        by_repo.entry(wf.repo.clone()).or_default().push(wf);
+    }
+
+    let total = data.gha_workflows.len();
+    let active = data.gha_workflows.iter().filter(|w| w.state == "active").count();
+
+    section_start(h, &format!("GHA Workflow Registry ({} workflows, {} active)", total, active), 5);
+    h.push_str("<tr>");
+    for (label, align) in &[("Workflow","left"),("Repo","left"),("File","left"),("State","center"),("Last Run","center")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
+    for (repo, workflows) in &by_repo {
+        write!(h, r#"<tr><td colspan="5" style="padding:5px 8px;font-weight:bold;font-size:11px;color:{C_TEXT};background:rgba(15,52,96,0.15);font-family:{FONT};border-bottom:1px solid rgba(15,52,96,0.3);">{repo} ({} workflows)</td></tr>"#, workflows.len()).unwrap();
+
+        for wf in workflows {
+            let state_badge = match wf.state.as_str() {
+                "active" => label_badge("ACTIVE", C_OK),
+                "disabled_manually" => label_badge("OFF", C_DIM),
+                other => label_badge(other, C_WARN),
+            };
+            let run_badge = match wf.last_conclusion.as_str() {
+                "success" => label_badge("OK", C_OK),
+                "failure" => label_badge("FAIL", C_CRIT),
+                "cancelled" => label_badge("SKIP", C_WARN),
+                "never_run" => label_badge("NEVER", C_DIM),
+                other => label_badge(other, C_DIM),
+            };
+            // Show just the filename, not full path
+            let file_short = wf.path.rsplit('/').next().unwrap_or(&wf.path);
+            write!(h, r#"<tr>
+{}
+{}
+{}
+<td style="padding:2px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);">{state_badge}</td>
+<td style="padding:2px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);">{run_badge}</td>
+</tr>
+"#,
+                td(&wf.name, C_TEXT, "11px", "left"),
+                td(&wf.repo, C_DIM, "10px", "left"),
+                td(file_short, C_DIM, "10px", "left"),
+            ).unwrap();
+        }
     }
     section_end(h);
 }
@@ -881,32 +1174,53 @@ fn render_ghcr(h: &mut String, data: &ReportData) {
 }
 
 fn render_dags(h: &mut String, data: &ReportData) {
-    if data.dags.is_empty() { return; }
-    section_start(h, &format!("Dagu DAGs ({} workflows)", data.dags.len()), 3);
+    let ok = data.dags.iter().filter(|d| matches!(d.status.as_str(), "succeeded" | "success" | "finished" | "done")).count();
+    let failed = data.dags.iter().filter(|d| matches!(d.status.as_str(), "failed" | "error")).count();
+    let running = data.dags.iter().filter(|d| d.status == "running").count();
+
+    let title = if data.dags.is_empty() {
+        "Dagu DAGs (0 — API unreachable)".to_string()
+    } else {
+        format!("Dagu DAGs ({} total, {} OK, {} failed, {} running)", data.dags.len(), ok, failed, running)
+    };
+
+    section_start(h, &title, 4);
+
+    if data.dags.is_empty() {
+        write!(h, r#"<tr><td colspan="4" style="padding:8px;color:{C_WARN};font-size:12px;font-family:{FONT};">No DAGs returned. Check: DAGU_USERNAME/DAGU_PASSWORD env vars, API at 10.0.0.4:8070</td></tr>"#).unwrap();
+        section_end(h);
+        return;
+    }
+
     h.push_str("<tr>");
-    for (label, align) in &[("DAG","left"),("Status","center"),("Last Run","left")] {
+    for (label, align) in &[("DAG","left"),("Schedule","left"),("Status","center"),("Last Run","left")] {
         h.push_str(&th(label, align));
     }
     h.push_str("</tr>\n");
 
     for dag in &data.dags {
         let (label, color) = match dag.status.as_str() {
-            "succeeded" | "success" | "finished" => ("OK", C_OK),
+            "succeeded" | "success" | "finished" | "done" => ("OK", C_OK),
             "failed" | "error" => ("FAIL", C_CRIT),
-            "running" => ("RUN", C_WARN),
-            "not_started" | "none" => ("NEVER", C_DIM),
+            "running" => ("RUN", "#3498DB"),
+            "cancelled" | "cancel" => ("SKIP", C_WARN),
+            "not_started" | "none" => ("IDLE", C_DIM),
             _ => (&*dag.status, C_DIM),
         };
         let badge = label_badge(label, color);
         let time = dag.started_at.replace('T', " ").replace('Z', "");
+        let time_short = if time.len() > 16 { &time[..16] } else { &time };
+        let sched = if dag.schedule.is_empty() { "manual" } else { &dag.schedule };
         write!(h, r#"<tr>
+{}
 {}
 <td style="padding:2px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);">{badge}</td>
 {}
 </tr>
 "#,
             td(&dag.name, C_TEXT, "11px", "left"),
-            td(&time, C_DIM, "10px", "left"),
+            td(sched, C_DIM, "10px", "left"),
+            td(time_short, C_DIM, "10px", "left"),
         ).unwrap();
     }
     section_end(h);
@@ -914,7 +1228,10 @@ fn render_dags(h: &mut String, data: &ReportData) {
 
 fn render_container_resources(h: &mut String, data: &ReportData) {
     for vm in &data.vms {
-        section_start(h, &format!("Container Resources — {}", vm.name), 4);
+        if vm.container_stats.is_empty() && vm.unhealthy_names.is_empty() && vm.exited_names.is_empty() {
+            continue; // skip VMs with no data (SSH fallback)
+        }
+        section_start(h, &format!("Container Resources — {} ({} containers)", vm.name, vm.containers_running), 4);
 
         for name in &vm.unhealthy_names {
             write!(h, r#"<tr><td colspan="4" style="padding:4px 8px;color:{C_CRIT};font-size:12px;font-family:{FONT};">UNHEALTHY: {name}</td></tr>"#).unwrap();
@@ -1051,30 +1368,90 @@ fn render_wireguard(h: &mut String, data: &ReportData) {
     let has_wg = data.vms.iter().any(|v| !v.wg_peers.is_empty());
     if !has_wg { return; }
 
-    section_start(h, "WireGuard Peers", 2);
+    // Build pubkey→(name, wg_ip) lookup from all VMs
+    // WG peers report other VMs' pubkeys — match by cross-referencing all known VMs
+    let vm_lookup: Vec<(&str, &str)> = data.vms.iter()
+        .map(|v| (v.name.as_str(), v.ip.as_str()))
+        .collect();
+
+    let total_peers: usize = data.vms.iter().map(|v| v.wg_peers.len()).sum();
+    section_start(h, &format!("WireGuard Mesh ({} peers across {} VMs)", total_peers, data.vms.iter().filter(|v| !v.wg_peers.is_empty()).count()), 5);
+    h.push_str("<tr>");
+    for (label, align) in &[("Peer","left"),("Pubkey","left"),("WG IP","left"),("Last Handshake","left"),("Status","center")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+
     let now = chrono::Utc::now().timestamp() as u64;
     for vm in &data.vms {
         if vm.wg_peers.is_empty() { continue; }
-        write!(h, r#"<tr><td colspan="2" style="padding:6px 8px;color:{C_TEXT};font-size:12px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">{}</td></tr>"#, vm.name).unwrap();
-        for (peer, ts) in &vm.wg_peers {
-            let short = if peer.len() > 8 { format!("{}...", &peer[..8]) } else { peer.clone() };
-            let (age, color) = if *ts == 0 {
-                ("never".into(), C_CRIT)
+        write!(h, r#"<tr><td colspan="5" style="padding:6px 8px;color:{C_TEXT};font-size:12px;font-weight:bold;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">{} (wg0 — {})</td></tr>"#, vm.name, vm.ip).unwrap();
+
+        for (peer_key, ts) in &vm.wg_peers {
+            let short_key = if peer_key.len() > 12 { format!("{}...", &peer_key[..12]) } else { peer_key.clone() };
+
+            // Try to identify peer by matching known VM pubkeys or by position
+            // For now show the peer index as name since we don't have pubkey→name in cloud-data
+            let peer_name = "peer".to_string();
+
+            let (age_str, status_badge) = if *ts == 0 {
+                ("never".into(), label_badge("DEAD", C_CRIT))
             } else {
                 let diff = now.saturating_sub(*ts);
-                let age = if diff < 120 { format!("{}s ago", diff) }
-                    else if diff < 7200 { format!("{}m ago", diff / 60) }
-                    else { format!("{}h ago", diff / 3600) };
-                let color = if diff > 300 { C_WARN } else { C_OK };
-                (age, color)
+                let age = if diff < 60 { format!("{}s ago", diff) }
+                    else if diff < 3600 { format!("{}m ago", diff / 60) }
+                    else if diff < 86400 { format!("{}h ago", diff / 3600) }
+                    else { format!("{}d ago", diff / 86400) };
+                let badge = if diff < 180 {
+                    label_badge("LIVE", C_OK)
+                } else if diff < 600 {
+                    label_badge("IDLE", C_WARN)
+                } else {
+                    label_badge("STALE", C_CRIT)
+                };
+                (age, badge)
             };
-            write!(h, "<tr>{}{}</tr>\n",
-                td(&short, C_DIM, "11px", "left"),
-                td(&age, color, "11px", "left"),
+
+            // Try to find WG IP for this peer from WG transfer data
+            let wg_ip = data.vms.iter()
+                .find(|other| other.name != vm.name && other.wg_transfer.iter().any(|t| t.peer == *peer_key))
+                .map(|other| other.ip.as_str())
+                .unwrap_or("?");
+
+            write!(h, "<tr>{}{}{}{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{status_badge}</td></tr>\n",
+                td(&peer_name, C_TEXT, "11px", "left"),
+                td(&short_key, C_DIM, "10px", "left"),
+                td(wg_ip, C_OK, "11px", "left"),
+                td(&age_str, C_TEXT, "11px", "left"),
             ).unwrap();
         }
     }
     section_end(h);
+
+    // WG Transfer stats
+    let has_transfer = data.vms.iter().any(|v| !v.wg_transfer.is_empty());
+    if has_transfer {
+        section_start(h, "WireGuard Transfer", 4);
+        h.push_str("<tr>");
+        for (label, align) in &[("VM","left"),("Peer","left"),("RX","right"),("TX","right")] {
+            h.push_str(&th(label, align));
+        }
+        h.push_str("</tr>\n");
+        for vm in &data.vms {
+            for t in &vm.wg_transfer {
+                let rx = human_size(t.rx_bytes);
+                let tx = human_size(t.tx_bytes);
+                let short_peer = if t.peer.len() > 12 { format!("{}...", &t.peer[..12]) } else { t.peer.clone() };
+                write!(h, "<tr>{}{}{}{}</tr>\n",
+                    td(&vm.name, C_TEXT, "11px", "left"),
+                    td(&short_peer, C_DIM, "10px", "left"),
+                    td(&rx, C_OK, "11px", "right"),
+                    td(&tx, C_WARN, "11px", "right"),
+                ).unwrap();
+            }
+        }
+        section_end(h);
+    }
 }
 
 fn render_runtime_volumes(h: &mut String, data: &ReportData) {
@@ -1470,7 +1847,15 @@ fn render_service_unified_row(h: &mut String, svc: &ServiceEntry, data: &ReportD
 fn render_repos(h: &mut String, data: &ReportData) {
     if data.repos.is_empty() { return; }
 
-    section_start(h, &format!("GitHub Repositories ({} repos)", data.repos.len()), 5);
+    let total_repo_size = data.repos.iter().map(|r| r.disk_kb).sum::<u64>();
+    let total_size_str = if total_repo_size > 1048576 {
+        format!("{:.1} GB", total_repo_size as f64 / 1048576.0)
+    } else if total_repo_size > 1024 {
+        format!("{:.0} MB", total_repo_size as f64 / 1024.0)
+    } else {
+        format!("{} KB", total_repo_size)
+    };
+    section_start(h, &format!("GitHub Repositories ({} repos — {} total)", data.repos.len(), total_size_str), 5);
     h.push_str("<tr>");
     for (label, align) in &[("Repository","left"),("Visibility","center"),("Language","left"),("Size","right"),("Updated","left")] {
         h.push_str(&th(label, align));
@@ -2347,29 +2732,119 @@ fn render_analytics_web(h: &mut String, data: &ReportData) {
     }
 }
 
+fn render_matomo_comparison(h: &mut String, data: &ReportData) {
+    if data.matomo_sites.is_empty() {
+        section_start(h, "Matomo Analytics (comparison source)", 1);
+        write!(h, r#"<tr><td style="padding:12px 16px;">
+<span style="color:{C_WARN};font-size:12px;font-family:{FONT};">Matomo data unavailable — check SSH to oci-apps / matomo-hybrid container</span>
+</td></tr>"#).unwrap();
+        section_end(h);
+        return;
+    }
+
+    for site in &data.matomo_sites {
+        section_start(h, &format!("Matomo — {} ({} visits, {} pageviews total)", site.name, site.total_visits, site.total_pageviews), 1);
+
+        // Monthly breakdown
+        if !site.monthly.is_empty() {
+            h.push_str("<tr><td style=\"padding:8px;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
+            h.push_str("<tr>");
+            for (label, align) in &[("Month","left"),("Visits","right"),("Pageviews","right")] {
+                h.push_str(&th(label, align));
+            }
+
+            // If Umami data exists, add comparison columns
+            let umami = data.umami_sites.first();
+            if umami.is_some() {
+                h.push_str(&th("Umami PV", "right"));
+                h.push_str(&th("Match %", "right"));
+            }
+            h.push_str("</tr>\n");
+
+            for m in &site.monthly {
+                let umami_pv = umami.and_then(|u| {
+                    u.last_6_months.iter().find(|(label, _)| label == &m.month).map(|(_, s)| s.pageviews)
+                }).or_else(|| {
+                    // Check current month
+                    umami.and_then(|u| {
+                        let now = chrono::Utc::now();
+                        let current = format!("{:04}-{:02}", now.year(), now.month());
+                        if m.month == current { Some(u.current_month.pageviews) } else { None }
+                    })
+                });
+
+                write!(h, "<tr>{}{}{}",
+                    td(&m.month, C_TEXT, "11px", "left"),
+                    td(&m.visits.to_string(), C_TEXT, "11px", "right"),
+                    td(&m.pageviews.to_string(), C_TEXT, "11px", "right"),
+                ).unwrap();
+
+                if umami.is_some() {
+                    match umami_pv {
+                        Some(upv) => {
+                            let pct = if m.pageviews > 0 { (upv as f64 / m.pageviews as f64 * 100.0) as u64 } else { 0 };
+                            let color = if pct >= 90 { C_OK } else if pct >= 50 { C_WARN } else { C_CRIT };
+                            write!(h, "{}{}",
+                                td(&upv.to_string(), C_DIM, "11px", "right"),
+                                td(&format!("{}%", pct), color, "11px", "right"),
+                            ).unwrap();
+                        }
+                        None => {
+                            write!(h, "{}{}", td("—", C_DIM, "11px", "right"), td("—", C_DIM, "11px", "right")).unwrap();
+                        }
+                    }
+                }
+                h.push_str("</tr>\n");
+            }
+
+            // Totals row
+            let total_v: u64 = site.monthly.iter().map(|m| m.visits).sum();
+            let total_pv: u64 = site.monthly.iter().map(|m| m.pageviews).sum();
+            write!(h, r#"<tr><td style="padding:3px 8px;font-weight:bold;color:{C_TEXT};font-size:11px;border-top:2px solid {BG_HEAD};font-family:{FONT};">TOTAL</td>"#).unwrap();
+            write!(h, r#"<td style="padding:3px 8px;font-weight:bold;color:{C_TEXT};font-size:11px;text-align:right;border-top:2px solid {BG_HEAD};font-family:{FONT};">{}</td>"#, total_v).unwrap();
+            write!(h, r#"<td style="padding:3px 8px;font-weight:bold;color:{C_TEXT};font-size:11px;text-align:right;border-top:2px solid {BG_HEAD};font-family:{FONT};">{}</td>"#, total_pv).unwrap();
+            if umami.is_some() {
+                let umami_total: u64 = data.umami_sites.first().map(|u| {
+                    u.last_6_months.iter().map(|(_, s)| s.pageviews).sum::<u64>() + u.current_month.pageviews
+                }).unwrap_or(0);
+                let pct = if total_pv > 0 { (umami_total as f64 / total_pv as f64 * 100.0) as u64 } else { 0 };
+                let color = if pct >= 90 { C_OK } else if pct >= 50 { C_WARN } else { C_CRIT };
+                write!(h, r#"<td style="padding:3px 8px;font-weight:bold;color:{C_DIM};font-size:11px;text-align:right;border-top:2px solid {BG_HEAD};font-family:{FONT};">{}</td>"#, umami_total).unwrap();
+                write!(h, r#"<td style="padding:3px 8px;font-weight:bold;color:{color};font-size:11px;text-align:right;border-top:2px solid {BG_HEAD};font-family:{FONT};">{}%</td>"#, pct).unwrap();
+            }
+            h.push_str("</tr>");
+
+            h.push_str("</table></td></tr>");
+        }
+        section_end(h);
+    }
+}
+
 fn render_analytics_containers(h: &mut String, data: &ReportData) {
     if data.container_cpu_ranking.is_empty() {
         return;
     }
 
-    section_start(h, "Container Resource Usage (Top 20 by CPU*h)", 9);
+    section_start(h, &format!("Container Resource Usage ({} containers by CPU*h)", data.container_cpu_ranking.len()), 9);
+    write!(h, r#"<tr><td colspan="9" style="padding:4px 8px;color:{C_DIM};font-size:10px;font-family:{FONT};border-bottom:1px solid {BG_HEAD};">CPU*h = (CPU% / 100) &times; uptime since container start &mdash; snapshot metric, not a fixed 24h window</td></tr>"#).unwrap();
 
     write!(h, "<tr>{}{}{}{}{}{}{}{}{}</tr>",
         th("#", "center"),
+        th("CPU*h", "right"),
+        th("MEM*GB*h", "right"),
         th("Container", "left"),
         th("VM", "left"),
         th("CPU %", "right"),
         th("Mem Usage", "right"),
         th("Mem %", "right"),
         th("Uptime", "right"),
-        th("CPU*h", "right"),
-        th("MEM*GB*h", "right"),
     ).unwrap();
 
     for entry in &data.container_cpu_ranking {
         let cpu_num: f64 = entry.cpu_pct.trim_end_matches('%').trim().parse().unwrap_or(0.0);
         let cpu_color = if cpu_num > 5.0 { C_CRIT } else if cpu_num > 1.0 { C_WARN } else { C_OK };
         let cpuh_color = if entry.cpu_hours > 100.0 { C_CRIT } else if entry.cpu_hours > 10.0 { C_WARN } else { C_OK };
+        let memh_color = if entry.mem_gb_hours > 50.0 { C_WARN } else { C_TEXT };
 
         let uptime_str = if entry.uptime_hours >= 24.0 {
             format!("{:.0}d", entry.uptime_hours / 24.0)
@@ -2379,81 +2854,138 @@ fn render_analytics_containers(h: &mut String, data: &ReportData) {
 
         write!(h, "<tr>{}{}{}{}{}{}{}{}{}</tr>",
             td(&format!("{}", entry.rank), C_DIM, "11px", "center"),
+            td(&format!("{:.1}", entry.cpu_hours), cpuh_color, "11px", "right"),
+            td(&format!("{:.1}", entry.mem_gb_hours), memh_color, "11px", "right"),
             td(&entry.container, C_TEXT, "11px", "left"),
             td(&entry.vm, C_DIM, "11px", "left"),
             td(&entry.cpu_pct, cpu_color, "11px", "right"),
             td(&entry.mem_usage, C_TEXT, "11px", "right"),
             td(&entry.mem_pct, C_DIM, "11px", "right"),
             td(&uptime_str, C_DIM, "11px", "right"),
-            td(&format!("{:.1}", entry.cpu_hours), cpuh_color, "11px", "right"),
-            td(&format!("{:.1}", entry.mem_gb_hours), C_TEXT, "11px", "right"),
         ).unwrap();
     }
 
     section_end(h);
 }
 
-// ── Firewall Summary Table (C section) ──────────────────────────────
+// ── Firewall 3-Layer Tables (B0 Security) ────────────────────────────
 
 fn render_firewall_summary(h: &mut String, data: &ReportData) {
     if data.firewalls.is_empty() { return; }
 
-    section_start(h, "Firewall Rules", 4);
+    // ── Global Firewall Policy ──
+    let gfw = &data.global_firewall;
+    section_start(h, "Global Firewall Policy", 2);
+    for (label, val) in &[
+        ("Forward Policy", gfw.forward_policy.as_str()),
+        ("Docker iptables", if gfw.docker_iptables { "ENABLED" } else { "DISABLED" }),
+        ("Docker Subnet", gfw.docker_subnet.as_str()),
+        ("WireGuard Subnet", gfw.wg_subnet.as_str()),
+    ] {
+        let color = if *label == "Forward Policy" && *val == "DROP" { C_OK }
+            else if *label == "Docker iptables" && *val == "ENABLED" { C_WARN }
+            else { C_TEXT };
+        write!(h, "<tr>{}{}</tr>\n", td(label, C_DIM, "12px", "left"), td(val, color, "12px", "left")).unwrap();
+    }
+    section_end(h);
+
+    // ── Layer 1: VPS/Terraform (cloud provider firewall) ──
+    section_start(h, "Layer 1 — VPS / Terraform (Cloud Provider Firewall)", 3);
     h.push_str("<tr>");
-    for (label, align) in &[("VM","left"),("Public Ports","right"),("OS Rules","right"),("Status","center")] {
-        write!(h, r#"<th style="text-align:{align};color:{C_DIM};font-size:10px;padding:6px 8px;border-bottom:1px solid {BG_HEAD};font-family:{FONT};">{label}</th>"#).unwrap();
+    for (label, align) in &[("VM","left"),("Public Ports (Terraform)","left"),("Exposure","center")] {
+        h.push_str(&th(label, align));
     }
     h.push_str("</tr>\n");
-
     for fw in &data.firewalls {
-        let pub_count = fw.public_ports.len();
-        let (badge_label, badge_color) = if pub_count == 0 {
-            ("WG-ONLY", C_OK)
-        } else if pub_count < 5 {
-            ("LOW", C_OK)
-        } else if pub_count < 10 {
-            ("MEDIUM", C_WARN)
-        } else {
-            ("HIGH", C_CRIT)
+        let pub_ports = if fw.public_ports.is_empty() { "none (WG-only)".to_string() }
+        else {
+            fw.public_ports.iter().map(|p| format!("{}/{}", p.port, p.proto)).collect::<Vec<_>>().join(", ")
         };
-
-        // Format port lists compactly
-        let pub_desc = if fw.public_ports.is_empty() {
-            "none".to_string()
-        } else {
-            fw.public_ports.iter()
-                .map(|p| format!("{}/{}", p.port, p.proto))
-                .collect::<Vec<_>>()
-                .join(", ")
-        };
-        let os_desc = if fw.os_rules.is_empty() {
-            "none".to_string()
-        } else {
-            fw.os_rules.iter()
-                .map(|r| format!("{}/{}", r.port, r.proto))
-                .collect::<Vec<_>>()
-                .join(", ")
-        };
-
-        write!(h, "<tr>{}{}{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{}</td></tr>\n",
+        let (badge_label, badge_color) = if fw.public_ports.is_empty() { ("WG-ONLY", C_OK) }
+            else if fw.public_ports.len() < 5 { ("LOW", C_OK) }
+            else if fw.public_ports.len() < 10 { ("MEDIUM", C_WARN) }
+            else { ("HIGH", C_CRIT) };
+        write!(h, "<tr>{}{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{}</td></tr>\n",
             td(&fw.vm_name, C_TEXT, "12px", "left"),
-            td(&pub_desc, C_DIM, "11px", "right"),
-            td(&os_desc, C_DIM, "11px", "right"),
+            td(&pub_ports, C_DIM, "10px", "left"),
             label_badge(badge_label, badge_color),
         ).unwrap();
     }
+    section_end(h);
 
-    // Global settings row
-    let gfw = &data.global_firewall;
-    write!(h, r#"<tr><td colspan="4" style="padding:8px;border-top:2px solid {BG_HEAD};color:{C_DIM};font-size:11px;font-family:{FONT};">
-<b style="color:{C_TEXT};">Global:</b> forward={fwd} | docker={docker_subnet} (iptables={iptables}) | wg={wg_subnet}
-</td></tr>"#,
-        fwd = gfw.forward_policy,
-        docker_subnet = gfw.docker_subnet,
-        iptables = if gfw.docker_iptables { "on" } else { "off" },
-        wg_subnet = gfw.wg_subnet,
-    ).unwrap();
+    // ── Layer 2: OS / Home-Manager (nftables/iptables) ──
+    section_start(h, "Layer 2 — OS / Home-Manager (nftables/iptables)", 3);
+    h.push_str("<tr>");
+    for (label, align) in &[("VM","left"),("OS Rules (nftables)","left"),("Count","right")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+    for fw in &data.firewalls {
+        let os_ports = if fw.os_rules.is_empty() { "none".to_string() }
+        else {
+            fw.os_rules.iter().map(|r| format!("{}/{}", r.port, r.proto)).collect::<Vec<_>>().join(", ")
+        };
+        write!(h, "<tr>{}{}{}</tr>\n",
+            td(&fw.vm_name, C_TEXT, "12px", "left"),
+            td(&os_ports, C_DIM, "10px", "left"),
+            td(&fw.os_rules.len().to_string(), C_TEXT, "11px", "right"),
+        ).unwrap();
+    }
+    section_end(h);
 
+    // ── Layer 3: Container Port Bindings ──
+    section_start(h, "Layer 3 — Container Port Bindings (docker-compose)", 3);
+    h.push_str("<tr>");
+    for (label, align) in &[("VM","left"),("Service : Port","left"),("Count","right")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+    // Group services by VM
+    let mut vm_svc_ports: std::collections::HashMap<String, Vec<String>> = std::collections::HashMap::new();
+    for svc in &data.services {
+        if svc.enabled && svc.port > 0 {
+            vm_svc_ports.entry(svc.vm.clone()).or_default().push(format!("{}:{}", svc.name, svc.port));
+        }
+    }
+    let mut vm_keys: Vec<&String> = vm_svc_ports.keys().collect();
+    vm_keys.sort();
+    for vm in vm_keys {
+        let ports = &vm_svc_ports[vm];
+        write!(h, "<tr>{}{}{}</tr>\n",
+            td(vm, C_TEXT, "12px", "left"),
+            td(&ports.join(", "), C_DIM, "10px", "left"),
+            td(&ports.len().to_string(), C_TEXT, "11px", "right"),
+        ).unwrap();
+    }
+    section_end(h);
+
+    // ── Final: Real Port Exposure per VM (3-layer comparison) ──
+    section_start(h, "Port Exposure Summary (3-Layer Comparison)", 5);
+    h.push_str("<tr>");
+    for (label, align) in &[("VM","left"),("L1 Terraform","right"),("L2 OS","right"),("L3 Container","right"),("Drift","center")] {
+        h.push_str(&th(label, align));
+    }
+    h.push_str("</tr>\n");
+    for fw in &data.firewalls {
+        let l1 = fw.public_ports.len();
+        let l2 = fw.os_rules.len();
+        let l3 = vm_svc_ports.get(&fw.vm_name).map(|v| v.len()).unwrap_or(0);
+        // Drift: L1 should match L2, L3 is internal — flag if L1 != L2
+        let (drift_label, drift_color) = if l1 == 0 && l2 == 0 {
+            ("WG-ONLY", C_OK)
+        } else if l1 == l2 {
+            ("MATCH", C_OK)
+        } else {
+            ("DRIFT", C_CRIT)
+        };
+        write!(h, "<tr>{}{}{}{}<td style=\"padding:3px 8px;text-align:center;border-bottom:1px solid rgba(15,52,96,0.3);\">{}</td></tr>\n",
+            td(&fw.vm_name, C_TEXT, "12px", "left"),
+            td(&l1.to_string(), C_TEXT, "11px", "right"),
+            td(&l2.to_string(), C_TEXT, "11px", "right"),
+            td(&l3.to_string(), C_DIM, "11px", "right"),
+            label_badge(drift_label, drift_color),
+        ).unwrap();
+    }
     section_end(h);
 }
 

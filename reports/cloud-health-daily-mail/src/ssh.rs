@@ -162,6 +162,18 @@ echo "===MAIL_DELIVERED==="
 docker logs maddy --since 24h 2>/dev/null | grep -c "delivered" || echo "0"
 echo "===MAIL_FAILED==="
 docker logs maddy --since 24h 2>/dev/null | grep -c "failed\|bounced" || echo "0"
+echo "===IMAP_CHECK==="
+echo "a001 CAPABILITY" | timeout 3 openssl s_client -connect localhost:993 -quiet 2>/dev/null | head -3 || echo "FAIL"
+echo "===SMTP25_BANNER==="
+echo QUIT | timeout 3 nc -w3 localhost 25 2>&1 | head -1 || echo "FAIL"
+echo "===MAIL_PORTS==="
+ss -tlnp 2>/dev/null | grep -E ':(25|143|465|587|993|4190|8888)\s' || echo "(none)"
+echo "===MADDY_ACCOUNTS==="
+docker exec maddy maddy creds list 2>/dev/null | wc -l || echo "0"
+echo "===MADDY_DOMAINS==="
+docker exec maddy grep 'local_domains' /data/maddy.conf 2>/dev/null | head -5 || echo "N/A"
+echo "===WEBMAIL_INTERNAL==="
+curl -skL -o /dev/null -w '%{http_code}' --max-time 3 http://localhost:8888/ 2>&1 || echo "0"
 "#
     } else {
         ""
@@ -192,7 +204,7 @@ docker ps --filter health=unhealthy --format '{{{{.Names}}}}' 2>/dev/null
 echo "===EXITED==="
 docker ps -a --filter status=exited --format '{{{{.Names}}}}' 2>/dev/null | head -10
 echo "===CONTAINER_STATS==="
-timeout 8 docker stats --no-stream --format '{{{{.Name}}}}|{{{{.CPUPerc}}}}|{{{{.MemUsage}}}}|{{{{.MemPerc}}}}' 2>/dev/null | sort -t'|' -k2 -rn | head -10 || echo ""
+timeout 8 docker stats --no-stream --format '{{{{.Name}}}}|{{{{.CPUPerc}}}}|{{{{.MemUsage}}}}|{{{{.MemPerc}}}}' 2>/dev/null | sort -t'|' -k2 -rn || echo ""
 echo "===CONTAINER_FULL==="
 docker ps -a --format '{{{{.Names}}}}|{{{{.Image}}}}|{{{{.Status}}}}|{{{{.RunningFor}}}}' 2>/dev/null | while IFS='|' read n i s r; do
   created=$(docker inspect --format '{{{{.Created}}}}' "$i" 2>/dev/null | cut -dT -f1 || echo "?")
@@ -227,11 +239,17 @@ done | sort -t"|" -k2 -rn | head -10' 2>/dev/null || echo ""
 echo "===FAILED_UNITS==="
 systemctl --failed --no-legend 2>/dev/null | head -5 | awk '{{print $1}}'
 echo "===RUNTIME_VOLUMES==="
-timeout 15 sh -c 'docker volume ls -q 2>/dev/null | while read vol; do
-  mp=$(docker volume inspect "$vol" --format "{{{{.Mountpoint}}}}" 2>/dev/null)
-  sz=$(du -sh "$mp" 2>/dev/null | cut -f1 || echo "?")
-  echo "$vol|$sz"
-done' 2>/dev/null || echo ""
+timeout 20 sh -c '
+names=$(docker volume ls -q 2>/dev/null)
+[ -z "$names" ] && exit 0
+docker volume inspect $names --format "{{{{.Name}}}}|{{{{.Mountpoint}}}}" 2>/dev/null > /tmp/vols.txt
+cut -d"|" -f2 /tmp/vols.txt | xargs -r du -sh 2>/dev/null > /tmp/sizes.txt
+while IFS="|" read name mp; do
+  sz=$(grep -F "$mp" /tmp/sizes.txt 2>/dev/null | cut -f1 || echo "?")
+  echo "$name|$sz"
+done < /tmp/vols.txt
+rm -f /tmp/vols.txt /tmp/sizes.txt
+' 2>/dev/null || echo ""
 echo "===RUNTIME_CONTAINERS_WITH_VOLUMES==="
 timeout 10 sh -c 'docker ps -a --format "{{{{.Names}}}}" 2>/dev/null | while read ctr; do
   mounts=$(docker inspect "$ctr" --format "{{{{range .Mounts}}}}{{{{.Name}}}}={{{{.Destination}}}} {{{{end}}}}" 2>/dev/null | tr -d "\n")
@@ -254,7 +272,7 @@ echo "===END==="
         }
         Err(e) => {
             eprintln!("  SSH {} full batch FAILED: {} — trying lightweight fallback", vm.name, e);
-            // Lightweight fallback: just get basic health (uptime, mem, disk, container count)
+            // Lightweight fallback: basic health + container stats (critical for report)
             let fallback_script = r#"
 export PATH="/run/current-system/sw/bin:/usr/bin:/usr/local/bin:$PATH"
 echo "===UPTIME==="
@@ -271,6 +289,17 @@ echo "===MEM_PCT==="
 free 2>/dev/null | awk '/Mem:/ {printf "%.0f\n", ($3/$2)*100}' || echo "0"
 echo "===CONTAINER_COUNTS==="
 R=$(docker ps -q 2>/dev/null | wc -l); T=$(docker ps -aq 2>/dev/null | wc -l); U=$(docker ps --filter health=unhealthy -q 2>/dev/null | wc -l); echo "$R|$T|$U"
+echo "===UNHEALTHY==="
+docker ps --filter health=unhealthy --format '{{.Names}}' 2>/dev/null
+echo "===EXITED==="
+docker ps -a --filter status=exited --format '{{.Names}}' 2>/dev/null | head -10
+echo "===CONTAINER_STATS==="
+timeout 12 docker stats --no-stream --format '{{.Name}}|{{.CPUPerc}}|{{.MemUsage}}|{{.MemPerc}}' 2>/dev/null | sort -t'|' -k2 -rn || echo ""
+echo "===CONTAINER_FULL==="
+docker ps -a --format '{{.Names}}|{{.Image}}|{{.Status}}|{{.RunningFor}}' 2>/dev/null | while IFS='|' read n i s r; do
+  created=$(docker inspect --format '{{.Created}}' "$i" 2>/dev/null | cut -dT -f1 || echo "?")
+  echo "$n|$i|$s|$r|$created"
+done || echo ""
 echo "===KERNEL==="
 uname -r 2>/dev/null || echo "?"
 echo "===SWAP==="
@@ -445,7 +474,13 @@ echo "===END==="
     if vm.name == "oci-mail" {
         data.mail_queue = Some(section(&raw, "MAIL_QUEUE", "MAIL_DELIVERED").trim().parse().unwrap_or(0));
         data.mail_delivered = Some(section(&raw, "MAIL_DELIVERED", "MAIL_FAILED").trim().parse().unwrap_or(0));
-        data.mail_failed = Some(section(&raw, "MAIL_FAILED", "END").trim().parse().unwrap_or(0));
+        data.mail_failed = Some(section(&raw, "MAIL_FAILED", "IMAP_CHECK").trim().parse().unwrap_or(0));
+        data.imap_check = section(&raw, "IMAP_CHECK", "SMTP25_BANNER");
+        data.smtp25_banner = section(&raw, "SMTP25_BANNER", "MAIL_PORTS");
+        data.mail_ports_bound = section(&raw, "MAIL_PORTS", "MADDY_ACCOUNTS");
+        data.maddy_accounts = section(&raw, "MADDY_ACCOUNTS", "MADDY_DOMAINS").trim().parse().unwrap_or(0);
+        data.maddy_domains = section(&raw, "MADDY_DOMAINS", "WEBMAIL_INTERNAL");
+        data.webmail_internal_code = section(&raw, "WEBMAIL_INTERNAL", "END").trim().parse().unwrap_or(0);
     }
 
     // Runtime volumes — first parse sizes from RUNTIME_VOLUMES

@@ -8,6 +8,7 @@ mod collect;
 mod context;
 mod diagrams;
 mod html;
+mod mail;
 mod mermaid;
 mod ssh;
 mod types;
@@ -92,8 +93,8 @@ async fn main() -> Result<()> {
         .map(|d| collect::check_cert(d))
         .collect();
 
-    // Run everything in parallel
-    let (vms, endpoints, certs, dns, gha_runs, (ghcr_packages, ghcr_total, github_disk_kb), dags, cloud_buckets, repos, cloud_costs, umami_sites) = tokio::join!(
+    // Run everything in parallel (mail health checks run alongside SSH+API collection)
+    let (vms, endpoints, certs, dns, gha_runs, gha_workflows, (ghcr_packages, ghcr_total, github_disk_kb), dags, cloud_buckets, repos, cloud_costs, umami_sites, matomo_sites, mut mail_health) = tokio::join!(
         futures::future::join_all(vm_futures),
         futures::future::join_all(ep_futures),
         futures::future::join_all(cert_futures),
@@ -101,6 +102,10 @@ async fn main() -> Result<()> {
         async {
             if github_token.is_empty() { vec![] }
             else { collect::fetch_gha(&github_token).await }
+        },
+        async {
+            if github_token.is_empty() { vec![] }
+            else { collect::fetch_gha_workflows(&github_token).await }
         },
         async {
             if github_token.is_empty() { (vec![], 0, 0) }
@@ -111,7 +116,12 @@ async fn main() -> Result<()> {
         collect::fetch_repos(),
         collect::fetch_cloud_costs(),
         collect::fetch_umami_analytics(),
+        collect::fetch_matomo_analytics(),
+        mail::collect_mail_network(),
     );
+
+    // Fill mail health with SSH-collected data (synergy: reuses VM data already collected)
+    mail::fill_from_vmdata(&mut mail_health, &vms);
 
     // 3. Mark services that responded as has_api (runtime-proven)
     let mut services = ctx.services.clone();
@@ -128,9 +138,9 @@ async fn main() -> Result<()> {
 
     let elapsed = start.elapsed();
     println!(
-        "Collected: {} VMs, {} endpoints, {} certs, {} DNS, {} GHA, {} GHCR, {} DAGs in {:.1}s",
+        "Collected: {} VMs, {} endpoints, {} certs, {} DNS, {} GHA runs, {} GHA workflows, {} GHCR, {} DAGs in {:.1}s",
         vms.len(), endpoints.len(), certs.len(), dns.len(),
-        gha_runs.len(), ghcr_packages.len(), dags.len(),
+        gha_runs.len(), gha_workflows.len(), ghcr_packages.len(), dags.len(),
         elapsed.as_secs_f64(),
     );
 
@@ -369,7 +379,7 @@ async fn main() -> Result<()> {
         all_entries.sort_by(|a, b| {
             b.cpu_hours.partial_cmp(&a.cpu_hours).unwrap_or(std::cmp::Ordering::Equal)
         });
-        all_entries.truncate(20);
+        // No truncation — list ALL containers
         // Assign ranks after sorting
         for (i, entry) in all_entries.iter_mut().enumerate() {
             entry.rank = (i + 1) as u32;
@@ -386,6 +396,7 @@ async fn main() -> Result<()> {
         certs,
         dns,
         gha_runs,
+        gha_workflows,
         ghcr_packages,
         ghcr_total,
         github_disk_kb,
@@ -413,6 +424,8 @@ async fn main() -> Result<()> {
         container_cpu_ranking,
         firewalls: ctx.firewalls.clone(),
         global_firewall: ctx.global_firewall.clone(),
+        mail_health: Some(mail_health),
+        matomo_sites,
     };
 
     // 8. Render HTML (email + web)
