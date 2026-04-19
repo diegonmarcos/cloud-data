@@ -412,13 +412,11 @@ pub async fn fetch_repos() -> Vec<GithubRepo> {
 
 /// Fetch web analytics from Umami API
 pub async fn fetch_umami_analytics() -> Vec<UmamiSite> {
-    let username = match std::env::var("UMAMI_USERNAME") {
-        Ok(u) if !u.is_empty() => u,
-        _ => {
-            eprintln!("  UMAMI_USERNAME not set, skipping Umami analytics");
-            return vec![];
-        }
-    };
+    // Username defaults to "admin" (Umami default), password required from env
+    let username = std::env::var("UMAMI_USERNAME")
+        .ok()
+        .filter(|u| !u.is_empty())
+        .unwrap_or_else(|| "admin".to_string());
     let password = match std::env::var("UMAMI_PASSWORD") {
         Ok(p) if !p.is_empty() => p,
         _ => {
