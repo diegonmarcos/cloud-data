@@ -6,14 +6,14 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-04-19T13:05:38.661637149+00:00
+         CONTAINER HEALTH — 2026-04-19T18:55:28.709786556+00:00
 ════════════════════════════════════════════════════════════
 
 
 ══════════════════════════════════════════════════════════════
   ⚠️  ISSUES FOUND
 ══════════════════════════════════════════════════════════════
-26 critical, 0 warnings — 26 total
+31 critical, 0 warnings — 31 total
 
     ❌ A3       VM gcp-proxy — UNREACHABLE
     ❌ A3       VM oci-apps — UNREACHABLE
@@ -22,25 +22,30 @@
     ❌ B2       gcp-proxy/authelia (sqlite) — not running
     ❌ B2       gcp-proxy/authelia-redis (redis) — not running
     ❌ B2       gcp-proxy/redis (redis) — not running
+    ❌ B2       oci-analytics/dagu (sqlite) — not running
     ❌ B2       oci-apps/crawlee_db (postgres) — not running
     ❌ B2       oci-apps/crawlee_redis (redis) — not running
-    ❌ B2       oci-apps/crawlee_minio (s3) — not running
+    ❌ B2       oci-apps/crawlee_minio (minio) — not running
     ❌ B2       oci-apps/etherpad_postgres (postgres) — not running
+    ❌ B2       oci-apps/filebrowser_app (sqlite) — not running
     ❌ B2       oci-apps/gitea (sqlite) — not running
     ❌ B2       oci-apps/grist_app (sqlite) — not running
     ❌ B2       oci-apps/hedgedoc_postgres (postgres) — not running
-    ❌ B2       oci-apps/lgtm_grafana (grafana) — not running
-    ❌ B2       oci-apps/lgtm_loki (loki) — not running
-    ❌ B2       oci-apps/lgtm_tempo (tempo) — not running
-    ❌ B2       oci-apps/lgtm_mimir (mimir) — not running
-    ❌ B2       oci-apps/matomo-hybrid (custom) — not running
+    ❌ B2       oci-apps/lgtm_grafana (sqlite) — not running
+    ❌ B2       oci-apps/lgtm_loki (boltdb) — not running
+    ❌ B2       oci-apps/lgtm_tempo (wal) — not running
+    ❌ B2       oci-apps/lgtm_mimir (tsdb) — not running
+    ❌ B2       oci-apps/matomo-hybrid (mariadb) — not running
     ❌ B2       oci-apps/mattermost-postgres (postgres) — not running
     ❌ B2       oci-apps/ntfy (sqlite) — not running
     ❌ B2       oci-apps/photoprism_mariadb (mariadb) — not running
     ❌ B2       oci-apps/quant_light_db (postgres) — not running
+    ❌ B2       oci-apps/radicale (files) — not running
     ❌ B2       oci-apps/umami-db (postgres) — not running
     ❌ B2       oci-apps/vaultwarden (sqlite) — not running
-    ❌ B2       oci-mail/stalwart (custom) — not running
+    ❌ B2       oci-mail/maddy (sqlite) — not running
+    ❌ B2       oci-mail/snappymail (files) — not running
+    ❌ B2       oci-mail/stalwart (rocksdb) — not running
 
 
 ══════════════════════════════════════════════════════════════
@@ -91,7 +96,7 @@ PUBLIC URLs (Caddy routes)
 ✅ photos.diegonmarcos.com          ✅  ❌  ✅  ✅  10.0.0.6:3013          [200] 
 ✅ cal.diegonmarcos.com             ✅  ❌  ✅  ✅  10.0.0.6:5232          [302] 
 ✅ smtp.diegonmarcos.com            ✅  ❌  ✅  ✅  10.0.0.3:8080          [405] 
-✅ webmail.diegonmarcos.com         ✅  ❌  ✅  ✅  10.0.0.3:8888          [200] 
+✅ webmail.diegonmarcos.com         ✅  ❌  ✅  ✅  10.0.0.3:8888          [302] 
 ✅ mail-stalwart.diegonmarcos.com   ✅  ❌  ✅  ✅  10.0.0.3:2443          [200] 
 ✅ vault.diegonmarcos.com           ✅  ❌  ✅  ✅  10.0.0.6:8880          [200] 
 ⚠️ app.diegonmarcos.com/etherpad    ❌  ❌  ✅  ✅  10.0.0.6:3012          [404] 
@@ -320,55 +325,66 @@ STORAGE
     authelia             sqlite     authelia               gcp-proxy
     authelia             redis      authelia-redis         gcp-proxy
     redis                redis      redis                  gcp-proxy
+    dagu                 sqlite     dagu                   oci-analytics
     crawlee-cloud        postgres   crawlee_db             oci-apps
     crawlee-cloud        redis      crawlee_redis          oci-apps
-    crawlee-cloud        s3         crawlee_minio          oci-apps
+    crawlee-cloud        minio      crawlee_minio          oci-apps
     etherpad             postgres   etherpad_postgres      oci-apps
+    filebrowser          sqlite     filebrowser_app        oci-apps
     gitea                sqlite     gitea                  oci-apps
     grist                sqlite     grist_app              oci-apps
     hedgedoc             postgres   hedgedoc_postgres      oci-apps
-    lgtm                 grafana    lgtm_grafana           oci-apps
-    lgtm                 loki       lgtm_loki              oci-apps
-    lgtm                 tempo      lgtm_tempo             oci-apps
-    lgtm                 mimir      lgtm_mimir             oci-apps
-    matomo               custom     matomo-hybrid          oci-apps
+    kg-graph             surrealdb  surrealdb              oci-apps
+    lgtm                 sqlite     lgtm_grafana           oci-apps
+    lgtm                 boltdb     lgtm_loki              oci-apps
+    lgtm                 wal        lgtm_tempo             oci-apps
+    lgtm                 tsdb       lgtm_mimir             oci-apps
+    matomo               mariadb    matomo-hybrid          oci-apps
     mattermost-bots      postgres   mattermost-postgres    oci-apps
     ntfy                 sqlite     ntfy                   oci-apps
     photoprism           mariadb    photoprism_mariadb     oci-apps
     quant-lab-full       postgres   quant_full_db          oci-apps
     quant-lab-light      postgres   quant_light_db         oci-apps
+    radicale             files      radicale               oci-apps
     umami                postgres   umami-db               oci-apps
     vaultwarden          sqlite     vaultwarden            oci-apps
-    stalwart             custom     stalwart               oci-mail
+    maddy                sqlite     maddy                  oci-mail
+    snappymail           files      snappymail             oci-mail
+    stalwart             rocksdb    stalwart               oci-mail
 
 ── B2) Databases (live) ──────────────────────────────────
-DECLARED DATABASES — 22 total (5 sqlite, 6 postgres, 1 grafana, 1 tempo, 1 mariadb, 2 custom, 3 redis, 1 mimir, 1 loki, 1 s3)
+DECLARED DATABASES — 27 total (9 sqlite, 6 postgres, 1 minio, 2 files, 3 redis, 1 rocksdb, 1 tsdb, 2 mariadb, 1 boltdb, 1 wal)
     Service              Type       Container              VM               Port   TCP  Health   Size       Backup
     ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 ❌ authelia             sqlite     authelia               gcp-proxy        9091   ❌   ❌   ?          ✅
 ❌ authelia             redis      authelia-redis         gcp-proxy        6380   ❌   ❌   ?          ✅
 ❌ redis                redis      redis                  gcp-proxy        6379   ❌   ❌   ?          ✅
+❌ dagu                 sqlite     dagu                   oci-analytics    8070   ❌   ❌   ?          ❌
 ❌ crawlee-cloud        postgres   crawlee_db             oci-apps         5433   ❌   ❌   ?          ✅
 ❌ crawlee-cloud        redis      crawlee_redis          oci-apps         6381   ❌   ❌   ?          ✅
-❌ crawlee-cloud        s3         crawlee_minio          oci-apps         9000   ❌   ❌   ?          ✅
+❌ crawlee-cloud        minio      crawlee_minio          oci-apps         9000   ❌   ❌   ?          ✅
 ❌ etherpad             postgres   etherpad_postgres      oci-apps         5436   ❌   ❌   ?          ✅
+❌ filebrowser          sqlite     filebrowser_app        oci-apps         3015   ❌   ❌   ?          ❌
 ❌ gitea                sqlite     gitea                  oci-apps         3002   ❌   ❌   ?          ✅
 ❌ grist                sqlite     grist_app              oci-apps         3011   ❌   ❌   ?          ✅
 ❌ hedgedoc             postgres   hedgedoc_postgres      oci-apps         5439   ❌   ❌   ?          ✅
-❌ lgtm                 grafana    lgtm_grafana           oci-apps         3200   ❌   ❌   ?          ❌
-❌ lgtm                 loki       lgtm_loki              oci-apps         3110   ❌   ❌   ?          ❌
-❌ lgtm                 tempo      lgtm_tempo             oci-apps         3210   ❌   ❌   ?          ❌
-❌ lgtm                 mimir      lgtm_mimir             oci-apps         9009   ❌   ❌   ?          ❌
-❌ matomo               custom     matomo-hybrid          oci-apps         8084   ❌   ❌   ?          ✅
+❌ lgtm                 sqlite     lgtm_grafana           oci-apps         3200   ❌   ❌   ?          ❌
+❌ lgtm                 boltdb     lgtm_loki              oci-apps         3110   ❌   ❌   ?          ❌
+❌ lgtm                 wal        lgtm_tempo             oci-apps         3210   ❌   ❌   ?          ❌
+❌ lgtm                 tsdb       lgtm_mimir             oci-apps         9009   ❌   ❌   ?          ❌
+❌ matomo               mariadb    matomo-hybrid          oci-apps         8084   ❌   ❌   ?          ✅
 ❌ mattermost-bots      postgres   mattermost-postgres    oci-apps         5435   ❌   ❌   ?          ✅
 ❌ ntfy                 sqlite     ntfy                   oci-apps         8090   ❌   ❌   ?          ✅
 ❌ photoprism           mariadb    photoprism_mariadb     oci-apps         —      —   ❌   ?          ✅
 ❌ quant-lab-light      postgres   quant_light_db         oci-apps         5443   ❌   ❌   ?          ✅
+❌ radicale             files      radicale               oci-apps         5232   ❌   ❌   ?          ❌
 ❌ umami                postgres   umami-db               oci-apps         5442   ❌   ❌   ?          ✅
 ❌ vaultwarden          sqlite     vaultwarden            oci-apps         8880   ❌   ❌   ?          ✅
-❌ stalwart             custom     stalwart               oci-mail         2443   ❌   ❌   ?          ✅
+❌ maddy                sqlite     maddy                  oci-mail         993    ❌   ❌   ?          ✅
+❌ snappymail           files      snappymail             oci-mail         8888   ❌   ❌   ?          ❌
+❌ stalwart             rocksdb    stalwart               oci-mail         2443   ❌   ❌   ?          ✅
 
-  Healthy: 0/22  Running: 0/22
+  Healthy: 0/27  Running: 0/27
 
 ── B3) Object Storage ──────────────────────────────────
 OBJECT STORAGE — 1 buckets (live)
@@ -405,26 +421,32 @@ BACKUPS / DATABASES
    authelia             sqlite     authelia               /config/db.sqlite3 gcp-proxy        authelia.app:9091
    authelia             redis      authelia-redis         custom         gcp-proxy        authelia-redis.app:6380
    redis                redis      redis                  custom         gcp-proxy        redis.app:6379
+   dagu                 sqlite     dagu                   custom         oci-analytics    dagu.app:8070
    crawlee-cloud        postgres   crawlee_db             crawlee        oci-apps         crawlee-db.app:5433
    crawlee-cloud        redis      crawlee_redis          custom         oci-apps         crawlee-redis.app:6381
-   crawlee-cloud        s3         crawlee_minio          custom         oci-apps         crawlee-minio.app:9000
+   crawlee-cloud        minio      crawlee_minio          custom         oci-apps         crawlee-minio.app:9000
    etherpad             postgres   etherpad_postgres      etherpad       oci-apps         etherpad-db.app:5436
+   filebrowser          sqlite     filebrowser_app        custom         oci-apps         filebrowser.app:3015
    gitea                sqlite     gitea                  /data/gitea/gitea.db oci-apps         gitea.app:3002
    grist                sqlite     grist_app              /persist/grist-sessions.db oci-apps         grist.app:3011
    hedgedoc             postgres   hedgedoc_postgres      hedgedoc       oci-apps         hedgedoc-db.app:5439
-   lgtm                 grafana    lgtm_grafana           custom         oci-apps         grafana.app:3200
-   lgtm                 loki       lgtm_loki              custom         oci-apps         lgtm-loki.app:3110
-   lgtm                 tempo      lgtm_tempo             custom         oci-apps         lgtm-tempo.app:3210
-   lgtm                 mimir      lgtm_mimir             custom         oci-apps         lgtm-mimir.app:9009
-   matomo               custom     matomo-hybrid          custom         oci-apps         matomo.app:8084
+   kg-graph             surrealdb  surrealdb              custom         oci-apps         embedded
+   lgtm                 sqlite     lgtm_grafana           custom         oci-apps         grafana.app:3200
+   lgtm                 boltdb     lgtm_loki              custom         oci-apps         lgtm-loki.app:3110
+   lgtm                 wal        lgtm_tempo             custom         oci-apps         lgtm-tempo.app:3210
+   lgtm                 tsdb       lgtm_mimir             custom         oci-apps         lgtm-mimir.app:9009
+   matomo               mariadb    matomo-hybrid          custom         oci-apps         matomo.app:8084
    mattermost-bots      postgres   mattermost-postgres    mattermost     oci-apps         mattermost-postgres.app:5435
    ntfy                 sqlite     ntfy                   /var/cache/ntfy/cache.db oci-apps         ntfy.app:8090
    photoprism           mariadb    photoprism_mariadb     photoprism     oci-apps         embedded
    quant-lab-full       postgres   quant_full_db          custom         oci-apps         quant-full-db.app:5437
    quant-lab-light      postgres   quant_light_db         quantlab       oci-apps         quant-light-db.app:5443
+   radicale             files      radicale               custom         oci-apps         radicale.app:5232
    umami                postgres   umami-db               umami          oci-apps         umami-db.app:5442
    vaultwarden          sqlite     vaultwarden            /data/db.sqlite3 oci-apps         vaultwarden.app:8880
-   stalwart             custom     stalwart               custom         oci-mail         stalwart.app:2443
+   maddy                sqlite     maddy                  custom         oci-mail         maddy.app:993
+   snappymail           files      snappymail             custom         oci-mail         snappymail.app:8888
+   stalwart             rocksdb    stalwart               custom         oci-mail         stalwart.app:2443
 
 DOCKER NETWORKS
 ────────────────────────────────────────────────────────────
@@ -480,10 +502,10 @@ PERFORMANCE
   databases            3.0s
   port_scan            3.0s
   mesh                 3.0s
-  public_urls          0.8s
+  public_urls          0.9s
   vm_ssh               0.5s
-  private              0.0s
   storage              0.0s
+  private              0.0s
 
 SCRIPT INFO
 ────────────────────────────────────────────────────────────

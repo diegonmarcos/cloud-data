@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-19T13:05:38.661637149+00:00",
-  "duration_ms": 58038,
+  "generated": "2026-04-19T18:55:28.709786556+00:00",
+  "duration_ms": 58032,
   "mesh": [
     {
       "name": "oci-mail",
@@ -345,8 +345,8 @@
       "http": false,
       "https": true,
       "auth": true,
-      "code": "200",
-      "auth_code": "200"
+      "code": "302",
+      "auth_code": "302"
     },
     {
       "url": "mail-stalwart.diegonmarcos.com",
@@ -1310,6 +1310,20 @@
       "backup": true
     },
     {
+      "service": "dagu",
+      "db_type": "sqlite",
+      "container": "dagu",
+      "vm": "oci-analytics",
+      "port": 8070,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "dagu.app",
+      "backup": false
+    },
+    {
       "service": "crawlee-cloud",
       "db_type": "postgres",
       "container": "crawlee_db",
@@ -1339,7 +1353,7 @@
     },
     {
       "service": "crawlee-cloud",
-      "db_type": "s3",
+      "db_type": "minio",
       "container": "crawlee_minio",
       "vm": "oci-apps",
       "port": 9000,
@@ -1364,6 +1378,20 @@
       "tcp_ok": false,
       "dns": "etherpad-db.app",
       "backup": true
+    },
+    {
+      "service": "filebrowser",
+      "db_type": "sqlite",
+      "container": "filebrowser_app",
+      "vm": "oci-apps",
+      "port": 3015,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "filebrowser.app",
+      "backup": false
     },
     {
       "service": "gitea",
@@ -1409,7 +1437,7 @@
     },
     {
       "service": "lgtm",
-      "db_type": "grafana",
+      "db_type": "sqlite",
       "container": "lgtm_grafana",
       "vm": "oci-apps",
       "port": 3200,
@@ -1423,7 +1451,7 @@
     },
     {
       "service": "lgtm",
-      "db_type": "loki",
+      "db_type": "boltdb",
       "container": "lgtm_loki",
       "vm": "oci-apps",
       "port": 3110,
@@ -1437,7 +1465,7 @@
     },
     {
       "service": "lgtm",
-      "db_type": "tempo",
+      "db_type": "wal",
       "container": "lgtm_tempo",
       "vm": "oci-apps",
       "port": 3210,
@@ -1451,7 +1479,7 @@
     },
     {
       "service": "lgtm",
-      "db_type": "mimir",
+      "db_type": "tsdb",
       "container": "lgtm_mimir",
       "vm": "oci-apps",
       "port": 9009,
@@ -1465,7 +1493,7 @@
     },
     {
       "service": "matomo",
-      "db_type": "custom",
+      "db_type": "mariadb",
       "container": "matomo-hybrid",
       "vm": "oci-apps",
       "port": 8084,
@@ -1534,6 +1562,20 @@
       "backup": true
     },
     {
+      "service": "radicale",
+      "db_type": "files",
+      "container": "radicale",
+      "vm": "oci-apps",
+      "port": 5232,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "radicale.app",
+      "backup": false
+    },
+    {
       "service": "umami",
       "db_type": "postgres",
       "container": "umami-db",
@@ -1562,8 +1604,36 @@
       "backup": true
     },
     {
+      "service": "maddy",
+      "db_type": "sqlite",
+      "container": "maddy",
+      "vm": "oci-mail",
+      "port": 993,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "maddy.app",
+      "backup": true
+    },
+    {
+      "service": "snappymail",
+      "db_type": "files",
+      "container": "snappymail",
+      "vm": "oci-mail",
+      "port": 8888,
+      "declared": true,
+      "running": false,
+      "healthy": false,
+      "size": "?",
+      "tcp_ok": false,
+      "dns": "snappymail.app",
+      "backup": false
+    },
+    {
       "service": "stalwart",
-      "db_type": "custom",
+      "db_type": "rocksdb",
       "container": "stalwart",
       "vm": "oci-mail",
       "port": 2443,
@@ -1587,14 +1657,14 @@
     }
   ],
   "timers": {
-    "vm_ssh": 539,
-    "mail_dns": 55013,
-    "private": 0,
-    "port_scan": 3003,
-    "databases": 3016,
+    "databases": 3015,
     "storage": 0,
-    "public_urls": 806,
-    "TOTAL": 58038,
-    "mesh": 3001
+    "TOTAL": 58032,
+    "public_urls": 887,
+    "mail_dns": 55013,
+    "mesh": 3001,
+    "port_scan": 3006,
+    "private": 0,
+    "vm_ssh": 541
   }
 }
