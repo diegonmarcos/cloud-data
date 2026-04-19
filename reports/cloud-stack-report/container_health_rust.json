@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-18T18:55:28.982676442+00:00",
+  "generated": "2026-04-19T02:49:54.596910896+00:00",
   "duration_ms": 58040,
   "mesh": [
     {
@@ -1587,14 +1587,14 @@
     }
   ],
   "timers": {
-    "public_urls": 612,
-    "port_scan": 3003,
-    "mail_dns": 55013,
     "TOTAL": 58040,
+    "public_urls": 538,
+    "storage": 0,
     "private": 0,
-    "databases": 3030,
-    "mesh": 3002,
-    "vm_ssh": 542,
-    "storage": 0
+    "databases": 3024,
+    "port_scan": 3002,
+    "vm_ssh": 551,
+    "mesh": 3001,
+    "mail_dns": 55014
   }
 }

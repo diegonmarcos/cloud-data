@@ -6,7 +6,7 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-         CONTAINER HEALTH — 2026-04-18T18:55:28.982676442+00:00
+         CONTAINER HEALTH — 2026-04-19T02:49:54.596910896+00:00
 ════════════════════════════════════════════════════════════
 
 
@@ -344,7 +344,7 @@ STORAGE
     stalwart             custom     stalwart               oci-mail
 
 ── B2) Databases (live) ──────────────────────────────────
-DECLARED DATABASES — 22 total (5 sqlite, 3 redis, 1 tempo, 1 loki, 1 mimir, 1 grafana, 1 s3, 2 custom, 1 mariadb, 6 postgres)
+DECLARED DATABASES — 22 total (5 sqlite, 1 grafana, 1 tempo, 6 postgres, 3 redis, 1 s3, 1 loki, 2 custom, 1 mariadb, 1 mimir)
     Service              Type       Container              VM               Port   TCP  Health   Size       Backup
     ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 ❌ authelia             sqlite     authelia               gcp-proxy        9091   ❌   ❌   ?          ✅
@@ -482,10 +482,10 @@ PERFORMANCE
   databases            3.0s
   port_scan            3.0s
   mesh                 3.0s
-  public_urls          0.6s
-  vm_ssh               0.5s
-  private              0.0s
+  vm_ssh               0.6s
+  public_urls          0.5s
   storage              0.0s
+  private              0.0s
 
 SCRIPT INFO
 ────────────────────────────────────────────────────────────

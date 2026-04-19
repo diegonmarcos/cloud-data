@@ -6,7 +6,7 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-04-18T18:57:06.602872279+00:00
+  CLOUD MAIL FULL — 2026-04-19T02:51:31.517970912+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
@@ -53,17 +53,17 @@
 
 0. INSTANT KPIs
 ──────────────────────────────────────────────────────────────
-  ✅ mail.* HTTPS                   HTTP 301 (0.2s)
-  ✅ webmail HTTPS                  HTTP 200 (0.2s)
-  ✅ auth HTTPS                     HTTP 200 (0.2s)
-  ✅ MCP endpoint                   HTTP 400 (0.4s)
+  ✅ mail.* HTTPS                   HTTP 301 (0.1s)
+  ✅ webmail HTTPS                  HTTP 200 (0.1s)
+  ✅ auth HTTPS                     HTTP 200 (0.1s)
+  ✅ MCP endpoint                   HTTP 400 (0.3s)
   ✅ mail:993 TLS                   TLS OK (0.3s)
   ✅ mail:465 TLS                   TLS OK (0.2s)
   ✅ mail:587 STARTTLS              TLS OK (0.3s)
   ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
   ❌ DKIM record                    MISSING (0.0s) [CRITICAL]
   ✅ GHA health                     gh unavailable (skipped)
-  ✅ CF Worker alive                HTTP 500 (0.2s)
+  ✅ CF Worker alive                HTTP 500 (0.1s)
   ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.0s)
   ❌ IMAP direct (WG)               10.0.0.3:993 FAIL (3.0s) [CRITICAL]
   ❌ SMTP direct (WG)               10.0.0.3:25 FAIL (3.0s) [CRITICAL]
@@ -92,22 +92,22 @@
 
 3. NETWORK + AUTH
 ──────────────────────────────────────────────────────────────
-  ✅ Caddy (gcp-proxy)              HTTPS OK (no DNS) (3.2s)
+  ✅ Caddy (gcp-proxy)              HTTPS OK (no DNS) (3.1s)
   ❌ Hickory DNS                    FAIL: no response (3.0s) [CRITICAL]
   ❌ TLS WG direct                  SSH down [CRITICAL]
   ❌ Caddy L4 -> IMAP               no proxy data [CRITICAL]
   ❌ Caddy L4 -> SMTPS              no proxy data [CRITICAL]
   ❌ Caddy L4 -> SMTP               no proxy data [CRITICAL]
-  ✅ mail:993 (IMAP)                TLS OK (0.3s)
-  ✅ mail:465 (SMTPS)               TLS OK (0.3s)
-  ✅ mail:587 (SMTP Sub)            TLS OK (0.3s)
+  ✅ mail:993 (IMAP)                TLS OK (0.2s)
+  ✅ mail:465 (SMTPS)               TLS OK (0.2s)
+  ✅ mail:587 (SMTP Sub)            TLS OK (0.2s)
   ⚠️  SMTP :25 relay                 no data [WARNING]
   ⚠️  SMTP :587 local TLS            no data [WARNING]
-  ✅ Webmail HTTPS                  HTTP 301 (0.2s)
+  ✅ Webmail HTTPS                  HTTP 301 (0.1s)
   ⚠️  Webmail internal               no data [WARNING]
   ⚠️  SnappyMail internal            no data [WARNING]
-  ✅ mail.*/webmail/ route          HTTP 301 (0.2s)
-  ⚠️  webmail.* redirect             200 →  (0.2s) [WARNING]
+  ✅ mail.*/webmail/ route          HTTP 301 (0.1s)
+  ⚠️  webmail.* redirect             200 →  (0.1s) [WARNING]
   ⚠️  Authelia health                no proxy data [WARNING]
   ⚠️  OIDC bearer -> webmail         no OIDC token [WARNING]
   ✅ Mail Admin via Bearer          N/A — Maddy CLI-only (no web admin)
@@ -117,7 +117,7 @@
   ⚠️  mcp->IMAP WG direct            no app data [WARNING]
   ⚠️  mcp->IMAP LOGIN                no app data [WARNING]
   ⚠️  mcp->SMTP AUTH                 no app data [WARNING]
-  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.4s)
+  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.3s)
   ❌ All ports bound                no data [CRITICAL]
 
   Summary: 8/27 passed, 19 failed
@@ -146,18 +146,18 @@
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    49.5s
-  T0_path_checker          39.6s
-  P0_instant_kpis          3.7s
-  P4_dns_auth              3.2s
-  P2-P5_parallel           3.2s
-  P3_network               3.2s
+  TOTAL                    49.3s
+  T0_path_checker          39.5s
+  P0_instant_kpis          3.6s
+  P4_dns_auth              3.1s
+  P2-P5_parallel           3.1s
+  P3_network               3.1s
   P1_preflight             3.0s
-  P5_internals             0.0s
   P2_containers            0.0s
+  P5_internals             0.0s
   P6_e2e_delivery          0.0s
 
-  Total: 49.5s | Engine: Rust (native async tokio)
+  Total: 49.3s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════
