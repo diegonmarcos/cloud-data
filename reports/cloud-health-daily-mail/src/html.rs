@@ -126,7 +126,7 @@ fn render_latency_bar(latency_ms: u64) -> String {
 // ── Table helpers ───────────────────────────────────────────────────
 
 fn section_title(h: &mut String, letter: &str, title: &str) {
-    let anchor = title.to_lowercase().replace(' ', "-");
+    let anchor = format!("{}-{}", letter.to_lowercase(), title.to_lowercase().replace(' ', "-"));
     write!(h, r#"<tr><td style="padding:20px 8px 4px 8px;" id="sec-{anchor}">
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="padding:10px 16px;border-bottom:2px solid {C_OK};font-family:{FONT};">
@@ -224,16 +224,19 @@ td,th{{font-family:{FONT}}}
 
     // Nav bar links
     let nav_items = [
-        ("containers", "A Containers"),
-        ("databases", "B Databases"),
-        ("security", "C Security"),
-        ("workflows", "D Workflows"),
-        ("services", "E Services"),
-        ("finops", "F FinOps"),
-        ("ai", "G AI"),
-        ("others", "H Others"),
-        ("analytics", "I Analytics"),
-        ("topology", "J Topology"),
+        ("a0-services", "A0 Services"),
+        ("a1-containers", "A1 Containers"),
+        ("a2-databases", "A2 Databases"),
+        ("a3-secrets", "A3 Secrets"),
+        ("a4-workflows", "A4 Workflows"),
+        ("a5-topology", "A5 Topology"),
+        ("b0-security", "B0 Security"),
+        ("c0-finops", "C0 FinOps"),
+        ("c1-analytics", "C1 Analytics"),
+        ("d0-mail", "D0 Mail"),
+        ("d1-ai", "D1 AI"),
+        ("d2-backups", "D2 Backups"),
+        ("d3-others", "D3 Others"),
     ];
     for (i, (anchor, label)) in nav_items.iter().enumerate() {
         if i > 0 {
@@ -253,9 +256,21 @@ td,th{{font-family:{FONT}}}
     render_fleet_dashboard(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // A) CONTAINERS
+    // A0) SERVICES
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "A", "CONTAINERS");
+    section_title(&mut h, "A0", "SERVICES");
+    diagram_or_css(&mut h, mode, "Service Mesh",
+        || (crate::diagrams::service_mesh_dot(data), "graphviz"),
+        |h| render_topo_routing(h, data),
+    );
+    render_services_all_unified(&mut h, data);
+    render_services_api_endpoints(&mut h, data);
+    render_services_mcps(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // A1) CONTAINERS
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "A1", "CONTAINERS");
     diagram_or_css(&mut h, mode, "Container Distribution",
         || (crate::diagrams::container_distribution_dot(data), "graphviz"),
         |h| render_topo_containers(h, data),
@@ -268,9 +283,9 @@ td,th{{font-family:{FONT}}}
     render_docker_disk(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // B) DATABASES
+    // A2) DATABASES
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "B", "DATABASES");
+    section_title(&mut h, "A2", "DATABASES");
     diagram_or_css(&mut h, mode, "Data Flow",
         || (crate::diagrams::data_flow_plantuml(data), "plantuml"),
         |h| render_topo_data(h, data),
@@ -281,28 +296,19 @@ td,th{{font-family:{FONT}}}
     render_repos(&mut h, data);
     render_runtime_volumes(&mut h, data);
     render_drift(&mut h, data);
-    render_backup_status(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // C) SECURITY
+    // A3) SECRETS
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "C", "SECURITY");
-    diagram_or_css(&mut h, mode, "Full Security Stack",
-        || (crate::diagrams::security_layers_d2(data), "d2"),
-        |h| render_topo_security(h, data),
-    );
-    render_security(&mut h, data);
+    section_title(&mut h, "A3", "SECRETS");
     render_firewall_summary(&mut h, data);
-    render_oom_kills(&mut h, data);
     render_certs(&mut h, data);
     render_dns(&mut h, data);
-    render_wireguard(&mut h, data);
-    render_failed_units(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // D) WORKFLOWS
+    // A4) WORKFLOWS
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "D", "WORKFLOWS");
+    section_title(&mut h, "A4", "WORKFLOWS");
     diagram_or_css(&mut h, mode, "CI/CD Pipeline",
         || (crate::diagrams::cicd_pipeline_d2(data), "d2"),
         |h| render_topo_cicd(h, data),
@@ -311,24 +317,28 @@ td,th{{font-family:{FONT}}}
     render_gha(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // E) SERVICES
+    // A5) TOPOLOGY
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "E", "SERVICES");
-    diagram_or_css(&mut h, mode, "Service Mesh",
-        || (crate::diagrams::service_mesh_dot(data), "graphviz"),
-        |h| render_topo_routing(h, data),
-    );
-    render_services_all_unified(&mut h, data);
-    render_services_api_endpoints(&mut h, data);
-    render_services_mcps(&mut h, data);
+    section_title(&mut h, "A5", "TOPOLOGY");
+    render_topology(&mut h, data, mode);
 
     // ═══════════════════════════════════════════════════════════
-    // F) OTHERS
+    // B0) SECURITY
     // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "B0", "SECURITY");
+    diagram_or_css(&mut h, mode, "Full Security Stack",
+        || (crate::diagrams::security_layers_d2(data), "d2"),
+        |h| render_topo_security(h, data),
+    );
+    render_security(&mut h, data);
+    render_oom_kills(&mut h, data);
+    render_wireguard(&mut h, data);
+    render_failed_units(&mut h, data);
+
     // ═══════════════════════════════════════════════════════════
-    // F) FINOPS
+    // C0) FINOPS
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "F", "FINOPS");
+    section_title(&mut h, "C0", "FINOPS");
     diagram_or_css(&mut h, mode, "VM Resource Allocation",
         || (crate::diagrams::vm_resource_d2(data), "d2"),
         |h| render_topo_resources(h, data),
@@ -339,36 +349,41 @@ td,th{{font-family:{FONT}}}
     render_finops_assets(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // G) AI
+    // C1) ANALYTICS
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "G", "AI");
-    diagram_or_css(&mut h, mode, "Model Usage",
+    section_title(&mut h, "C1", "ANALYTICS");
+    render_analytics_web(&mut h, data);
+    render_analytics_containers(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // D0) MAIL
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "D0", "MAIL");
+    render_mail(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // D1) AI
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "D1", "AI");
+    diagram_or_css(&mut h, mode, "AI Model Usage",
         || (mermaid_to_div(&crate::mermaid::ai_models(data)), "mermaid"),
         |h| render_topo_ai(h, data),
     );
     render_ai_section(&mut h, data);
 
     // ═══════════════════════════════════════════════════════════
-    // H) OTHERS
+    // D2) BACKUPS
     // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "H", "OTHERS");
-    render_mail(&mut h, data);
+    section_title(&mut h, "D2", "BACKUPS");
+    render_backup_status(&mut h, data);
+
+    // ═══════════════════════════════════════════════════════════
+    // D3) OTHERS
+    // ═══════════════════════════════════════════════════════════
+    section_title(&mut h, "D3", "OTHERS");
     render_wg_traffic(&mut h, data);
     render_system_info(&mut h, data);
     render_report_metadata(&mut h, data);
-
-    // ═══════════════════════════════════════════════════════════
-    // I) ANALYTICS
-    // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "I", "ANALYTICS");
-    render_analytics_web(&mut h, data);
-    render_analytics_containers(&mut h, data);
-
-    // ═══════════════════════════════════════════════════════════
-    // J) TOPOLOGY
-    // ═══════════════════════════════════════════════════════════
-    section_title(&mut h, "J", "TOPOLOGY");
-    render_topology(&mut h, data, mode);
 
     // ── Footer ──────────────────────────────────────────────────
     write!(h, r#"<tr><td style="text-align:center;padding:16px;color:{C_DIM};font-size:11px;font-family:{FONT};">
