@@ -455,6 +455,23 @@ function deriveCaddy(c: any): DerivedFile {
     }),
   );
 
+  // ── Well-known routes: services declaring proxy.well_known[] ──
+  // Each entry proxies /.well-known/<path> on a target domain to the service upstream.
+  const wellKnownRoutes: any[] = [];
+  for (const [, svc] of Object.entries(services)) {
+    const entries = svc.proxy?.well_known ?? [];
+    for (const wk of entries) {
+      if (!wk.path || !wk.target_domain) continue;
+      wellKnownRoutes.push({
+        path: wk.path,
+        target_domain: wk.target_domain,
+        upstream: svc.upstream,
+        ...(wk.tls_skip_verify ? { tls_skip_verify: true } : {}),
+        comment: wk.comment ?? `${wk.path} → ${svc.name}`,
+      });
+    }
+  }
+
   // ── MCP routes: streaming services ──
   const mcpEndpoints: any[] = [];
   for (const [, svc] of Object.entries(services)) {
@@ -801,6 +818,7 @@ function deriveCaddy(c: any): DerivedFile {
       routes:           dedupedRoutes,
       path_routes:      filteredPathRoutes,
       github_pages_proxies: githubPagesProxies,
+      well_known_routes: wellKnownRoutes,
       mcp_routes:       mcpRoutes,
       special,
       internal_routes:  internalRoutes,

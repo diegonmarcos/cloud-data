@@ -116,6 +116,10 @@
     "name": "build photos webhook"
   },
   {
+    "file": "build-photos-db.json",
+    "name": "build photos db"
+  },
+  {
     "file": "build-radicale.json",
     "name": "build radicale"
   },
@@ -132,12 +136,20 @@
     "name": "build maddy"
   },
   {
+    "file": "build-maddy-sorter.json",
+    "name": "build maddy sorter"
+  },
+  {
     "file": "build-smtp-proxy.json",
     "name": "build smtp proxy"
   },
   {
     "file": "build-stalwart.json",
     "name": "build stalwart"
+  },
+  {
+    "file": "build-stalwart-sorter.json",
+    "name": "build stalwart sorter"
   },
   {
     "file": "build-vaultwarden.json",
@@ -172,40 +184,8 @@
     "name": "build crawlee_minio"
   },
   {
-    "file": "build-quant_full_research.json",
-    "name": "build quant_full_research"
-  },
-  {
-    "file": "build-quant_full_analytics.json",
-    "name": "build quant_full_analytics"
-  },
-  {
-    "file": "build-quant_full_ml.json",
-    "name": "build quant_full_ml"
-  },
-  {
-    "file": "build-quant_full_risk.json",
-    "name": "build quant_full_risk"
-  },
-  {
-    "file": "build-quant_full_engine.json",
-    "name": "build quant_full_engine"
-  },
-  {
-    "file": "build-quant_full_db.json",
-    "name": "build quant_full_db"
-  },
-  {
-    "file": "build-quant_light_research.json",
-    "name": "build quant_light_research"
-  },
-  {
-    "file": "build-quant_light_engine.json",
-    "name": "build quant_light_engine"
-  },
-  {
-    "file": "build-quant_light_db.json",
-    "name": "build quant_light_db"
+    "file": "build-fincept-server.json",
+    "name": "build fincept server"
   },
   {
     "file": "build-ollama.json",
@@ -256,8 +236,12 @@
     "name": "build introspect proxy"
   },
   {
-    "file": "build-sauron-central.json",
-    "name": "build sauron central"
+    "file": "build-syslog-central.json",
+    "name": "build syslog central"
+  },
+  {
+    "file": "build-siem-api.json",
+    "name": "build siem api"
   },
   {
     "file": "build-c3-infra-api.json",

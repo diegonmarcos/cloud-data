@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-04-19T16:56:54.514Z",
+    "generated_at": "2026-04-20T21:00:21.979Z",
     "generated_by": "cloud-data-config-consolidated.ts"
   },
   "owner": {
@@ -128,7 +128,7 @@
         "stalwart",
         "syslog-forwarder"
       ],
-      "container_count": 5
+      "container_count": 7
     },
     "oci-E2-f_1": {
       "ip": "129.151.228.66",
@@ -251,8 +251,7 @@
         "revealmd",
         "vaultwarden",
         "crawlee-cloud",
-        "quant-lab-full",
-        "quant-lab-light",
+        "fincept-server",
         "ollama-hai",
         "rig-agentic-hai-1.5bq4",
         "rig-agentic-sonn-14bq8",
@@ -275,7 +274,7 @@
         "gitea",
         "kg-graph"
       ],
-      "container_count": 52
+      "container_count": 51
     },
     "gcp-T4-p_0": {
       "ip": "34.173.227.250",
@@ -986,6 +985,8 @@
         "dns_check": true,
         "endpoint_check": true
       },
+      "upstream_image": "linuxserver/code-server:latest",
+      "timezone": "Europe/Madrid",
       "api": {
         "has_api": false,
         "has_web_ui": true,
@@ -1108,6 +1109,7 @@
       "backup": {
         "enabled": true
       },
+      "upstream_image": "etherpad/etherpad:latest",
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -1204,6 +1206,7 @@
         "dns_check": true,
         "endpoint_check": true
       },
+      "upstream_image": "filebrowser/filebrowser:latest",
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -1220,6 +1223,7 @@
       "folder": "aa-sui_google-workspace-mcp",
       "description": "Google Workspace MCP server — Gmail, Calendar, Drive, Docs, Sheets via HTTP transport",
       "enabled": true,
+      "domain": "mcp.diegonmarcos.com",
       "port": 3104,
       "dns": "g-workspace-mcp.app",
       "upstream": "10.0.0.6:3104",
@@ -1271,7 +1275,8 @@
           "type": "path",
           "parent_domain": "mcp.diegonmarcos.com",
           "base_path": "/g-workspace"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 3104
@@ -1279,6 +1284,7 @@
       "health": {
         "path": "/health"
       },
+      "user_google_email": "me@diegonmarcos.com",
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -1370,6 +1376,8 @@
           "grist_data"
         ]
       },
+      "upstream_image": "gristlabs/grist:latest",
+      "grist_admin_email": "admin@diegonmarcos.com",
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -1487,6 +1495,7 @@
       "backup": {
         "enabled": true
       },
+      "upstream_image": "quay.io/hedgedoc/hedgedoc:latest",
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -1503,6 +1512,7 @@
       "folder": "aa-sui_mail-mcp",
       "description": "Mail MCP server — IMAP/SMTP/Admin via Stalwart REST API",
       "enabled": true,
+      "domain": "mcp.diegonmarcos.com",
       "port": 3103,
       "dns": "mail-mcp.app",
       "upstream": "10.0.0.6:3103",
@@ -1555,10 +1565,22 @@
           "type": "path",
           "parent_domain": "mcp.diegonmarcos.com",
           "base_path": "/mail-mcp"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 3103
+      },
+      "mail_hosts": {
+        "maddy": "mail.diegonmarcos.com",
+        "stalwart": "mail-stalwart.diegonmarcos.com"
+      },
+      "mail_ports": {
+        "maddy_imap": 993,
+        "maddy_smtp": 465,
+        "stalwart_imap": 2993,
+        "stalwart_smtp": 2465,
+        "stalwart_jmap_https": 2443
       },
       "api": {
         "has_api": false,
@@ -1593,7 +1615,7 @@
       "containers": {
         "app": {
           "container_name": "mattermost",
-          "image": "ngrie/mattermost-team-edition-arm:10.11",
+          "image": "mattermost/mattermost-team-edition:10.11",
           "port": 8065,
           "port_env": "MM_SERVICESETTINGS_LISTENADDRESS",
           "dns": "mattermost.app",
@@ -1687,7 +1709,12 @@
       "proxy": {
         "primary": {
           "domain": "chat.diegonmarcos.com",
-          "auth": "two_factor"
+          "auth": "two_factor",
+          "paths": {
+            "/api/v4/*": {
+              "auth": "bypass"
+            }
+          }
         }
       },
       "declared_ports": {
@@ -1706,6 +1733,14 @@
           "mattermost_data",
           "mattermost_postgres"
         ]
+      },
+      "timezone": "America/Chicago",
+      "c3": {
+        "api_url": "http://c3-infra-mcp-api:8080",
+        "port": 8887
+      },
+      "ollama": {
+        "model": "deepseek-r1:14b-qwen-distill-q8_0"
       },
       "api": {
         "has_api": true,
@@ -1785,11 +1820,13 @@
           "type": "path",
           "parent_domain": "mcp.diegonmarcos.com",
           "base_path": "/mattermost-mcp"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 3102
       },
+      "upstream_image": "ghcr.io/diegonmarcos/mattermost-mcp:latest",
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -1932,6 +1969,16 @@
           "photoprism_storage"
         ]
       },
+      "timezone": "Europe/Madrid",
+      "s3": {
+        "bucket": "my-photos",
+        "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+        "region": "eu-marseille-1"
+      },
+      "db": {
+        "name": "photoprism",
+        "user": "photoprism"
+      },
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -1966,13 +2013,21 @@
       "containers": {
         "app": {
           "container_name": "photos-webhook",
+          "image": "ghcr.io/diegonmarcos/photos-webhook:latest",
           "port": 5002,
           "port_env": "WEBHOOK_PORT",
           "protocol": "http"
+        },
+        "db": {
+          "container_name": "photos-db",
+          "image": "postgres:16-alpine",
+          "db_name": "photos",
+          "db_user": "photos_user"
         }
       },
       "container_names": [
-        "photos-webhook"
+        "photos-webhook",
+        "photos-db"
       ],
       "all_ports": [
         "5002"
@@ -1991,6 +2046,10 @@
       },
       "backup": {
         "enabled": true
+      },
+      "s3": {
+        "region": "eu-marseille-1",
+        "bucket": "photos"
       },
       "api": {
         "has_api": false,
@@ -2083,6 +2142,7 @@
         "dns_check": true,
         "endpoint_check": true
       },
+      "upstream_image": "tomsquest/docker-radicale:latest",
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -2145,6 +2205,7 @@
       "declared_ports": {
         "app": 3014
       },
+      "upstream_image": "webpronl/reveal-md:latest",
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -2200,8 +2261,7 @@
         "snappymail"
       ],
       "all_ports": [
-        "8888",
-        "10.0.0.3:8888:8888"
+        "8888"
       ],
       "all_dns": [
         "snappymail.app"
@@ -2210,15 +2270,22 @@
         "containers": [
           "snappymail"
         ],
-        "ports": [
-          "10.0.0.3:8888:8888"
-        ],
+        "ports": [],
         "networks": []
       },
       "proxy": {
         "primary": {
           "domain": "webmail.diegonmarcos.com",
           "auth": "two_factor"
+        },
+        "mail_hub": {
+          "parent_domain": "mail.diegonmarcos.com",
+          "base_path": "/snappy",
+          "auth": "two_factor",
+          "error_redirect": "/",
+          "asset_paths": [
+            "/snappymail"
+          ]
         }
       },
       "declared_ports": {
@@ -2226,6 +2293,11 @@
       },
       "health": {
         "path": "/"
+      },
+      "upstream_image": "djmaze/snappymail:latest",
+      "resources": {
+        "mem_limit": "64M",
+        "mem_reservation": "16M"
       },
       "api": {
         "has_api": false,
@@ -2279,10 +2351,19 @@
               "path": "/data/imapsql.db"
             }
           ]
+        },
+        "sorter": {
+          "container_name": "maddy-sorter",
+          "image": "python:3-alpine",
+          "resources": {
+            "mem_limit": "64M",
+            "mem_reservation": "16M"
+          }
         }
       },
       "container_names": [
-        "maddy"
+        "maddy",
+        "maddy-sorter"
       ],
       "all_ports": [],
       "all_dns": [
@@ -2348,6 +2429,10 @@
           "maddy_data"
         ]
       },
+      "oci_relay": {
+        "host": "smtp.email.eu-marseille-1.oci.oraclecloud.com",
+        "port": "587"
+      },
       "api": {
         "has_api": false,
         "has_web_ui": true,
@@ -2410,7 +2495,8 @@
         "primary": {
           "domain": "smtp.diegonmarcos.com",
           "auth": "none"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 8080
@@ -2502,10 +2588,19 @@
               "path": "/opt/stalwart-mail/data"
             }
           ]
+        },
+        "sorter": {
+          "container_name": "stalwart-sorter",
+          "image": "python:3-alpine",
+          "resources": {
+            "mem_limit": "64M",
+            "mem_reservation": "16M"
+          }
         }
       },
       "container_names": [
-        "stalwart"
+        "stalwart",
+        "stalwart-sorter"
       ],
       "all_ports": [
         "2443"
@@ -2515,7 +2610,8 @@
       ],
       "compose": {
         "containers": [
-          "stalwart"
+          "stalwart",
+          "stalwart-sorter"
         ],
         "ports": [],
         "networks": []
@@ -2524,8 +2620,44 @@
         "primary": {
           "domain": "mail-stalwart.diegonmarcos.com",
           "auth": "none",
-          "tls_skip_verify": true
-        }
+          "tls_skip_verify": true,
+          "l4_ports": [
+            {
+              "port": 2993,
+              "upstream": "130.110.251.193:2993",
+              "comment": "IMAPS (Stalwart)",
+              "protocol": "tls"
+            },
+            {
+              "port": 2465,
+              "upstream": "130.110.251.193:2465",
+              "comment": "SMTPS (Stalwart)",
+              "protocol": "tls"
+            },
+            {
+              "port": 2587,
+              "upstream": "130.110.251.193:2587",
+              "comment": "SMTP Submission (Stalwart)",
+              "protocol": "starttls"
+            }
+          ]
+        },
+        "app_hub": false,
+        "mail_hub": {
+          "parent_domain": "mail.diegonmarcos.com",
+          "base_path": "/stalwart",
+          "tls_skip_verify": true,
+          "auth": "none",
+          "error_redirect": "/"
+        },
+        "well_known": [
+          {
+            "path": "/.well-known/jmap",
+            "target_domain": "diegonmarcos.com",
+            "tls_skip_verify": true,
+            "comment": "JMAP auto-discovery (RFC 8620) — proxies to Stalwart"
+          }
+        ]
       },
       "health": {
         "path": "/"
@@ -2539,6 +2671,10 @@
           "stalwart_data"
         ]
       },
+      "upstream_image": "stalwartlabs/stalwart:latest",
+      "timezone": "Europe/Madrid",
+      "admin_user": "me",
+      "noreply_user": "no-reply",
       "api": {
         "has_api": false,
         "has_web_ui": true,
@@ -2638,6 +2774,12 @@
         "volumes": [
           "vaultwarden_data"
         ]
+      },
+      "upstream_image": "vaultwarden/server:latest",
+      "timezone": "Europe/Madrid",
+      "resources": {
+        "mem_limit": "128M",
+        "mem_reservation": "32M"
       },
       "api": {
         "has_api": true,
@@ -2843,9 +2985,15 @@
       },
       "proxy": {
         "primary": {
-          "domain": "api.diegonmarcos.com",
+          "type": "path",
+          "parent_domain": "api.diegonmarcos.com",
           "base_path": "/crawlee",
-          "auth": "two_factor"
+          "auth": "two_factor",
+          "paths": {
+            "/openapi.json": {
+              "auth": "public"
+            }
+          }
         }
       },
       "declared_ports": {
@@ -2853,7 +3001,8 @@
         "dashboard": 3001,
         "db": 5433,
         "redis": 6381,
-        "minio": 9000
+        "minio": 9000,
+        "minio_console": 9001
       },
       "health": {
         "path": "wget -qO /dev/null http://127.0.0.1:3000/health || exit 1"
@@ -2863,6 +3012,17 @@
       },
       "backup": {
         "enabled": true
+      },
+      "runtime": {
+        "node_env": "production",
+        "log_level": "info",
+        "rate_limit_max": 1000,
+        "max_concurrent_runs": 5,
+        "actor_max_memory_mb": 2048,
+        "actor_default_memory_mb": 512,
+        "actor_timeout_secs": 3600,
+        "s3_bucket": "crawlee-cloud",
+        "s3_force_path_style": true
       },
       "api": {
         "has_api": true,
@@ -2883,285 +3043,91 @@
         "RUNNER_TOKEN"
       ]
     },
-    "quant-lab-full": {
+    "fincept-server": {
       "category": "fin",
       "vm": "oci-A1-f_0",
-      "folder": "ac-fin_quant-lab-full",
-      "description": "Full quant stack: Jupyter + Analytics + ML + Risk + NautilusTrader + Postgres",
-      "enabled": false,
-      "containers": {
-        "research": {
-          "container_name": "quant_full_research",
-          "image": "quay.io/jupyter/scipy-notebook:latest",
-          "port": 8890,
-          "port_env": null,
-          "dns": "quant-full-research.app",
-          "public": false,
-          "proxy": null,
-          "healthcheck": "curl -sf http://localhost:8890/api || exit 1",
-          "volumes": [
-            "./notebooks:/home/jovyan/work",
-            "quant_full_shared_data:/home/jovyan/data"
-          ],
-          "env_file": false,
-          "depends_on": [],
-          "resources": null,
-          "read_only": false,
-          "protocol": "http"
-        },
-        "analytics": {
-          "container_name": "quant_full_analytics",
-          "image": "python:3.12-slim",
-          "port": null,
-          "port_env": null,
-          "dns": null,
-          "public": false,
-          "proxy": null,
-          "healthcheck": null,
-          "volumes": [
-            "./scripts:/app",
-            "quant_full_shared_data:/data"
-          ],
-          "env_file": false,
-          "depends_on": [],
-          "resources": null,
-          "read_only": false
-        },
-        "ml_brain": {
-          "container_name": "quant_full_ml",
-          "image": "python:3.12-slim",
-          "port": null,
-          "port_env": null,
-          "dns": null,
-          "public": false,
-          "proxy": null,
-          "healthcheck": null,
-          "volumes": [
-            "./models:/workspace/models",
-            "quant_full_shared_data:/data"
-          ],
-          "env_file": false,
-          "depends_on": [],
-          "resources": null,
-          "read_only": false
-        },
-        "risk_manager": {
-          "container_name": "quant_full_risk",
-          "image": "python:3.12-slim",
-          "port": null,
-          "port_env": null,
-          "dns": null,
-          "public": false,
-          "proxy": null,
-          "healthcheck": null,
-          "volumes": [
-            "./risk_reports:/reports",
-            "quant_full_shared_data:/data"
-          ],
-          "env_file": false,
-          "depends_on": [],
-          "resources": null,
-          "read_only": false
-        },
-        "execution_engine": {
-          "container_name": "quant_full_engine",
-          "image": "python:3.12-slim",
-          "port": null,
-          "port_env": null,
-          "dns": null,
-          "public": false,
-          "proxy": null,
-          "healthcheck": null,
-          "volumes": [
-            "./strategies:/app/strategies",
-            "quant_full_shared_data:/data"
-          ],
-          "env_file": false,
-          "depends_on": [],
-          "resources": null,
-          "read_only": false
-        },
-        "db": {
-          "container_name": "quant_full_db",
-          "image": "postgres:16-alpine",
-          "port": 5437,
-          "port_env": "PGPORT",
-          "dns": "quant-full-db.app",
-          "public": false,
-          "proxy": null,
-          "healthcheck": "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB",
-          "volumes": [
-            "quant_full_pg_data:/var/lib/postgresql/data"
-          ],
-          "env_file": true,
-          "depends_on": [],
-          "resources": null,
-          "read_only": false,
-          "protocol": "tcp",
-          "db_engine": "postgres"
-        }
-      },
-      "container_names": [
-        "quant_full_research",
-        "quant_full_analytics",
-        "quant_full_ml",
-        "quant_full_risk",
-        "quant_full_engine",
-        "quant_full_db"
-      ],
-      "all_ports": [
-        "8890",
-        "5437"
-      ],
-      "all_dns": [
-        "quant-full-research.app",
-        "quant-full-db.app"
-      ],
-      "compose": {
-        "containers": [
-          "quant_full_analytics",
-          "quant_full_db",
-          "quant_full_engine",
-          "quant_full_ml",
-          "quant_full_research",
-          "quant_full_risk"
-        ],
-        "ports": [],
-        "networks": []
-      },
-      "declared_ports": {
-        "app": 8890,
-        "research": 8890,
-        "dash": 8050,
-        "engine": 5000,
-        "db": 5437
-      },
-      "api": {
-        "has_api": true,
-        "has_web_ui": false,
-        "api_path": "/api",
-        "api_url": null,
-        "healthcheck_paths": []
-      },
-      "secret_env_vars": [
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-        "POSTGRES_DB"
-      ]
-    },
-    "quant-lab-light": {
-      "category": "fin",
-      "vm": "oci-A1-f_0",
-      "folder": "ac-fin_quant-lab-light",
-      "description": "Lightweight quant research: Jupyter + NautilusTrader + Postgres",
+      "folder": "ac-fin_fincept-server",
+      "description": "Fincept Terminal backend — REST + WebSocket over DataHub, 35 data connectors, 7 analytics, 17 brokers, 6 investor personas, MCP tools",
       "enabled": true,
+      "domain": "fincept-api.diegonmarcos.com",
+      "port": 8340,
+      "dns": "fincept-api.app",
+      "upstream": "10.0.0.6:8340",
       "containers": {
-        "research": {
-          "container_name": "quant_light_research",
-          "image": "quay.io/jupyter/scipy-notebook:latest",
-          "port": 8889,
-          "port_env": null,
-          "dns": "quant-light-research.app",
-          "public": false,
-          "proxy": null,
-          "healthcheck": "curl -sf http://localhost:8889/api || exit 1",
-          "volumes": [
-            "./notebooks:/home/jovyan/work",
-            "./data:/home/jovyan/data"
-          ],
+        "app": {
+          "container_name": "fincept-server",
+          "image": "ghcr.io/diegonmarcos/fincept-server:latest",
+          "port": 8340,
+          "port_env": "FINCEPT_PORT",
+          "dns": "fincept-api.app",
+          "public": true,
+          "proxy": {
+            "domain": "fincept-api.diegonmarcos.com",
+            "auth": "default"
+          },
+          "healthcheck": "/health",
+          "monitoring": {
+            "tls_check": true
+          },
+          "volumes": [],
           "env_file": false,
-          "depends_on": [],
-          "resources": null,
+          "resources": {
+            "limits": {
+              "memory": "512M",
+              "cpus": "1"
+            },
+            "reservations": {
+              "memory": "128M"
+            }
+          },
           "read_only": false,
           "protocol": "http"
-        },
-        "engine": {
-          "container_name": "quant_light_engine",
-          "image": "python:3.12-slim",
-          "port": 5001,
-          "port_env": null,
-          "dns": "quant-light-engine.app",
-          "public": false,
-          "proxy": null,
-          "healthcheck": null,
-          "volumes": [
-            "./strategies:/app/strategies",
-            "./data:/app/data"
-          ],
-          "env_file": false,
-          "depends_on": [
-            "research"
-          ],
-          "resources": null,
-          "read_only": false,
-          "protocol": "http"
-        },
-        "db": {
-          "container_name": "quant_light_db",
-          "image": "postgres:16-alpine",
-          "port": 5443,
-          "port_env": "PGPORT",
-          "dns": "quant-light-db.app",
-          "public": false,
-          "proxy": null,
-          "healthcheck": "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB",
-          "volumes": [
-            "quant_light_postgres_data:/var/lib/postgresql/data"
-          ],
-          "env_file": true,
-          "depends_on": [],
-          "resources": null,
-          "read_only": false,
-          "db_user": "quant_user",
-          "db_name": "quantlab",
-          "protocol": "tcp",
-          "db_engine": "postgres"
         }
       },
       "container_names": [
-        "quant_light_research",
-        "quant_light_engine",
-        "quant_light_db"
+        "fincept-server"
       ],
       "all_ports": [
-        "8889",
-        "5001",
-        "5443"
+        "8340"
       ],
       "all_dns": [
-        "quant-light-research.app",
-        "quant-light-engine.app",
-        "quant-light-db.app"
+        "fincept-api.app"
       ],
       "compose": {
         "containers": [
-          "quant_light_db",
-          "quant_light_engine",
-          "quant_light_research"
+          "fincept-server"
         ],
         "ports": [],
         "networks": []
       },
+      "proxy": {
+        "primary": {
+          "domain": "fincept-api.diegonmarcos.com",
+          "auth": "default"
+        },
+        "app_hub": true
+      },
       "declared_ports": {
-        "app": 8889,
-        "engine": 5001,
-        "db": 5443
+        "app": 8340
+      },
+      "health": {
+        "path": "/health"
+      },
+      "monitoring": {
+        "tls_check": true
       },
       "backup": {
-        "enabled": true
+        "enabled": false
       },
       "api": {
         "has_api": true,
-        "has_web_ui": false,
-        "api_path": "/api",
+        "has_web_ui": true,
+        "api_path": null,
         "api_url": null,
-        "healthcheck_paths": []
-      },
-      "secret_env_vars": [
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-        "POSTGRES_DB"
-      ]
+        "healthcheck_paths": [
+          "/health"
+        ]
+      }
     },
     "ollama": {
       "category": "agi",
@@ -3328,6 +3294,21 @@
       "declared_ports": {
         "app": 11435
       },
+      "timezone": "America/Chicago",
+      "upstream_image": "ollama/ollama:latest",
+      "ollama": {
+        "keep_alive": "-1",
+        "num_parallel": 2,
+        "max_loaded_models": 2,
+        "num_ctx": 4096,
+        "models": [
+          "qwen2.5:1.5b",
+          "nomic-embed-text"
+        ]
+      },
+      "resources": {
+        "mem_limit": "6G"
+      },
       "api": {
         "has_api": true,
         "has_web_ui": false,
@@ -3369,6 +3350,42 @@
       },
       "declared_ports": {
         "app": 8091
+      },
+      "rig": {
+        "ollama_service": "ollama-hai",
+        "ollama_model": "qwen2.5:1.5b",
+        "c3_mcp_url": "http://c3-services-mcp.app",
+        "mattermost_url": "http://mattermost.app",
+        "mm_bot_mention": "@hai-1.5bq4-ai",
+        "guardrail_max_turns": 5,
+        "self_healing_enabled": false,
+        "rust_log": "rig_agentic=info",
+        "allowed_tools": [
+          "mm_post",
+          "mm_reply",
+          "mm_read",
+          "mm_channels",
+          "mail_send",
+          "mail_reply",
+          "ntfy_publish",
+          "services_list",
+          "services_info",
+          "c3_topology",
+          "c3_configs",
+          "c3_deps",
+          "c3_topology_md",
+          "c3_configs_md",
+          "c3_deps_front",
+          "cloud_context",
+          "knowledge_vm_info",
+          "knowledge_services_by_category",
+          "octocode_search",
+          "octocode_memory",
+          "dagu_trigger",
+          "dagu_list",
+          "gha_trigger",
+          "gha_list_runs"
+        ]
       },
       "api": {
         "has_api": false,
@@ -3414,6 +3431,17 @@
       },
       "declared_ports": {
         "app": 8091
+      },
+      "rig": {
+        "ollama_service": "ollama",
+        "ollama_model": "MFDoom/deepseek-r1-tool-calling:14b-qwen-distill-q8_0",
+        "c3_api_url": "http://c3-api.app",
+        "c3_mcp_url": "http://c3-mcp.app",
+        "mattermost_service": "mattermost-bots",
+        "mm_bot_mention": "@ollama-14bq8-ai",
+        "guardrail_max_turns": 20,
+        "self_healing_enabled": true,
+        "rust_log": "rig_agentic=info"
       },
       "api": {
         "has_api": false,
@@ -3666,7 +3694,8 @@
         "primary": {
           "domain": "auth.diegonmarcos.com",
           "auth": "bypass"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 9091,
@@ -3681,6 +3710,7 @@
       "backup": {
         "enabled": true
       },
+      "timezone": "Europe/Madrid",
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -4049,6 +4079,10 @@
       "health": {
         "path": "/health"
       },
+      "resources": {
+        "mem_limit": "64M",
+        "mem_reservation": "16M"
+      },
       "api": {
         "has_api": true,
         "has_web_ui": false,
@@ -4066,14 +4100,18 @@
       "description": "Central Syslog Collector + SIEM API",
       "enabled": false,
       "containers": {
-        "app": {
-          "container_name": "sauron-central",
-          "image": "",
-          "public": false
+        "syslog": {
+          "container_name": "syslog-central",
+          "upstream_image": "ghcr.io/axoflow/axosyslog:4.8.1"
+        },
+        "api": {
+          "container_name": "siem-api",
+          "upstream_image": "python:3.11-slim"
         }
       },
       "container_names": [
-        "sauron-central"
+        "syslog-central",
+        "siem-api"
       ],
       "all_ports": [],
       "all_dns": [],
@@ -4156,10 +4194,15 @@
       },
       "proxy": {
         "primary": {
+          "auth": "two_factor",
           "type": "path",
           "parent_domain": "api.diegonmarcos.com",
           "base_path": "/c3-api",
-          "auth": "two_factor"
+          "paths": {
+            "/docs/json": {
+              "auth": "public"
+            }
+          }
         }
       },
       "declared_ports": {
@@ -4203,7 +4246,9 @@
       "flake": "c3-infra-mcp",
       "port": 3100,
       "dns": "c3-infra-mcp.app",
-      "upstream": "10.0.0.6:3100",
+      "upstream": {
+        "mattermost_url": "http://mattermost.app"
+      },
       "containers": {
         "app": {
           "container_name": "c3-infra-mcp",
@@ -4253,10 +4298,12 @@
       "proxy": {
         "primary": {
           "streaming": true,
+          "auth": "two_factor",
           "type": "path",
           "parent_domain": "mcp.diegonmarcos.com",
           "base_path": "/c3-infra-mcp"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 3100
@@ -4345,7 +4392,12 @@
           "type": "path",
           "parent_domain": "api.diegonmarcos.com",
           "base_path": "/services",
-          "auth": "two_factor"
+          "auth": "two_factor",
+          "paths": {
+            "/docs/json": {
+              "auth": "public"
+            }
+          }
         }
       },
       "declared_ports": {
@@ -4428,7 +4480,8 @@
           "type": "path",
           "parent_domain": "mcp.diegonmarcos.com",
           "base_path": "/c3-services-mcp"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 3101
@@ -4508,13 +4561,18 @@
           "type": "path",
           "parent_domain": "mcp.diegonmarcos.com",
           "base_path": "/cloud-cgc-mcp"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 3105
       },
       "health": {
         "path": "/mcp"
+      },
+      "runtime": {
+        "git_root": "/home/diego/Mounts/Git",
+        "data_path": "/data"
       },
       "api": {
         "has_api": false,
@@ -4582,10 +4640,14 @@
           "parent_domain": "cloud.diegonmarcos.com",
           "base_path": "/spec",
           "auth": "two_factor"
-        }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 3080
+      },
+      "runtime": {
+        "command": "busybox httpd -f -p %PORT% -h /srv"
       },
       "api": {
         "has_api": false,
@@ -4772,6 +4834,7 @@
           "dbgate_data"
         ]
       },
+      "timezone": "Europe/Madrid",
       "api": {
         "has_api": false,
         "has_web_ui": true,
@@ -5055,7 +5118,9 @@
       },
       "proxy": {
         "primary": {
-          "domain": "grafana.diegonmarcos.com",
+          "type": "path",
+          "parent_domain": "app.diegonmarcos.com",
+          "base_path": "/grafana",
           "auth": "two_factor"
         }
       },
@@ -5158,7 +5223,33 @@
       "proxy": {
         "primary": {
           "domain": "analytics.diegonmarcos.com",
-          "auth": "two_factor"
+          "auth": "two_factor",
+          "paths": {
+            "/matomo.js": {
+              "auth": "public"
+            },
+            "/matomo.php": {
+              "auth": "public"
+            },
+            "/piwik.js": {
+              "auth": "public"
+            },
+            "/piwik.php": {
+              "auth": "public"
+            },
+            "/collect.php": {
+              "auth": "public"
+            },
+            "/api.php": {
+              "auth": "public"
+            },
+            "/track.php": {
+              "auth": "public"
+            },
+            "/js/*": {
+              "auth": "public"
+            }
+          }
         }
       },
       "health": {
@@ -5195,17 +5286,23 @@
       "folder": "bc-obs_news-gdelt",
       "description": "GDELT News Aggregator — Fastify API with SQLite cache",
       "enabled": true,
+      "port": 3019,
+      "dns": "news-gdelt.app",
+      "upstream": "10.0.0.6:3019",
       "containers": {
         "app": {
           "container_name": "news-gdelt",
-          "image": "",
-          "public": false
+          "image": "ghcr.io/diegonmarcos/news-gdelt:latest",
+          "port": 3019,
+          "port_env": "PORT"
         }
       },
       "container_names": [
         "news-gdelt"
       ],
-      "all_ports": [],
+      "all_ports": [
+        "3019"
+      ],
       "all_dns": [],
       "compose": {
         "containers": [
@@ -5217,6 +5314,7 @@
       "declared_ports": {
         "app": 3019
       },
+      "timezone": "Europe/Paris",
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -5242,6 +5340,14 @@
           "port": 8090,
           "port_env": null,
           "dns": "ntfy.app",
+          "resources": {
+            "limits": {
+              "memory": "64M"
+            },
+            "reservations": {
+              "memory": "16M"
+            }
+          },
           "public": true,
           "proxy": {
             "domain": "rss.diegonmarcos.com",
@@ -5259,7 +5365,6 @@
           ],
           "env_file": true,
           "depends_on": [],
-          "resources": null,
           "read_only": false,
           "db_path": "/var/cache/ntfy/cache.db",
           "protocol": "http",
@@ -5289,7 +5394,14 @@
           "depends_on": [
             "app"
           ],
-          "resources": null,
+          "resources": {
+            "limits": {
+              "memory": "32M"
+            },
+            "reservations": {
+              "memory": "8M"
+            }
+          },
           "read_only": false
         },
         "github-rss": {
@@ -5310,7 +5422,14 @@
           "depends_on": [
             "app"
           ],
-          "resources": null,
+          "resources": {
+            "limits": {
+              "memory": "32M"
+            },
+            "reservations": {
+              "memory": "8M"
+            }
+          },
           "read_only": false
         }
       },
@@ -5354,6 +5473,7 @@
       "backup": {
         "enabled": true
       },
+      "timezone": "Europe/Paris",
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -5468,6 +5588,7 @@
         "ports": [],
         "networks": []
       },
+      "upstream_image": "balabit/syslog-ng:4.4.0",
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -5593,10 +5714,20 @@
       },
       "proxy": {
         "primary": {
-          "domain": "analytics.diegonmarcos.com",
+          "type": "path",
+          "parent_domain": "analytics.diegonmarcos.com",
           "base_path": "/umami",
-          "auth": "two_factor"
-        }
+          "auth": "two_factor",
+          "paths": {
+            "/script.js": {
+              "auth": "public"
+            },
+            "/api/send": {
+              "auth": "public"
+            }
+          }
+        },
+        "app_hub": false
       },
       "declared_ports": {
         "app": 3006,
@@ -5707,6 +5838,7 @@
       "declared_ports": {
         "app": 2224
       },
+      "upstream_image": "alpine:3.19",
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -5753,6 +5885,7 @@
       "declared_ports": {
         "app": 2223
       },
+      "upstream_image": "alpine:3.20",
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -5904,7 +6037,9 @@
       },
       "proxy": {
         "primary": {
-          "domain": "git.diegonmarcos.com",
+          "type": "path",
+          "parent_domain": "app.diegonmarcos.com",
+          "base_path": "/gitea",
           "auth": "two_factor"
         }
       },
@@ -5952,6 +6087,7 @@
         },
         "mirror_interval": "1h"
       },
+      "upstream_image": "gitea/gitea:latest",
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -6003,6 +6139,8 @@
       "backup": {
         "enabled": true
       },
+      "upstream_image": "surrealdb/surrealdb:v2",
+      "data_path": "/opt/data/surrealdb",
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -6076,6 +6214,10 @@
           }
         ],
         "volumes": []
+      },
+      "redis": {
+        "maxmemory": "128mb",
+        "maxmemory_policy": "allkeys-lru"
       },
       "api": {
         "has_api": false,
@@ -6527,34 +6669,10 @@
         "service": "crawlee-cloud"
       },
       {
-        "name": "quant-full-research.app",
+        "name": "fincept-api.app",
         "type": "A",
         "value": "10.0.0.6",
-        "service": "quant-lab-full"
-      },
-      {
-        "name": "quant-full-db.app",
-        "type": "A",
-        "value": "10.0.0.6",
-        "service": "quant-lab-full"
-      },
-      {
-        "name": "quant-light-research.app",
-        "type": "A",
-        "value": "10.0.0.6",
-        "service": "quant-lab-light"
-      },
-      {
-        "name": "quant-light-engine.app",
-        "type": "A",
-        "value": "10.0.0.6",
-        "service": "quant-lab-light"
-      },
-      {
-        "name": "quant-light-db.app",
-        "type": "A",
-        "value": "10.0.0.6",
-        "service": "quant-lab-light"
+        "service": "fincept-server"
       },
       {
         "name": "ollama.app",
@@ -7365,8 +7483,7 @@
           "revealmd",
           "vaultwarden",
           "crawlee-cloud",
-          "quant-lab-full",
-          "quant-lab-light",
+          "fincept-server",
           "ollama-hai",
           "rig-agentic-hai-1.5bq4",
           "rig-agentic-sonn-14bq8",
@@ -7774,8 +7891,8 @@
         "vm": "oci-apps",
         "has_docker": true
       },
-      "quant-lab-light": {
-        "dir": "ac-fin_quant-lab-light",
+      "fincept-server": {
+        "dir": "ac-fin_fincept-server",
         "vm": "oci-apps",
         "has_docker": true
       },

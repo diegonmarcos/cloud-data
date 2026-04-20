@@ -4,7 +4,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 3
   },
-  "_generated": "2026-04-20T16:08:21.815Z",
+  "_generated": "2026-04-20T21:03:16.444Z",
   "_source": "_cloud-data-consolidated.json via cloud-data-config-derive.ts/caddy-routes",
   "global": {
     "debug": true,
@@ -260,6 +260,11 @@
       "comment": "Bitwarden password manager"
     },
     {
+      "domain": "fincept-api.diegonmarcos.com",
+      "upstream": "10.0.0.6:8340",
+      "comment": "Fincept Terminal backend — REST + WebSocket over DataHub, 35 data connectors, 7 analytics, 17 brokers, 6 investor personas, MCP tools"
+    },
+    {
       "domain": "auth.diegonmarcos.com",
       "upstream": "10.0.0.1:9091",
       "comment": "SSO and 2FA authentication portal"
@@ -273,16 +278,6 @@
       "domain": "db.diegonmarcos.com",
       "upstream": "10.0.0.6:8086",
       "comment": "DBGate - Universal database manager for all cloud databases"
-    },
-    {
-      "domain": "grafana.diegonmarcos.com",
-      "upstream": "10.0.0.6:3200",
-      "comment": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    {
-      "domain": "git.diegonmarcos.com",
-      "upstream": "10.0.0.6:3002",
-      "comment": "Self-hosted Git service"
     }
   ],
   "path_routes": [
@@ -310,18 +305,18 @@
           "comment": "Dozzle - Real-time Docker log viewer"
         },
         {
-          "base_path": "/revealmd",
-          "upstream": "10.0.0.6:3014",
-          "comment": ""
-        },
-        {
           "base_path": "/grafana",
-          "upstream": "10.0.0.6:3016",
-          "comment": ""
+          "upstream": "10.0.0.6:3200",
+          "comment": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
         },
         {
           "base_path": "/gitea",
-          "upstream": "10.0.0.6:3017",
+          "upstream": "10.0.0.6:3002",
+          "comment": "Self-hosted Git service"
+        },
+        {
+          "base_path": "/revealmd",
+          "upstream": "10.0.0.6:3014",
           "comment": ""
         },
         {
@@ -400,6 +395,15 @@
       "github_path": "mymaps"
     }
   ],
+  "well_known_routes": [
+    {
+      "path": "/.well-known/jmap",
+      "target_domain": "diegonmarcos.com",
+      "upstream": "10.0.0.3:2443",
+      "tls_skip_verify": true,
+      "comment": "JMAP auto-discovery (RFC 8620) — proxies to Stalwart"
+    }
+  ],
   "mcp_routes": [
     {
       "parent_domain": "mcp.diegonmarcos.com",
@@ -418,7 +422,9 @@
         },
         {
           "base_path": "/c3-infra-mcp",
-          "upstream": "10.0.0.6:3100"
+          "upstream": {
+            "mattermost_url": "http://mattermost.app"
+          }
         },
         {
           "base_path": "/c3-services-mcp",
@@ -538,6 +544,10 @@
       "upstream": "10.0.0.6:3000"
     },
     {
+      "service": "fincept-api.app",
+      "upstream": "10.0.0.6:8340"
+    },
+    {
       "service": "ollama.app",
       "upstream": "10.0.0.8:11434"
     },
@@ -575,7 +585,9 @@
     },
     {
       "service": "c3-infra-mcp.app",
-      "upstream": "10.0.0.6:3100"
+      "upstream": {
+        "mattermost_url": "http://mattermost.app"
+      }
     },
     {
       "service": "c3-services-api.app",
@@ -616,6 +628,10 @@
     {
       "service": "matomo.app",
       "upstream": "10.0.0.6:8084"
+    },
+    {
+      "service": "news-gdelt.app",
+      "upstream": "10.0.0.6:3019"
     },
     {
       "service": "ntfy.app",
@@ -1030,6 +1046,23 @@
     },
     {
       "kind": "redirect",
+      "service": "photos-db.app",
+      "redirect_to": "https://photos-db-null.app",
+      "container": "photos-db",
+      "container_key": "db",
+      "svc": "photos-webhook",
+      "vm": "oci-A1-f_0"
+    },
+    {
+      "kind": "portless",
+      "service": "photos-db-null.app",
+      "container": "photos-db",
+      "container_key": "db",
+      "svc": "photos-webhook",
+      "vm": "oci-A1-f_0"
+    },
+    {
+      "kind": "redirect",
       "service": "radicale.app",
       "redirect_to": "https://radicale-http-5232.app",
       "container": "radicale",
@@ -1094,47 +1127,36 @@
     {
       "kind": "redirect",
       "service": "maddy.app",
-      "redirect_to": "https://maddy-tls-993.app",
+      "redirect_to": "https://maddy-null.app",
       "container": "maddy",
       "container_key": "app",
       "svc": "maddy",
       "vm": "oci-E2-f_0"
     },
     {
-      "kind": "canonical",
-      "service": "maddy-tls-993.app",
+      "kind": "portless",
+      "service": "maddy-null.app",
       "container": "maddy",
       "container_key": "app",
       "svc": "maddy",
-      "vm": "oci-E2-f_0",
-      "port": 993,
-      "protocol": "tls",
-      "upstream": "10.0.0.3:993",
-      "source": "proxy.primary.l4_ports"
+      "vm": "oci-E2-f_0"
     },
     {
-      "kind": "canonical",
-      "service": "maddy-tls-465.app",
-      "container": "maddy",
-      "container_key": "app",
+      "kind": "redirect",
+      "service": "maddy-sorter.app",
+      "redirect_to": "https://maddy-sorter-null.app",
+      "container": "maddy-sorter",
+      "container_key": "sorter",
       "svc": "maddy",
-      "vm": "oci-E2-f_0",
-      "port": 465,
-      "protocol": "tls",
-      "upstream": "10.0.0.3:465",
-      "source": "proxy.primary.l4_ports"
+      "vm": "oci-E2-f_0"
     },
     {
-      "kind": "canonical",
-      "service": "maddy-starttls-587.app",
-      "container": "maddy",
-      "container_key": "app",
+      "kind": "portless",
+      "service": "maddy-sorter-null.app",
+      "container": "maddy-sorter",
+      "container_key": "sorter",
       "svc": "maddy",
-      "vm": "oci-E2-f_0",
-      "port": 587,
-      "protocol": "starttls",
-      "upstream": "10.0.0.3:587",
-      "source": "proxy.primary.l4_ports"
+      "vm": "oci-E2-f_0"
     },
     {
       "kind": "redirect",
@@ -1237,6 +1259,23 @@
       "protocol": "tls",
       "upstream": "10.0.0.3:6190",
       "source": "containers.app.extra_ports"
+    },
+    {
+      "kind": "redirect",
+      "service": "stalwart-sorter.app",
+      "redirect_to": "https://stalwart-sorter-null.app",
+      "container": "stalwart-sorter",
+      "container_key": "sorter",
+      "svc": "stalwart",
+      "vm": "oci-E2-f_0"
+    },
+    {
+      "kind": "portless",
+      "service": "stalwart-sorter-null.app",
+      "container": "stalwart-sorter",
+      "container_key": "sorter",
+      "svc": "stalwart",
+      "vm": "oci-E2-f_0"
     },
     {
       "kind": "redirect",
@@ -1400,176 +1439,24 @@
     },
     {
       "kind": "redirect",
-      "service": "quant_full_research.app",
-      "redirect_to": "https://quant_full_research-http-8890.app",
-      "container": "quant_full_research",
-      "container_key": "research",
-      "svc": "quant-lab-full",
+      "service": "fincept-server.app",
+      "redirect_to": "https://fincept-server-http-8340.app",
+      "container": "fincept-server",
+      "container_key": "app",
+      "svc": "fincept-server",
       "vm": "oci-A1-f_0"
     },
     {
       "kind": "canonical",
-      "service": "quant_full_research-http-8890.app",
-      "container": "quant_full_research",
-      "container_key": "research",
-      "svc": "quant-lab-full",
+      "service": "fincept-server-http-8340.app",
+      "container": "fincept-server",
+      "container_key": "app",
+      "svc": "fincept-server",
       "vm": "oci-A1-f_0",
-      "port": 8890,
+      "port": 8340,
       "protocol": "http",
-      "upstream": "10.0.0.6:8890",
-      "source": "containers.research.port"
-    },
-    {
-      "kind": "redirect",
-      "service": "quant_full_analytics.app",
-      "redirect_to": "https://quant_full_analytics-null.app",
-      "container": "quant_full_analytics",
-      "container_key": "analytics",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "portless",
-      "service": "quant_full_analytics-null.app",
-      "container": "quant_full_analytics",
-      "container_key": "analytics",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "redirect",
-      "service": "quant_full_ml.app",
-      "redirect_to": "https://quant_full_ml-null.app",
-      "container": "quant_full_ml",
-      "container_key": "ml_brain",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "portless",
-      "service": "quant_full_ml-null.app",
-      "container": "quant_full_ml",
-      "container_key": "ml_brain",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "redirect",
-      "service": "quant_full_risk.app",
-      "redirect_to": "https://quant_full_risk-null.app",
-      "container": "quant_full_risk",
-      "container_key": "risk_manager",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "portless",
-      "service": "quant_full_risk-null.app",
-      "container": "quant_full_risk",
-      "container_key": "risk_manager",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "redirect",
-      "service": "quant_full_engine.app",
-      "redirect_to": "https://quant_full_engine-null.app",
-      "container": "quant_full_engine",
-      "container_key": "execution_engine",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "portless",
-      "service": "quant_full_engine-null.app",
-      "container": "quant_full_engine",
-      "container_key": "execution_engine",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "redirect",
-      "service": "quant_full_db.app",
-      "redirect_to": "https://quant_full_db-tcp-5437.app",
-      "container": "quant_full_db",
-      "container_key": "db",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "canonical",
-      "service": "quant_full_db-tcp-5437.app",
-      "container": "quant_full_db",
-      "container_key": "db",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0",
-      "port": 5437,
-      "protocol": "tcp",
-      "upstream": "10.0.0.6:5437",
-      "source": "containers.db.port"
-    },
-    {
-      "kind": "redirect",
-      "service": "quant_light_research.app",
-      "redirect_to": "https://quant_light_research-http-8889.app",
-      "container": "quant_light_research",
-      "container_key": "research",
-      "svc": "quant-lab-light",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "canonical",
-      "service": "quant_light_research-http-8889.app",
-      "container": "quant_light_research",
-      "container_key": "research",
-      "svc": "quant-lab-light",
-      "vm": "oci-A1-f_0",
-      "port": 8889,
-      "protocol": "http",
-      "upstream": "10.0.0.6:8889",
-      "source": "containers.research.port"
-    },
-    {
-      "kind": "redirect",
-      "service": "quant_light_engine.app",
-      "redirect_to": "https://quant_light_engine-http-5001.app",
-      "container": "quant_light_engine",
-      "container_key": "engine",
-      "svc": "quant-lab-light",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "canonical",
-      "service": "quant_light_engine-http-5001.app",
-      "container": "quant_light_engine",
-      "container_key": "engine",
-      "svc": "quant-lab-light",
-      "vm": "oci-A1-f_0",
-      "port": 5001,
-      "protocol": "http",
-      "upstream": "10.0.0.6:5001",
-      "source": "containers.engine.port"
-    },
-    {
-      "kind": "redirect",
-      "service": "quant_light_db.app",
-      "redirect_to": "https://quant_light_db-tcp-5443.app",
-      "container": "quant_light_db",
-      "container_key": "db",
-      "svc": "quant-lab-light",
-      "vm": "oci-A1-f_0"
-    },
-    {
-      "kind": "canonical",
-      "service": "quant_light_db-tcp-5443.app",
-      "container": "quant_light_db",
-      "container_key": "db",
-      "svc": "quant-lab-light",
-      "vm": "oci-A1-f_0",
-      "port": 5443,
-      "protocol": "tcp",
-      "upstream": "10.0.0.6:5443",
-      "source": "containers.db.port"
+      "upstream": "10.0.0.6:8340",
+      "source": "containers.app.port"
     },
     {
       "kind": "redirect",
@@ -1803,18 +1690,35 @@
     },
     {
       "kind": "redirect",
-      "service": "sauron-central.app",
-      "redirect_to": "https://sauron-central-null.app",
-      "container": "sauron-central",
-      "container_key": "app",
+      "service": "syslog-central.app",
+      "redirect_to": "https://syslog-central-null.app",
+      "container": "syslog-central",
+      "container_key": "syslog",
       "svc": "sauron-central",
       "vm": "oci-A1-f_0"
     },
     {
       "kind": "portless",
-      "service": "sauron-central-null.app",
-      "container": "sauron-central",
-      "container_key": "app",
+      "service": "syslog-central-null.app",
+      "container": "syslog-central",
+      "container_key": "syslog",
+      "svc": "sauron-central",
+      "vm": "oci-A1-f_0"
+    },
+    {
+      "kind": "redirect",
+      "service": "siem-api.app",
+      "redirect_to": "https://siem-api-null.app",
+      "container": "siem-api",
+      "container_key": "api",
+      "svc": "sauron-central",
+      "vm": "oci-A1-f_0"
+    },
+    {
+      "kind": "portless",
+      "service": "siem-api-null.app",
+      "container": "siem-api",
+      "container_key": "api",
       "svc": "sauron-central",
       "vm": "oci-A1-f_0"
     },
@@ -2566,28 +2470,6 @@
       "upstream": "10.0.0.6:9000"
     },
     {
-      "kind": "container",
-      "service": "quant_full_db-postgres-5437.db",
-      "container": "quant_full_db",
-      "container_key": "db",
-      "svc": "quant-lab-full",
-      "vm": "oci-A1-f_0",
-      "engine": "postgres",
-      "port": 5437,
-      "upstream": "10.0.0.6:5437"
-    },
-    {
-      "kind": "container",
-      "service": "quant_light_db-postgres-5443.db",
-      "container": "quant_light_db",
-      "container_key": "db",
-      "svc": "quant-lab-light",
-      "vm": "oci-A1-f_0",
-      "engine": "postgres",
-      "port": 5443,
-      "upstream": "10.0.0.6:5443"
-    },
-    {
       "kind": "embedded",
       "service": "authelia-sqlite-null.db",
       "container": "authelia",
@@ -2766,7 +2648,9 @@
     {
       "host": "mcp.diegonmarcos.com",
       "path": "/c3-infra-mcp",
-      "upstream": "10.0.0.6:3100",
+      "upstream": {
+        "mattermost_url": "http://mattermost.app"
+      },
       "kind": "reverse_proxy",
       "tls": "public",
       "zone": "com",
@@ -2879,28 +2763,28 @@
     },
     {
       "host": "app.diegonmarcos.com",
-      "path": "/revealmd",
-      "upstream": "10.0.0.6:3014",
-      "kind": "reverse_proxy",
-      "tls": "public",
-      "zone": "com",
-      "service": null,
-      "notes": ""
-    },
-    {
-      "host": "app.diegonmarcos.com",
       "path": "/grafana",
-      "upstream": "10.0.0.6:3016",
+      "upstream": "10.0.0.6:3200",
       "kind": "reverse_proxy",
       "tls": "public",
       "zone": "com",
       "service": null,
-      "notes": ""
+      "notes": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
     {
       "host": "app.diegonmarcos.com",
       "path": "/gitea",
-      "upstream": "10.0.0.6:3017",
+      "upstream": "10.0.0.6:3002",
+      "kind": "reverse_proxy",
+      "tls": "public",
+      "zone": "com",
+      "service": null,
+      "notes": "Self-hosted Git service"
+    },
+    {
+      "host": "app.diegonmarcos.com",
+      "path": "/revealmd",
+      "upstream": "10.0.0.6:3014",
       "kind": "reverse_proxy",
       "tls": "public",
       "zone": "com",
@@ -3010,6 +2894,16 @@
       "notes": "Bitwarden password manager"
     },
     {
+      "host": "fincept-api.diegonmarcos.com",
+      "path": null,
+      "upstream": "10.0.0.6:8340",
+      "kind": "reverse_proxy",
+      "tls": "public",
+      "zone": "com",
+      "service": null,
+      "notes": "Fincept Terminal backend — REST + WebSocket over DataHub, 35 data connectors, 7 analytics, 17 brokers, 6 investor personas, MCP tools"
+    },
+    {
       "host": "auth.diegonmarcos.com",
       "path": null,
       "upstream": "10.0.0.1:9091",
@@ -3038,26 +2932,6 @@
       "zone": "com",
       "service": null,
       "notes": "DBGate - Universal database manager for all cloud databases"
-    },
-    {
-      "host": "grafana.diegonmarcos.com",
-      "path": null,
-      "upstream": "10.0.0.6:3200",
-      "kind": "reverse_proxy",
-      "tls": "public",
-      "zone": "com",
-      "service": null,
-      "notes": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-    },
-    {
-      "host": "git.diegonmarcos.com",
-      "path": null,
-      "upstream": "10.0.0.6:3002",
-      "kind": "reverse_proxy",
-      "tls": "public",
-      "zone": "com",
-      "service": null,
-      "notes": "Self-hosted Git service"
     },
     {
       "host": "cloud.diegonmarcos.com",
@@ -3312,6 +3186,16 @@
       "notes": null
     },
     {
+      "host": "fincept-api.app",
+      "path": null,
+      "upstream": "10.0.0.6:8340",
+      "kind": "reverse_proxy",
+      "tls": "internal",
+      "zone": "com",
+      "service": null,
+      "notes": null
+    },
+    {
       "host": "ollama.app",
       "path": null,
       "upstream": "10.0.0.8:11434",
@@ -3404,7 +3288,9 @@
     {
       "host": "c3-infra-mcp.app",
       "path": null,
-      "upstream": "10.0.0.6:3100",
+      "upstream": {
+        "mattermost_url": "http://mattermost.app"
+      },
       "kind": "reverse_proxy",
       "tls": "internal",
       "zone": "com",
@@ -3505,6 +3391,16 @@
       "host": "matomo.app",
       "path": null,
       "upstream": "10.0.0.6:8084",
+      "kind": "reverse_proxy",
+      "tls": "internal",
+      "zone": "com",
+      "service": null,
+      "notes": null
+    },
+    {
+      "host": "news-gdelt.app",
+      "path": null,
+      "upstream": "10.0.0.6:3019",
       "kind": "reverse_proxy",
       "tls": "internal",
       "zone": "com",
@@ -3754,36 +3650,6 @@
       "notes": null
     },
     {
-      "host": "maddy-tls-993.app",
-      "path": null,
-      "upstream": "10.0.0.3:993",
-      "kind": "reverse_proxy",
-      "tls": "on_demand",
-      "zone": "com",
-      "service": "maddy",
-      "notes": null
-    },
-    {
-      "host": "maddy-tls-465.app",
-      "path": null,
-      "upstream": "10.0.0.3:465",
-      "kind": "reverse_proxy",
-      "tls": "on_demand",
-      "zone": "com",
-      "service": "maddy",
-      "notes": null
-    },
-    {
-      "host": "maddy-starttls-587.app",
-      "path": null,
-      "upstream": "10.0.0.3:587",
-      "kind": "reverse_proxy",
-      "tls": "on_demand",
-      "zone": "com",
-      "service": "maddy",
-      "notes": null
-    },
-    {
       "host": "smtp-proxy-http-8080.app",
       "path": null,
       "upstream": "10.0.0.3:8080",
@@ -3914,54 +3780,14 @@
       "notes": "underscore → TLS broken"
     },
     {
-      "host": "quant_full_research-http-8890.app",
+      "host": "fincept-server-http-8340.app",
       "path": null,
-      "upstream": "10.0.0.6:8890",
+      "upstream": "10.0.0.6:8340",
       "kind": "reverse_proxy",
       "tls": "on_demand",
       "zone": "com",
-      "service": "quant-lab-full",
-      "notes": "underscore → TLS broken"
-    },
-    {
-      "host": "quant_full_db-tcp-5437.app",
-      "path": null,
-      "upstream": "10.0.0.6:5437",
-      "kind": "reverse_proxy",
-      "tls": "on_demand",
-      "zone": "com",
-      "service": "quant-lab-full",
-      "notes": "underscore → TLS broken"
-    },
-    {
-      "host": "quant_light_research-http-8889.app",
-      "path": null,
-      "upstream": "10.0.0.6:8889",
-      "kind": "reverse_proxy",
-      "tls": "on_demand",
-      "zone": "com",
-      "service": "quant-lab-light",
-      "notes": "underscore → TLS broken"
-    },
-    {
-      "host": "quant_light_engine-http-5001.app",
-      "path": null,
-      "upstream": "10.0.0.6:5001",
-      "kind": "reverse_proxy",
-      "tls": "on_demand",
-      "zone": "com",
-      "service": "quant-lab-light",
-      "notes": "underscore → TLS broken"
-    },
-    {
-      "host": "quant_light_db-tcp-5443.app",
-      "path": null,
-      "upstream": "10.0.0.6:5443",
-      "kind": "reverse_proxy",
-      "tls": "on_demand",
-      "zone": "com",
-      "service": "quant-lab-light",
-      "notes": "underscore → TLS broken"
+      "service": "fincept-server",
+      "notes": null
     },
     {
       "host": "ollama-http-11434.app",
@@ -4336,6 +4162,46 @@
       "notes": "underscore → TLS broken"
     },
     {
+      "host": "photos-db-null.app",
+      "path": null,
+      "upstream": "204",
+      "kind": "portless",
+      "tls": "on_demand",
+      "zone": "app",
+      "service": "photos-webhook",
+      "notes": null
+    },
+    {
+      "host": "maddy-null.app",
+      "path": null,
+      "upstream": "204",
+      "kind": "portless",
+      "tls": "on_demand",
+      "zone": "app",
+      "service": "maddy",
+      "notes": null
+    },
+    {
+      "host": "maddy-sorter-null.app",
+      "path": null,
+      "upstream": "204",
+      "kind": "portless",
+      "tls": "on_demand",
+      "zone": "app",
+      "service": "maddy",
+      "notes": null
+    },
+    {
+      "host": "stalwart-sorter-null.app",
+      "path": null,
+      "upstream": "204",
+      "kind": "portless",
+      "tls": "on_demand",
+      "zone": "app",
+      "service": "stalwart",
+      "notes": null
+    },
+    {
       "host": "crawlee_runner-null.app",
       "path": null,
       "upstream": "204",
@@ -4356,46 +4222,6 @@
       "notes": "underscore → TLS broken"
     },
     {
-      "host": "quant_full_analytics-null.app",
-      "path": null,
-      "upstream": "204",
-      "kind": "portless",
-      "tls": "on_demand",
-      "zone": "app",
-      "service": "quant-lab-full",
-      "notes": "underscore → TLS broken"
-    },
-    {
-      "host": "quant_full_ml-null.app",
-      "path": null,
-      "upstream": "204",
-      "kind": "portless",
-      "tls": "on_demand",
-      "zone": "app",
-      "service": "quant-lab-full",
-      "notes": "underscore → TLS broken"
-    },
-    {
-      "host": "quant_full_risk-null.app",
-      "path": null,
-      "upstream": "204",
-      "kind": "portless",
-      "tls": "on_demand",
-      "zone": "app",
-      "service": "quant-lab-full",
-      "notes": "underscore → TLS broken"
-    },
-    {
-      "host": "quant_full_engine-null.app",
-      "path": null,
-      "upstream": "204",
-      "kind": "portless",
-      "tls": "on_demand",
-      "zone": "app",
-      "service": "quant-lab-full",
-      "notes": "underscore → TLS broken"
-    },
-    {
       "host": "postlite-authelia-null.app",
       "path": null,
       "upstream": "204",
@@ -4406,7 +4232,17 @@
       "notes": null
     },
     {
-      "host": "sauron-central-null.app",
+      "host": "syslog-central-null.app",
+      "path": null,
+      "upstream": "204",
+      "kind": "portless",
+      "tls": "on_demand",
+      "zone": "app",
+      "service": "sauron-central",
+      "notes": null
+    },
+    {
+      "host": "siem-api-null.app",
       "path": null,
       "upstream": "204",
       "kind": "portless",
@@ -4616,26 +4452,6 @@
       "zone": "db",
       "service": "crawlee-cloud",
       "notes": "engine=minio vm=oci-A1-f_0 underscore → TLS broken"
-    },
-    {
-      "host": "quant_full_db-postgres-5437.db",
-      "path": null,
-      "upstream": "10.0.0.6:5437",
-      "kind": "catalog",
-      "tls": "on_demand",
-      "zone": "db",
-      "service": "quant-lab-full",
-      "notes": "engine=postgres vm=oci-A1-f_0 underscore → TLS broken"
-    },
-    {
-      "host": "quant_light_db-postgres-5443.db",
-      "path": null,
-      "upstream": "10.0.0.6:5443",
-      "kind": "catalog",
-      "tls": "on_demand",
-      "zone": "db",
-      "service": "quant-lab-light",
-      "notes": "engine=postgres vm=oci-A1-f_0 underscore → TLS broken"
     },
     {
       "host": "authelia-sqlite-null.db",

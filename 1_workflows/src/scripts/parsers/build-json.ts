@@ -242,7 +242,8 @@ export function scanBuildJsons(solutionsDir: string): BuildJsonEntry[] {
           port = primary.port ?? undefined;
           dns = primary.dns ?? undefined;
           if (primary.proxy?.domain) primaryDomain = primary.proxy.domain;
-          if (primary.proxy) primaryProxy = { primary: primary.proxy };
+          // Only override proxy from container if bj.proxy doesn't already have a richer primary
+          if (primary.proxy && !bj.proxy?.primary) primaryProxy = { primary: primary.proxy };
           if (primary.healthcheck) primaryHealth = { path: primary.healthcheck };
           if (primary.monitoring) primaryMonitoring = primary.monitoring;
         }

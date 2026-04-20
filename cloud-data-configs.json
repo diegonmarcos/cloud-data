@@ -4,7 +4,7 @@
     "generated_by": "cloud-data-config-derive.ts",
     "api_route": "GET /c3-api/cloud-data/configs",
     "source": "_cloud-data-consolidated.json",
-    "generated_at": "2026-04-20T16:08:21.828Z"
+    "generated_at": "2026-04-20T21:03:16.493Z"
   },
   "services": [
     {
@@ -291,6 +291,18 @@
       ]
     },
     {
+      "name": "fincept-server",
+      "category": "fin",
+      "vm": "oci-A1-f_0",
+      "description": "Fincept Terminal backend — REST + WebSocket over DataHub, 35 data connectors, 7 analytics, 17 brokers, 6 investor personas, MCP tools",
+      "domain": "fincept-api.diegonmarcos.com",
+      "ports": [],
+      "networks": [],
+      "containers": [
+        "fincept-server"
+      ]
+    },
+    {
       "name": "fluent-bit",
       "category": "tools",
       "vm": "oci-E2-f_1",
@@ -331,7 +343,7 @@
       "category": "app",
       "vm": "oci-A1-f_0",
       "description": "Google Workspace MCP server — Gmail, Calendar, Drive, Docs, Sheets via HTTP transport",
-      "domain": "—",
+      "domain": "mcp.diegonmarcos.com",
       "ports": [],
       "networks": [],
       "containers": [
@@ -423,7 +435,8 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "maddy"
+        "maddy",
+        "maddy-sorter"
       ]
     },
     {
@@ -431,7 +444,7 @@
       "category": "app",
       "vm": "oci-A1-f_0",
       "description": "Mail MCP server — IMAP/SMTP/Admin via Stalwart REST API",
-      "domain": "—",
+      "domain": "mcp.diegonmarcos.com",
       "ports": [
         "10.0.0.6:3103:3103"
       ],
@@ -567,38 +580,8 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "photos-webhook"
-      ]
-    },
-    {
-      "name": "quant-lab-full",
-      "category": "fin",
-      "vm": "oci-A1-f_0",
-      "description": "Full quant stack: Jupyter + Analytics + ML + Risk + NautilusTrader + Postgres",
-      "domain": "—",
-      "ports": [],
-      "networks": [],
-      "containers": [
-        "quant_full_research",
-        "quant_full_analytics",
-        "quant_full_ml",
-        "quant_full_risk",
-        "quant_full_engine",
-        "quant_full_db"
-      ]
-    },
-    {
-      "name": "quant-lab-light",
-      "category": "fin",
-      "vm": "oci-A1-f_0",
-      "description": "Lightweight quant research: Jupyter + NautilusTrader + Postgres",
-      "domain": "—",
-      "ports": [],
-      "networks": [],
-      "containers": [
-        "quant_light_research",
-        "quant_light_engine",
-        "quant_light_db"
+        "photos-webhook",
+        "photos-db"
       ]
     },
     {
@@ -674,7 +657,8 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "sauron-central"
+        "syslog-central",
+        "siem-api"
       ]
     },
     {
@@ -719,9 +703,7 @@
       "vm": "oci-E2-f_0",
       "description": "SnappyMail webmail client (mail.diegonmarcos.com/webmail)",
       "domain": "webmail.diegonmarcos.com",
-      "ports": [
-        "10.0.0.3:8888:8888"
-      ],
+      "ports": [],
       "networks": [],
       "containers": [
         "snappymail"
@@ -736,7 +718,8 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "stalwart"
+        "stalwart",
+        "stalwart-sorter"
       ]
     },
     {
@@ -1115,7 +1098,8 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "sauron-central"
+        "syslog-central",
+        "siem-api"
       ]
     },
     {
@@ -1232,11 +1216,23 @@
       ]
     },
     {
+      "name": "fincept-server",
+      "category": "fin",
+      "vm": "oci-A1-f_0",
+      "description": "Fincept Terminal backend — REST + WebSocket over DataHub, 35 data connectors, 7 analytics, 17 brokers, 6 investor personas, MCP tools",
+      "domain": "fincept-api.diegonmarcos.com",
+      "ports": [],
+      "networks": [],
+      "containers": [
+        "fincept-server"
+      ]
+    },
+    {
       "name": "google-workspace-mcp",
       "category": "app",
       "vm": "oci-A1-f_0",
       "description": "Google Workspace MCP server — Gmail, Calendar, Drive, Docs, Sheets via HTTP transport",
-      "domain": "—",
+      "domain": "mcp.diegonmarcos.com",
       "ports": [],
       "networks": [],
       "containers": [
@@ -1277,7 +1273,8 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "maddy"
+        "maddy",
+        "maddy-sorter"
       ]
     },
     {
@@ -1285,7 +1282,7 @@
       "category": "app",
       "vm": "oci-A1-f_0",
       "description": "Mail MCP server — IMAP/SMTP/Admin via Stalwart REST API",
-      "domain": "—",
+      "domain": "mcp.diegonmarcos.com",
       "ports": [
         "10.0.0.6:3103:3103"
       ],
@@ -1381,38 +1378,8 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "photos-webhook"
-      ]
-    },
-    {
-      "name": "quant-lab-full",
-      "category": "fin",
-      "vm": "oci-A1-f_0",
-      "description": "Full quant stack: Jupyter + Analytics + ML + Risk + NautilusTrader + Postgres",
-      "domain": "—",
-      "ports": [],
-      "networks": [],
-      "containers": [
-        "quant_full_research",
-        "quant_full_analytics",
-        "quant_full_ml",
-        "quant_full_risk",
-        "quant_full_engine",
-        "quant_full_db"
-      ]
-    },
-    {
-      "name": "quant-lab-light",
-      "category": "fin",
-      "vm": "oci-A1-f_0",
-      "description": "Lightweight quant research: Jupyter + NautilusTrader + Postgres",
-      "domain": "—",
-      "ports": [],
-      "networks": [],
-      "containers": [
-        "quant_light_research",
-        "quant_light_engine",
-        "quant_light_db"
+        "photos-webhook",
+        "photos-db"
       ]
     },
     {
@@ -1485,9 +1452,7 @@
       "vm": "oci-E2-f_0",
       "description": "SnappyMail webmail client (mail.diegonmarcos.com/webmail)",
       "domain": "webmail.diegonmarcos.com",
-      "ports": [
-        "10.0.0.3:8888:8888"
-      ],
+      "ports": [],
       "networks": [],
       "containers": [
         "snappymail"
@@ -1502,7 +1467,8 @@
       "ports": [],
       "networks": [],
       "containers": [
-        "stalwart"
+        "stalwart",
+        "stalwart-sorter"
       ]
     },
     {
