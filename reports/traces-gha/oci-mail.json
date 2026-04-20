@@ -2415,5 +2415,51 @@
         "duration_s": 0
       }
     ]
+  },
+  {
+    "vm": "oci-mail",
+    "run_id": "24665237120",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/24665237120",
+    "sha": "651cef4277dea63b2dd91201a574dc9a219ea09f",
+    "trigger": "workflow_dispatch",
+    "ts": "2026-04-20T12:02:40Z",
+    "duration_s": 88,
+    "total": 5,
+    "ok": 0,
+    "fail": 5,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "snappymail",
+        "dir": "aa-sui_snappymail",
+        "status": "fail",
+        "duration_s": 35
+      },
+      {
+        "name": "maddy",
+        "dir": "aa-sui_tools-maddy",
+        "status": "fail",
+        "duration_s": 9
+      },
+      {
+        "name": "smtp-proxy",
+        "dir": "aa-sui_tools-smtp-proxy",
+        "status": "fail",
+        "duration_s": 10
+      },
+      {
+        "name": "stalwart",
+        "dir": "aa-sui_tools-stalwart",
+        "status": "fail",
+        "duration_s": 76
+      },
+      {
+        "name": "syslog-forwarder",
+        "dir": "bc-obs_syslog-forwarder",
+        "status": "fail",
+        "duration_s": 20
+      }
+    ]
   }
 ]
