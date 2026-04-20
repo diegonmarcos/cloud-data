@@ -6,7 +6,7 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-04-20T02:52:54.527032395+00:00
+  CLOUD MAIL FULL — 2026-04-20T08:13:07.271302528+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
@@ -53,18 +53,18 @@
 
 0. INSTANT KPIs
 ──────────────────────────────────────────────────────────────
-  ✅ mail.* HTTPS                   HTTP 301 (0.1s)
-  ✅ webmail HTTPS                  HTTP 302 (0.1s)
-  ✅ auth HTTPS                     HTTP 200 (0.1s)
+  ✅ mail.* HTTPS                   HTTP 301 (0.2s)
+  ✅ webmail HTTPS                  HTTP 302 (0.2s)
+  ✅ auth HTTPS                     HTTP 200 (0.2s)
   ✅ MCP endpoint                   HTTP 400 (0.4s)
-  ✅ mail:993 TLS                   TLS OK (1.6s)
-  ✅ mail:465 TLS                   TLS OK (1.6s)
-  ✅ mail:587 STARTTLS              TLS OK (2.0s)
+  ✅ mail:993 TLS                   TLS OK (1.4s)
+  ✅ mail:465 TLS                   TLS OK (1.3s)
+  ✅ mail:587 STARTTLS              TLS OK (2.1s)
   ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
   ❌ DKIM record                    MISSING (0.0s) [CRITICAL]
   ✅ GHA health                     gh unavailable (skipped)
-  ✅ CF Worker alive                HTTP 500 (0.2s)
-  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.0s)
+  ✅ CF Worker alive                HTTP 500 (0.1s)
+  ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.1s)
   ❌ IMAP direct (WG)               10.0.0.3:993 FAIL (3.0s) [CRITICAL]
   ❌ SMTP direct (WG)               10.0.0.3:25 FAIL (3.0s) [CRITICAL]
 
@@ -100,14 +100,14 @@
   ❌ Caddy L4 -> SMTP               no proxy data [CRITICAL]
   ✅ mail:993 (IMAP)                TLS OK (0.7s)
   ✅ mail:465 (SMTPS)               TLS OK (0.7s)
-  ✅ mail:587 (SMTP Sub)            TLS OK (1.2s)
+  ✅ mail:587 (SMTP Sub)            TLS OK (1.3s)
   ⚠️  SMTP :25 relay                 no data [WARNING]
   ⚠️  SMTP :587 local TLS            no data [WARNING]
-  ✅ Webmail HTTPS                  HTTP 301 (0.1s)
+  ✅ Webmail HTTPS                  HTTP 301 (0.2s)
   ⚠️  Webmail internal               no data [WARNING]
   ⚠️  SnappyMail internal            no data [WARNING]
-  ✅ mail.*/webmail/ route          HTTP 301 (0.1s)
-  ⚠️  webmail.* redirect             302 → https://auth.diegonmarcos.com/?rd=https%3A%2F%2Fwebmail.diegonmarcos.com%2F&rm=GET (0.1s) [WARNING]
+  ✅ mail.*/webmail/ route          HTTP 301 (0.2s)
+  ⚠️  webmail.* redirect             302 → https://auth.diegonmarcos.com/?rd=https%3A%2F%2Fwebmail.diegonmarcos.com%2F&rm=GET (0.2s) [WARNING]
   ⚠️  Authelia health                no proxy data [WARNING]
   ⚠️  OIDC bearer -> webmail         no OIDC token [WARNING]
   ✅ Mail Admin via Bearer          N/A — Maddy CLI-only (no web admin)
@@ -117,7 +117,7 @@
   ⚠️  mcp->IMAP WG direct            no app data [WARNING]
   ⚠️  mcp->IMAP LOGIN                no app data [WARNING]
   ⚠️  mcp->SMTP AUTH                 no app data [WARNING]
-  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.3s)
+  ✅ mail-mcp MCP                   HTTP 400 (alive) (0.4s)
   ❌ All ports bound                no data [CRITICAL]
 
   Summary: 8/27 passed, 19 failed
@@ -146,18 +146,18 @@
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    51.1s
-  T0_path_checker          39.5s
-  P0_instant_kpis          5.4s
-  P4_dns_auth              3.2s
+  TOTAL                    51.4s
+  T0_path_checker          39.7s
+  P0_instant_kpis          5.5s
   P2-P5_parallel           3.2s
+  P4_dns_auth              3.2s
   P3_network               3.2s
   P1_preflight             3.0s
-  P5_internals             0.0s
   P6_e2e_delivery          0.0s
+  P5_internals             0.0s
   P2_containers            0.0s
 
-  Total: 51.1s | Engine: Rust (native async tokio)
+  Total: 51.4s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════

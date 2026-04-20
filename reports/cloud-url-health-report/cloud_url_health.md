@@ -6,7 +6,7 @@
   ██║   ██║██╔══██╗██║          ██╔══██║██╔══╝  ██╔══██║██║     ██║   ██╔══██║
   ╚██████╔╝██║  ██║███████╗     ██║  ██║███████╗██║  ██║███████╗██║   ██║  ██║
    ╚═════╝ ╚═╝  ╚═╝╚══════╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝
-  CLOUD URL HEALTH — 2026-04-20T02:52:59.538275273+00:00
+  CLOUD URL HEALTH — 2026-04-20T08:13:12.280827860+00:00
 ══════════════════════════════════════════════════════════════
 
   SUMMARY
@@ -68,21 +68,21 @@
 ──────────────────────────────────────────────────────────────
   DOMAIN                                    DNS  TCP  TLS  HTTP    ms  DETAIL
   ------------------------------------------------------------------------------------------
-  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 165ms  200
-  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 273ms  200
-  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 294ms  200
-  db.diegonmarcos.com                         ✅    ✅    ✅     ✅ 316ms  200
-  diegonmarcos.com                            ✅    ✅    ✅     ✅ 276ms  200
-  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 284ms  200
-  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 281ms  200
-  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 287ms  200
-  mail-stalwart.diegonmarcos.com              ✅    ✅    ✅     ✅ 314ms  200
-  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 237ms  200
-  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 274ms  200
-  smtp.diegonmarcos.com                       ✅    ✅    ✅     ✅ 311ms  405
-  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 374ms  200
-  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅ 289ms  200
-  workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 274ms  200
+  auth.diegonmarcos.com                       ✅    ✅    ✅     ✅ 253ms  200
+  cal.diegonmarcos.com                        ✅    ✅    ✅     ✅ 430ms  200
+  chat.diegonmarcos.com                       ✅    ✅    ✅     ✅ 417ms  200
+  db.diegonmarcos.com                         ✅    ✅    ✅     ✅ 429ms  200
+  diegonmarcos.com                            ✅    ✅    ✅     ✅ 313ms  200
+  git.diegonmarcos.com                        ✅    ✅    ✅     ✅ 403ms  200
+  grafana.diegonmarcos.com                    ✅    ✅    ✅     ✅ 425ms  200
+  ide.diegonmarcos.com                        ✅    ✅    ✅     ✅ 418ms  200
+  mail-stalwart.diegonmarcos.com              ✅    ✅    ✅     ✅ 489ms  200
+  photos.diegonmarcos.com                     ✅    ✅    ✅     ✅ 238ms  200
+  sheets.diegonmarcos.com                     ✅    ✅    ✅     ✅ 419ms  200
+  smtp.diegonmarcos.com                       ✅    ✅    ✅     ✅ 386ms  405
+  vault.diegonmarcos.com                      ✅    ✅    ✅     ✅ 453ms  200
+  webmail.diegonmarcos.com                    ✅    ✅    ✅     ✅ 426ms  200
+  workflows.diegonmarcos.com                  ✅    ✅    ✅     ✅ 403ms  200
 
 
 2. PRIVATE URLS (WireGuard -> Container)

@@ -1,6 +1,6 @@
 {
   "date": "2026-04-20",
-  "time": "02:53 UTC",
+  "time": "08:13 UTC",
   "vms": [
     {
       "name": "oci-mail",
@@ -228,174 +228,174 @@
       "service": "code-server",
       "url": "https://ide.diegonmarcos.com/",
       "status_code": 302,
-      "latency_ms": 587
+      "latency_ms": 474
     },
     {
       "service": "etherpad",
       "url": "https://pad.diegonmarcos.com/",
       "status_code": 200,
-      "latency_ms": 552
+      "latency_ms": 414
     },
     {
       "service": "filebrowser",
       "url": "https://files.diegonmarcos.com/health",
       "status_code": 200,
-      "latency_ms": 552
+      "latency_ms": 414
     },
     {
       "service": "grist",
       "url": "https://sheets.diegonmarcos.com/",
       "status_code": 302,
-      "latency_ms": 580
+      "latency_ms": 470
     },
     {
       "service": "hedgedoc",
       "url": "https://doc.diegonmarcos.com/",
       "status_code": 200,
-      "latency_ms": 550
+      "latency_ms": 414
     },
     {
       "service": "photoprism",
       "url": "https://photos.diegonmarcos.com/api/v1/status",
       "status_code": 302,
-      "latency_ms": 589
+      "latency_ms": 445
     },
     {
       "service": "radicale",
       "url": "https://cal.diegonmarcos.com/.web/",
       "status_code": 302,
-      "latency_ms": 588
+      "latency_ms": 468
     },
     {
       "service": "maddy",
       "url": "https://mail.diegonmarcos.com/",
       "status_code": 301,
-      "latency_ms": 537
+      "latency_ms": 433
     },
     {
       "service": "vaultwarden",
       "url": "https://vault.diegonmarcos.com/alive",
       "status_code": 200,
-      "latency_ms": 768
+      "latency_ms": 642
     },
     {
       "service": "c3-infra-api",
       "url": "https://api.diegonmarcos.com/c3-api/health",
       "status_code": 302,
-      "latency_ms": 609
+      "latency_ms": 476
     },
     {
       "service": "c3-services-api",
       "url": "https://api.diegonmarcos.com/services/health",
       "status_code": 302,
-      "latency_ms": 552
+      "latency_ms": 473
     },
     {
       "service": "dagu",
       "url": "https://workflows.diegonmarcos.com/",
       "status_code": 302,
-      "latency_ms": 608
+      "latency_ms": 466
     },
     {
       "service": "dbgate",
       "url": "https://db.diegonmarcos.com/",
       "status_code": 302,
-      "latency_ms": 538
+      "latency_ms": 459
     },
     {
       "service": "ntfy",
       "url": "https://rss.diegonmarcos.com/",
       "status_code": 302,
-      "latency_ms": 586
-    },
-    {
-      "service": "hickory-dns",
-      "url": "https://dns.internal",
-      "status_code": 0,
-      "latency_ms": 400
-    },
-    {
-      "service": "snappymail",
-      "url": "https://webmail.diegonmarcos.com",
-      "status_code": 302,
-      "latency_ms": 583
-    },
-    {
-      "service": "stalwart",
-      "url": "https://mail-stalwart.diegonmarcos.com",
-      "status_code": 200,
-      "latency_ms": 952
+      "latency_ms": 475
     },
     {
       "service": "smtp-proxy",
       "url": "https://smtp.diegonmarcos.com",
       "status_code": 405,
-      "latency_ms": 1149
+      "latency_ms": 772
     },
     {
       "service": "crawlee-cloud",
       "url": "https://api.diegonmarcos.com",
       "status_code": 200,
-      "latency_ms": 553
+      "latency_ms": 433
+    },
+    {
+      "service": "hickory-dns",
+      "url": "https://dns.internal",
+      "status_code": 0,
+      "latency_ms": 239
+    },
+    {
+      "service": "snappymail",
+      "url": "https://webmail.diegonmarcos.com",
+      "status_code": 302,
+      "latency_ms": 461
     },
     {
       "service": "lgtm",
       "url": "https://grafana.diegonmarcos.com",
       "status_code": 302,
-      "latency_ms": 599
-    },
-    {
-      "service": "dozzle",
-      "url": "https://logs.diegonmarcos.com",
-      "status_code": 200,
-      "latency_ms": 552
-    },
-    {
-      "service": "umami",
-      "url": "https://analytics.diegonmarcos.com",
-      "status_code": 302,
-      "latency_ms": 608
-    },
-    {
-      "service": "authelia",
-      "url": "https://auth.diegonmarcos.com",
-      "status_code": 200,
-      "latency_ms": 628
-    },
-    {
-      "service": "caddy",
-      "url": "https://proxy.diegonmarcos.com",
-      "status_code": 302,
-      "latency_ms": 598
-    },
-    {
-      "service": "matomo",
-      "url": "https://analytics.diegonmarcos.com",
-      "status_code": 302,
-      "latency_ms": 608
+      "latency_ms": 478
     },
     {
       "service": "gitea",
       "url": "https://git.diegonmarcos.com",
       "status_code": 302,
-      "latency_ms": 599
+      "latency_ms": 455
+    },
+    {
+      "service": "umami",
+      "url": "https://analytics.diegonmarcos.com",
+      "status_code": 302,
+      "latency_ms": 458
+    },
+    {
+      "service": "authelia",
+      "url": "https://auth.diegonmarcos.com",
+      "status_code": 200,
+      "latency_ms": 484
+    },
+    {
+      "service": "matomo",
+      "url": "https://analytics.diegonmarcos.com",
+      "status_code": 302,
+      "latency_ms": 474
     },
     {
       "service": "c3-infra-mcp",
       "url": "https://mcp.diegonmarcos.com/c3-infra-mcp",
       "status_code": 200,
-      "latency_ms": 549
+      "latency_ms": 413
     },
     {
       "service": "mattermost-bots",
       "url": "https://chat.diegonmarcos.com",
       "status_code": 302,
-      "latency_ms": 597
+      "latency_ms": 463
+    },
+    {
+      "service": "dozzle",
+      "url": "https://logs.diegonmarcos.com",
+      "status_code": 200,
+      "latency_ms": 413
+    },
+    {
+      "service": "caddy",
+      "url": "https://proxy.diegonmarcos.com",
+      "status_code": 302,
+      "latency_ms": 479
+    },
+    {
+      "service": "stalwart",
+      "url": "https://mail-stalwart.diegonmarcos.com",
+      "status_code": 200,
+      "latency_ms": 669
     }
   ],
   "certs": [
     {
-      "domain": "chat.diegonmarcos.com",
+      "domain": "db.diegonmarcos.com",
       "days_left": 70,
       "expiry": "Jun 29 22:10:39 2026 GMT"
     },
@@ -405,27 +405,7 @@
       "expiry": "Jun 29 22:10:39 2026 GMT"
     },
     {
-      "domain": "doc.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "api.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "ide.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "photos.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "vault.diegonmarcos.com",
+      "domain": "files.diegonmarcos.com",
       "days_left": 70,
       "expiry": "Jun 29 22:10:39 2026 GMT"
     },
@@ -435,32 +415,7 @@
       "expiry": "Jun 29 22:10:39 2026 GMT"
     },
     {
-      "domain": "cal.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "workflows.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "analytics.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "rss.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "files.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "mail-stalwart.diegonmarcos.com",
+      "domain": "doc.diegonmarcos.com",
       "days_left": 70,
       "expiry": "Jun 29 22:10:39 2026 GMT"
     },
@@ -470,12 +425,7 @@
       "expiry": "Jun 29 22:10:39 2026 GMT"
     },
     {
-      "domain": "pad.diegonmarcos.com",
-      "days_left": 70,
-      "expiry": "Jun 29 22:10:39 2026 GMT"
-    },
-    {
-      "domain": "grafana.diegonmarcos.com",
+      "domain": "vault.diegonmarcos.com",
       "days_left": 70,
       "expiry": "Jun 29 22:10:39 2026 GMT"
     },
@@ -485,7 +435,57 @@
       "expiry": "Jun 29 22:10:39 2026 GMT"
     },
     {
-      "domain": "db.diegonmarcos.com",
+      "domain": "mail-stalwart.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "ide.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "workflows.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "rss.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "chat.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "photos.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "pad.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "api.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "grafana.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "analytics.diegonmarcos.com",
+      "days_left": 70,
+      "expiry": "Jun 29 22:10:39 2026 GMT"
+    },
+    {
+      "domain": "cal.diegonmarcos.com",
       "days_left": 70,
       "expiry": "Jun 29 22:10:39 2026 GMT"
     }
@@ -509,6 +509,20 @@
     }
   ],
   "gha_runs": [
+    {
+      "name": "pages build and deployment",
+      "repo": "cloud-data",
+      "conclusion": "success",
+      "created_at": "2026-04-20T02:53:38Z",
+      "html_url": "https://github.com/diegonmarcos/cloud-data/actions/runs/24646199156"
+    },
+    {
+      "name": "Health Reports",
+      "repo": "cloud-data",
+      "conclusion": "success",
+      "created_at": "2026-04-20T02:50:08Z",
+      "html_url": "https://github.com/diegonmarcos/cloud-data/actions/runs/24646118820"
+    },
     {
       "name": "pages build and deployment",
       "repo": "cloud-data",
@@ -774,20 +788,6 @@
       "conclusion": "success",
       "created_at": "2026-04-19T16:05:41Z",
       "html_url": "https://github.com/diegonmarcos/cloud-data/actions/runs/24633302206"
-    },
-    {
-      "name": "pages build and deployment",
-      "repo": "cloud-data",
-      "conclusion": "success",
-      "created_at": "2026-04-19T15:51:33Z",
-      "html_url": "https://github.com/diegonmarcos/cloud-data/actions/runs/24633022030"
-    },
-    {
-      "name": "pages build and deployment",
-      "repo": "cloud-data",
-      "conclusion": "success",
-      "created_at": "2026-04-19T15:45:17Z",
-      "html_url": "https://github.com/diegonmarcos/cloud-data/actions/runs/24632899333"
     }
   ],
   "gha_workflows": [
@@ -853,7 +853,7 @@
       "state": "active",
       "path": "dynamic/pages/pages-build-deployment",
       "last_conclusion": "success",
-      "last_run_at": "2026-04-19T18:57:50Z"
+      "last_run_at": "2026-04-20T02:53:38Z"
     },
     {
       "name": "Auto-sync submodules",
@@ -869,7 +869,7 @@
       "state": "active",
       "path": ".github/workflows/health.yml",
       "last_conclusion": "success",
-      "last_run_at": "2026-04-19T18:54:17Z"
+      "last_run_at": "2026-04-20T02:50:08Z"
     },
     {
       "name": "Ship → Reports image",
@@ -1198,26 +1198,26 @@
     },
     {
       "declared_only": [
-        "crawlee_redis",
-        "grist_app",
-        "matomo-hybrid",
-        "hedgedoc_postgres",
-        "crawlee_minio",
-        "quant_light_db",
-        "lgtm_tempo",
-        "etherpad_postgres",
-        "mattermost-postgres",
-        "ntfy",
-        "filebrowser_app",
-        "vaultwarden",
-        "photoprism_mariadb",
-        "radicale",
-        "crawlee_db",
         "gitea",
+        "mattermost-postgres",
+        "umami-db",
+        "grist_app",
+        "crawlee_redis",
+        "quant_light_db",
+        "photoprism_mariadb",
+        "ntfy",
+        "lgtm_tempo",
+        "hedgedoc_postgres",
+        "filebrowser_app",
+        "crawlee_db",
         "lgtm_loki",
-        "lgtm_grafana",
+        "etherpad_postgres",
+        "vaultwarden",
+        "matomo-hybrid",
         "lgtm_mimir",
-        "umami-db"
+        "crawlee_minio",
+        "radicale",
+        "lgtm_grafana"
       ],
       "runtime_only": [],
       "matched": []
@@ -1376,31 +1376,59 @@
   "cloud_costs": [],
   "services": [
     {
-      "name": "fluent-bit",
-      "category": "tools",
-      "vm": "oci-E2-f_1",
-      "domain": "",
+      "name": "smtp-proxy",
+      "category": "app",
+      "vm": "oci-E2-f_0",
+      "domain": "smtp.diegonmarcos.com",
       "enabled": true,
       "containers": 1,
-      "port": 2020,
-      "service_type": "infra",
-      "has_api": false,
+      "port": 8080,
+      "service_type": "app",
+      "has_api": true,
       "has_web_ui": false,
       "api_path": "",
       "api_url": ""
     },
     {
-      "name": "rig-agentic-sonn-14bq8",
+      "name": "crawlee-cloud",
+      "category": "fin",
+      "vm": "oci-A1-f_0",
+      "domain": "api.diegonmarcos.com",
+      "enabled": true,
+      "containers": 7,
+      "port": 3000,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api",
+      "api_url": "https://api.diegonmarcos.com/api"
+    },
+    {
+      "name": "vaultwarden",
+      "category": "mic",
+      "vm": "oci-A1-f_0",
+      "domain": "vault.diegonmarcos.com",
+      "enabled": true,
+      "containers": 1,
+      "port": 8880,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api",
+      "api_url": "https://vault.diegonmarcos.com/api"
+    },
+    {
+      "name": "ollama-hai",
       "category": "agi",
       "vm": "oci-A1-f_0",
       "domain": "",
       "enabled": true,
       "containers": 1,
-      "port": 8091,
+      "port": 11435,
       "service_type": "app",
-      "has_api": false,
+      "has_api": true,
       "has_web_ui": false,
-      "api_path": "",
+      "api_path": "/api",
       "api_url": ""
     },
     {
@@ -1418,9 +1446,359 @@
       "api_url": ""
     },
     {
+      "name": "etherpad",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "pad.diegonmarcos.com",
+      "enabled": true,
+      "containers": 2,
+      "port": 3012,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api/1",
+      "api_url": "https://pad.diegonmarcos.com/api/1"
+    },
+    {
+      "name": "rig-agentic-hai-1.5bq4",
+      "category": "agi",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": false,
+      "containers": 1,
+      "port": 8091,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "backup-borg",
+      "category": "data",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": false,
+      "containers": 1,
+      "port": 2224,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "kg-graph",
+      "category": "data",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": false,
+      "containers": 1,
+      "port": 8001,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "hedgedoc",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "doc.diegonmarcos.com",
+      "enabled": true,
+      "containers": 2,
+      "port": 3018,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api",
+      "api_url": "https://doc.diegonmarcos.com/api"
+    },
+    {
+      "name": "snappymail",
+      "category": "app",
+      "vm": "oci-E2-f_0",
+      "domain": "webmail.diegonmarcos.com",
+      "enabled": true,
+      "containers": 1,
+      "port": 8888,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "fluent-bit",
+      "category": "tools",
+      "vm": "oci-E2-f_1",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 2020,
+      "service_type": "infra",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "sauron-lite",
+      "category": "tools",
+      "vm": "all",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 0,
+      "service_type": "infra",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "revealmd",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": false,
+      "containers": 1,
+      "port": 3014,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "lgtm",
+      "category": "tools",
+      "vm": "oci-A1-f_0",
+      "domain": "grafana.diegonmarcos.com",
+      "enabled": true,
+      "containers": 4,
+      "port": 3200,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api/health",
+      "api_url": "https://grafana.diegonmarcos.com/api/health"
+    },
+    {
+      "name": "ollama-arm",
+      "category": "agi",
+      "vm": "oci-apps-2",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 11434,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": false,
+      "api_path": "/api",
+      "api_url": ""
+    },
+    {
+      "name": "gitea",
+      "category": "data",
+      "vm": "oci-A1-f_0",
+      "domain": "git.diegonmarcos.com",
+      "enabled": true,
+      "containers": 1,
+      "port": 3002,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api/v1",
+      "api_url": "https://git.diegonmarcos.com/api/v1"
+    },
+    {
+      "name": "redis",
+      "category": "data",
+      "vm": "gcp-E2-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 6379,
+      "service_type": "infra",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "umami",
+      "category": "tools",
+      "vm": "oci-A1-f_0",
+      "domain": "analytics.diegonmarcos.com",
+      "enabled": true,
+      "containers": 3,
+      "port": 3006,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api/heartbeat",
+      "api_url": "https://analytics.diegonmarcos.com/api/heartbeat"
+    },
+    {
+      "name": "radicale",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "cal.diegonmarcos.com",
+      "enabled": true,
+      "containers": 1,
+      "port": 5232,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/.well-known/caldav",
+      "api_url": "https://cal.diegonmarcos.com/.well-known/caldav"
+    },
+    {
+      "name": "syslog-forwarder",
+      "category": "tools",
+      "vm": "oci-E2-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 0,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "db-agent",
+      "category": "data",
+      "vm": "all",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 0,
+      "service_type": "infra",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "photos-webhook",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 5002,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "authelia",
+      "category": "sec",
+      "vm": "gcp-E2-f_0",
+      "domain": "auth.diegonmarcos.com",
+      "enabled": true,
+      "containers": 3,
+      "port": 9091,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api/health",
+      "api_url": "https://auth.diegonmarcos.com/api/health"
+    },
+    {
+      "name": "mattermost-mcp",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 3102,
+      "service_type": "mcp",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "matomo",
+      "category": "tools",
+      "vm": "oci-A1-f_0",
+      "domain": "analytics.diegonmarcos.com",
+      "enabled": true,
+      "containers": 1,
+      "port": 8084,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/?module=API",
+      "api_url": "https://analytics.diegonmarcos.com/?module=API"
+    },
+    {
+      "name": "cloud-cgc-mcp",
+      "category": "obs",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 3105,
+      "service_type": "mcp",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "backup-bup",
+      "category": "data",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": false,
+      "containers": 1,
+      "port": 2223,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
       "name": "news-gdelt",
       "category": "tools",
       "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 0,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "code-server",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "ide.diegonmarcos.com",
+      "enabled": true,
+      "containers": 1,
+      "port": 8443,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "gcloud",
+      "category": "cloud",
+      "vm": "local",
       "domain": "",
       "enabled": true,
       "containers": 1,
@@ -1446,16 +1824,44 @@
       "api_url": "https://files.diegonmarcos.com/api"
     },
     {
-      "name": "snappymail",
-      "category": "app",
-      "vm": "oci-E2-f_0",
-      "domain": "webmail.diegonmarcos.com",
+      "name": "ollama",
+      "category": "agi",
+      "vm": "gcp-T4-p_0",
+      "domain": "",
       "enabled": true,
       "containers": 1,
-      "port": 8888,
+      "port": 11434,
       "service_type": "app",
       "has_api": true,
-      "has_web_ui": true,
+      "has_web_ui": false,
+      "api_path": "/api",
+      "api_url": ""
+    },
+    {
+      "name": "c3-services-mcp",
+      "category": "obs",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 3101,
+      "service_type": "mcp",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "google-workspace-mcp",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 3104,
+      "service_type": "mcp",
+      "has_api": false,
+      "has_web_ui": false,
       "api_path": "",
       "api_url": ""
     },
@@ -1474,101 +1880,17 @@
       "api_url": ""
     },
     {
-      "name": "google-workspace-mcp",
-      "category": "app",
-      "vm": "oci-A1-f_0",
+      "name": "cloudflare-worker",
+      "category": "cloud",
+      "vm": "local",
       "domain": "",
       "enabled": true,
       "containers": 1,
-      "port": 3104,
-      "service_type": "mcp",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "cloud-cgc-mcp",
-      "category": "obs",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 3105,
-      "service_type": "mcp",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "stalwart",
-      "category": "app",
-      "vm": "oci-E2-f_0",
-      "domain": "mail-stalwart.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 2443,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "smtp-proxy",
-      "category": "app",
-      "vm": "oci-E2-f_0",
-      "domain": "smtp.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 8080,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "radicale",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "cal.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 5232,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/.well-known/caldav",
-      "api_url": "https://cal.diegonmarcos.com/.well-known/caldav"
-    },
-    {
-      "name": "crawlee-cloud",
-      "category": "fin",
-      "vm": "oci-A1-f_0",
-      "domain": "api.diegonmarcos.com",
-      "enabled": true,
-      "containers": 7,
-      "port": 3000,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api",
-      "api_url": "https://api.diegonmarcos.com/api"
-    },
-    {
-      "name": "quant-lab-full",
-      "category": "fin",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": false,
-      "containers": 6,
       "port": 0,
       "service_type": "app",
-      "has_api": true,
+      "has_api": false,
       "has_web_ui": false,
-      "api_path": "/api",
+      "api_path": "",
       "api_url": ""
     },
     {
@@ -1586,130 +1908,88 @@
       "api_url": ""
     },
     {
-      "name": "lgtm",
-      "category": "tools",
+      "name": "c3-infra-mcp",
+      "category": "sec",
       "vm": "oci-A1-f_0",
-      "domain": "grafana.diegonmarcos.com",
-      "enabled": true,
-      "containers": 4,
-      "port": 3200,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api/health",
-      "api_url": "https://grafana.diegonmarcos.com/api/health"
-    },
-    {
-      "name": "syslog-forwarder",
-      "category": "tools",
-      "vm": "oci-E2-f_0",
-      "domain": "",
+      "domain": "mcp.diegonmarcos.com/c3-infra-mcp",
       "enabled": true,
       "containers": 1,
-      "port": 0,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "backup-borg",
-      "category": "data",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": false,
-      "containers": 1,
-      "port": 2224,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "photos-webhook",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 5002,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "hedgedoc",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "doc.diegonmarcos.com",
-      "enabled": true,
-      "containers": 2,
-      "port": 3018,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api",
-      "api_url": "https://doc.diegonmarcos.com/api"
-    },
-    {
-      "name": "kg-graph",
-      "category": "data",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": false,
-      "containers": 1,
-      "port": 8001,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "cloudflare-worker",
-      "category": "cloud",
-      "vm": "local",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 0,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "sauron-lite",
-      "category": "tools",
-      "vm": "all",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 0,
-      "service_type": "infra",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "c3-services-mcp",
-      "category": "obs",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 3101,
+      "port": 3100,
       "service_type": "mcp",
+      "has_api": true,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "maddy",
+      "category": "app",
+      "vm": "oci-E2-f_0",
+      "domain": "mail.diegonmarcos.com",
+      "enabled": true,
+      "containers": 1,
+      "port": 0,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "quant-lab-full",
+      "category": "fin",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": false,
+      "containers": 6,
+      "port": 0,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": false,
+      "api_path": "/api",
+      "api_url": ""
+    },
+    {
+      "name": "cloud-spec",
+      "category": "tools",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 3080,
+      "service_type": "app",
       "has_api": false,
       "has_web_ui": false,
       "api_path": "",
       "api_url": ""
+    },
+    {
+      "name": "rig-agentic-sonn-14bq8",
+      "category": "agi",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": true,
+      "containers": 1,
+      "port": 8091,
+      "service_type": "app",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
+      "name": "mattermost-bots",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "chat.diegonmarcos.com",
+      "enabled": true,
+      "containers": 3,
+      "port": 8065,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api/v4/system/ping",
+      "api_url": "https://chat.diegonmarcos.com/api/v4/system/ping"
     },
     {
       "name": "dozzle",
@@ -1740,127 +2020,15 @@
       "api_url": ""
     },
     {
-      "name": "vaultwarden",
-      "category": "mic",
-      "vm": "oci-A1-f_0",
-      "domain": "vault.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 8880,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api",
-      "api_url": "https://vault.diegonmarcos.com/api"
-    },
-    {
-      "name": "cloud-spec",
-      "category": "tools",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 3080,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "etherpad",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "pad.diegonmarcos.com",
-      "enabled": true,
-      "containers": 2,
-      "port": 3012,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api/1",
-      "api_url": "https://pad.diegonmarcos.com/api/1"
-    },
-    {
-      "name": "photoprism",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "photos.diegonmarcos.com",
-      "enabled": true,
-      "containers": 3,
-      "port": 3013,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api/v1/status",
-      "api_url": "https://photos.diegonmarcos.com/api/v1/status"
-    },
-    {
-      "name": "gcloud",
-      "category": "cloud",
-      "vm": "local",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 0,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "sauron-central",
-      "category": "sec",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": false,
-      "containers": 1,
-      "port": 0,
-      "service_type": "infra",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "dagu",
+      "name": "sauron-forwarder",
       "category": "tools",
       "vm": "oci-E2-f_1",
-      "domain": "workflows.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 8070,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api/v2",
-      "api_url": "https://workflows.diegonmarcos.com/api/v2"
-    },
-    {
-      "name": "backup-bup",
-      "category": "data",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": false,
-      "containers": 1,
-      "port": 2223,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "introspect-proxy",
-      "category": "sec",
-      "vm": "gcp-E2-f_0",
       "domain": "",
       "enabled": true,
       "containers": 1,
-      "port": 4182,
+      "port": 0,
       "service_type": "infra",
-      "has_api": true,
+      "has_api": false,
       "has_web_ui": false,
       "api_path": "",
       "api_url": ""
@@ -1880,6 +2048,62 @@
       "api_url": "https://api.diegonmarcos.com/c3-api/docs"
     },
     {
+      "name": "c3-services-api",
+      "category": "obs",
+      "vm": "oci-A1-f_0",
+      "domain": "api.diegonmarcos.com/services",
+      "enabled": true,
+      "containers": 1,
+      "port": 8082,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/docs",
+      "api_url": "https://api.diegonmarcos.com/services/docs"
+    },
+    {
+      "name": "grist",
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "domain": "sheets.diegonmarcos.com",
+      "enabled": true,
+      "containers": 1,
+      "port": 3011,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api",
+      "api_url": "https://sheets.diegonmarcos.com/api"
+    },
+    {
+      "name": "ntfy",
+      "category": "tools",
+      "vm": "oci-A1-f_0",
+      "domain": "rss.diegonmarcos.com",
+      "enabled": true,
+      "containers": 3,
+      "port": 8090,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/v1",
+      "api_url": "https://rss.diegonmarcos.com/v1"
+    },
+    {
+      "name": "sauron-central",
+      "category": "sec",
+      "vm": "oci-A1-f_0",
+      "domain": "",
+      "enabled": false,
+      "containers": 1,
+      "port": 0,
+      "service_type": "infra",
+      "has_api": false,
+      "has_web_ui": false,
+      "api_path": "",
+      "api_url": ""
+    },
+    {
       "name": "c3-diego-personal-data-mcp",
       "category": "data",
       "vm": "local",
@@ -1891,118 +2115,6 @@
       "has_api": false,
       "has_web_ui": false,
       "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "umami",
-      "category": "tools",
-      "vm": "oci-A1-f_0",
-      "domain": "analytics.diegonmarcos.com",
-      "enabled": true,
-      "containers": 3,
-      "port": 3006,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api/heartbeat",
-      "api_url": "https://analytics.diegonmarcos.com/api/heartbeat"
-    },
-    {
-      "name": "maddy",
-      "category": "app",
-      "vm": "oci-E2-f_0",
-      "domain": "mail.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 0,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "mattermost-mcp",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 3102,
-      "service_type": "mcp",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "redis",
-      "category": "data",
-      "vm": "gcp-E2-f_0",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 6379,
-      "service_type": "infra",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "authelia",
-      "category": "sec",
-      "vm": "gcp-E2-f_0",
-      "domain": "auth.diegonmarcos.com",
-      "enabled": true,
-      "containers": 3,
-      "port": 9091,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api/health",
-      "api_url": "https://auth.diegonmarcos.com/api/health"
-    },
-    {
-      "name": "sauron-forwarder",
-      "category": "tools",
-      "vm": "oci-E2-f_1",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 0,
-      "service_type": "infra",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "revealmd",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": false,
-      "containers": 1,
-      "port": 3014,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "ollama-hai",
-      "category": "agi",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 11435,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": false,
-      "api_path": "/api",
       "api_url": ""
     },
     {
@@ -2020,48 +2132,6 @@
       "api_url": ""
     },
     {
-      "name": "ollama-arm",
-      "category": "agi",
-      "vm": "oci-apps-2",
-      "domain": "",
-      "enabled": true,
-      "containers": 1,
-      "port": 11434,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": false,
-      "api_path": "/api",
-      "api_url": ""
-    },
-    {
-      "name": "matomo",
-      "category": "tools",
-      "vm": "oci-A1-f_0",
-      "domain": "analytics.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 8084,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/?module=API",
-      "api_url": "https://analytics.diegonmarcos.com/?module=API"
-    },
-    {
-      "name": "gitea",
-      "category": "data",
-      "vm": "oci-A1-f_0",
-      "domain": "git.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 3002,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api/v1",
-      "api_url": "https://git.diegonmarcos.com/api/v1"
-    },
-    {
       "name": "cloud-builder-x",
       "category": "tools",
       "vm": "oci-A1-f_0",
@@ -2072,62 +2142,6 @@
       "service_type": "app",
       "has_api": false,
       "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "rig-agentic-hai-1.5bq4",
-      "category": "agi",
-      "vm": "oci-A1-f_0",
-      "domain": "",
-      "enabled": false,
-      "containers": 1,
-      "port": 8091,
-      "service_type": "app",
-      "has_api": false,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "c3-services-api",
-      "category": "obs",
-      "vm": "oci-A1-f_0",
-      "domain": "api.diegonmarcos.com/services",
-      "enabled": true,
-      "containers": 1,
-      "port": 8082,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/docs",
-      "api_url": "https://api.diegonmarcos.com/services/docs"
-    },
-    {
-      "name": "c3-infra-mcp",
-      "category": "sec",
-      "vm": "oci-A1-f_0",
-      "domain": "mcp.diegonmarcos.com/c3-infra-mcp",
-      "enabled": true,
-      "containers": 1,
-      "port": 3100,
-      "service_type": "mcp",
-      "has_api": true,
-      "has_web_ui": false,
-      "api_path": "",
-      "api_url": ""
-    },
-    {
-      "name": "code-server",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "ide.diegonmarcos.com",
-      "enabled": true,
-      "containers": 1,
-      "port": 8443,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
       "api_path": "",
       "api_url": ""
     },
@@ -2146,98 +2160,74 @@
       "api_url": ""
     },
     {
-      "name": "grist",
+      "name": "photoprism",
       "category": "app",
       "vm": "oci-A1-f_0",
-      "domain": "sheets.diegonmarcos.com",
+      "domain": "photos.diegonmarcos.com",
+      "enabled": true,
+      "containers": 3,
+      "port": 3013,
+      "service_type": "app",
+      "has_api": true,
+      "has_web_ui": true,
+      "api_path": "/api/v1/status",
+      "api_url": "https://photos.diegonmarcos.com/api/v1/status"
+    },
+    {
+      "name": "stalwart",
+      "category": "app",
+      "vm": "oci-E2-f_0",
+      "domain": "mail-stalwart.diegonmarcos.com",
       "enabled": true,
       "containers": 1,
-      "port": 3011,
+      "port": 2443,
       "service_type": "app",
       "has_api": true,
       "has_web_ui": true,
-      "api_path": "/api",
-      "api_url": "https://sheets.diegonmarcos.com/api"
+      "api_path": "",
+      "api_url": ""
     },
     {
-      "name": "mattermost-bots",
-      "category": "app",
-      "vm": "oci-A1-f_0",
-      "domain": "chat.diegonmarcos.com",
-      "enabled": true,
-      "containers": 3,
-      "port": 8065,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/api/v4/system/ping",
-      "api_url": "https://chat.diegonmarcos.com/api/v4/system/ping"
-    },
-    {
-      "name": "ntfy",
-      "category": "tools",
-      "vm": "oci-A1-f_0",
-      "domain": "rss.diegonmarcos.com",
-      "enabled": true,
-      "containers": 3,
-      "port": 8090,
-      "service_type": "app",
-      "has_api": true,
-      "has_web_ui": true,
-      "api_path": "/v1",
-      "api_url": "https://rss.diegonmarcos.com/v1"
-    },
-    {
-      "name": "db-agent",
-      "category": "data",
-      "vm": "all",
+      "name": "introspect-proxy",
+      "category": "sec",
+      "vm": "gcp-E2-f_0",
       "domain": "",
       "enabled": true,
       "containers": 1,
-      "port": 0,
+      "port": 4182,
       "service_type": "infra",
-      "has_api": false,
+      "has_api": true,
       "has_web_ui": false,
       "api_path": "",
       "api_url": ""
     },
     {
-      "name": "ollama",
-      "category": "agi",
-      "vm": "gcp-T4-p_0",
-      "domain": "",
+      "name": "dagu",
+      "category": "tools",
+      "vm": "oci-E2-f_1",
+      "domain": "workflows.diegonmarcos.com",
       "enabled": true,
       "containers": 1,
-      "port": 11434,
+      "port": 8070,
       "service_type": "app",
       "has_api": true,
-      "has_web_ui": false,
-      "api_path": "/api",
-      "api_url": ""
+      "has_web_ui": true,
+      "api_path": "/api/v2",
+      "api_url": "https://workflows.diegonmarcos.com/api/v2"
     }
   ],
   "repos": [],
   "mcp_servers": [],
   "vps_providers": [
     {
+      "name": "oci",
+      "provider": "Oracle Cloud",
+      "tier": "Free + Paid"
+    },
+    {
       "name": "vast-ai",
       "provider": "Vast.ai",
       "tier": "On-demand rental"
-    },
-    {
-      "name": "nvidia-llm-api",
-      "provider": "nvidia-llm-api",
-      "tier": "?"
-    },
-    {
-      "name": "hetzner",
-      "provider": "hetzner",
-      "tier": "?"
-    },
-    {
-      "name": "resend",
-      "provider": "resend",
-      "tier": "?"
     },
     {
       "name": "aws",
@@ -2245,37 +2235,27 @@
       "tier": "Exploration"
     },
     {
-      "name": "oci",
-      "provider": "Oracle Cloud",
-      "tier": "Free + Paid"
+      "name": "hetzner",
+      "provider": "hetzner",
+      "tier": "?"
     },
     {
       "name": "gcloud",
       "provider": "Google Cloud",
       "tier": "Free + Paid (Spot)"
+    },
+    {
+      "name": "nvidia-llm-api",
+      "provider": "nvidia-llm-api",
+      "tier": "?"
+    },
+    {
+      "name": "resend",
+      "provider": "resend",
+      "tier": "?"
     }
   ],
   "vm_finops": [
-    {
-      "alias": "gcp-t4",
-      "provider": "GCP",
-      "tier": "Paid",
-      "cpu": 4,
-      "ram_gb": 15.0,
-      "shape": "n1-standard-4",
-      "services": 1,
-      "containers": 1
-    },
-    {
-      "alias": "gcp-proxy",
-      "provider": "GCP",
-      "tier": "Free",
-      "cpu": 2,
-      "ram_gb": 2.0,
-      "shape": "e2-small",
-      "services": 5,
-      "containers": 7
-    },
     {
       "alias": "vast-ollama",
       "provider": "?",
@@ -2297,14 +2277,14 @@
       "containers": 5
     },
     {
-      "alias": "oci-analytics",
-      "provider": "OCI",
-      "tier": "Free",
-      "cpu": 1,
-      "ram_gb": 1.0,
-      "shape": "VM.Standard.E2.1.Micro",
-      "services": 4,
-      "containers": 4
+      "alias": "gcp-t4",
+      "provider": "GCP",
+      "tier": "Paid",
+      "cpu": 4,
+      "ram_gb": 15.0,
+      "shape": "n1-standard-4",
+      "services": 1,
+      "containers": 1
     },
     {
       "alias": "oci-apps",
@@ -2315,12 +2295,32 @@
       "shape": "VM.Standard.A1.Flex",
       "services": 38,
       "containers": 52
+    },
+    {
+      "alias": "oci-analytics",
+      "provider": "OCI",
+      "tier": "Free",
+      "cpu": 1,
+      "ram_gb": 1.0,
+      "shape": "VM.Standard.E2.1.Micro",
+      "services": 4,
+      "containers": 4
+    },
+    {
+      "alias": "gcp-proxy",
+      "provider": "GCP",
+      "tier": "Free",
+      "cpu": 2,
+      "ram_gb": 2.0,
+      "shape": "e2-small",
+      "services": 5,
+      "containers": 7
     }
   ],
   "total_services": 53,
   "total_containers": 0,
   "total_domains": 27,
-  "generation_duration_ms": 10272,
+  "generation_duration_ms": 10136,
   "ai": null,
   "umami_sites": [],
   "container_cpu_ranking": [],
@@ -2716,16 +2716,16 @@
       {
         "name": "OCI relay :587",
         "passed": true,
-        "details": "smtp.email.eu-marseille-1.oci.oraclecloud.com:587 connected in 89ms",
+        "details": "smtp.email.eu-marseille-1.oci.oraclecloud.com:587 connected in 173ms",
         "severity": "info",
-        "duration_ms": 232
+        "duration_ms": 265
       },
       {
         "name": "AWS relay :587 (fallback)",
         "passed": true,
-        "details": "email-smtp.us-east-1.amazonaws.com:587 connected in 43ms",
+        "details": "email-smtp.us-east-1.amazonaws.com:587 connected in 71ms",
         "severity": "info",
-        "duration_ms": 186
+        "duration_ms": 163
       }
     ],
     "inbound_path": [
@@ -2734,14 +2734,14 @@
         "passed": true,
         "details": "22 route1.mx.cloudflare.net., 85 route2.mx.cloudflare.net., 97 route3.mx.cloudflare.net.",
         "severity": "info",
-        "duration_ms": 182
+        "duration_ms": 134
       },
       {
         "name": "smtp HTTPS (CF Worker chain)",
         "passed": true,
         "details": "https://smtp.diegonmarcos.com -> HTTP 405",
         "severity": "info",
-        "duration_ms": 849
+        "duration_ms": 508
       },
       {
         "name": "Hickory DNS smtp-proxy.app",
@@ -2755,21 +2755,21 @@
         "passed": false,
         "details": "10.0.0.3:8080 timeout after 3000ms",
         "severity": "critical",
-        "duration_ms": 3000
+        "duration_ms": 3001
       },
       {
         "name": "Maddy :25",
         "passed": false,
         "details": "10.0.0.3:25 timeout after 3000ms",
         "severity": "critical",
-        "duration_ms": 3000
+        "duration_ms": 3001
       },
       {
         "name": "IMAP :993",
         "passed": false,
         "details": "10.0.0.3:993 timeout after 3000ms",
         "severity": "critical",
-        "duration_ms": 3000
+        "duration_ms": 3001
       }
     ],
     "dns_auth": [
@@ -2778,28 +2778,28 @@
         "passed": true,
         "details": "22 route1.mx.cloudflare.net., 85 route2.mx.cloudflare.net., 97 route3.mx.cloudflare.net.",
         "severity": "info",
-        "duration_ms": 150
+        "duration_ms": 127
       },
       {
         "name": "DKIM record",
         "passed": false,
         "details": "dkim._domainkey.diegonmarcos.com lookup failed",
         "severity": "critical",
-        "duration_ms": 150
+        "duration_ms": 124
       },
       {
         "name": "SPF record",
         "passed": true,
         "details": "v=spf1 ip4:130.110.251.193 include:_spf.mx.cloudflare.net include:amazonses.com include:eu.rp.oracleemaildelivery.com -all",
         "severity": "info",
-        "duration_ms": 150
+        "duration_ms": 124
       },
       {
         "name": "DMARC record",
         "passed": true,
         "details": "v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
         "severity": "info",
-        "duration_ms": 150
+        "duration_ms": 127
       }
     ],
     "tls_ports": [
@@ -2808,21 +2808,21 @@
         "passed": true,
         "details": "mail.diegonmarcos.com:993 TLS OK",
         "severity": "info",
-        "duration_ms": 914
+        "duration_ms": 1603
       },
       {
         "name": "SMTPS :465",
         "passed": true,
         "details": "mail.diegonmarcos.com:465 TLS OK",
         "severity": "info",
-        "duration_ms": 905
+        "duration_ms": 1088
       },
       {
         "name": "STARTTLS :587",
         "passed": true,
         "details": "mail.diegonmarcos.com:587 TLS OK",
         "severity": "info",
-        "duration_ms": 1506
+        "duration_ms": 2487
       }
     ],
     "containers": [
@@ -2968,42 +2968,42 @@
         "passed": true,
         "details": "mail.diegonmarcos.com:2993 TLS OK",
         "severity": "info",
-        "duration_ms": 1203
+        "duration_ms": 1086
       },
       {
         "name": "Stalwart SMTPS TLS :2465",
         "passed": true,
         "details": "mail.diegonmarcos.com:2465 TLS OK",
         "severity": "info",
-        "duration_ms": 1198
+        "duration_ms": 991
       },
       {
         "name": "Stalwart STARTTLS :2587",
         "passed": true,
         "details": "mail.diegonmarcos.com:2587 TLS OK",
         "severity": "info",
-        "duration_ms": 1986
+        "duration_ms": 1570
       },
       {
         "name": "Stalwart HTTPS/JMAP TLS :2443",
         "passed": true,
         "details": "mail-stalwart.diegonmarcos.com:2443 TLS OK",
         "severity": "info",
-        "duration_ms": 1186
+        "duration_ms": 867
       },
       {
         "name": "JMAP .well-known",
         "passed": true,
         "details": "JMAP capabilities present",
         "severity": "info",
-        "duration_ms": 1377
+        "duration_ms": 961
       },
       {
         "name": "Stalwart webadmin",
         "passed": true,
         "details": "HTTP 200 (alive)",
         "severity": "info",
-        "duration_ms": 975
+        "duration_ms": 960
       }
     ],
     "summary": {
