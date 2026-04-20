@@ -4696,5 +4696,51 @@
         "duration_s": 13
       }
     ]
+  },
+  {
+    "vm": "gcp-proxy",
+    "run_id": "24670700953",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/24670700953",
+    "sha": "98037a3966a60ef22b858b4d141449f5161b0243",
+    "trigger": "workflow_dispatch",
+    "ts": "2026-04-20T14:02:03Z",
+    "duration_s": 58,
+    "total": 5,
+    "ok": 0,
+    "fail": 5,
+    "skip": 0,
+    "status": "failure",
+    "services": [
+      {
+        "name": "hickory-dns",
+        "dir": "ba-clo_hickory-dns",
+        "status": "fail",
+        "duration_s": 16
+      },
+      {
+        "name": "authelia",
+        "dir": "bb-sec_authelia",
+        "status": "fail",
+        "duration_s": 32
+      },
+      {
+        "name": "caddy",
+        "dir": "bb-sec_caddy",
+        "status": "fail",
+        "duration_s": 42
+      },
+      {
+        "name": "introspect-proxy",
+        "dir": "bb-sec_introspect-proxy",
+        "status": "fail",
+        "duration_s": 39
+      },
+      {
+        "name": "redis",
+        "dir": "ca-dat_redis",
+        "status": "fail",
+        "duration_s": 23
+      }
+    ]
   }
 ]
