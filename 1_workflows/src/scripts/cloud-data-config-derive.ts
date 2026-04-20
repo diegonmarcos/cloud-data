@@ -851,6 +851,7 @@ function deriveAutheliaAcl(c: any): DerivedFile {
 function deriveAuthelia(c: any): DerivedFile {
   const serviceConnections = deriveServiceConnections(c).data as any;
   const aclData = deriveAutheliaAcl(c).data as any;
+  const container = c.services?.authelia?.containers?.app ?? {};
 
   return {
     name: "build-authelia.json",
@@ -861,6 +862,8 @@ function deriveAuthelia(c: any): DerivedFile {
       },
       _generated: now(),
       _source: "_cloud-data-consolidated.json via cloud-data-config-derive.ts/authelia",
+      container,
+      service: "authelia",
       services: serviceConnections.services ?? {},
       acl: { rules: aclData.rules ?? [] },
     },
@@ -869,6 +872,7 @@ function deriveAuthelia(c: any): DerivedFile {
 
 function deriveRedis(c: any): DerivedFile {
   const serviceConnections = deriveServiceConnections(c).data as any;
+  const container = c.services?.redis?.containers?.app ?? {};
 
   return {
     name: "build-redis.json",
@@ -879,9 +883,50 @@ function deriveRedis(c: any): DerivedFile {
       },
       _generated: now(),
       _source: "_cloud-data-consolidated.json via cloud-data-config-derive.ts/redis",
+      container,
+      service: "redis",
       services: serviceConnections.services ?? {},
     },
   };
+}
+
+/** Generic: emit one build-{container}.json per container in the topology.
+ *  Skips containers that already have a specialized derive function
+ *  (caddy, authelia, redis — those add extra data like routes or acl).
+ */
+function deriveContainerConfigs(c: any): DerivedFile[] {
+  const serviceConnections = deriveServiceConnections(c).data as any;
+  const services = c.services as Record<string, any>;
+  const vms = c.vms as Record<string, any>;
+  const SPECIAL_CASES = new Set(["caddy", "authelia", "redis"]);
+  const files: DerivedFile[] = [];
+
+  for (const [svcName, svc] of Object.entries(services)) {
+    const containers = (svc as any).containers ?? {};
+    for (const [role, ct] of Object.entries(containers) as [string, any][]) {
+      const containerName = ct.container_name || svcName;
+      if (SPECIAL_CASES.has(containerName)) continue;
+
+      const vmEntry = vms[(svc as any).vm];
+      files.push({
+        name: `build-${containerName}.json`,
+        data: {
+          _meta: {
+            description: `${containerName} container config (service=${svcName}, role=${role})`,
+            format_version: 1,
+          },
+          _generated: now(),
+          _source: "_cloud-data-consolidated.json via cloud-data-config-derive.ts/container-configs",
+          container: ct,
+          service: svcName,
+          role,
+          vm: vmEntry?.ssh_alias ?? (svc as any).vm,
+          services: serviceConnections.services ?? {},
+        },
+      });
+    }
+  }
+  return files;
 }
 
 function deriveHomeManager(c: any): DerivedFile {
@@ -1695,6 +1740,7 @@ function main() {
     deriveAutheliaAcl(consolidated),
     deriveAuthelia(consolidated),
     deriveRedis(consolidated),
+    ...deriveContainerConfigs(consolidated),
     deriveHomeManager(consolidated),
     deriveGhaConfig(consolidated),
     deriveWireguardPeers(consolidated),

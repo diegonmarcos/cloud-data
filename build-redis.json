@@ -4,8 +4,28 @@
     "description": "Redis consolidated config -- consumed by ca-dat_redis/src/flake.nix",
     "format_version": 1
   },
-  "_generated": "2026-04-20T12:24:31.530Z",
+  "_generated": "2026-04-20T14:07:13.391Z",
   "_source": "_cloud-data-consolidated.json via cloud-data-config-derive.ts/redis",
+  "container": {
+    "container_name": "redis",
+    "image": "redis:alpine",
+    "port": 6379,
+    "port_env": null,
+    "dns": "redis.app",
+    "public": false,
+    "proxy": null,
+    "healthcheck": "redis-cli ping",
+    "volumes": [
+      "/data/redis:/data"
+    ],
+    "env_file": true,
+    "depends_on": [],
+    "resources": null,
+    "read_only": false,
+    "protocol": "tcp",
+    "db_engine": "redis"
+  },
+  "service": "redis",
   "services": {
     "code-server": {
       "ip": "10.0.0.6",
