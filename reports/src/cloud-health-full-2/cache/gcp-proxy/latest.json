@@ -1,0 +1,13 @@
+{
+  "vm": "arch-1",
+  "timestamp": "2026-04-20T14:19:29Z",
+  "mem": {"used":1102,"total":1952,"pct":56},
+  "swap": {"used":132,"total":3999},
+  "disk": {"used":"23G","total":"31G","pct":"76%"},
+  "load": "1.76 1.19 0.60",
+  "uptime": "19d 16h",
+  "wg_up": true,
+  "containers_running": 14,
+  "containers_total": 14,
+  "containers": [{"name":"authelia","status":"Up 20 minutes (healthy)","health":"healthy"},{"name":"authelia-redis","status":"Up 20 minutes","health":"none"},{"name":"caddy","status":"Up 20 hours","health":"none"},{"name":"introspect-proxy","status":"Up 20 hours (healthy)","health":"healthy"},{"name":"hickory-dns","status":"Up 23 hours","health":"none"},{"name":"vaultwarden","status":"Up 3 days (healthy)","health":"healthy"},{"name":"redis","status":"Up 3 days (healthy)","health":"healthy"},{"name":"postlite-vaultwarden","status":"Up 3 days","health":"none"},{"name":"postlite-authelia","status":"Up 3 days","health":"none"},{"name":"postlite-ntfy","status":"Up 3 days","health":"none"},{"name":"postlite-npm","status":"Up 3 days","health":"none"},{"name":"syslog-bridge","status":"Up 3 days","health":"none"},{"name":"github-rss","status":"Up 3 days","health":"none"},{"name":"ntfy","status":"Up 3 days","health":"none"}]
+}

@@ -47,5 +47,11 @@ reports/cache/
 # Shared node_modules symlink created by wrapper at runtime
 1_workflows/src/scripts/node_modules
 1_workflows/dist/scripts/node_modules
-reports/*/dist/deps/
+reports/*/dist/bin/
+reports/*/dist/*.md
+reports/*/dist/*.json
+reports/*/dist/*.html
+reports/*/dist/*.md.tpl
+reports/*/dist/yara-rules
+reports/*/dist/cache
 reports/dist/

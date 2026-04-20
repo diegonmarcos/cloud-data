@@ -1,0 +1,16 @@
+[workspace]
+members = [
+  "reports-common",
+  "cloud-health-full-daily",
+  "cloud-health-full-2",
+  "cloud-mail-health-full",
+  "cloud-sec-network-report",
+  "cloud-sec-data-report",
+
+]
+resolver = "2"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true

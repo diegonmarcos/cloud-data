@@ -1,0 +1,13 @@
+{
+  "vm": "services-server",
+  "timestamp": "2026-04-20T15:21:56Z",
+  "mem": {"used":600,"total":954,"pct":62},
+  "swap": {"used":77,"total":2559},
+  "disk": {"used":"31G","total":"48G","pct":"68%"},
+  "load": "0.02 0.03 0.10",
+  "uptime": "13d 3h",
+  "wg_up": true,
+  "containers_running": 3,
+  "containers_total": 3,
+  "containers": [{"name":"dagu","status":"Up 2 days","health":"none"},{"name":"sauron-forwarder","status":"Up 5 days","health":"none"},{"name":"dozzle","status":"Up 5 days","health":"none"}]
+}

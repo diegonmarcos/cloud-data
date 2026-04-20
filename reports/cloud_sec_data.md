@@ -1,1 +1,0 @@
-cloud-sec-data-report/cloud_sec_data.md

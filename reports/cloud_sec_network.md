@@ -1,1 +1,0 @@
-cloud-sec-network-report/cloud_sec_network.md

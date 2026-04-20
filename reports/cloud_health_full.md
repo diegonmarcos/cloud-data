@@ -1,1 +1,0 @@
-cloud-health-full-report/cloud_health_full.md

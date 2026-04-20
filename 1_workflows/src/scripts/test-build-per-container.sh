@@ -37,11 +37,23 @@ for BF in "${BUILD_FILES[@]}"; do
     SVC_SRC=$(dirname "$SYMLINK")
     SVC_NAME=$(basename "$(dirname "$SVC_SRC")")
 
-    # Resolve symlink → real file for nix build (flakes can't follow external symlinks)
-    TARGET=$(readlink -f "$SYMLINK" 2>/dev/null || true)
-    [ -f "$TARGET" ] || err "  $SVC_NAME: symlink target missing: $TARGET"
-    rm "$SYMLINK"
-    cp "$TARGET" "$SYMLINK"
+    # Resolve ALL external *.json symlinks in the service's src/ to real files
+    # (multi-container flakes read multiple build-*.json files; the ship engine
+    # does the same via cloud-ship-ci-builder-dispatch.sh pre-stage).
+    # Track each resolved file so we can restore symlinks after the build.
+    mapfile -t RESOLVED < <(
+      command find "$SVC_SRC" -maxdepth 1 -name '*.json' -type l 2>/dev/null | while read f; do
+        t=$(readlink -f "$f" 2>/dev/null || true)
+        case "$t" in "$SVC_SRC"/*|"$(dirname "$SVC_SRC")"/*) continue ;; esac
+        [ -f "$t" ] || continue
+        printf '%s|%s\n' "$f" "$(readlink "$f")"
+      done
+    )
+    for entry in "${RESOLVED[@]}"; do
+      f="${entry%%|*}"
+      t=$(readlink -f "$f")
+      rm "$f"; cp "$t" "$f"
+    done
 
     BUILD_RC=0
     if command -v nix >/dev/null 2>&1 && [ -f "$SVC_SRC/flake.nix" ]; then
@@ -50,9 +62,13 @@ for BF in "${BUILD_FILES[@]}"; do
       fi
     fi
 
-    # Restore symlink regardless of build outcome
-    rm "$SYMLINK"
-    ln -s "../../../I_cloud-data/$BF" "$SYMLINK"
+    # Restore all resolved symlinks
+    for entry in "${RESOLVED[@]}"; do
+      f="${entry%%|*}"
+      tgt="${entry#*|}"
+      rm -f "$f"
+      ln -s "$tgt" "$f"
+    done
 
     [ $BUILD_RC -eq 0 ] || err "  $SVC_NAME: nix build failed"
     ok "  $SVC_NAME: symlink → $BF resolves, nix build OK"
