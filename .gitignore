@@ -48,3 +48,4 @@ reports/cache/
 1_workflows/src/scripts/node_modules
 1_workflows/dist/scripts/node_modules
 reports/*/dist/deps/
+reports/dist/

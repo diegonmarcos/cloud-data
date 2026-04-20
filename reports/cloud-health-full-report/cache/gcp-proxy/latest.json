@@ -1,13 +1,13 @@
 {
   "vm": "arch-1",
-  "timestamp": "2026-04-16T21:12:19Z",
-  "mem": {"used":1128,"total":1952,"pct":57},
-  "swap": {"used":132,"total":3999},
+  "timestamp": "2026-04-19T14:59:06Z",
+  "mem": {"used":1144,"total":1952,"pct":58},
+  "swap": {"used":143,"total":3999},
   "disk": {"used":"21G","total":"31G","pct":"69%"},
-  "load": "0.12 0.17 0.14",
-  "uptime": "15d 23h",
+  "load": "0.00 0.02 0.04",
+  "uptime": "18d 17h",
   "wg_up": true,
   "containers_running": 14,
   "containers_total": 14,
-  "containers": [{"name":"authelia","status":"Up 50 minutes (healthy)","health":"healthy"},{"name":"authelia-redis","status":"Up About an hour","health":"none"},{"name":"introspect-proxy","status":"Up 3 hours (unhealthy)","health":"unhealthy"},{"name":"vaultwarden","status":"Up 3 hours (healthy)","health":"healthy"},{"name":"redis","status":"Up 3 hours (healthy)","health":"healthy"},{"name":"postlite-vaultwarden","status":"Up 3 hours","health":"none"},{"name":"postlite-authelia","status":"Up 3 hours","health":"none"},{"name":"postlite-ntfy","status":"Up 3 hours","health":"none"},{"name":"postlite-npm","status":"Up 3 hours","health":"none"},{"name":"syslog-bridge","status":"Up 3 hours","health":"none"},{"name":"github-rss","status":"Up 3 hours","health":"none"},{"name":"ntfy","status":"Up 3 hours","health":"none"},{"name":"hickory-dns","status":"Up 3 hours","health":"none"},{"name":"caddy","status":"Up 3 hours","health":"none"}]
+  "containers": [{"name":"caddy","status":"Up About an hour","health":"none"},{"name":"introspect-proxy","status":"Up About an hour (healthy)","health":"healthy"},{"name":"authelia","status":"Up 2 days (healthy)","health":"healthy"},{"name":"authelia-redis","status":"Up 2 days","health":"none"},{"name":"vaultwarden","status":"Up 2 days (healthy)","health":"healthy"},{"name":"redis","status":"Up 2 days (healthy)","health":"healthy"},{"name":"postlite-vaultwarden","status":"Up 2 days","health":"none"},{"name":"postlite-authelia","status":"Up 2 days","health":"none"},{"name":"postlite-ntfy","status":"Up 2 days","health":"none"},{"name":"postlite-npm","status":"Up 2 days","health":"none"},{"name":"syslog-bridge","status":"Up 2 days","health":"none"},{"name":"github-rss","status":"Up 2 days","health":"none"},{"name":"ntfy","status":"Up 2 days","health":"none"},{"name":"hickory-dns","status":"Up 2 days","health":"none"}]
 }

@@ -220,6 +220,7 @@
         "hickory-dns",
         "authelia",
         "authelia-redis",
+        "postlite-authelia",
         "caddy",
         "introspect-proxy",
         "redis"
@@ -803,7 +804,28 @@
     }
   },
   "dns": {
-    "internal_zones": [],
+    "internal_zones": [
+      {
+        "name": "app",
+        "records": [
+          {
+            "name": "*",
+            "type": "A",
+            "value": "10.0.0.1"
+          }
+        ]
+      },
+      {
+        "name": "db",
+        "records": [
+          {
+            "name": "*",
+            "type": "A",
+            "value": "10.0.0.1"
+          }
+        ]
+      }
+    ],
     "derived_entries": [
       {
         "name": "code-server.app",
@@ -3413,8 +3435,8 @@
           "healthcheck": null,
           "monitoring": null,
           "volumes": [
-            "./config/named.toml:/etc/named.toml:ro",
-            "./config/zones:/etc/zones:ro"
+            "./named.toml:/etc/named.toml:ro",
+            "./zones:/etc/zones:ro"
           ],
           "env_file": false,
           "depends_on": [],
@@ -3504,11 +3526,35 @@
           "read_only": false,
           "protocol": "tcp",
           "db_engine": "redis"
+        },
+        "postlite": {
+          "container_name": "postlite-authelia",
+          "image": "ghcr.io/diegonmarcos/postlite:latest",
+          "port": null,
+          "port_env": null,
+          "public": false,
+          "healthcheck": null,
+          "volumes": [],
+          "env_file": false,
+          "depends_on": [
+            "app"
+          ],
+          "resources": {
+            "limits": {
+              "memory": "64M"
+            },
+            "reservations": {
+              "memory": "16M"
+            }
+          },
+          "read_only": false,
+          "protocol": "tcp"
         }
       },
       "container_names": [
         "authelia",
-        "authelia-redis"
+        "authelia-redis",
+        "postlite-authelia"
       ],
       "all_ports": [
         "9091",
@@ -5288,7 +5334,8 @@
           "container_name": "surrealdb",
           "port": 8001,
           "protocol": "http",
-          "db_engine": "surrealdb"
+          "db_engine": "surrealdb",
+          "image": "ghcr.io/diegonmarcos/kg-graph:latest"
         }
       },
       "container_names": [

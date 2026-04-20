@@ -14,7 +14,7 @@ set -euo pipefail
 REPO="${GIT_BASE:-$HOME/git}"
 CADDY_SRC="$REPO/cloud/a_solutions/bb-sec_caddy/src"
 CLOUD_JSON="$REPO/cloud/I_cloud-data/build-proxy-caddy-routes.json"
-CADDY_JSON="$CADDY_SRC/caddy-routes.json"
+CADDY_JSON="$CADDY_SRC/build-proxy-caddy-routes.json"
 LIVE_SNAPSHOT="${LIVE_SNAPSHOT:-/tmp/caddyfile-live-pre.txt}"
 
 REQUIRED_KEYS=(global security_snippets auth wkd mta_sts messages on_demand_tls error_handler catch_all)
