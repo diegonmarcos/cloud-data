@@ -844,6 +844,29 @@ function deriveAutheliaAcl(c: any): DerivedFile {
   };
 }
 
+// ── Per-container derived configs (pattern: build-{container}.json) ──
+// Each service gets ONE consolidated JSON slice containing only what its
+// flake.nix actually reads. Replaces the old pattern of symlinking every
+// cloud-data-*.json into src/.
+function deriveAuthelia(c: any): DerivedFile {
+  const serviceConnections = deriveServiceConnections(c).data as any;
+  const aclData = deriveAutheliaAcl(c).data as any;
+
+  return {
+    name: "build-authelia.json",
+    data: {
+      _meta: {
+        description: "Authelia consolidated config -- consumed by bb-sec_authelia/src/flake.nix",
+        format_version: 1,
+      },
+      _generated: now(),
+      _source: "_cloud-data-consolidated.json via cloud-data-config-derive.ts/authelia",
+      services: serviceConnections.services ?? {},
+      acl: { rules: aclData.rules ?? [] },
+    },
+  };
+}
+
 function deriveHomeManager(c: any): DerivedFile {
   const hmData = c._home_manager ?? {};
   const vms = hmData.vms ?? {};
@@ -1653,6 +1676,7 @@ function main() {
     deriveDnsServices(consolidated),
     deriveCaddyRoutes(consolidated),
     deriveAutheliaAcl(consolidated),
+    deriveAuthelia(consolidated),
     deriveHomeManager(consolidated),
     deriveGhaConfig(consolidated),
     deriveWireguardPeers(consolidated),

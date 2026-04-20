@@ -40,6 +40,10 @@
     "name": "cloud data authelia acl"
   },
   {
+    "file": "build-authelia.json",
+    "name": "build authelia"
+  },
+  {
     "file": "cloud-data-home-manager.json",
     "name": "cloud data home manager"
   },
