@@ -8,14 +8,16 @@
 # Exits non-zero on any failure. Safe to run anytime — read-only except for
 # symlink→real-file resolution during nix build (restored afterwards).
 
-set -euo pipefail
+set -uo pipefail
+# Don't `-e` — collect all failures instead of bailing on the first.
+FAILS=0
 
 REPO="${GIT_BASE:-$HOME/git}"
 CLOUD_DATA_DIR="$REPO/cloud-data"
 CLOUD_SOLUTIONS_DIR="$REPO/cloud/a_solutions"
 MANIFEST="$CLOUD_DATA_DIR/manifest.json"
 
-err() { echo "✗ $*" >&2; exit 1; }
+err() { echo "✗ $*" >&2; FAILS=$((FAILS + 1)); }
 ok()  { echo "✓ $*"; }
 
 [ -f "$MANIFEST" ] || err "manifest.json missing at $MANIFEST"
@@ -37,11 +39,23 @@ for BF in "${BUILD_FILES[@]}"; do
     SVC_SRC=$(dirname "$SYMLINK")
     SVC_NAME=$(basename "$(dirname "$SVC_SRC")")
 
-    # Resolve symlink → real file for nix build (flakes can't follow external symlinks)
-    TARGET=$(readlink -f "$SYMLINK" 2>/dev/null || true)
-    [ -f "$TARGET" ] || err "  $SVC_NAME: symlink target missing: $TARGET"
-    rm "$SYMLINK"
-    cp "$TARGET" "$SYMLINK"
+    # Resolve ALL external *.json symlinks in the service's src/ to real files
+    # (multi-container flakes read multiple build-*.json files; the ship engine
+    # does the same via cloud-ship-ci-builder-dispatch.sh pre-stage).
+    # Track each resolved file so we can restore symlinks after the build.
+    mapfile -t RESOLVED < <(
+      command find "$SVC_SRC" -maxdepth 1 -name '*.json' -type l 2>/dev/null | while read f; do
+        t=$(readlink -f "$f" 2>/dev/null || true)
+        case "$t" in "$SVC_SRC"/*|"$(dirname "$SVC_SRC")"/*) continue ;; esac
+        [ -f "$t" ] || continue
+        printf '%s|%s\n' "$f" "$(readlink "$f")"
+      done
+    )
+    for entry in "${RESOLVED[@]}"; do
+      f="${entry%%|*}"
+      t=$(readlink -f "$f")
+      rm "$f"; cp "$t" "$f"
+    done
 
     BUILD_RC=0
     if command -v nix >/dev/null 2>&1 && [ -f "$SVC_SRC/flake.nix" ]; then
@@ -50,9 +64,13 @@ for BF in "${BUILD_FILES[@]}"; do
       fi
     fi
 
-    # Restore symlink regardless of build outcome
-    rm "$SYMLINK"
-    ln -s "../../../I_cloud-data/$BF" "$SYMLINK"
+    # Restore all resolved symlinks
+    for entry in "${RESOLVED[@]}"; do
+      f="${entry%%|*}"
+      tgt="${entry#*|}"
+      rm -f "$f"
+      ln -s "$tgt" "$f"
+    done
 
     [ $BUILD_RC -eq 0 ] || err "  $SVC_NAME: nix build failed"
     ok "  $SVC_NAME: symlink → $BF resolves, nix build OK"
@@ -60,4 +78,8 @@ for BF in "${BUILD_FILES[@]}"; do
   done
 done
 
+if [ "$FAILS" -gt 0 ]; then
+  echo "✗ $FAILS failure(s) across $TESTED consumer(s) / ${#BUILD_FILES[@]} file(s)" >&2
+  exit 1
+fi
 ok "all build-per-container tests passed ($TESTED consumer(s) across ${#BUILD_FILES[@]} file(s))"

@@ -8,14 +8,16 @@
 # Exits non-zero on any failure. Safe to run anytime — read-only except for
 # symlink→real-file resolution during nix build (restored afterwards).
 
-set -euo pipefail
+set -uo pipefail
+# Don't `-e` — collect all failures instead of bailing on the first.
+FAILS=0
 
 REPO="${GIT_BASE:-$HOME/git}"
 CLOUD_DATA_DIR="$REPO/cloud-data"
 CLOUD_SOLUTIONS_DIR="$REPO/cloud/a_solutions"
 MANIFEST="$CLOUD_DATA_DIR/manifest.json"
 
-err() { echo "✗ $*" >&2; exit 1; }
+err() { echo "✗ $*" >&2; FAILS=$((FAILS + 1)); }
 ok()  { echo "✓ $*"; }
 
 [ -f "$MANIFEST" ] || err "manifest.json missing at $MANIFEST"
@@ -76,4 +78,8 @@ for BF in "${BUILD_FILES[@]}"; do
   done
 done
 
+if [ "$FAILS" -gt 0 ]; then
+  echo "✗ $FAILS failure(s) across $TESTED consumer(s) / ${#BUILD_FILES[@]} file(s)" >&2
+  exit 1
+fi
 ok "all build-per-container tests passed ($TESTED consumer(s) across ${#BUILD_FILES[@]} file(s))"
