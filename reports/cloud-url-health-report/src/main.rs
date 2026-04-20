@@ -11,7 +11,7 @@
 //!   L2 HTTP   — GET http://wg_ip:port (no TLS, no auth)
 //!
 //! Data sources:
-//!   ../../cloud-data-caddy-routes.json     (public domains)
+//!   ../../build-proxy-caddy-routes.json     (public domains)
 //!   ../../_cloud-data-consolidated.json    (private upstreams)
 //!   ~/git/vault/.../cloud-admin.json       (bearer token)
 //!
@@ -142,7 +142,7 @@ async fn main() -> Result<()> {
 
 fn load_targets() -> Result<(Vec<String>, Vec<PrivateTarget>)> {
     // Public: from caddy routes
-    let caddy_raw = std::fs::read_to_string("../../cloud-data-caddy-routes.json")?;
+    let caddy_raw = std::fs::read_to_string("../../build-proxy-caddy-routes.json")?;
     let caddy: CaddyRoutes = serde_json::from_str(&caddy_raw)?;
     let mut domains: Vec<String> = caddy
         .routes

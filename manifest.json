@@ -32,8 +32,8 @@
     "name": "cloud data dns services"
   },
   {
-    "file": "cloud-data-caddy-routes.json",
-    "name": "cloud data caddy routes"
+    "file": "build-proxy-caddy-routes.json",
+    "name": "build proxy caddy routes"
   },
   {
     "file": "cloud-data-authelia-acl.json",

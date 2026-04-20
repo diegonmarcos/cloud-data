@@ -5,7 +5,7 @@ use std::collections::HashMap;
 
 const CONSOLIDATED: &str = "../../_cloud-data-consolidated.json";
 const TOPOLOGY: &str = "../../cloud-data-topology.json";
-const CADDY_ROUTES: &str = "../../cloud-data-caddy-routes.json";
+const CADDY_ROUTES: &str = "../../build-proxy-caddy-routes.json";
 const DNS_SERVICES: &str = "../../cloud-data-dns-services.json";
 const BUILD_JSON_GLOB: &str = "/home/diego/Mounts/Git/cloud/a_solutions";
 const BEARER_TOKEN_PATH: &str =

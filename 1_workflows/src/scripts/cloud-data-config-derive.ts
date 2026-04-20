@@ -776,7 +776,7 @@ function deriveCaddyRoutes(c: any): DerivedFile {
   }
 
   return {
-    name: "cloud-data-caddy-routes.json",
+    name: "build-proxy-caddy-routes.json",
     data: {
       _meta: {
         description: "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",

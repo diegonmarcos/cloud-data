@@ -109,32 +109,19 @@ function deriveDatabases(c: any): DerivedFile {
   const vms = c.vms as Record<string, any>;
   const vmIdToAlias = buildVmIdToAlias(vms);
 
-  // ── Data store type detection ────────────────────────────────────────────
-  const DB_IMAGE_RE: [RegExp, string][] = [
-    [/^(postgres|ghcr\.io\/.*postgres)/i, "postgres"],
-    [/^(mariadb|mysql)/i, "mariadb"],
-    [/^(redis|valkey)/i, "redis"],
-    [/^(surrealdb|ghcr\.io\/.*surrealdb)/i, "surrealdb"],
-    [/^(mongo)/i, "mongo"],
-    [/^(minio|ghcr\.io\/.*minio)/i, "s3"],
-    [/grafana\/loki/i, "loki"],
-    [/grafana\/mimir/i, "mimir"],
-    [/grafana\/tempo/i, "tempo"],
-    [/grafana\/grafana/i, "grafana"],
-  ];
-
+  // ── Data store type detection (100% declared, zero image regex) ─────────
+  // Priority: containers.<x>.db_engine > containers.<x>.embedded_dbs[0].engine
+  //         > legacy ct.db_path signals sqlite > ct.dump_cmd signals "custom"
   function inferDbType(ct: any): string | null {
+    if (ct.db_engine) return ct.db_engine;
+    if (Array.isArray(ct.embedded_dbs) && ct.embedded_dbs[0]?.engine) return ct.embedded_dbs[0].engine;
     if (ct.db_path) return "sqlite";
-    const img = ct.image ?? "";
-    for (const [re, type] of DB_IMAGE_RE) {
-      if (re.test(img)) return type;
-    }
     if (ct.dump_cmd) return "custom";
     return null;
   }
 
   function isDataStore(ct: any): boolean {
-    return !!(ct.db_user || ct.db_name || ct.db_path || ct.dump_cmd || inferDbType(ct));
+    return !!(ct.db_engine || ct.embedded_dbs?.length || ct.db_user || ct.db_name || ct.db_path || ct.dump_cmd);
   }
 
   // ── Scan all services ──────────────────────────────────────────────────
@@ -584,25 +571,256 @@ function deriveCaddyRoutes(c: any): DerivedFile {
   const introspectSvc = services["introspect-proxy"];
   if (introspectSvc?.upstream) authUpstreams.introspect_proxy = introspectSvc.upstream;
 
+  // ── all_app_urls: canonical per-container, per-port .app URL synthesis ──
+  // Naming rules (zero heuristics — all declared):
+  //   {container}.app                          → HTTPS redirect to first canonical URL
+  //   {container}-{protocol}-{port}.app        → canonical per-port entry
+  //   {container}-null.app                     → portless workers/sidecars
+  // Protocol is read from build.json (containers.<x>.protocol / extra_ports[].protocol / l4_ports[].protocol).
+  const allAppUrls: any[] = [];
+  for (const [svcName, svc] of Object.entries(services) as [string, any][]) {
+    const vm = vms[svc.vm];
+    if (!vm?.wg_ip) continue;
+    const containers = svc.containers ?? {};
+    const containerEntries = Object.entries(containers) as [string, any][];
+    const isSingle = containerEntries.length === 1;
+    for (const [ck, c] of containerEntries) {
+      if (!c.container_name) continue;
+      const ports: Array<{ port: number; protocol: string; source: string }> = [];
+      const seen = new Set<number>();
+      const add = (p: number, proto: string, source: string) => {
+        if (seen.has(p)) return;
+        seen.add(p);
+        ports.push({ port: p, protocol: proto, source });
+      };
+      if (typeof c.port === "number" && c.protocol) add(c.port, c.protocol, `containers.${ck}.port`);
+      for (const ep of (c.extra_ports ?? []) as any[]) {
+        if (typeof ep === "object" && typeof ep.port === "number" && ep.protocol) {
+          add(ep.port, ep.protocol, `containers.${ck}.extra_ports`);
+        }
+      }
+      if (isSingle) {
+        for (const l4 of (svc.proxy?.primary?.l4_ports ?? []) as any[]) {
+          if (typeof l4.port === "number" && l4.protocol) add(l4.port, l4.protocol, `proxy.primary.l4_ports`);
+        }
+      }
+      // Redirect target: first canonical URL (or -null for portless)
+      const redirectTarget = ports.length > 0
+        ? `${c.container_name}-${ports[0].protocol}-${ports[0].port}.app`
+        : `${c.container_name}-null.app`;
+      // Short alias → HTTPS redirect
+      allAppUrls.push({
+        kind: "redirect",
+        service: `${c.container_name}.app`,
+        redirect_to: `https://${redirectTarget}`,
+        container: c.container_name,
+        container_key: ck,
+        svc: svcName,
+        vm: svc.vm,
+      });
+      if (ports.length === 0) {
+        allAppUrls.push({
+          kind: "portless",
+          service: `${c.container_name}-null.app`,
+          container: c.container_name,
+          container_key: ck,
+          svc: svcName,
+          vm: svc.vm,
+        });
+      } else {
+        for (const { port, protocol, source } of ports) {
+          allAppUrls.push({
+            kind: "canonical",
+            service: `${c.container_name}-${protocol}-${port}.app`,
+            container: c.container_name,
+            container_key: ck,
+            svc: svcName,
+            vm: svc.vm,
+            port,
+            protocol,
+            upstream: `${vm.wg_ip}:${port}`,
+            source,
+          });
+        }
+      }
+    }
+  }
+
+  // ── all_db_urls: {container}-{engine}-{port}.db catalog ─────────────────────
+  // 100% data-driven — reads only fields DECLARED in build.json:
+  //   - containers.<x>.db_engine   → container IS a DB engine
+  //   - containers.<x>.port        → network port of the DB container (may be null)
+  //   - containers.<x>.embedded_dbs[] { engine, path?, port? }
+  //                                → DB running inside an app container, optionally exposed via `port`
+  // Zero regex. Zero port-to-engine guessing. Zero hardcoded tables.
+  const allDbUrls: any[] = [];
+  for (const [svcName, svc] of Object.entries(services) as [string, any][]) {
+    const vm = vms[svc.vm];
+    if (!vm?.wg_ip) continue;
+    for (const [ck, c] of Object.entries(svc.containers ?? {}) as [string, any][]) {
+      if (!c.container_name) continue;
+      const common = { container: c.container_name, container_key: ck, svc: svcName, vm: svc.vm };
+
+      // A) Declared DB container
+      if (c.db_engine) {
+        const engine = c.db_engine;
+        if (typeof c.port === "number") {
+          allDbUrls.push({
+            kind: "container",
+            service: `${c.container_name}-${engine}-${c.port}.db`,
+            ...common, engine, port: c.port,
+            upstream: `${vm.wg_ip}:${c.port}`,
+          });
+        } else {
+          allDbUrls.push({
+            kind: "container",
+            service: `${c.container_name}-${engine}-null.db`,
+            ...common, engine, port: null,
+            note: "DB container on docker-internal network only (no host port)",
+          });
+        }
+      }
+
+      // B) Embedded DBs — optionally with a port (covers "bundled" case like matomo-hybrid)
+      for (const edb of (c.embedded_dbs ?? []) as any[]) {
+        if (!edb?.engine) continue;
+        if (typeof edb.port === "number") {
+          allDbUrls.push({
+            kind: "bundled",
+            service: `${c.container_name}-${edb.engine}-${edb.port}.db`,
+            ...common, engine: edb.engine, port: edb.port,
+            upstream: `${vm.wg_ip}:${edb.port}`,
+            ...(edb.path ? { path: edb.path } : {}),
+          });
+        } else {
+          allDbUrls.push({
+            kind: "embedded",
+            service: `${c.container_name}-${edb.engine}-null.db`,
+            ...common, engine: edb.engine, port: null,
+            ...(edb.path ? { path: edb.path } : {}),
+          });
+        }
+      }
+    }
+  }
+
+  // ── caddy_config passthrough: global, snippets, auth, wkd, mta_sts, etc. ──
+  // Source: services.caddy.caddy_config (via entry.extra in consolidated.ts)
+  // All hardcoded flake values now live here → 100% data-driven Caddyfile.
+  const caddyCfg: any = services["caddy"]?.caddy_config ?? {};
+
+  // ── Taxonomy views (derived from functional keys — for humans/debugging) ──
+  const hubDomains = new Set(["mcp.diegonmarcos.com", "api.diegonmarcos.com", "app.diegonmarcos.com"]);
+  const publicAMcp: any[] = [];
+  const publicBApis: any[] = [];
+  const publicCAppPaths: any[] = [];
+  const publicDOthers: any[] = [];
+
+  const makeRow = (host: string, path: string | null, upstream: string, kind: string, tls: string, service: string | null, notes: string | null) =>
+    ({ host, path, upstream, kind, tls, zone: "com", service, notes });
+
+  for (const r of dedupedRoutes) {
+    const row = makeRow(r.domain, null, r.upstream ?? "?", "reverse_proxy", "public", null, r.comment ?? null);
+    if (r.domain === "mcp.diegonmarcos.com") publicAMcp.push({ ...row, kind: "hub_root" });
+    else if (r.domain === "api.diegonmarcos.com") publicBApis.push({ ...row, kind: "hub_root" });
+    else if (r.domain === "app.diegonmarcos.com") publicCAppPaths.push({ ...row, kind: "hub_root" });
+    else publicDOthers.push(row);
+  }
+  for (const group of filteredPathRoutes) {
+    for (const p of group.paths ?? []) {
+      const row = makeRow(group.parent_domain, p.base_path, p.upstream ?? "?", "reverse_proxy", "public", null, p.comment ?? null);
+      if (group.parent_domain === "mcp.diegonmarcos.com") publicAMcp.push(row);
+      else if (group.parent_domain === "api.diegonmarcos.com") publicBApis.push(row);
+      else if (group.parent_domain === "app.diegonmarcos.com") publicCAppPaths.push(row);
+      else publicDOthers.push(row);
+    }
+  }
+  for (const mcpGroup of mcpRoutes) {
+    for (const ep of mcpGroup.endpoints ?? []) {
+      publicAMcp.push(makeRow(mcpGroup.parent_domain, ep.base_path, ep.upstream, "reverse_proxy", "public", null, ep.comment ?? null));
+    }
+  }
+  for (const g of githubPagesProxies) {
+    publicDOthers.push(makeRow(g.domain, null, "https://diegonmarcos.github.io", "reverse_proxy", "public", null, `github_path=${g.github_path ?? "?"}`));
+  }
+  for (const red of redirects) {
+    publicDOthers.push(makeRow(red.domain, null, red.target, "redirect", "public", null, red.comment ?? null));
+  }
+
+  const privateA0AppShort = internalRoutes.map((r: any) => makeRow(r.service, null, r.upstream, "reverse_proxy", "internal", null, null));
+  const privateA1AppCanonical = (allAppUrls.filter((u: any) => u.kind === "canonical") as any[]).map(u =>
+    makeRow(u.service, null, u.upstream, "reverse_proxy", "on_demand", u.svc, (u.container.includes("_") ? "underscore → TLS broken" : null)));
+  const privateA2AppPortless = (allAppUrls.filter((u: any) => u.kind === "portless") as any[]).map(u =>
+    ({ host: u.service, path: null, upstream: "204", kind: "portless", tls: "on_demand", zone: "app", service: u.svc, notes: (u.container.includes("_") ? "underscore → TLS broken" : null) }));
+
+  const privateB0Db = allDbUrls.map((u: any) =>
+    ({ host: u.service, path: u.path ?? null, upstream: u.upstream ?? "embedded", kind: "catalog", tls: "on_demand", zone: "db", service: u.svc,
+       notes: `engine=${u.engine}${u.vm ? ` vm=${u.vm}` : ""}${(u.container ?? "").includes("_") ? " underscore → TLS broken" : ""}${u.note ? ` ${u.note}` : ""}` }));
+
+  const privateB1S3 = s3Routes.map((r: any) =>
+    ({ host: r.service, path: null, upstream: r.s3_endpoint, kind: "reverse_proxy", tls: "internal", zone: "app", service: null, notes: `OCI bucket: ${r.bucket}` }));
+
+  const l4Listeners = l4Routes.map((r: any) =>
+    ({ host: `:${r.port}`, path: null, upstream: r.upstream, kind: "l4_forward", tls: "none", zone: "l4", service: null, notes: r.comment ?? null }));
+
+  const others: any[] = [
+    { host: "<global>",       path: null, upstream: caddyCfg.global?.admin_bind ?? "?", kind: "directive",    tls: "none",   zone: "global", service: "caddy", notes: "admin bind" },
+    { host: "<global>",       path: null, upstream: caddyCfg.global?.auto_https ?? "?", kind: "directive",    tls: "none",   zone: "global", service: "caddy", notes: "auto_https" },
+    { host: "<global>",       path: null, upstream: caddyCfg.on_demand_tls?.ask_url ?? "?", kind: "directive", tls: "none",  zone: "global", service: "caddy", notes: "on_demand_tls ask" },
+    { host: caddyCfg.on_demand_tls?.ask_bind ?? "?", path: null, upstream: "200", kind: "ask_endpoint", tls: "none", zone: "helper", service: "caddy", notes: "on-demand TLS approver" },
+    { host: caddyCfg.catch_all?.domain ?? "?", path: null, upstream: caddyCfg.catch_all?.page ?? "?", kind: "catch_all", tls: "public", zone: "com", service: "caddy", notes: "catch-all" },
+    { host: caddyCfg.mta_sts?.domain ?? "?", path: caddyCfg.mta_sts?.policy_path ?? "?", upstream: "(inline)", kind: "static", tls: "public", zone: "com", service: "caddy", notes: "MTA-STS policy" },
+  ];
+  for (const wkdDomain of (caddyCfg.wkd?.domains ?? []) as string[]) {
+    others.push({ host: wkdDomain, path: caddyCfg.wkd.path, upstream: `/srv/wkd/hu/${caddyCfg.wkd.hash}`, kind: "file_server", tls: "public", zone: "com", service: "caddy", notes: "PGP WKD" });
+  }
+
   return {
-    name: "cloud-data-caddy-routes.json",
+    name: "build-proxy-caddy-routes.json",
     data: {
       _meta: {
         description: "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
-        format_version: 2,
+        format_version: 3,
       },
       _generated: now(),
       _source: "_cloud-data-consolidated.json via cloud-data-config-derive.ts/caddy-routes",
-      l4_routes: l4Routes,
+
+      // ── Functional keys (consumed by flake.nix renderers) ──
+      global:           caddyCfg.global           ?? {},
+      on_demand_tls:    caddyCfg.on_demand_tls    ?? {},
+      security_snippets:caddyCfg.security_snippets?? {},
+      auth:             caddyCfg.auth             ?? {},
+      error_handler:    caddyCfg.error_handler    ?? {},
+      static_files:     caddyCfg.static_files     ?? [],
+      wkd:              caddyCfg.wkd              ?? {},
+      mta_sts:          caddyCfg.mta_sts          ?? {},
+      catch_all:        caddyCfg.catch_all        ?? {},
+      messages:         caddyCfg.messages         ?? {},
+      l4_routes:        l4Routes,
       redirects,
-      routes: dedupedRoutes,
-      path_routes: filteredPathRoutes,
+      routes:           dedupedRoutes,
+      path_routes:      filteredPathRoutes,
       github_pages_proxies: githubPagesProxies,
-      mcp_routes: mcpRoutes,
+      mcp_routes:       mcpRoutes,
       special,
-      internal_routes: internalRoutes,
-      s3_routes: s3Routes,
-      auth_upstreams: authUpstreams,
+      internal_routes:  internalRoutes,
+      s3_routes:        s3Routes,
+      auth_upstreams:   authUpstreams,
+      all_app_urls:     allAppUrls,
+      all_db_urls:      allDbUrls,
+
+      // ── Taxonomy views (derived from functional keys — humans/docs only) ──
+      public_A_mcp:             publicAMcp,
+      public_B_apis:            publicBApis,
+      public_C_app_paths:       publicCAppPaths,
+      public_D_others:          publicDOthers,
+      private_A0_app_short:     privateA0AppShort,
+      private_A1_app_canonical: privateA1AppCanonical,
+      private_A2_app_portless:  privateA2AppPortless,
+      private_B0_db:            privateB0Db,
+      private_B1_s3:            privateB1S3,
+      l4_listeners:             l4Listeners,
+      others,
     },
   };
 }
@@ -890,22 +1108,24 @@ function deriveBackupTargets(c: any): DerivedFile {
     const vmAlias = vmIdToAlias[svc.vm] ?? svc.vm;
     const vm = vmById[svc.vm];
 
-    // Scan containers for DB metadata
+    // Scan containers for DB metadata (100% declared — no image regex)
     const databases: any[] = [];
     if (svc.containers) {
       for (const [ctKey, ct] of Object.entries(svc.containers) as [string, any][]) {
-        const hasDbFields = ct.db_user || ct.db_name || ct.db_path || ct.dump_cmd;
-        const isDbImage = /^(postgres|mariadb|mysql):/.test(ct.image ?? "");
+        const hasDbFields = ct.db_engine || ct.embedded_dbs?.length
+          || ct.db_user || ct.db_name || ct.db_path || ct.dump_cmd;
+        if (!hasDbFields) continue;
 
-        if (!hasDbFields && !isDbImage) continue;
+        // Dump-type resolution: declared db_engine → embedded_dbs[0] → legacy db_path → dump_cmd
+        let type: string;
+        if (ct.db_engine) type = ct.db_engine;
+        else if (Array.isArray(ct.embedded_dbs) && ct.embedded_dbs[0]?.engine) type = ct.embedded_dbs[0].engine;
+        else if (ct.db_path) type = "sqlite";
+        else type = "custom";
 
-        // Infer dump type from image
-        let type = "custom";
-        if (ct.db_path) type = "sqlite";
-        else if (ct.dump_cmd) type = "custom";
-        else if (/^postgres:/.test(ct.image ?? "")) type = "postgres";
-        else if (/^mariadb:/.test(ct.image ?? "")) type = "mariadb";
-        else if (/^mysql:/.test(ct.image ?? "")) type = "mariadb";
+        // Path resolution: prefer embedded_dbs[0].path when present (new schema)
+        const embPath = Array.isArray(ct.embedded_dbs) ? ct.embedded_dbs[0]?.path : undefined;
+        const path = ct.db_path ?? embPath;
 
         databases.push({
           service: svcName,
@@ -914,7 +1134,7 @@ function deriveBackupTargets(c: any): DerivedFile {
           type,
           ...(ct.db_user ? { user: ct.db_user } : {}),
           ...(ct.db_name ? { db: ct.db_name } : {}),
-          ...(ct.db_path ? { path: ct.db_path } : {}),
+          ...(path ? { path } : {}),
           ...(ct.dump_cmd ? { dump_cmd: ct.dump_cmd } : {}),
         });
       }
