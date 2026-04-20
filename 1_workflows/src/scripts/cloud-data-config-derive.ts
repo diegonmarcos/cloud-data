@@ -307,7 +307,7 @@ function deriveDnsServices(c: any): DerivedFile {
   };
 }
 
-function deriveCaddyRoutes(c: any): DerivedFile {
+function deriveCaddy(c: any): DerivedFile {
   const services = c.services as Record<string, any>;
   const vms = c.vms as Record<string, any>;
   const flatRoutes: any[] = c.configs?.caddy?.routes ?? [];
@@ -776,7 +776,7 @@ function deriveCaddyRoutes(c: any): DerivedFile {
   }
 
   return {
-    name: "build-proxy-caddy-routes.json",
+    name: "build-caddy.json",
     data: {
       _meta: {
         description: "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
@@ -863,6 +863,23 @@ function deriveAuthelia(c: any): DerivedFile {
       _source: "_cloud-data-consolidated.json via cloud-data-config-derive.ts/authelia",
       services: serviceConnections.services ?? {},
       acl: { rules: aclData.rules ?? [] },
+    },
+  };
+}
+
+function deriveRedis(c: any): DerivedFile {
+  const serviceConnections = deriveServiceConnections(c).data as any;
+
+  return {
+    name: "build-redis.json",
+    data: {
+      _meta: {
+        description: "Redis consolidated config -- consumed by ca-dat_redis/src/flake.nix",
+        format_version: 1,
+      },
+      _generated: now(),
+      _source: "_cloud-data-consolidated.json via cloud-data-config-derive.ts/redis",
+      services: serviceConnections.services ?? {},
     },
   };
 }
@@ -1674,9 +1691,10 @@ function main() {
     ...deriveVmContainerManifests(consolidated),
     deriveServiceConnections(consolidated),
     deriveDnsServices(consolidated),
-    deriveCaddyRoutes(consolidated),
+    deriveCaddy(consolidated),
     deriveAutheliaAcl(consolidated),
     deriveAuthelia(consolidated),
+    deriveRedis(consolidated),
     deriveHomeManager(consolidated),
     deriveGhaConfig(consolidated),
     deriveWireguardPeers(consolidated),

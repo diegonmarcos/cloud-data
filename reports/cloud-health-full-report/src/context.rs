@@ -1,24 +1,25 @@
 use crate::types::*;
-use anyhow::Result;
+use anyhow::{Context as _, Result};
+use reports_common::context::find_cloud_data_file;
 use serde_json::Value;
 use std::collections::HashMap;
 
-const CONSOLIDATED: &str = "../../_cloud-data-consolidated.json";
-const TOPOLOGY: &str = "../../cloud-data-topology.json";
-const CADDY_ROUTES: &str = "../../build-proxy-caddy-routes.json";
 const BUILD_JSON_GLOB: &str = "/home/diego/Mounts/Git/cloud/a_solutions";
 const BEARER_TOKEN_PATH: &str = "Mounts/Git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json";
 
 pub fn load_context() -> Result<Context> {
-    let raw = std::fs::read_to_string(CONSOLIDATED)?;
+    let cons_path = find_cloud_data_file("_cloud-data-consolidated.json")
+        .context("_cloud-data-consolidated.json not found (walked up from cwd)")?;
+    let raw = std::fs::read_to_string(&cons_path)
+        .with_context(|| format!("reading {}", cons_path.display()))?;
     let c: Value = serde_json::from_str(&raw)?;
 
-    let topology = std::fs::read_to_string(TOPOLOGY)
-        .ok()
+    let topology = find_cloud_data_file("cloud-data-topology.json")
+        .and_then(|p| std::fs::read_to_string(p).ok())
         .and_then(|s| serde_json::from_str::<Value>(&s).ok());
 
-    let caddy_routes_json = std::fs::read_to_string(CADDY_ROUTES)
-        .ok()
+    let caddy_routes_json = find_cloud_data_file("build-caddy.json")
+        .and_then(|p| std::fs::read_to_string(p).ok())
         .and_then(|s| serde_json::from_str::<Value>(&s).ok());
 
     // Build VM alias map: vm_id -> ssh_alias

@@ -2,8 +2,8 @@
 # test-caddy-declarative.sh — validate Caddy pipeline end-to-end.
 #
 # Checks:
-#   1. build-proxy-caddy-routes.json has every top-level key the flake needs
-#   2. Caddy's src/build-proxy-caddy-routes.json exists (real file or symlink)
+#   1. build-caddy.json has every top-level key the flake needs
+#   2. Caddy's src/build-caddy.json exists (real file or symlink)
 #   3. `nix build` of Caddy's src/ succeeds
 #   4. Generated Caddyfile matches live one (byte-identical modulo whitespace)
 #
@@ -13,8 +13,8 @@ set -euo pipefail
 
 REPO="${GIT_BASE:-$HOME/git}"
 CADDY_SRC="$REPO/cloud/a_solutions/bb-sec_caddy/src"
-CLOUD_JSON="$REPO/cloud/I_cloud-data/build-proxy-caddy-routes.json"
-CADDY_JSON="$CADDY_SRC/build-proxy-caddy-routes.json"
+CLOUD_JSON="$REPO/cloud/I_cloud-data/build-caddy.json"
+CADDY_JSON="$CADDY_SRC/build-caddy.json"
 LIVE_SNAPSHOT="${LIVE_SNAPSHOT:-/tmp/caddyfile-live-pre.txt}"
 
 REQUIRED_KEYS=(global security_snippets auth wkd mta_sts messages on_demand_tls error_handler catch_all)
@@ -31,8 +31,8 @@ ok "all 9 required keys present in $CLOUD_JSON"
 
 # 2) Caddy src/ references the JSON (real file or symlink both OK — engine handles either)
 if [ ! -e "$CADDY_JSON" ]; then
-  echo "  staging: $CADDY_JSON (symlink → ../../../I_cloud-data/build-proxy-caddy-routes.json)"
-  ln -sf "../../../I_cloud-data/build-proxy-caddy-routes.json" "$CADDY_JSON"
+  echo "  staging: $CADDY_JSON (symlink → ../../../I_cloud-data/build-caddy.json)"
+  ln -sf "../../../I_cloud-data/build-caddy.json" "$CADDY_JSON"
 fi
 ok "$CADDY_JSON present ($(stat -c '%F' "$CADDY_JSON" 2>/dev/null || echo unknown))"
 
@@ -52,7 +52,7 @@ NIX_RC=$?
 
 if $WAS_SYMLINK; then
   rm "$CADDY_JSON"
-  ln -sf "../../../I_cloud-data/build-proxy-caddy-routes.json" "$CADDY_JSON"
+  ln -sf "../../../I_cloud-data/build-caddy.json" "$CADDY_JSON"
   echo "  restored symlink after nix build"
 fi
 

@@ -115,7 +115,7 @@ pub struct ContainerDecl {
     pub healthcheck: Option<String>,
 }
 
-/// Caddy route from build-proxy-caddy-routes.json
+/// Caddy route from build-caddy.json
 #[derive(Clone, Debug)]
 pub struct CaddyRoute {
     pub domain: String,

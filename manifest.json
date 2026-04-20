@@ -32,8 +32,8 @@
     "name": "cloud data dns services"
   },
   {
-    "file": "build-proxy-caddy-routes.json",
-    "name": "build proxy caddy routes"
+    "file": "build-caddy.json",
+    "name": "build caddy"
   },
   {
     "file": "cloud-data-authelia-acl.json",
@@ -42,6 +42,10 @@
   {
     "file": "build-authelia.json",
     "name": "build authelia"
+  },
+  {
+    "file": "build-redis.json",
+    "name": "build redis"
   },
   {
     "file": "cloud-data-home-manager.json",

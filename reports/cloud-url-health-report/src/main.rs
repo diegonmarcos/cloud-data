@@ -11,7 +11,7 @@
 //!   L2 HTTP   — GET http://wg_ip:port (no TLS, no auth)
 //!
 //! Data sources:
-//!   ../../build-proxy-caddy-routes.json     (public domains)
+//!   ../../build-caddy.json     (public domains)
 //!   ../../_cloud-data-consolidated.json    (private upstreams)
 //!   ~/git/vault/.../cloud-admin.json       (bearer token)
 //!
@@ -141,8 +141,11 @@ async fn main() -> Result<()> {
 // ────────────────────────────────────────────────────────────────
 
 fn load_targets() -> Result<(Vec<String>, Vec<PrivateTarget>)> {
+    use reports_common::context::find_cloud_data_file;
     // Public: from caddy routes
-    let caddy_raw = std::fs::read_to_string("../../build-proxy-caddy-routes.json")?;
+    let caddy_path = find_cloud_data_file("build-caddy.json")
+        .ok_or_else(|| anyhow::anyhow!("build-caddy.json not found (walked up from cwd)"))?;
+    let caddy_raw = std::fs::read_to_string(&caddy_path)?;
     let caddy: CaddyRoutes = serde_json::from_str(&caddy_raw)?;
     let mut domains: Vec<String> = caddy
         .routes
@@ -158,7 +161,9 @@ fn load_targets() -> Result<(Vec<String>, Vec<PrivateTarget>)> {
     domains.dedup();
 
     // Private: from consolidated services with upstream
-    let cons_raw = std::fs::read_to_string("../../_cloud-data-consolidated.json")?;
+    let cons_path = find_cloud_data_file("_cloud-data-consolidated.json")
+        .ok_or_else(|| anyhow::anyhow!("_cloud-data-consolidated.json not found"))?;
+    let cons_raw = std::fs::read_to_string(&cons_path)?;
     let cons: serde_json::Value = serde_json::from_str(&cons_raw)?;
     let mut privates: Vec<PrivateTarget> = Vec::new();
 

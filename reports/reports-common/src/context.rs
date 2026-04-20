@@ -1,40 +1,61 @@
 use crate::types::*;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use serde_json::Value;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-const CONSOLIDATED: &str = "../../_cloud-data-consolidated.json";
-const TOPOLOGY: &str = "../../cloud-data-topology.json";
-const CADDY_ROUTES: &str = "../../build-proxy-caddy-routes.json";
-const DNS_SERVICES: &str = "../../cloud-data-dns-services.json";
 const BUILD_JSON_GLOB: &str = "/home/diego/Mounts/Git/cloud/a_solutions";
 const BEARER_TOKEN_PATH: &str =
     "Mounts/Git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json";
 
+/// Walk up from cwd (and $CLOUD_DATA_DIR if set) looking for a file.
+/// Works regardless of whether the binary runs from the crate root or dist/.
+pub fn find_cloud_data_file(name: &str) -> Option<PathBuf> {
+    if let Ok(dir) = std::env::var("CLOUD_DATA_DIR") {
+        let p = PathBuf::from(dir).join(name);
+        if p.exists() {
+            return Some(p);
+        }
+    }
+    let cwd = std::env::current_dir().ok()?;
+    let mut cur = Some(cwd.as_path());
+    while let Some(c) = cur {
+        let candidate = c.join(name);
+        if candidate.exists() {
+            return Some(candidate);
+        }
+        cur = c.parent();
+    }
+    None
+}
+
 /// Load the consolidated cloud-data JSON
 pub fn load_consolidated() -> Result<Value> {
-    let raw = std::fs::read_to_string(CONSOLIDATED)?;
+    let path = find_cloud_data_file("_cloud-data-consolidated.json")
+        .context("_cloud-data-consolidated.json not found (walked up from cwd)")?;
+    let raw = std::fs::read_to_string(&path)
+        .with_context(|| format!("reading {}", path.display()))?;
     Ok(serde_json::from_str(&raw)?)
 }
 
 /// Load topology JSON (optional)
 pub fn load_topology() -> Option<Value> {
-    std::fs::read_to_string(TOPOLOGY)
-        .ok()
+    find_cloud_data_file("cloud-data-topology.json")
+        .and_then(|p| std::fs::read_to_string(p).ok())
         .and_then(|s| serde_json::from_str(&s).ok())
 }
 
 /// Load caddy routes JSON (optional)
 pub fn load_caddy_routes() -> Option<Value> {
-    std::fs::read_to_string(CADDY_ROUTES)
-        .ok()
+    find_cloud_data_file("build-caddy.json")
+        .and_then(|p| std::fs::read_to_string(p).ok())
         .and_then(|s| serde_json::from_str(&s).ok())
 }
 
 /// Load DNS services JSON (optional)
 pub fn load_dns_services() -> Option<Value> {
-    std::fs::read_to_string(DNS_SERVICES)
-        .ok()
+    find_cloud_data_file("cloud-data-dns-services.json")
+        .and_then(|p| std::fs::read_to_string(p).ok())
         .and_then(|s| serde_json::from_str(&s).ok())
 }
 
