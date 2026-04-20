@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-19T18:56:16.483681724+00:00",
-  "duration_ms": 47765,
+  "generated": "2026-04-20T02:52:03.467311224+00:00",
+  "duration_ms": 44946,
   "self_check": [
     {
       "name": "C3 API (mesh)",
@@ -14,7 +14,7 @@
       "name": "C3 API (public)",
       "passed": true,
       "details": "https://api.diegonmarcos.com/c3-api/health -> 302",
-      "duration_ms": 168,
+      "duration_ms": 188,
       "error": null,
       "severity": "Warning"
     },
@@ -38,14 +38,14 @@
       "name": "SSH agent",
       "passed": false,
       "details": "no SSH agent or no keys",
-      "duration_ms": 3,
+      "duration_ms": 4,
       "error": "no SSH agent or no keys",
       "severity": "Warning"
     },
     {
       "name": "cloud-data freshness",
       "passed": true,
-      "details": "generated 2026-04-19T16:56:54.514Z (1h ago)",
+      "details": "generated 2026-04-19T16:56:54.514Z (9h ago)",
       "duration_ms": 0,
       "error": null,
       "severity": "Warning"
@@ -72,7 +72,7 @@
       "name": "WG gcp-t4",
       "passed": true,
       "details": "gcp-t4 (10.0.0.8): VPS=? Dropbear=fail WG:TCP=fail SSH=fail [spot instance]",
-      "duration_ms": 6001,
+      "duration_ms": 6002,
       "error": null,
       "severity": "Info"
     },
@@ -96,7 +96,7 @@
       "name": "WG oci-analytics",
       "passed": false,
       "details": "oci-analytics (10.0.0.4): VPS=? Dropbear=fail WG:TCP=fail SSH=fail",
-      "duration_ms": 6003,
+      "duration_ms": 6002,
       "error": "oci-analytics (10.0.0.4): VPS=? Dropbear=fail WG:TCP=fail SSH=fail",
       "severity": "Critical"
     }
@@ -710,7 +710,7 @@
       "name": "authelia.app:9091",
       "passed": false,
       "details": "authelia.app:9091 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip",
-      "duration_ms": 6109,
+      "duration_ms": 6070,
       "error": "authelia.app:9091 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -718,7 +718,7 @@
       "name": "c3-infra-api.app:8081",
       "passed": false,
       "details": "c3-infra-api.app:8081 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6074,
+      "duration_ms": 6108,
       "error": "c3-infra-api.app:8081 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -726,7 +726,7 @@
       "name": "c3-infra-mcp.app:3100",
       "passed": false,
       "details": "c3-infra-mcp.app:3100 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6050,
+      "duration_ms": 6074,
       "error": "c3-infra-mcp.app:3100 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -734,7 +734,7 @@
       "name": "c3-services-api.app:8082",
       "passed": false,
       "details": "c3-services-api.app:8082 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6036,
+      "duration_ms": 6042,
       "error": "c3-services-api.app:8082 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -742,7 +742,7 @@
       "name": "c3-services-mcp.app:3101",
       "passed": false,
       "details": "c3-services-mcp.app:3101 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6040,
+      "duration_ms": 6083,
       "error": "c3-services-mcp.app:3101 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -750,7 +750,7 @@
       "name": "caddy.app:443",
       "passed": true,
       "details": "caddy.app:443 DNS=ok(204.69.207.1) TCP=ok HTTP=n/a",
-      "duration_ms": 113,
+      "duration_ms": 18,
       "error": null,
       "severity": "Info"
     },
@@ -758,7 +758,7 @@
       "name": "cloud-cgc-mcp.app:3105",
       "passed": false,
       "details": "cloud-cgc-mcp.app:3105 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6072,
+      "duration_ms": 6033,
       "error": "cloud-cgc-mcp.app:3105 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -766,7 +766,7 @@
       "name": "cloud-spec.app:3080",
       "passed": false,
       "details": "c3-spec.app:3080 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6113,
+      "duration_ms": 6108,
       "error": "c3-spec.app:3080 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -774,7 +774,7 @@
       "name": "code-server.app:8443",
       "passed": false,
       "details": "code-server.app:8443 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6023,
+      "duration_ms": 6070,
       "error": "code-server.app:8443 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -782,7 +782,7 @@
       "name": "crawlee-cloud.app:3000",
       "passed": false,
       "details": "crawlee.app:3000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6109,
+      "duration_ms": 6034,
       "error": "crawlee.app:3000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -790,7 +790,7 @@
       "name": "dagu.app:8070",
       "passed": false,
       "details": "dagu.app:8070 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip",
-      "duration_ms": 6109,
+      "duration_ms": 6024,
       "error": "dagu.app:8070 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -798,7 +798,7 @@
       "name": "dbgate.app:8086",
       "passed": false,
       "details": "dbgate.app:8086 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6069,
+      "duration_ms": 6109,
       "error": "dbgate.app:8086 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -806,7 +806,7 @@
       "name": "dozzle.app:9999",
       "passed": false,
       "details": "dozzle.app:9999 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip",
-      "duration_ms": 6083,
+      "duration_ms": 6111,
       "error": "dozzle.app:9999 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -814,7 +814,7 @@
       "name": "etherpad.app:3012",
       "passed": false,
       "details": "etherpad.app:3012 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6050,
+      "duration_ms": 6111,
       "error": "etherpad.app:3012 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -822,7 +822,7 @@
       "name": "filebrowser.app:3015",
       "passed": false,
       "details": "filebrowser.app:3015 DNS=ok(15.197.225.128) TCP=FAIL HTTP=skip",
-      "duration_ms": 3020,
+      "duration_ms": 3106,
       "error": "filebrowser.app:3015 DNS=ok(15.197.225.128) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -830,7 +830,7 @@
       "name": "fluent-bit.app:2020",
       "passed": false,
       "details": "fluent-bit.app:2020 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip",
-      "duration_ms": 6114,
+      "duration_ms": 6023,
       "error": "fluent-bit.app:2020 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -838,7 +838,7 @@
       "name": "gitea.app:3002",
       "passed": false,
       "details": "gitea.app:3002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 16024,
+      "duration_ms": 16025,
       "error": "gitea.app:3002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -846,7 +846,7 @@
       "name": "google-workspace-mcp.app:3104",
       "passed": false,
       "details": "g-workspace-mcp.app:3104 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6072,
+      "duration_ms": 6073,
       "error": "g-workspace-mcp.app:3104 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -854,7 +854,7 @@
       "name": "grist.app:3011",
       "passed": false,
       "details": "grist.app:3011 DNS=ok(35.188.208.237) TCP=FAIL HTTP=skip",
-      "duration_ms": 3078,
+      "duration_ms": 3016,
       "error": "grist.app:3011 DNS=ok(35.188.208.237) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -862,7 +862,7 @@
       "name": "hedgedoc.app:3018",
       "passed": false,
       "details": "hedgedoc.app:3018 DNS=ok(192.145.46.12) TCP=FAIL HTTP=skip",
-      "duration_ms": 3068,
+      "duration_ms": 3111,
       "error": "hedgedoc.app:3018 DNS=ok(192.145.46.12) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -870,7 +870,7 @@
       "name": "hickory-dns.app:53",
       "passed": false,
       "details": "hickory-dns.app:53 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip",
-      "duration_ms": 6110,
+      "duration_ms": 6023,
       "error": "hickory-dns.app:53 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -878,7 +878,7 @@
       "name": "introspect-proxy.app:4182",
       "passed": false,
       "details": "introspect-proxy.app:4182 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip",
-      "duration_ms": 6039,
+      "duration_ms": 6077,
       "error": "introspect-proxy.app:4182 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -886,7 +886,7 @@
       "name": "lgtm.app:3200",
       "passed": false,
       "details": "grafana.app:3200 DNS=ok(216.40.34.41) TCP=FAIL HTTP=skip",
-      "duration_ms": 3059,
+      "duration_ms": 3113,
       "error": "grafana.app:3200 DNS=ok(216.40.34.41) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -894,7 +894,7 @@
       "name": "mail-mcp.app:3103",
       "passed": false,
       "details": "mail-mcp.app:3103 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6080,
+      "duration_ms": 6073,
       "error": "mail-mcp.app:3103 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -902,7 +902,7 @@
       "name": "matomo.app:8084",
       "passed": false,
       "details": "matomo.app:8084 DNS=ok(213.186.33.5) TCP=ok HTTP=err: error sending request for url (http://213.186.33.5:8084/)",
-      "duration_ms": 8193,
+      "duration_ms": 8760,
       "error": "matomo.app:8084 DNS=ok(213.186.33.5) TCP=ok HTTP=err: error sending request for url (http://213.186.33.5:8084/)",
       "severity": "Warning"
     },
@@ -910,7 +910,7 @@
       "name": "mattermost-bots.app:8065",
       "passed": false,
       "details": "mattermost.app:8065 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6074,
+      "duration_ms": 6094,
       "error": "mattermost.app:8065 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -918,7 +918,7 @@
       "name": "mattermost-mcp.app:3102",
       "passed": false,
       "details": "mattermost-mcp.app:3102 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6119,
+      "duration_ms": 6076,
       "error": "mattermost-mcp.app:3102 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -926,7 +926,7 @@
       "name": "ntfy.app:8090",
       "passed": false,
       "details": "ntfy.app:8090 DNS=ok(35.176.213.46) TCP=FAIL HTTP=skip",
-      "duration_ms": 3072,
+      "duration_ms": 3073,
       "error": "ntfy.app:8090 DNS=ok(35.176.213.46) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -934,7 +934,7 @@
       "name": "ollama.app:11434",
       "passed": false,
       "details": "ollama.app:11434 DNS=SYS-FAIL→hickory(10.0.0.8) TCP=FAIL HTTP=skip",
-      "duration_ms": 6117,
+      "duration_ms": 6097,
       "error": "ollama.app:11434 DNS=SYS-FAIL→hickory(10.0.0.8) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -942,7 +942,7 @@
       "name": "ollama-hai.app:11435",
       "passed": false,
       "details": "ollama-hai.app:11435 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6042,
+      "duration_ms": 6025,
       "error": "ollama-hai.app:11435 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -950,7 +950,7 @@
       "name": "photoprism.app:3013",
       "passed": false,
       "details": "photoprism.app:3013 DNS=ok(176.9.111.126) TCP=FAIL HTTP=skip",
-      "duration_ms": 3120,
+      "duration_ms": 3077,
       "error": "photoprism.app:3013 DNS=ok(176.9.111.126) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -958,7 +958,7 @@
       "name": "photos-webhook.app:5002",
       "passed": false,
       "details": "photos-webhook.app:5002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6113,
+      "duration_ms": 6071,
       "error": "photos-webhook.app:5002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -966,7 +966,7 @@
       "name": "radicale.app:5232",
       "passed": false,
       "details": "radicale.app:5232 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6049,
+      "duration_ms": 6073,
       "error": "radicale.app:5232 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -974,7 +974,7 @@
       "name": "redis.app:6379",
       "passed": false,
       "details": "redis.app:6379 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip",
-      "duration_ms": 6115,
+      "duration_ms": 6030,
       "error": "redis.app:6379 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -982,7 +982,7 @@
       "name": "rig-agentic-sonn-14bq8.app:8091",
       "passed": false,
       "details": "rig-agentic-sonn-14bq8.app:8091 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
-      "duration_ms": 6044,
+      "duration_ms": 6113,
       "error": "rig-agentic-sonn-14bq8.app:8091 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -990,7 +990,7 @@
       "name": "smtp-proxy.app:8080",
       "passed": false,
       "details": "smtp-proxy.app:8080 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip",
-      "duration_ms": 6116,
+      "duration_ms": 6113,
       "error": "smtp-proxy.app:8080 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -998,7 +998,7 @@
       "name": "snappymail.app:8888",
       "passed": false,
       "details": "snappymail.app:8888 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip",
-      "duration_ms": 6115,
+      "duration_ms": 6040,
       "error": "snappymail.app:8888 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -1014,7 +1014,7 @@
       "name": "umami.app:3006",
       "passed": false,
       "details": "umami.app:3006 DNS=ok(76.76.21.21) TCP=FAIL HTTP=skip",
-      "duration_ms": 3078,
+      "duration_ms": 3109,
       "error": "umami.app:3006 DNS=ok(76.76.21.21) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     },
@@ -1022,7 +1022,7 @@
       "name": "vaultwarden.app:8880",
       "passed": false,
       "details": "vaultwarden.app:8880 DNS=ok(78.46.170.179) TCP=FAIL HTTP=skip",
-      "duration_ms": 216,
+      "duration_ms": 140,
       "error": "vaultwarden.app:8880 DNS=ok(78.46.170.179) TCP=FAIL HTTP=skip",
       "severity": "Warning"
     }
@@ -1032,7 +1032,7 @@
       "name": "Public auth.diegonmarcos.com",
       "passed": true,
       "details": "auth.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 219,
+      "duration_ms": 228,
       "error": null,
       "severity": "Info"
     },
@@ -1040,7 +1040,7 @@
       "name": "Public api.diegonmarcos.com/c3-api",
       "passed": true,
       "details": "api.diegonmarcos.com/c3-api: HTTPS=404 AUTH=404 (no-auth=404, auth=404)",
-      "duration_ms": 185,
+      "duration_ms": 222,
       "error": null,
       "severity": "Info"
     },
@@ -1048,7 +1048,7 @@
       "name": "Public mcp.diegonmarcos.com/c3-infra-mcp",
       "passed": true,
       "details": "mcp.diegonmarcos.com/c3-infra-mcp: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 168,
+      "duration_ms": 157,
       "error": null,
       "severity": "Info"
     },
@@ -1056,7 +1056,7 @@
       "name": "Public api.diegonmarcos.com/services",
       "passed": true,
       "details": "api.diegonmarcos.com/services: HTTPS=404 AUTH=404 (no-auth=404, auth=404)",
-      "duration_ms": 172,
+      "duration_ms": 222,
       "error": null,
       "severity": "Info"
     },
@@ -1064,7 +1064,7 @@
       "name": "Public proxy.diegonmarcos.com",
       "passed": true,
       "details": "proxy.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 197,
+      "duration_ms": 180,
       "error": null,
       "severity": "Info"
     },
@@ -1072,7 +1072,7 @@
       "name": "Public ide.diegonmarcos.com",
       "passed": true,
       "details": "ide.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 167,
+      "duration_ms": 239,
       "error": null,
       "severity": "Info"
     },
@@ -1080,7 +1080,7 @@
       "name": "Public api.diegonmarcos.com",
       "passed": true,
       "details": "api.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 203,
+      "duration_ms": 266,
       "error": null,
       "severity": "Info"
     },
@@ -1088,7 +1088,7 @@
       "name": "Public workflows.diegonmarcos.com",
       "passed": true,
       "details": "workflows.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 205,
+      "duration_ms": 229,
       "error": null,
       "severity": "Info"
     },
@@ -1096,7 +1096,7 @@
       "name": "Public db.diegonmarcos.com",
       "passed": true,
       "details": "db.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 202,
+      "duration_ms": 265,
       "error": null,
       "severity": "Info"
     },
@@ -1104,7 +1104,7 @@
       "name": "Public logs.diegonmarcos.com",
       "passed": true,
       "details": "logs.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 167,
+      "duration_ms": 214,
       "error": null,
       "severity": "Info"
     },
@@ -1112,7 +1112,7 @@
       "name": "Public pad.diegonmarcos.com",
       "passed": true,
       "details": "pad.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 142,
+      "duration_ms": 175,
       "error": null,
       "severity": "Info"
     },
@@ -1120,7 +1120,7 @@
       "name": "Public files.diegonmarcos.com",
       "passed": true,
       "details": "files.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 168,
+      "duration_ms": 217,
       "error": null,
       "severity": "Info"
     },
@@ -1128,7 +1128,7 @@
       "name": "Public git.diegonmarcos.com",
       "passed": true,
       "details": "git.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 164,
+      "duration_ms": 236,
       "error": null,
       "severity": "Info"
     },
@@ -1136,7 +1136,7 @@
       "name": "Public sheets.diegonmarcos.com",
       "passed": true,
       "details": "sheets.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 163,
+      "duration_ms": 229,
       "error": null,
       "severity": "Info"
     },
@@ -1144,7 +1144,7 @@
       "name": "Public doc.diegonmarcos.com",
       "passed": true,
       "details": "doc.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 161,
+      "duration_ms": 198,
       "error": null,
       "severity": "Info"
     },
@@ -1152,7 +1152,7 @@
       "name": "Public grafana.diegonmarcos.com",
       "passed": true,
       "details": "grafana.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 203,
+      "duration_ms": 236,
       "error": null,
       "severity": "Info"
     },
@@ -1160,7 +1160,7 @@
       "name": "Public mail.diegonmarcos.com",
       "passed": true,
       "details": "mail.diegonmarcos.com: HTTPS=301 AUTH=301 (no-auth=301, auth=301)",
-      "duration_ms": 170,
+      "duration_ms": 174,
       "error": null,
       "severity": "Info"
     },
@@ -1168,7 +1168,7 @@
       "name": "Public analytics.diegonmarcos.com",
       "passed": true,
       "details": "analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 177,
+      "duration_ms": 263,
       "error": null,
       "severity": "Info"
     },
@@ -1176,7 +1176,7 @@
       "name": "Public chat.diegonmarcos.com",
       "passed": true,
       "details": "chat.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 199,
+      "duration_ms": 236,
       "error": null,
       "severity": "Info"
     },
@@ -1184,7 +1184,7 @@
       "name": "Public rss.diegonmarcos.com",
       "passed": true,
       "details": "rss.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 188,
+      "duration_ms": 229,
       "error": null,
       "severity": "Info"
     },
@@ -1192,7 +1192,7 @@
       "name": "Public photos.diegonmarcos.com",
       "passed": true,
       "details": "photos.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 213,
+      "duration_ms": 316,
       "error": null,
       "severity": "Info"
     },
@@ -1200,7 +1200,7 @@
       "name": "Public cal.diegonmarcos.com",
       "passed": true,
       "details": "cal.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 199,
+      "duration_ms": 228,
       "error": null,
       "severity": "Info"
     },
@@ -1208,7 +1208,7 @@
       "name": "Public smtp.diegonmarcos.com",
       "passed": true,
       "details": "smtp.diegonmarcos.com: HTTPS=405 AUTH=405 (no-auth=405, auth=405)",
-      "duration_ms": 383,
+      "duration_ms": 620,
       "error": null,
       "severity": "Info"
     },
@@ -1216,7 +1216,7 @@
       "name": "Public webmail.diegonmarcos.com",
       "passed": true,
       "details": "webmail.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 188,
+      "duration_ms": 224,
       "error": null,
       "severity": "Info"
     },
@@ -1224,7 +1224,7 @@
       "name": "Public mail-stalwart.diegonmarcos.com",
       "passed": true,
       "details": "mail-stalwart.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 383,
+      "duration_ms": 1024,
       "error": null,
       "severity": "Info"
     },
@@ -1232,7 +1232,7 @@
       "name": "Public analytics.diegonmarcos.com",
       "passed": true,
       "details": "analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302)",
-      "duration_ms": 175,
+      "duration_ms": 261,
       "error": null,
       "severity": "Info"
     },
@@ -1240,7 +1240,7 @@
       "name": "Public vault.diegonmarcos.com",
       "passed": true,
       "details": "vault.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200)",
-      "duration_ms": 599,
+      "duration_ms": 647,
       "error": null,
       "severity": "Info"
     }
@@ -1468,7 +1468,7 @@
       "name": "Cloudflare DNS A",
       "passed": true,
       "details": "dig diegonmarcos.com @1.1.1.1 -> 35.226.147.64",
-      "duration_ms": 25,
+      "duration_ms": 26,
       "error": null,
       "severity": "Critical"
     },
@@ -1476,7 +1476,7 @@
       "name": "GHCR registry",
       "passed": true,
       "details": "ghcr.io/v2/ -> 401",
-      "duration_ms": 24,
+      "duration_ms": 29,
       "error": null,
       "severity": "Warning"
     },
@@ -1484,7 +1484,7 @@
       "name": "GHA workflows",
       "passed": false,
       "details": "gh CLI failed",
-      "duration_ms": 4,
+      "duration_ms": 0,
       "error": "gh CLI failed",
       "severity": "Warning"
     },
@@ -1492,7 +1492,7 @@
       "name": "GitHub API",
       "passed": true,
       "details": "api.github.com/zen -> 403",
-      "duration_ms": 7,
+      "duration_ms": 31,
       "error": null,
       "severity": "Info"
     },
@@ -1500,7 +1500,7 @@
       "name": "MX record",
       "passed": true,
       "details": "MX diegonmarcos.com -> 22 route1.mx.cloudflare.net., 85 route2.mx.cloudflare.net., 97 route3.mx.cloudflare.net.",
-      "duration_ms": 10,
+      "duration_ms": 18,
       "error": null,
       "severity": "Warning"
     },
@@ -1508,7 +1508,7 @@
       "name": "A mail",
       "passed": true,
       "details": "mail.diegonmarcos.com -> 35.226.147.64",
-      "duration_ms": 15,
+      "duration_ms": 10,
       "error": null,
       "severity": "Warning"
     },
@@ -1516,7 +1516,7 @@
       "name": "DKIM dkim._domainkey",
       "passed": false,
       "details": "DKIM: NOT FOUND",
-      "duration_ms": 14,
+      "duration_ms": 18,
       "error": "DKIM record missing",
       "severity": "Warning"
     },
@@ -1524,7 +1524,7 @@
       "name": "SPF record",
       "passed": true,
       "details": "SPF: v=spf1 ip4:130.110.251.193 include:_spf.mx.cloudflare.net include:amazonses.com include:eu.rp.oracleemaildelivery.com -all",
-      "duration_ms": 11,
+      "duration_ms": 8,
       "error": null,
       "severity": "Warning"
     },
@@ -1532,7 +1532,7 @@
       "name": "DMARC record",
       "passed": true,
       "details": "DMARC: v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 12,
+      "duration_ms": 18,
       "error": null,
       "severity": "Warning"
     },
@@ -1540,7 +1540,7 @@
       "name": "Resend API",
       "passed": true,
       "details": "api.resend.com -> 200",
-      "duration_ms": 97,
+      "duration_ms": 140,
       "error": null,
       "severity": "Info"
     }
@@ -2111,40 +2111,40 @@
     {
       "name": "TLS cert diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 29 22:11:40 2026 GMT (71d)",
-      "duration_ms": 169,
+      "details": "expires Jun 29 22:11:40 2026 GMT (70d)",
+      "duration_ms": 290,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "TLS cert api.diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 29 22:10:39 2026 GMT (71d)",
-      "duration_ms": 238,
+      "details": "expires Jun 29 22:10:39 2026 GMT (70d)",
+      "duration_ms": 207,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "TLS cert auth.diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 29 22:10:39 2026 GMT (71d)",
-      "duration_ms": 209,
+      "details": "expires Jun 29 22:10:39 2026 GMT (70d)",
+      "duration_ms": 237,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "TLS cert mail.diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 29 22:10:39 2026 GMT (71d)",
-      "duration_ms": 235,
+      "details": "expires Jun 29 22:10:39 2026 GMT (70d)",
+      "duration_ms": 224,
       "error": null,
       "severity": "Info"
     },
     {
       "name": "TLS cert vault.diegonmarcos.com",
       "passed": true,
-      "details": "expires Jun 29 22:10:39 2026 GMT (71d)",
-      "duration_ms": 231,
+      "details": "expires Jun 29 22:10:39 2026 GMT (70d)",
+      "duration_ms": 221,
       "error": null,
       "severity": "Info"
     },
@@ -2152,7 +2152,7 @@
       "name": "DMARC policy",
       "passed": true,
       "details": "DMARC: v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1",
-      "duration_ms": 4,
+      "duration_ms": 11,
       "error": null,
       "severity": "Info"
     },
@@ -2168,7 +2168,7 @@
       "name": "Authelia health",
       "passed": true,
       "details": "auth.diegonmarcos.com/api/health -> 200",
-      "duration_ms": 92,
+      "duration_ms": 226,
       "error": null,
       "severity": "Critical"
     },
@@ -2184,7 +2184,7 @@
       "name": "Firewall gcp-t4",
       "passed": true,
       "details": "gcp-t4: no unexpected dangerous ports exposed",
-      "duration_ms": 3001,
+      "duration_ms": 3002,
       "error": null,
       "severity": "Info"
     },
@@ -2192,7 +2192,7 @@
       "name": "Firewall oci-apps",
       "passed": true,
       "details": "oci-apps: no unexpected dangerous ports exposed",
-      "duration_ms": 3008,
+      "duration_ms": 3004,
       "error": null,
       "severity": "Info"
     },
@@ -2200,7 +2200,7 @@
       "name": "Firewall oci-mail",
       "passed": true,
       "details": "oci-mail: no unexpected dangerous ports exposed",
-      "duration_ms": 3001,
+      "duration_ms": 3000,
       "error": null,
       "severity": "Info"
     },
@@ -2224,7 +2224,7 @@
       "name": "SSH ports gcp-t4",
       "passed": true,
       "details": "gcp-t4: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected]",
-      "duration_ms": 6003,
+      "duration_ms": 3028,
       "error": null,
       "severity": "Info"
     },
@@ -2240,7 +2240,7 @@
       "name": "SSH ports oci-mail",
       "passed": true,
       "details": "oci-mail: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected]",
-      "duration_ms": 6001,
+      "duration_ms": 6003,
       "error": null,
       "severity": "Info"
     },
@@ -2256,7 +2256,7 @@
       "name": "Caddy TLS",
       "passed": true,
       "details": "proxy.diegonmarcos.com -> 302",
-      "duration_ms": 151,
+      "duration_ms": 99,
       "error": null,
       "severity": "Info"
     }
@@ -2279,18 +2279,18 @@
     "critical": 11
   },
   "timers": {
-    "L8_external": 27580,
+    "L4-L11_parallel": 24742,
+    "L1_self_check": 14197,
+    "L8_external": 24742,
+    "L5_private_urls": 24742,
+    "L2_wg_mesh": 6003,
     "L7_cross_checks": 0,
     "L3_platform": 0,
-    "L10_security": 27580,
-    "L5_private_urls": 27580,
-    "L2_wg_mesh": 6004,
-    "L11_email_e2e": 27580,
-    "TOTAL": 47765,
-    "L4-L11_parallel": 27580,
-    "L1_self_check": 14177,
-    "L6_public_urls": 27580,
+    "L4_containers": 0,
+    "L6_public_urls": 24742,
+    "L11_email_e2e": 24742,
+    "L10_security": 24742,
     "L9_drift": 0,
-    "L4_containers": 0
+    "TOTAL": 44946
   }
 }

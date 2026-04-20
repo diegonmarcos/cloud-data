@@ -6,7 +6,7 @@
   ██║╚██╗██║██╔══╝     ██║   ██║███╗██║██║   ██║██╔══██╗██╔═██╗
   ██║ ╚████║███████╗   ██║   ╚███╔███╔╝╚██████╔╝██║  ██║██║  ██╗
   ╚═╝  ╚═══╝╚══════╝   ╚═╝    ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
-  CLOUD SECURITY: NETWORK — 2026-04-19 18:57 UTC
+  CLOUD SECURITY: NETWORK — 2026-04-20 02:53 UTC
 ══════════════════════════════════════════════════════════════
 
   ISSUES SUMMARY
@@ -45,20 +45,20 @@
 
 2. TLS CERTIFICATE AUDIT
 ──────────────────────────────────────────────────────────────
-  ✅ ext:tls:ide.diegonmarcos.com   ide.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:sheets.diegonmarcos.com sheets.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:chat.diegonmarcos.com  chat.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:photos.diegonmarcos.com photos.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:cal.diegonmarcos.com   cal.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:webmail.diegonmarcos.com webmail.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:smtp.diegonmarcos.com  smtp.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:mail-stalwart.diegonmarcos.com mail-stalwart.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.1s)
-  ✅ ext:tls:vault.diegonmarcos.com vault.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:auth.diegonmarcos.com  auth.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:workflows.diegonmarcos.com workflows.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:db.diegonmarcos.com    db.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.1s)
-  ✅ ext:tls:grafana.diegonmarcos.com grafana.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
-  ✅ ext:tls:git.diegonmarcos.com   git.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (71 days) (0.2s)
+  ✅ ext:tls:ide.diegonmarcos.com   ide.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:sheets.diegonmarcos.com sheets.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:chat.diegonmarcos.com  chat.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:photos.diegonmarcos.com photos.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:cal.diegonmarcos.com   cal.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:webmail.diegonmarcos.com webmail.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.1s)
+  ✅ ext:tls:smtp.diegonmarcos.com  smtp.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:mail-stalwart.diegonmarcos.com mail-stalwart.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:vault.diegonmarcos.com vault.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:auth.diegonmarcos.com  auth.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:workflows.diegonmarcos.com workflows.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:db.diegonmarcos.com    db.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.1s)
+  ✅ ext:tls:grafana.diegonmarcos.com grafana.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.2s)
+  ✅ ext:tls:git.diegonmarcos.com   git.diegonmarcos.com:443 expires Jun 29 22:10:39 2026 GMT (70 days) (0.1s)
 
   Summary: 14/14 passed, 0 failed
 
@@ -76,7 +76,7 @@
   ✅ ext:dns:A:photos.diegonmarcos.com A=35.226.147.64 (0.0s)
   ✅ ext:dns:A:cal.diegonmarcos.com A=35.226.147.64 (0.0s)
   ✅ ext:dns:A:webmail.diegonmarcos.com A=35.226.147.64 (0.0s)
-  ✅ ext:dns:A:smtp.diegonmarcos.com A=35.226.147.64 (0.0s)
+  ✅ ext:dns:A:smtp.diegonmarcos.com A=35.226.147.64 (0.1s)
   ✅ ext:dns:A:mail-stalwart.diegonmarcos.com A=35.226.147.64 (0.0s)
   ✅ ext:dns:A:vault.diegonmarcos.com A=35.226.147.64 (0.0s)
   ✅ ext:dns:A:auth.diegonmarcos.com A=35.226.147.64 (0.0s)
@@ -113,7 +113,7 @@
   TLS+DNS+WG (parallel)    2.2s
   Firewall audit           0.1s
 
-  Total: 20.3s | Engine: Rust (native async tokio)
+  Total: 20.2s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux)
 
 ══════════════════════════════════════════════════════════════

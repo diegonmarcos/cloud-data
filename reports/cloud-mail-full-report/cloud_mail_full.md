@@ -6,7 +6,7 @@
   ██║╚██╔╝██║██╔══██║██║██║
   ██║ ╚═╝ ██║██║  ██║██║███████╗
   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-  CLOUD MAIL FULL — 2026-04-19T18:57:06.595022820+00:00
+  CLOUD MAIL FULL — 2026-04-20T02:52:54.527032395+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
@@ -56,14 +56,14 @@
   ✅ mail.* HTTPS                   HTTP 301 (0.1s)
   ✅ webmail HTTPS                  HTTP 302 (0.1s)
   ✅ auth HTTPS                     HTTP 200 (0.1s)
-  ✅ MCP endpoint                   HTTP 400 (0.3s)
-  ✅ mail:993 TLS                   TLS OK (0.6s)
-  ✅ mail:465 TLS                   TLS OK (0.6s)
-  ✅ mail:587 STARTTLS              TLS OK (1.1s)
+  ✅ MCP endpoint                   HTTP 400 (0.4s)
+  ✅ mail:993 TLS                   TLS OK (1.6s)
+  ✅ mail:465 TLS                   TLS OK (1.6s)
+  ✅ mail:587 STARTTLS              TLS OK (2.0s)
   ✅ MX record                      22 route1.mx.cloudflare.net. (0.0s)
   ❌ DKIM record                    MISSING (0.0s) [CRITICAL]
   ✅ GHA health                     gh unavailable (skipped)
-  ✅ CF Worker alive                HTTP 500 (0.1s)
+  ✅ CF Worker alive                HTTP 500 (0.2s)
   ✅ Google OAuth reachable         HTTP 404 (token endpoint) (0.0s)
   ❌ IMAP direct (WG)               10.0.0.3:993 FAIL (3.0s) [CRITICAL]
   ❌ SMTP direct (WG)               10.0.0.3:25 FAIL (3.0s) [CRITICAL]
@@ -98,9 +98,9 @@
   ❌ Caddy L4 -> IMAP               no proxy data [CRITICAL]
   ❌ Caddy L4 -> SMTPS              no proxy data [CRITICAL]
   ❌ Caddy L4 -> SMTP               no proxy data [CRITICAL]
-  ✅ mail:993 (IMAP)                TLS OK (0.5s)
-  ✅ mail:465 (SMTPS)               TLS OK (0.5s)
-  ✅ mail:587 (SMTP Sub)            TLS OK (1.1s)
+  ✅ mail:993 (IMAP)                TLS OK (0.7s)
+  ✅ mail:465 (SMTPS)               TLS OK (0.7s)
+  ✅ mail:587 (SMTP Sub)            TLS OK (1.2s)
   ⚠️  SMTP :25 relay                 no data [WARNING]
   ⚠️  SMTP :587 local TLS            no data [WARNING]
   ✅ Webmail HTTPS                  HTTP 301 (0.1s)
@@ -146,18 +146,18 @@
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    50.1s
+  TOTAL                    51.1s
   T0_path_checker          39.5s
-  P0_instant_kpis          4.4s
-  P2-P5_parallel           3.2s
+  P0_instant_kpis          5.4s
   P4_dns_auth              3.2s
+  P2-P5_parallel           3.2s
   P3_network               3.2s
   P1_preflight             3.0s
-  P6_e2e_delivery          0.0s
   P5_internals             0.0s
+  P6_e2e_delivery          0.0s
   P2_containers            0.0s
 
-  Total: 50.1s | Engine: Rust (native async tokio)
+  Total: 51.1s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(mux) TLS(openssl)
 
 ══════════════════════════════════════════════════════════════

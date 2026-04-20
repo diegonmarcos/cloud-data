@@ -6,7 +6,7 @@
   ██║     ██║     ██║   ██║██║   ██║██║  ██║
   ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝
    ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝
-  CLOUD HEALTH FULL — 2026-04-19T18:56:16.483681724+00:00
+  CLOUD HEALTH FULL — 2026-04-20T02:52:03.467311224+00:00
 ══════════════════════════════════════════════════════════════
 
   ISSUES FOUND
@@ -263,7 +263,7 @@
   ❌ WireGuard interface            TCP 10.0.0.1:22 -> closed (3.0s) [CRITICAL]
   ℹ️  Local docker                   error: No such file or directory (os error 2) [INFO]
   ⚠️  SSH agent                      no SSH agent or no keys (0.0s) [WARNING]
-  ✅ cloud-data freshness           generated 2026-04-19T16:56:54.514Z (1h ago)
+  ✅ cloud-data freshness           generated 2026-04-19T16:56:54.514Z (9h ago)
   ❌ Hickory DNS resolver           dig caddy.app @10.0.0.1 -> NXDOMAIN (3.0s) [CRITICAL]
 
   Summary: 2/7 passed, 5 failed
@@ -367,29 +367,29 @@
   ⚠️  Private URLs (Hickory)         Hickory DNS at 10.0.0.1 is down — falling back to WG IPs [WARNING]
   ⚠️  authelia.app:9091              authelia.app:9091 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  c3-infra-api.app:8081          c3-infra-api.app:8081 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  c3-infra-mcp.app:3100          c3-infra-mcp.app:3100 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  c3-infra-mcp.app:3100          c3-infra-mcp.app:3100 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  c3-services-api.app:8082       c3-services-api.app:8082 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
-  ⚠️  c3-services-mcp.app:3101       c3-services-mcp.app:3101 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
-  ✅ caddy.app:443                  caddy.app:443 DNS=ok(204.69.207.1) TCP=ok HTTP=n/a (0.1s)
-  ⚠️  cloud-cgc-mcp.app:3105         cloud-cgc-mcp.app:3105 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  c3-services-mcp.app:3101       c3-services-mcp.app:3101 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ✅ caddy.app:443                  caddy.app:443 DNS=ok(204.69.207.1) TCP=ok HTTP=n/a (0.0s)
+  ⚠️  cloud-cgc-mcp.app:3105         cloud-cgc-mcp.app:3105 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
   ⚠️  cloud-spec.app:3080            c3-spec.app:3080 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  code-server.app:8443           code-server.app:8443 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
-  ⚠️  crawlee-cloud.app:3000         crawlee.app:3000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  dagu.app:8070                  dagu.app:8070 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  code-server.app:8443           code-server.app:8443 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  crawlee-cloud.app:3000         crawlee.app:3000 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  dagu.app:8070                  dagu.app:8070 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip (6.0s) [WARNING]
   ⚠️  dbgate.app:8086                dbgate.app:8086 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  dozzle.app:9999                dozzle.app:9999 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  etherpad.app:3012              etherpad.app:3012 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
-  ⚠️  filebrowser.app:3015           filebrowser.app:3015 DNS=ok(15.197.225.128) TCP=FAIL HTTP=skip (3.0s) [WARNING]
-  ⚠️  fluent-bit.app:2020            fluent-bit.app:2020 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  etherpad.app:3012              etherpad.app:3012 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  filebrowser.app:3015           filebrowser.app:3015 DNS=ok(15.197.225.128) TCP=FAIL HTTP=skip (3.1s) [WARNING]
+  ⚠️  fluent-bit.app:2020            fluent-bit.app:2020 DNS=SYS-FAIL→hickory(10.0.0.4) TCP=FAIL HTTP=skip (6.0s) [WARNING]
   ⚠️  gitea.app:3002                 gitea.app:3002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (16.0s) [WARNING]
   ⚠️  google-workspace-mcp.app:3104  g-workspace-mcp.app:3104 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  grist.app:3011                 grist.app:3011 DNS=ok(35.188.208.237) TCP=FAIL HTTP=skip (3.1s) [WARNING]
+  ⚠️  grist.app:3011                 grist.app:3011 DNS=ok(35.188.208.237) TCP=FAIL HTTP=skip (3.0s) [WARNING]
   ⚠️  hedgedoc.app:3018              hedgedoc.app:3018 DNS=ok(192.145.46.12) TCP=FAIL HTTP=skip (3.1s) [WARNING]
-  ⚠️  hickory-dns.app:53             hickory-dns.app:53 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  introspect-proxy.app:4182      introspect-proxy.app:4182 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  hickory-dns.app:53             hickory-dns.app:53 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  introspect-proxy.app:4182      introspect-proxy.app:4182 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  lgtm.app:3200                  grafana.app:3200 DNS=ok(216.40.34.41) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  mail-mcp.app:3103              mail-mcp.app:3103 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  matomo.app:8084                matomo.app:8084 DNS=ok(213.186.33.5) TCP=ok HTTP=err: error sending request for url (http://213.186.33.5:8084/) (8.2s) [WARNING]
+  ⚠️  matomo.app:8084                matomo.app:8084 DNS=ok(213.186.33.5) TCP=ok HTTP=err: error sending request for url (http://213.186.33.5:8084/) (8.8s) [WARNING]
   ⚠️  mattermost-bots.app:8065       mattermost.app:8065 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  mattermost-mcp.app:3102        mattermost-mcp.app:3102 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  ntfy.app:8090                  ntfy.app:8090 DNS=ok(35.176.213.46) TCP=FAIL HTTP=skip (3.1s) [WARNING]
@@ -397,14 +397,14 @@
   ⚠️  ollama-hai.app:11435           ollama-hai.app:11435 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
   ⚠️  photoprism.app:3013            photoprism.app:3013 DNS=ok(176.9.111.126) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  photos-webhook.app:5002        photos-webhook.app:5002 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  radicale.app:5232              radicale.app:5232 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
-  ⚠️  redis.app:6379                 redis.app:6379 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  rig-agentic-sonn-14bq8.app:8091 rig-agentic-sonn-14bq8.app:8091 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  radicale.app:5232              radicale.app:5232 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  redis.app:6379                 redis.app:6379 DNS=SYS-FAIL→hickory(10.0.0.1) TCP=FAIL HTTP=skip (6.0s) [WARNING]
+  ⚠️  rig-agentic-sonn-14bq8.app:8091 rig-agentic-sonn-14bq8.app:8091 DNS=SYS-FAIL→hickory(10.0.0.6) TCP=FAIL HTTP=skip (6.1s) [WARNING]
   ⚠️  smtp-proxy.app:8080            smtp-proxy.app:8080 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip (6.1s) [WARNING]
-  ⚠️  snappymail.app:8888            snappymail.app:8888 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip (6.1s) [WARNING]
+  ⚠️  snappymail.app:8888            snappymail.app:8888 DNS=SYS-FAIL→hickory(10.0.0.3) TCP=FAIL HTTP=skip (6.0s) [WARNING]
   ⚠️  stalwart.app:2443              stalwart.app:2443 DNS=ok(151.101.1.195) TCP=FAIL HTTP=skip (3.1s) [WARNING]
   ⚠️  umami.app:3006                 umami.app:3006 DNS=ok(76.76.21.21) TCP=FAIL HTTP=skip (3.1s) [WARNING]
-  ⚠️  vaultwarden.app:8880           vaultwarden.app:8880 DNS=ok(78.46.170.179) TCP=FAIL HTTP=skip (0.2s) [WARNING]
+  ⚠️  vaultwarden.app:8880           vaultwarden.app:8880 DNS=ok(78.46.170.179) TCP=FAIL HTTP=skip (0.1s) [WARNING]
 
   Summary: 1/41 passed, 40 failed
 
@@ -416,26 +416,26 @@
   ✅ Public api.diegonmarcos.com/services api.diegonmarcos.com/services: HTTPS=404 AUTH=404 (no-auth=404, auth=404) (0.2s)
   ✅ Public proxy.diegonmarcos.com  proxy.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
   ✅ Public ide.diegonmarcos.com    ide.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
-  ✅ Public api.diegonmarcos.com    api.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
+  ✅ Public api.diegonmarcos.com    api.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
   ✅ Public workflows.diegonmarcos.com workflows.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
-  ✅ Public db.diegonmarcos.com     db.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
+  ✅ Public db.diegonmarcos.com     db.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public logs.diegonmarcos.com   logs.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
-  ✅ Public pad.diegonmarcos.com    pad.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.1s)
+  ✅ Public pad.diegonmarcos.com    pad.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
   ✅ Public files.diegonmarcos.com  files.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
   ✅ Public git.diegonmarcos.com    git.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
   ✅ Public sheets.diegonmarcos.com sheets.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
   ✅ Public doc.diegonmarcos.com    doc.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
   ✅ Public grafana.diegonmarcos.com grafana.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
   ✅ Public mail.diegonmarcos.com   mail.diegonmarcos.com: HTTPS=301 AUTH=301 (no-auth=301, auth=301) (0.2s)
-  ✅ Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
+  ✅ Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public chat.diegonmarcos.com   chat.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
   ✅ Public rss.diegonmarcos.com    rss.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
-  ✅ Public photos.diegonmarcos.com photos.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.2s)
+  ✅ Public photos.diegonmarcos.com photos.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.3s)
   ✅ Public cal.diegonmarcos.com    cal.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
-  ✅ Public smtp.diegonmarcos.com   smtp.diegonmarcos.com: HTTPS=405 AUTH=405 (no-auth=405, auth=405) (0.4s)
+  ✅ Public smtp.diegonmarcos.com   smtp.diegonmarcos.com: HTTPS=405 AUTH=405 (no-auth=405, auth=405) (0.6s)
   ✅ Public webmail.diegonmarcos.com webmail.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
-  ✅ Public mail-stalwart.diegonmarcos.com mail-stalwart.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.4s)
-  ✅ Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.2s)
+  ✅ Public mail-stalwart.diegonmarcos.com mail-stalwart.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (1.0s)
+  ✅ Public analytics.diegonmarcos.com analytics.diegonmarcos.com: HTTPS=302 AUTH=302 (no-auth=302, auth=302) (0.3s)
   ✅ Public vault.diegonmarcos.com  vault.diegonmarcos.com: HTTPS=200 AUTH=200 (no-auth=200, auth=200) (0.6s)
 
   Summary: 27/27 passed, 0 failed
@@ -476,7 +476,7 @@
 ──────────────────────────────────────────────────────────────
   ✅ Cloudflare DNS A               dig diegonmarcos.com @1.1.1.1 -> 35.226.147.64 (0.0s)
   ✅ GHCR registry                  ghcr.io/v2/ -> 401 (0.0s)
-  ⚠️  GHA workflows                  gh CLI failed (0.0s) [WARNING]
+  ⚠️  GHA workflows                  gh CLI failed [WARNING]
   ✅ GitHub API                     api.github.com/zen -> 403 (0.0s)
   ✅ MX record                      MX diegonmarcos.com -> 22 route1.mx.cloudflare.net., 85 route2.mx.cloudflare.net., 97 route3.mx.cloudflare.net. (0.0s)
   ✅ A mail                         mail.diegonmarcos.com -> 35.226.147.64 (0.0s)
@@ -564,25 +564,25 @@
 
 10. SECURITY
 ──────────────────────────────────────────────────────────────
-  ✅ TLS cert diegonmarcos.com      expires Jun 29 22:11:40 2026 GMT (71d) (0.2s)
-  ✅ TLS cert api.diegonmarcos.com  expires Jun 29 22:10:39 2026 GMT (71d) (0.2s)
-  ✅ TLS cert auth.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (71d) (0.2s)
-  ✅ TLS cert mail.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (71d) (0.2s)
-  ✅ TLS cert vault.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (71d) (0.2s)
+  ✅ TLS cert diegonmarcos.com      expires Jun 29 22:11:40 2026 GMT (70d) (0.3s)
+  ✅ TLS cert api.diegonmarcos.com  expires Jun 29 22:10:39 2026 GMT (70d) (0.2s)
+  ✅ TLS cert auth.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (70d) (0.2s)
+  ✅ TLS cert mail.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (70d) (0.2s)
+  ✅ TLS cert vault.diegonmarcos.com expires Jun 29 22:10:39 2026 GMT (70d) (0.2s)
   ✅ DMARC policy                   DMARC: v=DMARC1; p=reject; sp=reject; rua=mailto:postmaster@diegonmarcos.com; ruf=mailto:postmaster@diegonmarcos.com; fo=1 (0.0s)
   ✅ SPF strict (-all)              SPF: present (strict=-all) (0.0s)
-  ✅ Authelia health                auth.diegonmarcos.com/api/health -> 200 (0.1s)
+  ✅ Authelia health                auth.diegonmarcos.com/api/health -> 200 (0.2s)
   ✅ Firewall gcp-proxy             gcp-proxy: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall gcp-t4                gcp-t4: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-apps              oci-apps: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-mail              oci-mail: no unexpected dangerous ports exposed (3.0s)
   ✅ Firewall oci-analytics         oci-analytics: no unexpected dangerous ports exposed (3.0s)
   ✅ SSH ports gcp-proxy            gcp-proxy: SSH:22=open Dropbear:2200=closed (0.1s)
-  ✅ SSH ports gcp-t4               gcp-t4: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
+  ✅ SSH ports gcp-t4               gcp-t4: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (3.0s)
   ✅ SSH ports oci-apps             oci-apps: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
   ✅ SSH ports oci-mail             oci-mail: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
   ✅ SSH ports oci-analytics        oci-analytics: SSH:22=closed Dropbear:2200=closed [WG-only SSH - expected] (6.0s)
-  ✅ Caddy TLS                      proxy.diegonmarcos.com -> 302 (0.2s)
+  ✅ Caddy TLS                      proxy.diegonmarcos.com -> 302 (0.1s)
 
   Summary: 19/19 passed, 0 failed
 
@@ -595,21 +595,21 @@
 ══════════════════════════════════════════════════════════════
 PERFORMANCE
 ══════════════════════════════════════════════════════════════
-  TOTAL                    47.8s
-  L8_external              27.6s
-  L10_security             27.6s
-  L5_private_urls          27.6s
-  L11_email_e2e            27.6s
-  L4-L11_parallel          27.6s
-  L6_public_urls           27.6s
+  TOTAL                    44.9s
+  L4-L11_parallel          24.7s
+  L8_external              24.7s
+  L5_private_urls          24.7s
+  L6_public_urls           24.7s
+  L11_email_e2e            24.7s
+  L10_security             24.7s
   L1_self_check            14.2s
   L2_wg_mesh               6.0s
   L7_cross_checks          0.0s
   L3_platform              0.0s
-  L9_drift                 0.0s
   L4_containers            0.0s
+  L9_drift                 0.0s
 
-  Total: 47.8s | Engine: Rust (native async tokio)
+  Total: 44.9s | Engine: Rust (native async tokio)
   Checks: TCP(native) HTTP(reqwest) DNS(trust-dns) SSH(rsync+mux)
 
 ══════════════════════════════════════════════════════════════
