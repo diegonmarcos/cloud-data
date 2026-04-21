@@ -1,7 +1,0 @@
-{
-  "name": "cloud-data-config",
-  "version": "1.0.0",
-  "description": "Engines that generate cloud-data JSON hub from cloud/ sources. tsx ESM runtime.",
-  "private": true,
-  "type": "module"
-}
