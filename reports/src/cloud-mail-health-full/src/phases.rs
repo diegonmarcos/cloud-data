@@ -339,46 +339,39 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
         },
     );
 
-    // TLS port checks via openssl subprocess — probe over WG (the report's "WG direct" claim).
-    // Use MAIL_WG_IP so we hit the actual mail VM, not whatever the public DNS routes to.
-    // SNI still set to MAIL_DOMAIN for cert validation.
+    // TLS port checks over WG. Gate on a TCP connect first so we can tell
+    // "port not listening on WG interface" (Warning) apart from "TLS handshake
+    // failed" (Critical).
+    async fn tls_wg_check(port: u16, name: &str, starttls: Option<&str>) -> Check {
+        let t = Instant::now();
+        if !tcp(MAIL_WG_IP, port).await {
+            return Check {
+                name: name.to_string(),
+                passed: false,
+                details: format!(
+                    "WG port not listening: tcp {}:{} refused/timeout (check interface binding)",
+                    MAIL_WG_IP, port
+                ),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: Some(format!("tcp {}:{} closed", MAIL_WG_IP, port)),
+                severity: Severity::Warning,
+            };
+        }
+        let (ok, detail) = openssl_connect_wg(MAIL_WG_IP, port, MAIL_DOMAIN, starttls).await;
+        Check {
+            name: name.to_string(),
+            passed: ok,
+            details: detail.clone(),
+            duration_ms: t.elapsed().as_millis() as u64,
+            error: if ok { None } else { Some(detail) },
+            severity: Severity::Critical,
+        }
+    }
+
     let (tls_993, tls_465, tls_587) = tokio::join!(
-        async {
-            let t = Instant::now();
-            let (ok, detail) = openssl_connect_wg(MAIL_WG_IP, 993, MAIL_DOMAIN, None).await;
-            Check {
-                name: "mail:993 TLS (WG)".into(),
-                passed: ok,
-                details: detail.clone(),
-                duration_ms: t.elapsed().as_millis() as u64,
-                error: if ok { None } else { Some(detail) },
-                severity: Severity::Critical,
-            }
-        },
-        async {
-            let t = Instant::now();
-            let (ok, detail) = openssl_connect_wg(MAIL_WG_IP, 465, MAIL_DOMAIN, None).await;
-            Check {
-                name: "mail:465 TLS (WG)".into(),
-                passed: ok,
-                details: detail.clone(),
-                duration_ms: t.elapsed().as_millis() as u64,
-                error: if ok { None } else { Some(detail) },
-                severity: Severity::Critical,
-            }
-        },
-        async {
-            let t = Instant::now();
-            let (ok, detail) = openssl_connect_wg(MAIL_WG_IP, 587, MAIL_DOMAIN, Some("smtp")).await;
-            Check {
-                name: "mail:587 STARTTLS (WG)".into(),
-                passed: ok,
-                details: detail.clone(),
-                duration_ms: t.elapsed().as_millis() as u64,
-                error: if ok { None } else { Some(detail) },
-                severity: Severity::Critical,
-            }
-        },
+        tls_wg_check(993, "mail:993 TLS (WG)", None),
+        tls_wg_check(465, "mail:465 TLS (WG)", None),
+        tls_wg_check(587, "mail:587 STARTTLS (WG)", Some("smtp")),
     );
 
     vec![
@@ -802,11 +795,11 @@ pub async fn network_checks(
         }
     }));
 
-    // Hickory DNS resolve maddy.app
+    // Hickory DNS resolve maddy.app — retry to survive single-shot flake
     futs.push(Box::pin(async {
         let t = Instant::now();
         let resolver = hickory_resolver();
-        let ip = dns_resolve(&resolver, "maddy.app").await;
+        let ip = reports_common::checks::dns_resolve_retry(&resolver, "maddy.app", 3, 500).await;
         let ok = ip.as_deref() == Some(MAIL_WG_IP);
         let detail = if ok {
             format!("maddy.app -> {}", MAIL_WG_IP)

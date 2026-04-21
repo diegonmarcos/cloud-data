@@ -92,23 +92,35 @@ pub async fn layer_self_check(ctx: &Context) -> Vec<Check> {
         });
     }
 
-    // SSH agent
+    // SSH keys — file-based (vault_id_*, id_*) under ~/.ssh/
+    // (ssh-agent is not required; we use explicit IdentityFile paths.)
     {
         let t = Instant::now();
-        let out = tokio::process::Command::new("ssh-add")
-            .arg("-l")
-            .output()
-            .await;
-        let (ok, detail) = match out {
-            Ok(o) if o.status.success() => {
-                let stdout = String::from_utf8_lossy(&o.stdout);
-                let count = stdout.lines().count();
-                (true, format!("{} keys loaded", count))
+        let home = std::env::var("HOME").unwrap_or_else(|_| "/home/diego".into());
+        let ssh_dir = std::path::PathBuf::from(&home).join(".ssh");
+        let (ok, detail) = match std::fs::read_dir(&ssh_dir) {
+            Ok(entries) => {
+                let mut keys: Vec<String> = Vec::new();
+                for e in entries.flatten() {
+                    let name = e.file_name().to_string_lossy().to_string();
+                    // Private keys: id_* or vault_id_* (no extension) — skip .pub
+                    if (name.starts_with("id_") || name.starts_with("vault_id_"))
+                        && !name.ends_with(".pub")
+                        && !name.ends_with(".bak")
+                    {
+                        keys.push(name);
+                    }
+                }
+                if keys.is_empty() {
+                    (false, format!("no identity files in {}", ssh_dir.display()))
+                } else {
+                    (true, format!("{} key(s): {}", keys.len(), keys.join(", ")))
+                }
             }
-            _ => (false, "no SSH agent or no keys".into()),
+            Err(e) => (false, format!("cannot read {}: {}", ssh_dir.display(), e)),
         };
         checks.push(Check {
-            name: "SSH agent".into(),
+            name: "SSH keys".into(),
             passed: ok,
             details: detail.clone(),
             duration_ms: t.elapsed().as_millis() as u64,
@@ -600,69 +612,50 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
             Some(async move {
                 let t = Instant::now();
 
-                const NON_HTTP_PORTS: &[u16] = &[
-                    443,   // TLS reverse proxy (no SNI match on bare IP)
-                    53,    // DNS
-                    25, 465, 587, 993, // SMTP/IMAP
-                    5432, 5433, 5434, 5435, 5436, 5437, 5438, 5439, 5440, 5441, 5442, 5443,
-                    6379, 6380, 6381,
-                ];
-                let is_non_http = NON_HTTP_PORTS.contains(&port);
+                // Use the shared probe module — data-driven protocol choice.
+                // (Previously a local NON_HTTP_PORTS list; now shares the
+                // heuristic with url-health so fixes land in one place.)
+                use reports_common::probe;
+                let proto = probe::protocol_for_port(port, None);
 
-                // Always probe the service's owning VM directly via WG IP.
-                // (Previously this resolved DNS first, but Hickory routes all
-                //  *.app to gcp-proxy/10.0.0.1 — TCP probe then hit the wrong host
-                //  and falsely reported the service unreachable.)
                 let ip = wg_ip.clone();
 
-                // DNS sanity (informational only — not used for the TCP probe)
+                // DNS sanity (informational only — not used for the probe)
                 let sys_resolve = tokio::net::lookup_host(format!("{}:{}", dns, port)).await.ok()
                     .and_then(|mut addrs| addrs.next().map(|a| a.ip().to_string()));
                 let dns_ok = sys_resolve.is_some();
-                let used_fallback = sys_resolve.is_none() || sys_resolve.as_deref() != Some(ip.as_str());
                 if !dns_ok {
                     let _ = dns_resolve(&r, &dns).await;
                 }
 
-                // Step 2: TCP
-                let tcp_ok = tcp(&ip, port).await;
-
-                // Step 3: HTTP
-                let (http_ok, http_code, http_detail) = if tcp_ok && !is_non_http {
-                    http_get(&cl, &format!("{}://{}:{}", if port == 443 { "https" } else { "http" }, ip, port)).await
-                } else if tcp_ok && is_non_http {
-                    (true, 0, "n/a".to_string())
-                } else {
-                    (false, 0, "skip".to_string())
-                };
-
-                let passed = if is_non_http { tcp_ok } else { tcp_ok && http_ok };
+                let result = probe::probe_endpoint(
+                    &ip, port, proto, None, &cl,
+                    std::time::Duration::from_secs(3),
+                ).await;
 
                 let dns_status = if dns_ok {
                     format!("ok({})", ip)
-                } else if used_fallback {
-                    format!("SYS-FAIL→hickory({})", ip)
                 } else {
-                    "FAIL".to_string()
+                    format!("SYS-FAIL→wg({})", ip)
                 };
 
                 let detail = format!(
-                    "{}:{} DNS={} TCP={} HTTP={}",
+                    "{}:{} DNS={} {}={} {}",
                     dns, port, dns_status,
-                    if tcp_ok { "ok" } else { "FAIL" },
-                    if !tcp_ok { "skip".to_string() }
-                    else if is_non_http { "n/a".to_string() }
-                    else if http_ok { format!("{}", http_code) }
-                    else { http_detail.clone() }
+                    result.probe,
+                    if result.ok { "ok" } else { "FAIL" },
+                    result.status.map(|s| format!("status={}", s))
+                        .or_else(|| result.error.clone())
+                        .unwrap_or_default(),
                 );
 
                 Check {
                     name: format!("{}.app:{}", name, port),
-                    passed,
+                    passed: result.ok,
                     details: detail.clone(),
                     duration_ms: t.elapsed().as_millis() as u64,
-                    error: if passed { None } else { Some(detail) },
-                    severity: if passed { Severity::Info } else { Severity::Warning },
+                    error: if result.ok { None } else { Some(detail) },
+                    severity: if result.ok { Severity::Info } else { Severity::Warning },
                 }
             })
         })
@@ -802,9 +795,13 @@ pub async fn layer_external(_ctx: &Context) -> Vec<Check> {
     let client = http_client();
 
     // Cloudflare DNS: dig diegonmarcos.com @1.1.1.1
+    // Retry on transient resolver timeouts (single-shot flake was a source of
+    // false Critical alerts).
     {
         let t = Instant::now();
-        let ip = dns_resolve(&pub_resolver, "diegonmarcos.com").await;
+        let ip = reports_common::checks::dns_resolve_retry(
+            &pub_resolver, "diegonmarcos.com", 3, 500,
+        ).await;
         let ok = ip.is_some();
         checks.push(Check {
             name: "Cloudflare DNS A".into(),

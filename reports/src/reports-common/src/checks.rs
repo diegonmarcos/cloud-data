@@ -90,6 +90,25 @@ pub async fn dns_resolve(resolver: &TokioAsyncResolver, name: &str) -> Option<St
     }
 }
 
+/// DNS A lookup with retries — survives transient resolver flakes (timeouts,
+/// rate-limits). Returns the first successful resolution; None after all tries.
+pub async fn dns_resolve_retry(
+    resolver: &TokioAsyncResolver,
+    name: &str,
+    retries: usize,
+    interval_ms: u64,
+) -> Option<String> {
+    for attempt in 0..=retries {
+        if let Some(ip) = dns_resolve(resolver, name).await {
+            return Some(ip);
+        }
+        if attempt < retries {
+            tokio::time::sleep(Duration::from_millis(interval_ms)).await;
+        }
+    }
+    None
+}
+
 /// DNS TXT lookup
 pub async fn dns_txt(resolver: &TokioAsyncResolver, name: &str) -> Option<String> {
     match timeout(Duration::from_secs(5), resolver.txt_lookup(name)).await {

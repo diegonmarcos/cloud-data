@@ -66,7 +66,6 @@ async fn main() -> Result<()> {
             bearer.as_deref(),
             cfg.concurrency.private,
             &cfg.timeouts,
-            &cfg.targets.tcp_only_ports,
         ),
         email_e2e::run(&cfg.email, &token),
     );

@@ -40,8 +40,10 @@ pub async fn validate_dns(
     let mut wildcard_active: HashSet<String> = HashSet::new();
     let parents: HashSet<String> = domains.iter().map(|d| parent_domain(d)).collect();
     for parent in &parents {
+        // Retry the probe — a single DNS timeout was enough to flip 13 domains
+        // to "Critical NXDOMAIN" in prior runs.
         let probe = format!("nxprobe-{}.{}", chrono::Utc::now().timestamp_nanos_opt().unwrap_or(0), parent);
-        let cf_probe = checks::dns_resolve(&public, &probe).await;
+        let cf_probe = checks::dns_resolve_retry(&public, &probe, 3, 500).await;
         if cf_probe.is_some() {
             wildcard_active.insert(parent.clone());
             println!("  wildcard A active for *.{}", parent);
@@ -52,8 +54,8 @@ pub async fn validate_dns(
     for domain in &domains {
         let t = Instant::now();
 
-        let cf_result = checks::dns_resolve(&public, domain).await;
-        let google_result = checks::dns_resolve(&google, domain).await;
+        let cf_result = checks::dns_resolve_retry(&public, domain, 2, 300).await;
+        let google_result = checks::dns_resolve_retry(&google, domain, 2, 300).await;
         let elapsed = t.elapsed().as_millis() as u64;
 
         let cf_ip = cf_result.unwrap_or_else(|| "NXDOMAIN".into());
