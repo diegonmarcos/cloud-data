@@ -35,6 +35,8 @@ pub struct RepoScanConfig {
     pub filename_patterns: Vec<Pattern>,
     #[serde(default)]
     pub content_patterns: Vec<Pattern>,
+    #[serde(default)]
+    pub ignore_line_markers: Vec<String>,
 }
 
 fn default_history_commits() -> u32 { 5000 }
@@ -172,6 +174,7 @@ pub async fn run(cfg: &RepoScanConfig) -> Vec<Check> {
                 &filename_set,
                 &cfg.filename_patterns,
                 &expected_enc_re,
+                &cfg.ignore_line_markers,
                 &repo.visibility,
             ).await;
             total_findings += tree_findings.len() as u32;
@@ -198,6 +201,7 @@ pub async fn run(cfg: &RepoScanConfig) -> Vec<Check> {
                 &repo.visibility,
                 &skip_re,
                 &allowlist_re,
+                &cfg.ignore_line_markers,
             ).await;
             total_findings += hist.len() as u32;
             for (name, severity, details) in hist {
@@ -265,6 +269,7 @@ async fn scan_tree(
     filename_set: &RegexSet,
     filename_patterns: &[Pattern],
     expected_enc_re: &RegexSet,
+    ignore_markers: &[String],
     visibility: &str,
 ) -> Vec<(String, Severity, String)> {
     let _ = visibility; // escalation applied by caller
@@ -360,6 +365,8 @@ async fn scan_tree(
             let content = parts.next().unwrap_or("");
             if skip_re.is_match(fpath) { continue; }
             if allowlist_re.is_match(fpath) { continue; }
+            // Skip lines that are already-encrypted sops blobs.
+            if ignore_markers.iter().any(|m| content.contains(m.as_str())) { continue; }
             // Which pattern matched?
             for (id, sev_, re) in content_compiled {
                 if re.is_match(content) {
@@ -385,6 +392,7 @@ async fn scan_history(
     visibility: &str,
     skip_re: &RegexSet,
     allowlist_re: &RegexSet,
+    ignore_markers: &[String],
 ) -> Vec<(String, Severity, String)> {
     let _ = visibility;
     let mut findings = Vec::new();
@@ -447,6 +455,8 @@ async fn scan_history(
             continue;
         }
         let content = &line[1..];
+        // Skip already-encrypted sops blobs.
+        if ignore_markers.iter().any(|m| content.contains(m.as_str())) { continue; }
         for (id, sev_, re) in content_compiled {
             if re.is_match(content) {
                 let key = format!("{}:{}:{}", id, current_path, &current_commit[..current_commit.len().min(8)]);

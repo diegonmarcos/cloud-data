@@ -48,7 +48,10 @@
     "(^|/)[^/]*secrets[^/]*-template\\.ya?ml$",
     "(^|/)sync_secrets\\.ya?ml$",
     "(^|/)\\.github/workflows/[^/]*secrets[^/]*\\.ya?ml$",
-    "(^|/)3_secrets/dist/"
+    "(^|/)3_secrets/dist/",
+    "(^|/)secrets-schema\\.md$",
+    "(^|/)test_precommit_blocks_plaintext_secret\\.sh$",
+    "(^|/)_shared/secrets-[a-z]+\\.(md|ya?ml)$"
   ],
   "filename_patterns": [
     { "id": "pem_file",            "severity": "critical", "regex": "\\.pem$" },
@@ -74,6 +77,14 @@
     { "id": "wireguard_private",   "severity": "critical", "regex": "(^|/)(wg[^/]*-private|wg-private[^/]*|privatekey)\\.conf$" },
     { "id": "mobileprovision",     "severity": "warning",  "regex": "\\.mobileprovision$" },
     { "id": "backup_suffix",       "severity": "warning",  "regex": "\\.(bak|old|orig|tmp|swp)$" }
+  ],
+  "ignore_line_markers": [
+    "ENC[AES256_GCM",
+    "sops_version",
+    "\"sops\":",
+    "lastmodified:",
+    "mac:",
+    "pgp:"
   ],
   "content_patterns": [
     { "id": "pem_private_key",      "severity": "critical", "regex": "-----BEGIN (RSA |DSA |EC |OPENSSH |ENCRYPTED |PGP )?PRIVATE KEY( BLOCK)?-----" },
@@ -133,6 +144,10 @@
     { "id": "argon2_hash",          "severity": "warning",  "regex": "\\$argon2i?d?\\$" },
     { "id": "bcrypt_hash",          "severity": "warning",  "regex": "\\$2[aby]?\\$\\d{2}\\$" },
     { "id": "url_embedded_creds",   "severity": "warning",  "regex": "(postgres(ql)?|mysql|mongodb|redis|amqp|ftp|https?)://[A-Za-z0-9._%+-]+:[A-Za-z0-9._%+=!*-]+@[^\\s]+" },
-    { "id": "generic_high_entropy", "severity": "warning",  "regex": "(?i)(api[_-]?key|api[_-]?secret|access[_-]?token|auth[_-]?token|secret[_-]?key|bearer[_-]?token|client[_-]?secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{24,}" }
+    { "id": "generic_high_entropy", "severity": "warning",  "regex": "(?i)(api[_-]?key|api[_-]?secret|access[_-]?token|auth[_-]?token|secret[_-]?key|bearer[_-]?token|client[_-]?secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{24,}" },
+    { "id": "db_password_env",      "severity": "critical", "regex": "(?i)(mysql|postgres(ql)?|mariadb|mongo(db)?|redis|db|database|matomo|admin|root|user|app)_?(root_?)?password[\"'\\s]*[:=][\"'\\s]*[^'\"\\s${}]{6,}" },
+    { "id": "generic_password_env", "severity": "warning",  "regex": "(?i)\\b(password|passwd|passphrase|secret)[\"'\\s]*[:=][\"'\\s]*[^'\"\\s${}]{8,}" },
+    { "id": "basic_auth_header",    "severity": "critical", "regex": "(?i)authorization\\s*:\\s*basic\\s+[A-Za-z0-9+/=]{16,}" },
+    { "id": "bearer_auth_header",   "severity": "critical", "regex": "(?i)authorization\\s*:\\s*bearer\\s+[A-Za-z0-9._~+/-]{20,}" }
   ]
 }
