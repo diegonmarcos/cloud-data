@@ -60,6 +60,12 @@ $DIFF_ANALYSIS
 
 ---
 
+## Repo Secret Scan
+
+$REPO_SCAN
+
+---
+
 ## Cross-Correlation Analysis
 
 $CORRELATIONS

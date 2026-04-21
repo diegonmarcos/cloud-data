@@ -32,6 +32,8 @@ pub struct Phases {
     pub runtime_enabled: bool,
     #[serde(default = "default_true")]
     pub diff_enabled: bool,
+    #[serde(default = "default_true")]
+    pub repo_scan_enabled: bool,
 }
 
 impl Default for Phases {
@@ -45,6 +47,7 @@ impl Default for Phases {
             journal_enabled: true,
             runtime_enabled: true,
             diff_enabled: true,
+            repo_scan_enabled: true,
         }
     }
 }

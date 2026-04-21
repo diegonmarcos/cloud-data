@@ -11,6 +11,7 @@ pub fn build_template_vars(
     journal_checks: &[Check],
     runtime_checks: &[Check],
     diff_checks: &[Check],
+    repo_checks: &[Check],
     corr_checks: &[Check],
     all_checks: &[&Check],
     summary: &Summary,
@@ -137,6 +138,29 @@ pub fn build_template_vars(
         )
     };
     vars.insert("DIFF_ANALYSIS".into(), diff_text);
+
+    // Repo scan
+    let repo_failed: Vec<&Check> = repo_checks.iter().filter(|c| !c.passed).collect();
+    let repo_text = if repo_checks.is_empty() {
+        "  Repo scan disabled.".into()
+    } else if repo_failed.is_empty() {
+        format!(
+            "{}\n\n  No secret leaks detected across scanned repos.",
+            output::format_checks(repo_checks)
+        )
+    } else {
+        let details = repo_failed
+            .iter()
+            .map(|c| format!("  - {}: {}", c.name, c.details))
+            .collect::<Vec<_>>()
+            .join("\n");
+        format!(
+            "{}\n\n### Repo Leak Candidates\n\n{}",
+            output::format_checks(repo_checks),
+            details
+        )
+    };
+    vars.insert("REPO_SCAN".into(), repo_text);
 
     // Correlations
     vars.insert(

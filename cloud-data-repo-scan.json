@@ -1,0 +1,78 @@
+{
+  "_comment": "cloud-sec-data-report::repo_scan config. Zero VM CPU — laptop-local. `~/git/vault/` NEVER scanned: intentional secrets store.",
+  "enabled": true,
+  "repos": [
+    { "path": "~/git/cloud-data", "visibility": "public",  "scan_history": true,  "scan_tree": true },
+    { "path": "~/git/cloud",      "visibility": "private", "scan_history": true,  "scan_tree": true },
+    { "path": "~/git/tools",      "visibility": "public",  "scan_history": true,  "scan_tree": true },
+    { "path": "~/git/unix",       "visibility": "public",  "scan_history": true,  "scan_tree": true },
+    { "path": "~/git/front",      "visibility": "public",  "scan_history": true,  "scan_tree": true }
+  ],
+  "history_max_commits": 5000,
+  "history_secs_budget": 60,
+  "skip_paths_re": [
+    "(^|/)vault/",
+    "(^|/)I_cloud-data/",
+    "(^|/)II_tools/",
+    "(^|/)III_unix/",
+    "(^|/)dist/\\.secrets(\\.d)?(/|$)",
+    "(^|/)\\.gitmodules$",
+    "(^|/)target/",
+    "(^|/)node_modules/",
+    "(^|/)\\.git/",
+    "(^|/)z_archive/",
+    "(^|/)yara-rules/",
+    "\\.yar$",
+    "(^|/)raw_logs/",
+    "\\.jsonl$"
+  ],
+  "expected_encrypted_files_re": [
+    "\\.secrets\\.yaml$",
+    "\\.secrets\\.sops\\.yaml$",
+    "(^|/)secrets\\.yaml$"
+  ],
+  "filename_allowlist_re": [
+    "\\.pub$",
+    "\\.pub\\.pem$",
+    "\\.(cert|crt|ca)$",
+    "(^|/)\\.env\\.(example|sample|template|dist)$",
+    "(^|/)authorized_keys$",
+    "(^|/)known_hosts$",
+    "(^|/)public_[^/]*$"
+  ],
+  "filename_patterns": [
+    { "id": "pem_file",            "severity": "critical", "regex": "\\.pem$" },
+    { "id": "key_file",            "severity": "critical", "regex": "\\.key$" },
+    { "id": "keystore",            "severity": "critical", "regex": "\\.(p12|pfx|jks)$" },
+    { "id": "ssh_private_named",   "severity": "critical", "regex": "(^|/)(id_(rsa|dsa|ed25519|ecdsa))$" },
+    { "id": "ssh_private_suffix",  "severity": "critical", "regex": "_rsa$|_dsa$|_ed25519$|_ecdsa$" },
+    { "id": "env_file",            "severity": "warning",  "regex": "(^|/)\\.env(\\.[^.]+)?$" },
+    { "id": "credentials_file",    "severity": "critical", "regex": "(^|/)credentials(\\.json)?$" },
+    { "id": "gcp_sa_json",         "severity": "critical", "regex": "service_account[^/]*\\.json$" },
+    { "id": "netrc",               "severity": "warning",  "regex": "(^|/)\\.netrc$" },
+    { "id": "kubeconfig",          "severity": "warning",  "regex": "(^|/)(kube\\.config|kubeconfig)$" }
+  ],
+  "content_patterns": [
+    { "id": "pem_private_key",      "severity": "critical", "regex": "-----BEGIN (RSA |DSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY-----" },
+    { "id": "pgp_private_key",      "severity": "critical", "regex": "-----BEGIN PGP PRIVATE KEY BLOCK-----" },
+    { "id": "aws_access_key",       "severity": "critical", "regex": "AKIA[0-9A-Z]{16}" },
+    { "id": "gcp_api_key",          "severity": "critical", "regex": "AIza[0-9A-Za-z_-]{35}" },
+    { "id": "gcp_service_account",  "severity": "critical", "regex": "\"type\"\\s*:\\s*\"service_account\"" },
+    { "id": "azure_storage_key",    "severity": "critical", "regex": "DefaultEndpointsProtocol=https;AccountKey=[A-Za-z0-9+/=]{88}" },
+    { "id": "github_pat_classic",   "severity": "critical", "regex": "ghp_[A-Za-z0-9]{36}" },
+    { "id": "github_pat_fine",      "severity": "critical", "regex": "github_pat_[A-Za-z0-9_]{82}" },
+    { "id": "github_app_install",   "severity": "critical", "regex": "gh[oprsu]_[A-Za-z0-9]{36}" },
+    { "id": "gitlab_pat",           "severity": "critical", "regex": "glpat-[A-Za-z0-9_-]{20}" },
+    { "id": "slack_token",          "severity": "critical", "regex": "xox[abprsu]-[0-9A-Za-z-]{10,}" },
+    { "id": "stripe_live",          "severity": "critical", "regex": "(sk|rk)_live_[A-Za-z0-9]{24,}" },
+    { "id": "sendgrid",             "severity": "critical", "regex": "SG\\.[A-Za-z0-9_-]{22}\\.[A-Za-z0-9_-]{43}" },
+    { "id": "twilio_sid_ac",        "severity": "warning",  "regex": "AC[a-f0-9]{32}" },
+    { "id": "twilio_key_sk",        "severity": "warning",  "regex": "(?:^|[^A-Za-z0-9])SK[a-f0-9]{32}" },
+    { "id": "discord_webhook",      "severity": "warning",  "regex": "https://discord(app)?\\.com/api/webhooks/\\d+/[A-Za-z0-9_-]+" },
+    { "id": "jwt_token",            "severity": "warning",  "regex": "eyJ[A-Za-z0-9_-]{10,}\\.eyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}" },
+    { "id": "pbkdf2_hash",          "severity": "warning",  "regex": "\\$pbkdf2-sha(256|512)\\$" },
+    { "id": "argon2_hash",          "severity": "warning",  "regex": "\\$argon2i?d?\\$" },
+    { "id": "bcrypt_hash",          "severity": "warning",  "regex": "\\$2[aby]?\\$\\d{2}\\$" },
+    { "id": "url_embedded_creds",   "severity": "warning",  "regex": "(postgres(ql)?|mysql|mongodb|redis|amqp|ftp)://[^:\\s]+:[^@\\s]+@" }
+  ]
+}
