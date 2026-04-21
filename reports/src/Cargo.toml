@@ -6,7 +6,7 @@ members = [
   "cloud-mail-health-full",
   "cloud-sec-network-report",
   "cloud-sec-data-report",
-
+  "cloud-url-health-report",
 ]
 resolver = "2"
 

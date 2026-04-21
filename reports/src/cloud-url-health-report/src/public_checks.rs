@@ -100,7 +100,11 @@ async fn probe_one(client: &reqwest::Client, domain: String, bearer: Option<&str
     match req.send().await {
         Ok(r) => {
             let status = r.status().as_u16();
-            let ok = r.status().is_success() || r.status().is_redirection();
+            // 404/405 = service responded (just not on root / wrong method).
+            // 401/403 = auth-gated and reachable. All count as "up".
+            let ok = r.status().is_success()
+                || r.status().is_redirection()
+                || matches!(status, 401 | 403 | 404 | 405);
             PublicResult {
                 domain,
                 status: Some(status),

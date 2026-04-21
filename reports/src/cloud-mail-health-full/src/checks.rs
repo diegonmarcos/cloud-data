@@ -133,12 +133,32 @@ pub fn auth_client(token: &str) -> Client {
 
 /// Run openssl s_client check via subprocess (for TLS probing mail ports)
 pub async fn openssl_connect(host: &str, port: u16, starttls: Option<&str>) -> (bool, String) {
+    openssl_connect_inner(host, port, host, starttls).await
+}
+
+/// Same as openssl_connect but lets the caller probe an explicit address while
+/// keeping a different SNI (useful for WG-IP probes against a public cert name).
+pub async fn openssl_connect_wg(
+    addr: &str,
+    port: u16,
+    sni: &str,
+    starttls: Option<&str>,
+) -> (bool, String) {
+    openssl_connect_inner(addr, port, sni, starttls).await
+}
+
+async fn openssl_connect_inner(
+    addr: &str,
+    port: u16,
+    sni: &str,
+    starttls: Option<&str>,
+) -> (bool, String) {
     let mut args = vec![
         "s_client".to_string(),
         "-connect".to_string(),
-        format!("{}:{}", host, port),
+        format!("{}:{}", addr, port),
         "-servername".to_string(),
-        host.to_string(),
+        sni.to_string(),
     ];
     if let Some(proto) = starttls {
         args.push("-starttls".to_string());

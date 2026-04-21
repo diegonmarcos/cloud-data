@@ -8,8 +8,13 @@ const BUILD_JSON_GLOB: &str = "/home/diego/Mounts/Git/cloud/a_solutions";
 const BEARER_TOKEN_PATH: &str =
     "Mounts/Git/vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/cloud-admin.json";
 
-/// Walk up from cwd (and $CLOUD_DATA_DIR if set) looking for a file.
-/// Works regardless of whether the binary runs from the crate root or dist/.
+/// Find a cloud-data JSON file. Search order:
+///   1. `$CLOUD_DATA_DIR/<name>` (env override)
+///   2. Walk up from cwd (handles report binaries running with cwd=reports/dist)
+///   3. Known fallback dirs:
+///        a) ~/git/cloud-data/                       (this repo — for cloud-data-*.json that still live here)
+///        b) ~/git/cloud/2_configs/dist/             (build-*.json + _cloud-data-consolidated.json — moved 2026-04-21)
+///        c) ~/git/cloud/I_cloud-data/               (submodule mirror, last-resort)
 pub fn find_cloud_data_file(name: &str) -> Option<PathBuf> {
     if let Ok(dir) = std::env::var("CLOUD_DATA_DIR") {
         let p = PathBuf::from(dir).join(name);
@@ -17,14 +22,28 @@ pub fn find_cloud_data_file(name: &str) -> Option<PathBuf> {
             return Some(p);
         }
     }
-    let cwd = std::env::current_dir().ok()?;
-    let mut cur = Some(cwd.as_path());
-    while let Some(c) = cur {
-        let candidate = c.join(name);
-        if candidate.exists() {
-            return Some(candidate);
+    let cwd = std::env::current_dir().ok();
+    if let Some(cwd) = cwd {
+        let mut cur = Some(cwd.as_path());
+        while let Some(c) = cur {
+            let candidate = c.join(name);
+            if candidate.exists() {
+                return Some(candidate);
+            }
+            cur = c.parent();
         }
-        cur = c.parent();
+    }
+    let home = std::env::var("HOME").unwrap_or_else(|_| "/home/diego".into());
+    let fallbacks = [
+        format!("{}/git/cloud-data", home),
+        format!("{}/git/cloud/2_configs/dist", home),
+        format!("{}/git/cloud/I_cloud-data", home),
+    ];
+    for f in &fallbacks {
+        let p = PathBuf::from(f).join(name);
+        if p.exists() {
+            return Some(p);
+        }
     }
     None
 }

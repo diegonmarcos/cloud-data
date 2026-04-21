@@ -2,10 +2,11 @@
 //! Target: under 15 seconds wall-clock.
 
 mod config;
-mod email_e2e;
 mod private_checks;
 mod public_checks;
 mod template;
+
+use reports_common::email_e2e;
 
 use anyhow::Result;
 use chrono::Utc;
@@ -60,7 +61,13 @@ async fn main() -> Result<()> {
             cfg.concurrency.public,
             &cfg.timeouts,
         ),
-        private_checks::run(private_targets, cfg.concurrency.private, &cfg.timeouts),
+        private_checks::run(
+            private_targets,
+            bearer.as_deref(),
+            cfg.concurrency.private,
+            &cfg.timeouts,
+            &cfg.targets.tcp_only_ports,
+        ),
         email_e2e::run(&cfg.email, &token),
     );
 
@@ -155,13 +162,14 @@ fn render_public_table(rows: &[public_checks::PublicResult]) -> String {
 
 fn render_private_table(rows: &[private_checks::PrivateResult]) -> String {
     let mut out = String::new();
-    out.push_str("| Service | Upstream | Status | Latency | OK | Error |\n");
-    out.push_str("|---|---|---|---|---|---|\n");
+    out.push_str("| Service | Upstream | Probe | Status | Latency | OK | Error |\n");
+    out.push_str("|---|---|---|---|---|---|---|\n");
     for r in rows {
         out.push_str(&format!(
-            "| {} | {} | {} | {}ms | {} | {} |\n",
+            "| {} | {} | {} | {} | {}ms | {} | {} |\n",
             r.service,
             r.upstream,
+            r.probe,
             r.status.map(|s| s.to_string()).unwrap_or_else(|| "-".into()),
             r.latency_ms,
             if r.ok { "✅" } else { "❌" },

@@ -1,12 +1,15 @@
 use anyhow::{Context, Result};
 use reports_common::context::find_cloud_data_file;
+use reports_common::email_e2e::EmailE2EConfig;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct UrlHealthConfig {
     pub concurrency: Concurrency,
     pub timeouts: Timeouts,
-    pub email: EmailConfig,
+    #[serde(default)]
+    pub targets: Targets,
+    pub email: EmailE2EConfig,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -19,29 +22,16 @@ pub struct Concurrency {
 pub struct Timeouts {
     pub http_connect_secs: u64,
     pub http_total_secs: u64,
+    #[serde(default = "default_tcp_secs")]
+    pub tcp_secs: u64,
 }
 
-#[derive(Debug, Deserialize, Clone)]
-pub struct EmailConfig {
-    pub smtp: SmtpConfig,
-    pub imap: ImapConfig,
-    pub timeout_secs: u64,
-    pub poll_interval_ms: u64,
-    pub subject_prefix: String,
-}
+fn default_tcp_secs() -> u64 { 3 }
 
-#[derive(Debug, Deserialize, Clone)]
-pub struct SmtpConfig {
-    pub host: String,
-    pub port: u16,
-    pub username: String,
-}
-
-#[derive(Debug, Deserialize, Clone)]
-pub struct ImapConfig {
-    pub host: String,
-    pub port: u16,
-    pub username: String,
+#[derive(Debug, Deserialize, Clone, Default)]
+pub struct Targets {
+    #[serde(default)]
+    pub tcp_only_ports: Vec<u16>,
 }
 
 pub fn load() -> Result<UrlHealthConfig> {

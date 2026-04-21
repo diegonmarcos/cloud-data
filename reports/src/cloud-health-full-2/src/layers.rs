@@ -609,22 +609,20 @@ pub async fn layer_private_urls(ctx: &Context) -> Vec<Check> {
                 ];
                 let is_non_http = NON_HTTP_PORTS.contains(&port);
 
-                // Step 1: DNS — try system resolver first (should hit Hickory via /etc/resolv.conf)
+                // Always probe the service's owning VM directly via WG IP.
+                // (Previously this resolved DNS first, but Hickory routes all
+                //  *.app to gcp-proxy/10.0.0.1 — TCP probe then hit the wrong host
+                //  and falsely reported the service unreachable.)
+                let ip = wg_ip.clone();
+
+                // DNS sanity (informational only — not used for the TCP probe)
                 let sys_resolve = tokio::net::lookup_host(format!("{}:{}", dns, port)).await.ok()
                     .and_then(|mut addrs| addrs.next().map(|a| a.ip().to_string()));
                 let dns_ok = sys_resolve.is_some();
-
-                // Fallback: if system DNS fails, try Hickory directly
-                let (ip, used_fallback) = if let Some(ref ip) = sys_resolve {
-                    (ip.clone(), false)
-                } else {
-                    let hickory = dns_resolve(&r, &dns).await;
-                    if let Some(ip) = hickory {
-                        (ip, true)
-                    } else {
-                        (wg_ip.clone(), true)
-                    }
-                };
+                let used_fallback = sys_resolve.is_none() || sys_resolve.as_deref() != Some(ip.as_str());
+                if !dns_ok {
+                    let _ = dns_resolve(&r, &dns).await;
+                }
 
                 // Step 2: TCP
                 let tcp_ok = tcp(&ip, port).await;
@@ -1569,129 +1567,49 @@ pub async fn layer_email_e2e(_ctx: &Context, reachable_vms: &[String]) -> Vec<Ch
     let mut checks = Vec::new();
     let t = std::time::Instant::now();
 
-    // Check for RESEND_API_KEY
-    let api_key = match std::env::var("RESEND_API_KEY") {
-        Ok(key) if !key.is_empty() => key,
-        _ => {
+    // E2E via our own outbound: no-reply@ → me@ via Maddy SMTP, IMAP poll inbox.
+    // Replaces the prior third-party Resend integration so we actually verify our stack.
+    let cfg = match reports_common::email_e2e::load_config() {
+        Ok(c) => c,
+        Err(e) => {
             checks.push(Check {
-                name: "Resend API key".into(),
-                passed: true,
-                details: "not set (set RESEND_API_KEY to enable E2E email test)".into(),
-                duration_ms: 0,
-                error: None,
-                severity: Severity::Info,
+                name: "Email E2E config".into(),
+                passed: false,
+                details: format!("could not load cloud-data-url-health.json email block: {}", e),
+                duration_ms: t.elapsed().as_millis() as u64,
+                error: Some(e.to_string()),
+                severity: Severity::Warning,
             });
             return checks;
         }
     };
 
-    // 1. Send test email via Resend API
-    let send_body = serde_json::json!({
-        "from": "health@mails.diegonmarcos.com",
-        "to": ["me@diegonmarcos.com"],
-        "subject": format!("Health check {}", chrono::Utc::now().format("%H:%M:%S")),
-        "text": "E2E email delivery test from cloud-health-full-report"
+    let token = format!("hf2-{}", chrono::Utc::now().format("%Y%m%d-%H%M%S"));
+    let result = reports_common::email_e2e::run(&cfg, &token).await;
+
+    checks.push(Check {
+        name: "E2E SMTP send".into(),
+        passed: result.outbound_ok,
+        details: format!(
+            "{}@ -> {}@ via {}:{} ({}ms)",
+            cfg.smtp.username, cfg.imap.username,
+            cfg.smtp.host, cfg.smtp.port, result.outbound_ms,
+        ),
+        duration_ms: result.outbound_ms,
+        error: if result.outbound_ok { None } else { result.error.clone() },
+        severity: if result.outbound_ok { Severity::Info } else { Severity::Warning },
     });
-
-    let send_result = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(10))
-        .build()
-        .unwrap()
-        .post("https://api.resend.com/emails")
-        .header("Authorization", format!("Bearer {}", api_key))
-        .header("Content-Type", "application/json")
-        .body(send_body.to_string())
-        .send()
-        .await;
-
-    let email_id = match send_result {
-        Ok(resp) => {
-            let status = resp.status().as_u16();
-            let body = resp.text().await.unwrap_or_default();
-            if status == 200 {
-                let id = serde_json::from_str::<serde_json::Value>(&body)
-                    .ok()
-                    .and_then(|v| v["id"].as_str().map(|s| s.to_string()));
-                checks.push(Check {
-                    name: "Resend send".into(),
-                    passed: true,
-                    details: format!("sent (id: {})", id.as_deref().unwrap_or("?")),
-                    duration_ms: t.elapsed().as_millis() as u64,
-                    error: None,
-                    severity: Severity::Info,
-                });
-                id
-            } else {
-                checks.push(Check {
-                    name: "Resend send".into(),
-                    passed: false,
-                    details: format!("HTTP {} — {}", status, &body[..body.len().min(100)]),
-                    duration_ms: t.elapsed().as_millis() as u64,
-                    error: Some(format!("Resend API returned {}", status)),
-                    severity: Severity::Warning,
-                });
-                None
-            }
-        }
-        Err(e) => {
-            checks.push(Check {
-                name: "Resend send".into(),
-                passed: false,
-                details: format!("error: {}", e),
-                duration_ms: t.elapsed().as_millis() as u64,
-                error: Some(e.to_string()),
-                severity: Severity::Warning,
-            });
-            None
-        }
-    };
-
-    // 2. Poll delivery status if we got an email ID
-    if let Some(id) = &email_id {
-        tokio::time::sleep(std::time::Duration::from_millis(2000)).await;
-        let mut delivered = false;
-        for attempt in 1..=3 {
-            let url = format!("https://api.resend.com/emails/{}", id);
-            if let Ok(resp) = reqwest::Client::new()
-                .get(&url)
-                .header("Authorization", format!("Bearer {}", api_key))
-                .timeout(std::time::Duration::from_secs(5))
-                .send()
-                .await
-            {
-                if let Ok(body) = resp.text().await {
-                    if let Ok(v) = serde_json::from_str::<serde_json::Value>(&body) {
-                        let status = v["last_event"].as_str().unwrap_or("unknown");
-                        if status == "delivered" || status == "opened" {
-                            delivered = true;
-                            checks.push(Check {
-                                name: "Resend delivery".into(),
-                                passed: true,
-                                details: format!("status={} (poll #{})", status, attempt),
-                                duration_ms: t.elapsed().as_millis() as u64,
-                                error: None,
-                                severity: Severity::Info,
-                            });
-                            break;
-                        }
-                    }
-                }
-            }
-            if attempt < 3 {
-                tokio::time::sleep(std::time::Duration::from_millis(2000)).await;
-            }
-        }
-        if !delivered {
-            checks.push(Check {
-                name: "Resend delivery".into(),
-                passed: false,
-                details: "not delivered after 3 polls (may still be in transit)".into(),
-                duration_ms: t.elapsed().as_millis() as u64,
-                error: Some("delivery not confirmed".into()),
-                severity: Severity::Warning,
-            });
-        }
-    }
+    checks.push(Check {
+        name: "E2E IMAP delivery".into(),
+        passed: result.inbound_ok,
+        details: format!(
+            "polled {}@ via {}:{} ({}ms)",
+            cfg.imap.username, cfg.imap.host, cfg.imap.port, result.inbound_ms,
+        ),
+        duration_ms: result.inbound_ms,
+        error: if result.inbound_ok { None } else { result.error.clone() },
+        severity: if result.inbound_ok { Severity::Info } else { Severity::Warning },
+    });
 
     // 3. Check maddy delivery via SSH (if oci-mail reachable)
     if reachable_vms.contains(&"oci-mail".to_string()) {

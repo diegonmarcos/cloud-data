@@ -5,3 +5,4 @@ pub mod context;
 pub mod template;
 pub mod output;
 pub mod capabilities;
+pub mod email_e2e;

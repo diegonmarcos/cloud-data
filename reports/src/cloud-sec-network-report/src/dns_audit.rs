@@ -33,6 +33,21 @@ pub async fn validate_dns(
         if caps.hickory_up { " + Hickory internal" } else { "" }
     );
 
+    // ── Wildcard probe — for each parent domain, resolve a random subdomain.
+    //    If the wildcard is active, individual NXDOMAIN for known subdomains is
+    //    EXPECTED (DNS only has *.<parent>, not per-host A). Downgrade those
+    //    to Info instead of Critical.
+    let mut wildcard_active: HashSet<String> = HashSet::new();
+    let parents: HashSet<String> = domains.iter().map(|d| parent_domain(d)).collect();
+    for parent in &parents {
+        let probe = format!("nxprobe-{}.{}", chrono::Utc::now().timestamp_nanos_opt().unwrap_or(0), parent);
+        let cf_probe = checks::dns_resolve(&public, &probe).await;
+        if cf_probe.is_some() {
+            wildcard_active.insert(parent.clone());
+            println!("  wildcard A active for *.{}", parent);
+        }
+    }
+
     // ── External: public resolvers (Cloudflare + Google cross-check) ──
     for domain in &domains {
         let t = Instant::now();
@@ -44,6 +59,8 @@ pub async fn validate_dns(
         let cf_ip = cf_result.unwrap_or_else(|| "NXDOMAIN".into());
         let google_ip = google_result.unwrap_or_else(|| "NXDOMAIN".into());
         let matches = cf_ip == google_ip && cf_ip != "NXDOMAIN";
+        let parent = parent_domain(domain);
+        let covered_by_wildcard = wildcard_active.contains(&parent);
 
         all_results.push(DnsValidationResult {
             domain: domain.clone(),
@@ -54,10 +71,11 @@ pub async fn validate_dns(
             matches,
         });
 
-        let passed = cf_ip != "NXDOMAIN";
-        let severity = if cf_ip == "NXDOMAIN" {
+        // NXDOMAIN is fine when the parent has a wildcard A record.
+        let passed = cf_ip != "NXDOMAIN" || covered_by_wildcard;
+        let severity = if cf_ip == "NXDOMAIN" && !covered_by_wildcard {
             Severity::Critical
-        } else if !matches {
+        } else if cf_ip != "NXDOMAIN" && !matches {
             Severity::Warning
         } else {
             Severity::Info
@@ -66,7 +84,11 @@ pub async fn validate_dns(
         let details = if matches {
             format!("A={}", cf_ip)
         } else if cf_ip == "NXDOMAIN" {
-            "NXDOMAIN (no A record)".into()
+            if covered_by_wildcard {
+                format!("no individual A — covered by *.{} wildcard", parent)
+            } else {
+                "NXDOMAIN (no A record)".into()
+            }
         } else {
             format!("CF={} Google={} (mismatch)", cf_ip, google_ip)
         };
@@ -214,4 +236,16 @@ pub async fn validate_dns(
     }
 
     (all_checks, all_results)
+}
+
+/// Return the parent domain (last 2 labels) for wildcard probing.
+/// e.g. "auth.diegonmarcos.com" -> "diegonmarcos.com",
+///      "diegonmarcos.com"      -> "diegonmarcos.com".
+fn parent_domain(d: &str) -> String {
+    let labels: Vec<&str> = d.split('.').collect();
+    if labels.len() <= 2 {
+        d.to_string()
+    } else {
+        labels[labels.len() - 2..].join(".")
+    }
 }

@@ -339,13 +339,15 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
         },
     );
 
-    // TLS port checks via openssl subprocess
+    // TLS port checks via openssl subprocess — probe over WG (the report's "WG direct" claim).
+    // Use MAIL_WG_IP so we hit the actual mail VM, not whatever the public DNS routes to.
+    // SNI still set to MAIL_DOMAIN for cert validation.
     let (tls_993, tls_465, tls_587) = tokio::join!(
         async {
             let t = Instant::now();
-            let (ok, detail) = openssl_connect(MAIL_DOMAIN, 993, None).await;
+            let (ok, detail) = openssl_connect_wg(MAIL_WG_IP, 993, MAIL_DOMAIN, None).await;
             Check {
-                name: "mail:993 TLS".into(),
+                name: "mail:993 TLS (WG)".into(),
                 passed: ok,
                 details: detail.clone(),
                 duration_ms: t.elapsed().as_millis() as u64,
@@ -355,9 +357,9 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
         },
         async {
             let t = Instant::now();
-            let (ok, detail) = openssl_connect(MAIL_DOMAIN, 465, None).await;
+            let (ok, detail) = openssl_connect_wg(MAIL_WG_IP, 465, MAIL_DOMAIN, None).await;
             Check {
-                name: "mail:465 TLS".into(),
+                name: "mail:465 TLS (WG)".into(),
                 passed: ok,
                 details: detail.clone(),
                 duration_ms: t.elapsed().as_millis() as u64,
@@ -367,9 +369,9 @@ pub async fn phase0_instant_kpis() -> Vec<Check> {
         },
         async {
             let t = Instant::now();
-            let (ok, detail) = openssl_connect(MAIL_DOMAIN, 587, Some("smtp")).await;
+            let (ok, detail) = openssl_connect_wg(MAIL_WG_IP, 587, MAIL_DOMAIN, Some("smtp")).await;
             Check {
-                name: "mail:587 STARTTLS".into(),
+                name: "mail:587 STARTTLS (WG)".into(),
                 passed: ok,
                 details: detail.clone(),
                 duration_ms: t.elapsed().as_millis() as u64,

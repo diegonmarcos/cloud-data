@@ -3,6 +3,5 @@
   {"file": "reports/dist/cloud_mail_full.md", "name": "cloud mail full"},
   {"file": "reports/dist/cloud_sec_data.md", "name": "cloud sec data"},
   {"file": "reports/dist/cloud_sec_network.md", "name": "cloud sec network"},
-  {"file": "reports/dist/cloud_url_health.md", "name": "cloud url health"},
-  {"file": "reports/dist/container_health.md", "name": "container health"}
+  {"file": "reports/dist/cloud_url_health.md", "name": "cloud url health"}
 ]
