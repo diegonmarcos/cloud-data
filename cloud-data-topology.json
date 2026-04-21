@@ -3752,9 +3752,7 @@
       "domain": "mcp.diegonmarcos.com/c3-infra-mcp",
       "port": 3100,
       "dns": "c3-infra-mcp.app",
-      "upstream": {
-        "mattermost_url": "http://mattermost.app"
-      },
+      "upstream": "10.0.0.6:3100",
       "containers": {
         "app": {
           "container_name": "c3-infra-mcp",

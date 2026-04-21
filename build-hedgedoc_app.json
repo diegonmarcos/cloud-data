@@ -4,7 +4,7 @@
     "description": "hedgedoc_app container config (service=hedgedoc, role=app)",
     "format_version": 1
   },
-  "_generated": "2026-04-20T16:08:21.815Z",
+  "_generated": "2026-04-21T07:42:35.484Z",
   "_source": "_cloud-data-consolidated.json via cloud-data-config-derive.ts/container-configs",
   "container": {
     "container_name": "hedgedoc_app",
@@ -178,28 +178,15 @@
         "dashboard": 3001,
         "db": 5433,
         "redis": 6381,
-        "minio": 9000
+        "minio": 9000,
+        "minio_console": 9001
       },
       "vm": "oci-apps"
     },
-    "quant-lab-full": {
+    "fincept-server": {
       "ip": "10.0.0.6",
       "ports": {
-        "app": 8890,
-        "research": 8890,
-        "dash": 8050,
-        "engine": 5000,
-        "db": 5437
-      },
-      "vm": "oci-apps"
-    },
-    "quant-lab-light": {
-      "ip": "10.0.0.6",
-      "ports": {
-        "app": 8889,
-        "engine": 5001,
-        "db": 5443,
-        "research": 8889
+        "app": 8340
       },
       "vm": "oci-apps"
     },

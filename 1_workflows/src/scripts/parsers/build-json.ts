@@ -262,7 +262,7 @@ export function scanBuildJsons(solutionsDir: string): BuildJsonEntry[] {
         "name", "description", "category", "domain", "deploy", "dns", "port",
         "ports", "proxy", "health", "monitoring", "backup", "notifications",
         "docker", "secrets", "build", "compose", "lifecycle", "terraform",
-        "multi_vm", "frozen", "version", "containers", "enabled",
+        "multi_vm", "frozen", "version", "containers", "enabled", "upstream",
       ]);
       const extra: Record<string, unknown> = {};
       for (const [k, v] of Object.entries(bj)) {

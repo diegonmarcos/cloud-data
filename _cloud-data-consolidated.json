@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": 2,
-    "generated_at": "2026-04-20T21:00:21.979Z",
+    "generated_at": "2026-04-21T07:42:33.933Z",
     "generated_by": "cloud-data-config-consolidated.ts"
   },
   "owner": {
@@ -4246,9 +4246,7 @@
       "flake": "c3-infra-mcp",
       "port": 3100,
       "dns": "c3-infra-mcp.app",
-      "upstream": {
-        "mattermost_url": "http://mattermost.app"
-      },
+      "upstream": "10.0.0.6:3100",
       "containers": {
         "app": {
           "container_name": "c3-infra-mcp",

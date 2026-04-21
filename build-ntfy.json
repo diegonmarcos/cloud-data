@@ -4,7 +4,7 @@
     "description": "ntfy container config (service=ntfy, role=app)",
     "format_version": 1
   },
-  "_generated": "2026-04-20T16:08:21.816Z",
+  "_generated": "2026-04-21T07:42:35.485Z",
   "_source": "_cloud-data-consolidated.json via cloud-data-config-derive.ts/container-configs",
   "container": {
     "container_name": "ntfy",
@@ -12,6 +12,14 @@
     "port": 8090,
     "port_env": null,
     "dns": "ntfy.app",
+    "resources": {
+      "limits": {
+        "memory": "64M"
+      },
+      "reservations": {
+        "memory": "16M"
+      }
+    },
     "public": true,
     "proxy": {
       "domain": "rss.diegonmarcos.com",
@@ -29,7 +37,6 @@
     ],
     "env_file": true,
     "depends_on": [],
-    "resources": null,
     "read_only": false,
     "db_path": "/var/cache/ntfy/cache.db",
     "protocol": "http",
@@ -182,28 +189,15 @@
         "dashboard": 3001,
         "db": 5433,
         "redis": 6381,
-        "minio": 9000
+        "minio": 9000,
+        "minio_console": 9001
       },
       "vm": "oci-apps"
     },
-    "quant-lab-full": {
+    "fincept-server": {
       "ip": "10.0.0.6",
       "ports": {
-        "app": 8890,
-        "research": 8890,
-        "dash": 8050,
-        "engine": 5000,
-        "db": 5437
-      },
-      "vm": "oci-apps"
-    },
-    "quant-lab-light": {
-      "ip": "10.0.0.6",
-      "ports": {
-        "app": 8889,
-        "engine": 5001,
-        "db": 5443,
-        "research": 8889
+        "app": 8340
       },
       "vm": "oci-apps"
     },

@@ -4,7 +4,7 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 3
   },
-  "_generated": "2026-04-20T21:03:16.444Z",
+  "_generated": "2026-04-21T07:42:35.482Z",
   "_source": "_cloud-data-consolidated.json via cloud-data-config-derive.ts/caddy-routes",
   "global": {
     "debug": true,
@@ -422,9 +422,7 @@
         },
         {
           "base_path": "/c3-infra-mcp",
-          "upstream": {
-            "mattermost_url": "http://mattermost.app"
-          }
+          "upstream": "10.0.0.6:3100"
         },
         {
           "base_path": "/c3-services-mcp",
@@ -585,9 +583,7 @@
     },
     {
       "service": "c3-infra-mcp.app",
-      "upstream": {
-        "mattermost_url": "http://mattermost.app"
-      }
+      "upstream": "10.0.0.6:3100"
     },
     {
       "service": "c3-services-api.app",
@@ -2648,9 +2644,7 @@
     {
       "host": "mcp.diegonmarcos.com",
       "path": "/c3-infra-mcp",
-      "upstream": {
-        "mattermost_url": "http://mattermost.app"
-      },
+      "upstream": "10.0.0.6:3100",
       "kind": "reverse_proxy",
       "tls": "public",
       "zone": "com",
@@ -3288,9 +3282,7 @@
     {
       "host": "c3-infra-mcp.app",
       "path": null,
-      "upstream": {
-        "mattermost_url": "http://mattermost.app"
-      },
+      "upstream": "10.0.0.6:3100",
       "kind": "reverse_proxy",
       "tls": "internal",
       "zone": "com",
