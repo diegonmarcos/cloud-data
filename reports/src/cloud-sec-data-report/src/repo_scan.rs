@@ -282,10 +282,26 @@ async fn scan_tree(
         Ok(_) => return findings,
         Err(_) => return findings,
     };
-    let files: Vec<String> = out.split(|&b| b == 0)
+    let mut files: Vec<String> = out.split(|&b| b == 0)
         .filter(|s| !s.is_empty())
         .filter_map(|s| std::str::from_utf8(s).ok().map(|x| x.to_string()))
         .collect();
+
+    // Also grab untracked + ignored worktree files whose name contains "secrets"
+    // (catches *.secrets.yaml.new, secrets.yaml.bak, etc. that aren't in index).
+    if let Ok(o) = Command::new("git").arg("-C").arg(repo)
+        .args(["ls-files", "-o", "-z"])
+        .stdout(Stdio::piped()).output().await
+    {
+        for s in o.stdout.split(|&b| b == 0) {
+            if s.is_empty() { continue; }
+            if let Ok(p) = std::str::from_utf8(s) {
+                if p.to_ascii_lowercase().contains("secrets") {
+                    files.push(p.to_string());
+                }
+            }
+        }
+    }
 
     // 1. Filename patterns.
     for f in &files {
@@ -306,6 +322,7 @@ async fn scan_tree(
     for f in &files {
         if !expected_enc_re.is_match(f) { continue; }
         if skip_re.is_match(f) { continue; }
+        if allowlist_re.is_match(f) { continue; }
         let full = repo.join(f);
         let head = match std::fs::read(&full) {
             Ok(v) => v,
