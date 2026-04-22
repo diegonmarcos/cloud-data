@@ -86,8 +86,14 @@ pub fn protocol_for_port(port: u16, proto_hint: Option<&str>) -> Protocol {
         2025, 2222, 2223, 2224, 2443, 2465, 2587, 2993, // mail/backup shadow ports
         21027, 22000,                     // Syncthing
         8443,                             // Maddy admin (TLS)
-        443,                              // HTTPS — but for raw-IP probes we can't set SNI,
-                                          // so treat as TCP (TLS handshake on bare IP fails)
+        // B8 fix: raw-IP probes to Caddy on 80/443 can't carry a meaningful
+        // Host header — Caddy returns 404 ("no site for <ip>") and we'd
+        // call that a failure despite the edge being perfectly healthy.
+        // Downgrade to TCP-only so we assert reachability without expecting
+        // a specific HTTP status. Probes targeted at a real domain
+        // (https://<host>) don't pass through this heuristic.
+        80,                               // HTTP edge — no Host = 404 on bare IP
+        443,                              // HTTPS — no SNI = TLS handshake fails on bare IP
     ];
     if TCP_ONLY.contains(&port) {
         return Protocol::Tcp;
