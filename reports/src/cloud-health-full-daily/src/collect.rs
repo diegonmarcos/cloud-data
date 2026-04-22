@@ -135,18 +135,56 @@ pub async fn check_dns() -> Vec<DnsResult> {
     results
 }
 
-/// Fetch GHA workflow runs from multiple repos (cloud + front + cloud-data)
+/// Load repo list + max_runs from cloud-data-workflows.json (declarative).
+/// Falls back to the legacy 3-repo list only if the JSON is missing —
+/// existing deployments keep working while the config file rolls out.
+fn workflows_config() -> (Vec<String>, usize) {
+    use reports_common::context::find_cloud_data_file;
+    let legacy = (
+        vec![
+            "diegonmarcos/cloud".to_string(),
+            "diegonmarcos/front".to_string(),
+            "diegonmarcos/cloud-data".to_string(),
+        ],
+        20usize,
+    );
+    let path = match find_cloud_data_file("cloud-data-workflows.json") {
+        Some(p) => p,
+        None => return legacy,
+    };
+    let bytes = match std::fs::read(&path) {
+        Ok(b) => b,
+        Err(_) => return legacy,
+    };
+    let v: serde_json::Value = match serde_json::from_slice(&bytes) {
+        Ok(v) => v,
+        Err(_) => return legacy,
+    };
+    let repos: Vec<String> = v["github"]["repos"]
+        .as_array()
+        .map(|arr| {
+            arr.iter()
+                .filter_map(|x| x.as_str().map(|s| s.to_string()))
+                .collect()
+        })
+        .unwrap_or_else(|| legacy.0.clone());
+    let max = v["github"]["max_runs_per_repo"].as_u64().unwrap_or(20) as usize;
+    (repos, max)
+}
+
+/// Fetch GHA workflow runs from every repo declared in cloud-data-workflows.json.
 pub async fn fetch_gha(github_token: &str) -> Vec<GhaRun> {
     let client = auth_client(github_token);
-    let repos = ["diegonmarcos/cloud", "diegonmarcos/front", "diegonmarcos/cloud-data"];
+    let (repos, max_runs) = workflows_config();
 
     let futs: Vec<_> = repos.iter().map(|repo| {
         let c = client.clone();
         let repo = repo.to_string();
+        let max_runs = max_runs;
         async move {
             let url = format!(
-                "https://api.github.com/repos/{}/actions/runs?per_page=20&status=completed",
-                repo
+                "https://api.github.com/repos/{}/actions/runs?per_page={}&status=completed",
+                repo, max_runs
             );
             let resp = timeout(
                 Duration::from_secs(10),
@@ -187,10 +225,10 @@ pub async fn fetch_gha(github_token: &str) -> Vec<GhaRun> {
     all_runs
 }
 
-/// Fetch GHA workflow definitions from multiple repos
+/// Fetch GHA workflow definitions from every repo declared in cloud-data-workflows.json.
 pub async fn fetch_gha_workflows(github_token: &str) -> Vec<GhaWorkflow> {
     let client = auth_client(github_token);
-    let repos = ["diegonmarcos/cloud", "diegonmarcos/front", "diegonmarcos/cloud-data"];
+    let (repos, _max_runs) = workflows_config();
 
     let futs: Vec<_> = repos.iter().map(|repo| {
         let c = client.clone();
