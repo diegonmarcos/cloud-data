@@ -1,0 +1,113 @@
+{
+  "_comment": "reports-logs collector config. Declarative — VMs, containers, systemd units, domains, TLS endpoints all loaded here. Output goes to reports-logs/dist/. Every report (health-full-2, mail-full, sec-data, sec-network, url-health) can reference this evidence trail for debugging.",
+  "enabled": true,
+  "retention_days": 14,
+  "output_dir": "reports-logs/dist",
+  "parallelism": {
+    "vm_parallel": 4,
+    "container_parallel": 6
+  },
+  "timeouts": {
+    "ssh_secs": 30,
+    "docker_log_lines": 500,
+    "systemd_log_lines": 200
+  },
+  "modules": {
+    "docker": {
+      "enabled": true,
+      "collect_inspect": true,
+      "collect_logs": true,
+      "ps_all": true,
+      "skip_healthy": false
+    },
+    "systemd": {
+      "enabled": true,
+      "units_per_vm": {
+        "gcp-proxy": [
+          "wg-quick@wg0.service",
+          "docker.service",
+          "caddy.service",
+          "earlyoom.service",
+          "evidence-collector.service",
+          "health-agent.service",
+          "disk-watchdog.service"
+        ],
+        "oci-apps": [
+          "wg-quick@wg0.service",
+          "docker.service",
+          "disk-watchdog.service",
+          "unified-monitoring-agent.service"
+        ],
+        "oci-mail": [
+          "wg-quick@wg0.service",
+          "docker.service"
+        ],
+        "oci-analytics": [
+          "wg-quick@wg0.service",
+          "docker.service"
+        ]
+      },
+      "include_failed_units": true
+    },
+    "network": {
+      "enabled": true,
+      "commands": [
+        "ss -lntp",
+        "ip -br addr",
+        "ip route",
+        "wg show all dump",
+        "nft list ruleset || iptables -L -n",
+        "cat /etc/resolv.conf"
+      ]
+    },
+    "dns": {
+      "enabled": true,
+      "resolvers": ["1.1.1.1", "8.8.8.8", "10.0.0.1"],
+      "domains": [
+        "diegonmarcos.com",
+        "www.diegonmarcos.com",
+        "mail.diegonmarcos.com",
+        "auth.diegonmarcos.com",
+        "api.diegonmarcos.com",
+        "analytics.diegonmarcos.com",
+        "webmail.diegonmarcos.com",
+        "mail-stalwart.diegonmarcos.com",
+        "dns.internal.diegonmarcos.com",
+        "_dmarc.diegonmarcos.com",
+        "dkim._domainkey.diegonmarcos.com",
+        "_mta-sts.diegonmarcos.com",
+        "_acme-challenge.diegonmarcos.com"
+      ],
+      "record_types": ["A", "AAAA", "MX", "TXT", "CNAME", "CAA"]
+    },
+    "tls": {
+      "enabled": true,
+      "endpoints": [
+        { "host": "mail.diegonmarcos.com", "port": 993, "sni": "mail.diegonmarcos.com" },
+        { "host": "mail.diegonmarcos.com", "port": 465, "sni": "mail.diegonmarcos.com" },
+        { "host": "mail.diegonmarcos.com", "port": 587, "sni": "mail.diegonmarcos.com", "starttls": "smtp" },
+        { "host": "10.0.0.3",              "port": 993, "sni": "mail.diegonmarcos.com" },
+        { "host": "10.0.0.3",              "port": 465, "sni": "mail.diegonmarcos.com" },
+        { "host": "10.0.0.3",              "port": 587, "sni": "mail.diegonmarcos.com", "starttls": "smtp" },
+        { "host": "diegonmarcos.com",      "port": 443, "sni": "diegonmarcos.com" }
+      ]
+    },
+    "mail": {
+      "enabled": true,
+      "maddy_vm": "oci-mail",
+      "maddy_container": "maddy",
+      "stalwart_container": "stalwart"
+    },
+    "cloudflare": {
+      "enabled": true,
+      "zone": "diegonmarcos.com",
+      "records_of_interest": ["MX", "TXT", "CAA", "SRV"]
+    }
+  },
+  "known_ephemeral_containers": [
+    "umami-setup",
+    "cloud-builder-x-cloud-builder-1",
+    "photoprism-setup",
+    "authelia-init"
+  ]
+}
