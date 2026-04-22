@@ -131,6 +131,12 @@ pub fn load_context() -> Result<Context> {
                     port: ct["port"].as_u64().map(|p| p as u16),
                     dns: ct["dns"].as_str().map(|s| s.to_string()),
                     healthcheck: ct["healthcheck"].as_str().map(|s| s.to_string()),
+                    // Declarative "expected to exit" signal (B5) — overrides the
+                    // name-based `_setup`/`-setup`/`_init` heuristic in layers.rs.
+                    init_job: ct["init_job"].as_bool().unwrap_or(false)
+                        || ct["one_shot"].as_bool().unwrap_or(false),
+                    // WG-only flag — skip cross-VM public probes when false (B7).
+                    public: ct["public"].as_bool().unwrap_or(true),
                 })
                 .collect();
 

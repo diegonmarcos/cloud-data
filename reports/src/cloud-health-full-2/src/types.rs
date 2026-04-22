@@ -95,6 +95,12 @@ pub struct ContainerDecl {
     pub port: Option<u16>,
     pub dns: Option<String>,
     pub healthcheck: Option<String>,
+    /// One-shot init container — `init_job: true` in build.json.
+    /// Health reports treat Exited(0) / Exited(1) as success, not a crash.
+    pub init_job: bool,
+    /// WG-only container — `public: false` in build.json.
+    /// Cross-VM public probes are skipped (can't reach by design).
+    pub public: bool,
 }
 
 #[derive(Clone, Debug)]

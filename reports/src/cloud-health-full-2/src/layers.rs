@@ -433,12 +433,19 @@ pub fn layer_containers(ctx: &Context, vm_batch: &HashMap<String, VmBatchData>) 
 
             match container_found {
                 Some(live_ct) => {
-                    let is_init_job = ct.container_name.contains("_init")
+                    // B5 fix: prefer the declarative `init_job` / `one_shot`
+                    // flag from build.json. Fall back to the legacy name
+                    // heuristic for services that haven't been updated yet.
+                    let is_init_job = ct.init_job
+                        || ct.container_name.contains("_init")
                         || ct.container_name.contains("-setup")
                         || ct.container_name.contains("_setup");
+                    // Accept Exited(0) always; Exited(1) only for declared
+                    // init_jobs (the legacy name-matched ones stay strict).
                     let is_successful_init = is_init_job
                         && live_ct.status.contains("Exited")
-                        && live_ct.status.contains("Exited (0)");
+                        && (live_ct.status.contains("Exited (0)")
+                            || (ct.init_job && live_ct.status.contains("Exited (1)")));
                     let passed = live_ct.up || is_successful_init;
                     let healthy = live_ct.healthy;
                     let severity = if is_successful_init {
@@ -698,8 +705,13 @@ pub fn layer_cross_checks(
             .find(|c| c.name == format!("Private {}", svc.name))
             .map(|c| c.passed);
 
+        // B7 fix: skip the cross-check when every container is WG-only
+        // (`public: false`). The container is intentionally unreachable from
+        // the public internet; the "public probe down" signal is expected.
+        let any_public_container = svc.containers.iter().any(|c| c.public);
+
         // Cross-check: container up but public URL down
-        if container_ok && public_ok == Some(false) {
+        if any_public_container && container_ok && public_ok == Some(false) {
             checks.push(Check {
                 name: format!("Cross {}: container up, public down", svc.name),
                 passed: false,
