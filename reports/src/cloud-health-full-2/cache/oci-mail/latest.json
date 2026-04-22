@@ -1,13 +1,13 @@
 {
   "vm": "web-server",
-  "timestamp": "2026-04-20T15:22:05Z",
-  "mem": {"used":666,"total":954,"pct":69},
-  "swap": {"used":381,"total":2559},
-  "disk": {"used":"38G","total":"45G","pct":"89%"},
-  "load": "4.38 3.25 2.88",
-  "uptime": "19d 21h",
+  "timestamp": "2026-04-22T14:25:45Z",
+  "mem": {"used":698,"total":954,"pct":73},
+  "swap": {"used":277,"total":2559},
+  "disk": {"used":"33G","total":"45G","pct":"79%"},
+  "load": "0.01 0.12 0.18",
+  "uptime": "21d 20h",
   "wg_up": true,
-  "containers_running": 6,
-  "containers_total": 7,
-  "containers": [{"name":"stalwart-sorter","status":"Up 21 hours","health":"none"},{"name":"stalwart","status":"Up 21 hours","health":"none"},{"name":"maddy","status":"Up 22 hours","health":"none"},{"name":"maddy-sorter","status":"Up 22 hours","health":"none"},{"name":"snappymail","status":"Up 30 hours (healthy)","health":"healthy"},{"name":"smtp-proxy","status":"Up 30 hours","health":"none"},{"name":"dagu","status":"Exited (255) 47 hours ago","health":"exited"}]
+  "containers_running": 3,
+  "containers_total": 4,
+  "containers": [{"name":"maddy","status":"Exited (1) 19 minutes ago","health":"exited"},{"name":"stalwart-sorter","status":"Up 2 days","health":"none"},{"name":"stalwart","status":"Up 2 days","health":"none"},{"name":"smtp-proxy","status":"Up 3 days","health":"none"}]
 }

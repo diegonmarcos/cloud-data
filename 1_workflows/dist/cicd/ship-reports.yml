@@ -1,0 +1,57 @@
+name: "Ship → Reports image"
+
+on:
+  push:
+    paths:
+      - "reports/*/src/**"
+      - "reports/*/Cargo.toml"
+      - "reports/Cargo.toml"
+      - "reports/Dockerfile"
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  preflight-symlinks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail on broken symlinks (source trees only)
+        run: |
+          set -e
+          # Scope: source files used in builds. Skip dist/target/node_modules/.git —
+          # those are build outputs, not inputs, and can legitimately contain
+          # machine-local symlinks (e.g. cargo deps symlinked into ~/.cargo).
+          broken=$(find . -xtype l \
+            -not -path "./.git/*" \
+            -not -path "*/dist/*" \
+            -not -path "*/target/*" \
+            -not -path "*/node_modules/*" 2>/dev/null || true)
+          if [ -n "$broken" ]; then
+            echo "::error::Broken symlinks found in source tree:"
+            echo "$broken"
+            exit 1
+          fi
+          echo "No broken symlinks in source tree."
+
+  build:
+    name: "Build + push reports image"
+    needs: preflight-symlinks
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
+    steps:
+      - name: Ship via cloud-builder
+        run: |
+          echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          IMAGE="ghcr.io/diegonmarcos/cloud-builder-x-deb-nixhm:latest"
+          docker pull "$IMAGE"
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -e GITHUB_TOKEN \
+            -e GITHUB_ACTOR \
+            "$IMAGE" ship-reports
