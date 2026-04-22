@@ -37,6 +37,8 @@ pub struct RepoScanConfig {
     pub content_patterns: Vec<Pattern>,
     #[serde(default)]
     pub ignore_line_markers: Vec<String>,
+    #[serde(default)]
+    pub activation_script_patterns_re: Vec<String>,
 }
 
 fn default_history_commits() -> u32 { 5000 }
@@ -125,6 +127,10 @@ pub async fn run(cfg: &RepoScanConfig) -> Vec<Check> {
         Ok(r) => r,
         Err(e) => { checks.push(fail("repo-scan: filename_allowlist compile", e.to_string())); return checks; }
     };
+    let activation_script_re = match RegexSet::new(&cfg.activation_script_patterns_re) {
+        Ok(r) => r,
+        Err(e) => { checks.push(fail("repo-scan: activation_script_patterns compile", e.to_string())); return checks; }
+    };
 
     let filename_set = match RegexSet::new(cfg.filename_patterns.iter().map(|p| &p.regex)) {
         Ok(r) => r,
@@ -175,6 +181,7 @@ pub async fn run(cfg: &RepoScanConfig) -> Vec<Check> {
                 &cfg.filename_patterns,
                 &expected_enc_re,
                 &cfg.ignore_line_markers,
+                &activation_script_re,
                 &repo.visibility,
             ).await;
             total_findings += tree_findings.len() as u32;
@@ -202,6 +209,7 @@ pub async fn run(cfg: &RepoScanConfig) -> Vec<Check> {
                 &skip_re,
                 &allowlist_re,
                 &cfg.ignore_line_markers,
+                &activation_script_re,
             ).await;
             total_findings += hist.len() as u32;
             for (name, severity, details) in hist {
@@ -270,6 +278,7 @@ async fn scan_tree(
     filename_patterns: &[Pattern],
     expected_enc_re: &RegexSet,
     ignore_markers: &[String],
+    activation_script_re: &RegexSet,
     visibility: &str,
 ) -> Vec<(String, Severity, String)> {
     let _ = visibility; // escalation applied by caller
@@ -367,14 +376,21 @@ async fn scan_tree(
             if allowlist_re.is_match(fpath) { continue; }
             // Skip lines that are already-encrypted sops blobs.
             if ignore_markers.iter().any(|m| content.contains(m.as_str())) { continue; }
+            // Is this an activation script? → auto-elevate any leak to Critical.
+            let is_activation = activation_script_re.is_match(fpath);
             // Which pattern matched?
             for (id, sev_, re) in content_compiled {
                 if re.is_match(content) {
                     let preview = content.chars().take(80).collect::<String>();
+                    let (out_id, out_sev) = if is_activation {
+                        (format!("activation_script:{}", id), Severity::Critical)
+                    } else {
+                        (id.clone(), sev_.clone())
+                    };
                     findings.push((
-                        id.clone(),
-                        sev_.clone(),
-                        format!("{}:{}  [{}]  {}", fpath, lineno, id, preview),
+                        out_id.clone(),
+                        out_sev,
+                        format!("{}:{}  [{}]  {}", fpath, lineno, out_id, preview),
                     ));
                 }
             }
@@ -393,6 +409,7 @@ async fn scan_history(
     skip_re: &RegexSet,
     allowlist_re: &RegexSet,
     ignore_markers: &[String],
+    activation_script_re: &RegexSet,
 ) -> Vec<(String, Severity, String)> {
     let _ = visibility;
     let mut findings = Vec::new();
@@ -457,18 +474,24 @@ async fn scan_history(
         let content = &line[1..];
         // Skip already-encrypted sops blobs.
         if ignore_markers.iter().any(|m| content.contains(m.as_str())) { continue; }
+        let is_activation = activation_script_re.is_match(&current_path);
         for (id, sev_, re) in content_compiled {
             if re.is_match(content) {
-                let key = format!("{}:{}:{}", id, current_path, &current_commit[..current_commit.len().min(8)]);
+                let (out_id, out_sev) = if is_activation {
+                    (format!("activation_script:{}", id), Severity::Critical)
+                } else {
+                    (id.clone(), sev_.clone())
+                };
+                let key = format!("{}:{}:{}", out_id, current_path, &current_commit[..current_commit.len().min(8)]);
                 if seen.insert(key.clone()) {
                     let preview = content.chars().take(80).collect::<String>();
                     findings.push((
-                        id.clone(),
-                        sev_.clone(),
+                        out_id.clone(),
+                        out_sev,
                         format!(
                             "commit {}  {}  [{}]  {}",
                             &current_commit[..current_commit.len().min(8)],
-                            current_path, id, preview
+                            current_path, out_id, preview
                         ),
                     ));
                 }
