@@ -110,15 +110,23 @@ case "${cmd}" in
         for m in docker systemd network dns tls mail cloudflare; do
             run_module "${m}" || echo "[reports-logs] ${m} reported errors (non-fatal)"
         done
+        # index runs last — it scans everything else produced.
+        sh "${MODULES_DIR}/index.sh"
         write_manifest
         ;;
     docker|systemd|network|dns|tls|mail|cloudflare)
         ensure_dist
         run_module "${cmd}"
+        # Keep index fresh after any single module too.
+        sh "${MODULES_DIR}/index.sh" 2>/dev/null || true
         write_manifest
         ;;
+    index)
+        ensure_dist
+        CONFIG="${CONFIG}" TOPOLOGY="${TOPOLOGY}" DIST="${DIST}" sh "${MODULES_DIR}/index.sh"
+        ;;
     *)
-        echo "usage: $0 [all|docker|systemd|network|dns|tls|mail|cloudflare|list|clean]"
+        echo "usage: $0 [all|docker|systemd|network|dns|tls|mail|cloudflare|index|list|clean]"
         exit 1
         ;;
 esac

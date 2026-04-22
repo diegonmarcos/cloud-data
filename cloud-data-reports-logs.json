@@ -109,5 +109,22 @@
     "cloud-builder-x-cloud-builder-1",
     "photoprism-setup",
     "authelia-init"
-  ]
+  ],
+  "tag_facets": {
+    "_comment": "Allowed tag namespaces. Index builder only emits tags matching these facets; unknown tag keys are dropped. Values come from file paths, file content, and cloud-data-topology.json cross-reference.",
+    "vm":        { "source": "path|topology", "example": "vm:oci-apps" },
+    "service":   { "source": "path|topology", "example": "service:photos-webhook" },
+    "container": { "source": "path",           "example": "container:photos-db" },
+    "kind":      { "source": "derived",        "example": "kind:container | kind:vm | kind:dns | kind:tls | kind:mail | kind:cloudflare" },
+    "source":    { "source": "derived",        "example": "source:docker | source:systemd | source:network | source:dns | source:tls | source:mail | source:cloudflare" },
+    "state":     { "source": "content",        "example": "state:exited | state:running | state:created" },
+    "exit_code": { "source": "content",        "example": "exit_code:255 | exit_code:134" },
+    "arch":      { "source": "content",        "example": "arch:arm64 | arch:amd64" },
+    "public":    { "source": "topology",       "example": "public:true | public:false" },
+    "category":  { "source": "topology",       "example": "category:aa-sui | category:bc-obs" },
+    "severity":  { "source": "derived",        "example": "severity:critical | severity:warning | severity:info" },
+    "failed":    { "source": "content",        "example": "failed:true (containers with exit != 0 or state:exited)" },
+    "healthy":   { "source": "content",        "example": "healthy:true | healthy:unhealthy" },
+    "ephemeral": { "source": "config",         "example": "ephemeral:true (from known_ephemeral_containers)" }
+  }
 }
