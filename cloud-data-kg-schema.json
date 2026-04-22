@@ -1,0 +1,68 @@
+{
+  "_comment": "kg-graph schema for reports-logs ingestion. SOURCE OF TRUTH for node/edge types. kg_ingest.sh MUST reject unknown types and MUST NOT serialize properties not declared here (prevents secret leakage into the graph).",
+  "version": 1,
+  "nodes": {
+    "VM": {
+      "key": ["alias"],
+      "properties": ["role", "wg_ip", "public_ip", "arch", "region", "last_seen_ts"]
+    },
+    "Service": {
+      "key": ["name"],
+      "properties": ["category", "public", "ports", "domain", "last_seen_ts"]
+    },
+    "Container": {
+      "key": ["service", "name"],
+      "properties": ["state", "exit_code", "arch", "healthy", "image", "last_seen_ts"]
+    },
+    "Image": {
+      "key": ["ref"],
+      "properties": ["registry", "name", "tag", "digest", "arch", "last_seen_ts"]
+    },
+    "Domain": {
+      "key": ["fqdn"],
+      "properties": ["zone", "type", "proxied", "wildcard_parent", "last_seen_ts"]
+    },
+    "TLSEndpoint": {
+      "key": ["host", "port"],
+      "properties": ["cipher", "sig_alg", "protocol", "san", "expires_at", "last_seen_ts"]
+    },
+    "SystemdUnit": {
+      "key": ["vm", "unit"],
+      "properties": ["active_state", "sub_state", "last_seen_ts"]
+    },
+    "CloudflareRecord": {
+      "key": ["zone", "name", "type"],
+      "properties": ["value", "ttl", "proxied", "last_seen_ts"]
+    },
+    "Repo": {
+      "key": ["path"],
+      "properties": ["visibility", "default_branch", "last_seen_ts"]
+    },
+    "SecretExposure": {
+      "key": ["repo", "commit", "path", "pattern"],
+      "properties": ["severity", "literal_hash", "last_seen_ts"]
+    },
+    "HealthCheck": {
+      "key": ["report", "name"],
+      "properties": ["severity", "passed", "category", "details", "last_seen_ts"]
+    }
+  },
+  "edges": {
+    "RUNS_ON":           { "from": "Container",        "to": "VM" },
+    "BELONGS_TO":        { "from": "Container",        "to": "Service" },
+    "BUILDS":            { "from": "Image",            "to": "Container" },
+    "DECLARED_IN":       { "from": "Service",          "to": "Repo" },
+    "DEPENDS_ON":        { "from": "Service",          "to": "Service" },
+    "ROUTES_TO":         { "from": "Domain",           "to": "Service" },
+    "TERMINATES_AT":     { "from": "TLSEndpoint",      "to": "Container" },
+    "MANAGED_BY":        { "from": "Container",        "to": "SystemdUnit" },
+    "AUTHORITATIVE_FOR": { "from": "CloudflareRecord", "to": "Domain" },
+    "EXPOSES":           { "from": "SecretExposure",   "to": "Repo" },
+    "FLAGS":             { "from": "HealthCheck",      "to": ["VM", "Service", "Container", "Domain"] }
+  },
+  "staleness": {
+    "_comment": "Nodes older than this are marked stale:true, never hard-deleted.",
+    "mark_stale_after_hours": 48,
+    "purge_after_days": 30
+  }
+}

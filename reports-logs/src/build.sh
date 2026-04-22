@@ -125,8 +125,17 @@ case "${cmd}" in
         ensure_dist
         CONFIG="${CONFIG}" TOPOLOGY="${TOPOLOGY}" DIST="${DIST}" sh "${MODULES_DIR}/index.sh"
         ;;
+    kg_ingest)
+        ensure_dist
+        [ -f "${DIST}/index.json" ] || sh "${MODULES_DIR}/index.sh"
+        KG_SCHEMA="${REPO_ROOT}/cloud-data-kg-schema.json"
+        [ -f "${KG_SCHEMA}" ] || { echo "[kg_ingest] schema missing: ${KG_SCHEMA}"; exit 2; }
+        CONFIG="${CONFIG}" TOPOLOGY="${TOPOLOGY}" DIST="${DIST}" \
+            REPO_ROOT="${REPO_ROOT}" KG_SCHEMA="${KG_SCHEMA}" \
+            sh "${MODULES_DIR}/kg_ingest.sh"
+        ;;
     *)
-        echo "usage: $0 [all|docker|systemd|network|dns|tls|mail|cloudflare|index|list|clean]"
+        echo "usage: $0 [all|docker|systemd|network|dns|tls|mail|cloudflare|index|kg_ingest|list|clean]"
         exit 1
         ;;
 esac
