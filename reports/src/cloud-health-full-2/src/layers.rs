@@ -1596,28 +1596,46 @@ pub async fn layer_email_e2e(_ctx: &Context, reachable_vms: &[String]) -> Vec<Ch
     let token = format!("hf2-{}", chrono::Utc::now().format("%Y%m%d-%H%M%S"));
     let result = reports_common::email_e2e::run(&cfg, &token).await;
 
+    // B10 fix: missing NOREPLY_PASSWORD / ME_PASSWORD is a skip signal, not a
+    // real failure. email_e2e::run returns outbound_ok=false + a specific
+    // "skipped" error in that case — match on it and emit Info, keeping
+    // parity with url-health's skip behaviour.
+    let skipped_env = result
+        .error
+        .as_deref()
+        .map(|e| e.contains("env not set") || e.contains("skipped"))
+        .unwrap_or(false);
+
+    let severity_for = |ok: bool| -> Severity {
+        if ok { Severity::Info }
+        else if skipped_env { Severity::Info }
+        else { Severity::Warning }
+    };
+
     checks.push(Check {
         name: "E2E SMTP send".into(),
-        passed: result.outbound_ok,
+        passed: result.outbound_ok || skipped_env,
         details: format!(
-            "{}@ -> {}@ via {}:{} ({}ms)",
+            "{}@ -> {}@ via {}:{} ({}ms){}",
             cfg.smtp.username, cfg.imap.username,
             cfg.smtp.host, cfg.smtp.port, result.outbound_ms,
+            if skipped_env { " [skipped: env not set]" } else { "" },
         ),
         duration_ms: result.outbound_ms,
-        error: if result.outbound_ok { None } else { result.error.clone() },
-        severity: if result.outbound_ok { Severity::Info } else { Severity::Warning },
+        error: if result.outbound_ok || skipped_env { None } else { result.error.clone() },
+        severity: severity_for(result.outbound_ok),
     });
     checks.push(Check {
         name: "E2E IMAP delivery".into(),
-        passed: result.inbound_ok,
+        passed: result.inbound_ok || skipped_env,
         details: format!(
-            "polled {}@ via {}:{} ({}ms)",
+            "polled {}@ via {}:{} ({}ms){}",
             cfg.imap.username, cfg.imap.host, cfg.imap.port, result.inbound_ms,
+            if skipped_env { " [skipped: env not set]" } else { "" },
         ),
         duration_ms: result.inbound_ms,
-        error: if result.inbound_ok { None } else { result.error.clone() },
-        severity: if result.inbound_ok { Severity::Info } else { Severity::Warning },
+        error: if result.inbound_ok || skipped_env { None } else { result.error.clone() },
+        severity: severity_for(result.inbound_ok),
     });
 
     // 3. Check maddy delivery via SSH (if oci-mail reachable)

@@ -1049,7 +1049,10 @@ echo "$r993" | grep "Not After" | head -1"#,
                 details: detail.clone(),
                 duration_ms: 0,
                 error: if ok { None } else { Some(detail) },
-                severity: Severity::Warning,
+                // B6: SnappyMail 302→Authelia is correct routing, not a
+                // failure; passing already flagged this Info in the
+                // Severity column. Match other similar probes.
+                severity: if ok { Severity::Info } else { Severity::Warning },
             }
         }));
     }
