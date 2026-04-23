@@ -12,8 +12,8 @@ fn resolve_template_path() -> PathBuf {
     PathBuf::from(TEMPLATE_FILE)
 }
 
-/// Read template, replace $VARS (longest key first), write output
-pub fn render(vars: &HashMap<String, String>) -> anyhow::Result<()> {
+/// Render template to a String (caller writes). Longest-key-first replacement.
+pub fn render_string(vars: &HashMap<String, String>) -> anyhow::Result<String> {
     let tpl = resolve_template_path();
     let mut template = std::fs::read_to_string(&tpl)?;
     println!(
@@ -23,7 +23,6 @@ pub fn render(vars: &HashMap<String, String>) -> anyhow::Result<()> {
         tpl.display(),
     );
 
-    // Sort keys longest first to prevent partial matches
     let mut sorted_keys: Vec<&String> = vars.keys().collect();
     sorted_keys.sort_by(|a, b| b.len().cmp(&a.len()));
 
@@ -36,7 +35,6 @@ pub fn render(vars: &HashMap<String, String>) -> anyhow::Result<()> {
         }
     }
 
-    // Check for unreplaced vars
     let unreplaced: Vec<&str> = template
         .match_indices('$')
         .filter_map(|(i, _)| {
@@ -58,7 +56,9 @@ pub fn render(vars: &HashMap<String, String>) -> anyhow::Result<()> {
         eprintln!("  WARN: unreplaced vars: {:?}", unreplaced);
     }
 
-    std::fs::write(OUTPUT_PATH, template)?;
-    println!("Wrote {}", OUTPUT_PATH);
-    Ok(())
+    Ok(template)
+}
+
+pub fn output_path() -> &'static str {
+    OUTPUT_PATH
 }

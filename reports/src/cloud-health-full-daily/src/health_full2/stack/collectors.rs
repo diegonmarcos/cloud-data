@@ -203,7 +203,7 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
         if vm.vm_id.contains("-p_") || vm.vm_id.contains("-p-") {
             // Spot/paid instance — check if running via gcloud
             if vm.vm_id.starts_with("gcp-") {
-                return crate::checks::gcloud_status(&vm.cloud_name).map(|s| s == "RUNNING").unwrap_or(false);
+                return crate::health_full2::checks::gcloud_status(&vm.cloud_name).map(|s| s == "RUNNING").unwrap_or(false);
             }
         }
         true

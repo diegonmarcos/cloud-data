@@ -1,4 +1,4 @@
-use crate::types::*;
+use super::types::*;
 use anyhow::{Context as _, Result};
 use reports_common::context::find_cloud_data_file;
 use serde_json::Value;

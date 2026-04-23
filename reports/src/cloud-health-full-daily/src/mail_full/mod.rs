@@ -1,29 +1,34 @@
-//! Cloud Mail Full Report -- 7-Phase (0-6) Maddy Mail Diagnostic
-//! Native async: TCP, HTTP, DNS, SSH batch, TLS probing -- all parallel
+//! Absorbed from `cloud-mail-health-full` (2026-04-23).
 //!
-//! Phase 0: INSTANT KPIs (public URLs + DNS, no SSH, <2s)
-//! Phase 1: PRE-FLIGHT (3-VM parallel WG + batch SSH)
-//! Phase 2: CONTAINERS (from cached batch data)
-//! Phase 3: NETWORK + AUTH (~30 checks: TLS, HTTP, OIDC, Caddy L4, MCP)
-//! Phase 4: DNS AUTH (MX, DKIM, SPF, DMARC)
-//! Phase 5: MAIL INTERNALS (IMAP, queue, spam, sieve, quota, Maddy CLI)
-//! Phase 6: E2E DELIVERY (optional, requires RESEND_API_KEY)
+//! 7-Phase Maddy Mail Diagnostic. Callable as a submodule from
+//! `cloud-health-full-daily`:
 //!
-//! Usage: cargo run --release (from cloud-mail-full-report/)
+//!   let mr = mail_full::run().await?;
+//!   // mr.markdown — rendered cloud_mail_full.md
+//!   // mr.results  — structured MailHealthResult
+//!
+//! Still writes `cloud_mail_full.md` + `cloud_mail_full.json` to cwd for
+//! manifest parity.
 
-mod checks;
-mod constants;
-mod output;
-mod phases;
-mod ssh;
-mod template;
-mod types;
+pub mod checks;
+pub mod constants;
+pub mod output;
+pub mod phases;
+pub mod ssh;
+pub mod template;
+pub mod types;
 
 use anyhow::Result;
 use chrono::Utc;
 use std::collections::HashMap;
 use std::time::Instant;
+
 use types::*;
+
+pub struct MailReport {
+    pub markdown: String,
+    pub results: MailHealthResult,
+}
 
 fn load_bearer_token() -> Option<String> {
     let home = std::env::var("HOME").unwrap_or("/home/diego".into());
@@ -34,23 +39,19 @@ fn load_bearer_token() -> Option<String> {
         .and_then(|v| v["access_token"].as_str().map(|s| s.to_string()))
 }
 
-#[tokio::main]
-async fn main() -> Result<()> {
+pub async fn run() -> Result<MailReport> {
     let start = Instant::now();
     println!("=== Cloud Mail Full Report (7-Phase Maddy Diagnostic) ===");
 
     let bearer_token = load_bearer_token();
-    if bearer_token.is_some() {
-        println!("Bearer token: loaded");
-    } else {
-        println!("Bearer token: not found (OIDC checks will fail)");
-    }
+    println!(
+        "Bearer token: {}",
+        if bearer_token.is_some() { "loaded" } else { "not found (OIDC checks will fail)" }
+    );
 
     let mut timers: HashMap<String, u64> = HashMap::new();
 
-    // ════════════════════════════════════════════════════════════
-    // TIER 0: PATH CHECKER (outbound + inbound trace, <5s)
-    // ════════════════════════════════════════════════════════════
+    // Tier 0: Path checker
     let tp = Instant::now();
     println!("\n  Tier 0: Path Checker...");
     let path_checks = phases::path_checker().await;
@@ -69,9 +70,7 @@ async fn main() -> Result<()> {
         println!("    {} {} — {}", icon, c.name, c.details);
     }
 
-    // ════════════════════════════════════════════════════════════
-    // PHASE 0: INSTANT KPIs (no SSH, <2s)
-    // ════════════════════════════════════════════════════════════
+    // Phase 0
     let t0 = Instant::now();
     println!("\n  Phase 0: Instant KPIs...");
     let instant_kpis = phases::phase0_instant_kpis().await;
@@ -84,9 +83,7 @@ async fn main() -> Result<()> {
         p0_ms as f64 / 1000.0
     );
 
-    // ════════════════════════════════════════════════════════════
-    // PHASE 1: PRE-FLIGHT (3-VM parallel WG + batch SSH)
-    // ════════════════════════════════════════════════════════════
+    // Phase 1
     let t1 = Instant::now();
     println!("\n  Phase 1: Pre-flight (3-VM parallel)...");
     let (preflight_checks, mut mail_data, apps_data, proxy_data) = phases::preflight().await;
@@ -104,12 +101,8 @@ async fn main() -> Result<()> {
 
     let ssh_ok = mail_data.is_some();
 
-    // ════════════════════════════════════════════════════════════
-    // PHASES 2-5: PARALLEL where possible
-    // ════════════════════════════════════════════════════════════
+    // Phases 2-5
     let t_par = Instant::now();
-
-    // Phase 2: CONTAINERS (sync, reads cache)
     let containers = if ssh_ok {
         phases::container_health(&mail_data, &apps_data)
     } else {
@@ -123,13 +116,11 @@ async fn main() -> Result<()> {
         }]
     };
 
-    // Phase 3, 4 are async -- run in parallel
     let (network, dns_auth_checks) = tokio::join!(
         phases::network_checks(&mail_data, &apps_data, &proxy_data, &bearer_token),
         phases::dns_auth(),
     );
 
-    // Phase 5: MAIL INTERNALS (sync, reads cache)
     let internals = if ssh_ok {
         phases::mail_internals(&mail_data)
     } else {
@@ -144,40 +135,10 @@ async fn main() -> Result<()> {
     };
 
     let par_ms = t_par.elapsed().as_millis() as u64;
-    timers.insert("P2_containers".into(), 0);
-    timers.insert("P3_network".into(), par_ms);
-    timers.insert("P4_dns_auth".into(), par_ms);
-    timers.insert("P5_internals".into(), 0);
     timers.insert("P2-P5_parallel".into(), par_ms);
+    println!("\n  Phases 2-5 parallel: {:.1}s", par_ms as f64 / 1000.0);
 
-    println!(
-        "\n  Phases 2-5 parallel: {:.1}s",
-        par_ms as f64 / 1000.0
-    );
-    println!(
-        "    P2 Containers: {}/{}",
-        containers.iter().filter(|c| c.passed).count(),
-        containers.len()
-    );
-    println!(
-        "    P3 Network: {}/{}",
-        network.iter().filter(|c| c.passed).count(),
-        network.len()
-    );
-    println!(
-        "    P4 DNS Auth: {}/{}",
-        dns_auth_checks.iter().filter(|c| c.passed).count(),
-        dns_auth_checks.len()
-    );
-    println!(
-        "    P5 Internals: {}/{}",
-        internals.iter().filter(|c| c.passed).count(),
-        internals.len()
-    );
-
-    // ════════════════════════════════════════════════════════════
-    // PHASE 5b: CONFIG DRIFT (5-layer consistency)
-    // ════════════════════════════════════════════════════════════
+    // Phase 5b: config drift
     let config_drift = phases::config_drift(&mut mail_data);
     println!(
         "    P5b Config Drift: {}/{}{}",
@@ -186,9 +147,7 @@ async fn main() -> Result<()> {
         if config_drift.iter().all(|c| c.passed) { " ✓" } else { " ← DRIFT DETECTED" }
     );
 
-    // ════════════════════════════════════════════════════════════
-    // PHASE 6: E2E DELIVERY (optional)
-    // ════════════════════════════════════════════════════════════
+    // Phase 6: E2E delivery
     let t6 = Instant::now();
     println!("\n  Phase 6: E2E Delivery...");
     let e2e_delivery = phases::e2e_delivery(&mail_data).await;
@@ -201,9 +160,7 @@ async fn main() -> Result<()> {
         p6_ms as f64 / 1000.0
     );
 
-    // ════════════════════════════════════════════════════════════
-    // BUILD RESULTS
-    // ════════════════════════════════════════════════════════════
+    // Build results
     let total_ms = start.elapsed().as_millis() as u64;
     timers.insert("TOTAL".into(), total_ms);
 
@@ -253,11 +210,12 @@ async fn main() -> Result<()> {
         timers,
     };
 
-    // Render template
+    // Render + write
     let vars = output::build_template_vars(&results);
-    template::render(&vars)?;
+    let md = template::render_string(&vars)?;
+    std::fs::write(template::output_path(), &md)?;
+    println!("Wrote {}", template::output_path());
 
-    // Write JSON
     let json = serde_json::to_string_pretty(&results)?;
     std::fs::write("cloud_mail_full.json", &json)?;
 
@@ -271,5 +229,8 @@ async fn main() -> Result<()> {
     );
     println!("-> cloud_mail_full.json + cloud_mail_full.md");
 
-    Ok(())
+    Ok(MailReport {
+        markdown: md,
+        results,
+    })
 }

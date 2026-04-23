@@ -309,7 +309,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "cloud-health-full-2"
+name = "cloud-health-full-daily"
 version = "0.1.0"
 dependencies = [
  "anyhow",
@@ -317,6 +317,7 @@ dependencies = [
  "chrono",
  "dirs",
  "futures",
+ "md5",
  "reports-common",
  "reqwest",
  "russh",
@@ -324,37 +325,6 @@ dependencies = [
  "serde",
  "serde_json",
  "tera",
- "tokio",
- "trust-dns-resolver",
-]
-
-[[package]]
-name = "cloud-health-full-daily"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "futures",
- "reports-common",
- "reqwest",
- "serde",
- "serde_json",
- "tokio",
- "trust-dns-resolver",
-]
-
-[[package]]
-name = "cloud-mail-health-full"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "futures",
- "md5",
- "reports-common",
- "reqwest",
- "serde",
- "serde_json",
  "tokio",
  "trust-dns-resolver",
 ]

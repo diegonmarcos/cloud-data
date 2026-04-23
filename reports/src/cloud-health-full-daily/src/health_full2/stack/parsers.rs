@@ -1,5 +1,6 @@
 use super::types::*;
 use anyhow::{Context as _, Result};
+use reports_common::caddy;
 use reports_common::context::find_cloud_data_file;
 use serde_json::Value;
 use std::collections::{HashMap, HashSet};
@@ -46,35 +47,69 @@ pub fn load_context() -> Result<Context> {
         }
     }).filter(|v| !v.wg_ip.is_empty() && v.wg_ip != "?").collect();
 
-    // Public URLs from caddy routes
+    // Public URLs — source of truth is build-caddy.json (routes + public_A_mcp +
+    // public_B_apis + public_C_app_paths + public_D_others). Deduplicated by
+    // hostname — downstream probes prepend `https://` to the bare domain so we
+    // cover the edge once per hostname. Services with a `.domain` declared in
+    // their build.json but not (yet) wired into Caddy still get probed so we
+    // surface drift.
     let mut public_urls: Vec<UrlInfo> = Vec::new();
-    let mut seen = HashSet::new();
-    let add = |urls: &mut Vec<UrlInfo>, seen: &mut HashSet<String>, url: String, upstream: String| {
-        if !seen.contains(&url) { seen.insert(url.clone()); urls.push(UrlInfo { url, upstream }); }
+    let mut seen: HashSet<String> = HashSet::new();
+    let mut add = |urls: &mut Vec<UrlInfo>, seen: &mut HashSet<String>, host: String, upstream: String| {
+        if !seen.contains(&host) { seen.insert(host.clone()); urls.push(UrlInfo { url: host, upstream }); }
     };
 
-    // From services
+    for t in caddy::load_public_targets() {
+        add(&mut public_urls, &mut seen, t.host.clone(), t.upstream.clone());
+    }
     for (_, svc) in c["services"].as_object().unwrap_or(&serde_json::Map::new()) {
         if let Some(domain) = svc["domain"].as_str() {
             let upstream = svc["upstream"].as_str().unwrap_or("?");
-            add(&mut public_urls, &mut seen, domain.to_string(), upstream.to_string());
-        }
-    }
-    // From caddy routes
-    for route in c["configs"]["caddy"]["routes"].as_array().unwrap_or(&vec![]) {
-        if let Some(d) = route["domain"].as_str() {
-            add(&mut public_urls, &mut seen, d.to_string(), route["upstream"].as_str().unwrap_or("?").to_string());
+            let host = domain.trim_start_matches("https://").trim_start_matches("http://")
+                .split('/').next().unwrap_or(domain).to_string();
+            add(&mut public_urls, &mut seen, host, upstream.to_string());
         }
     }
 
-    // Private DNS from containers
+    // Private DNS — source of truth is build-caddy.json
+    // (`private_A1_app_canonical` + `private_B0_db`). Falls back to
+    // services.containers for entries missing from the catalog.
     let mut private_dns: Vec<DnsEntry> = Vec::new();
+    let mut private_seen: HashSet<(String, u16)> = HashSet::new();
+
+    let split_upstream = |s: &str| -> Option<(String, u16)> {
+        let stripped = s.strip_prefix("http://").or_else(|| s.strip_prefix("https://")).unwrap_or(s);
+        let mut parts = stripped.rsplitn(2, ':');
+        let port: u16 = parts.next()?.trim_end_matches('/').parse().ok()?;
+        let host = parts.next()?;
+        if host.is_empty() || port == 0 { return None; }
+        Some((host.to_string(), port))
+    };
+
+    for t in caddy::load_private_app_targets().into_iter().chain(caddy::load_private_db_targets().into_iter()) {
+        let Some((upstream_ip, port)) = split_upstream(&t.upstream) else { continue };
+        let vm = vm_alias_map.values()
+            .find(|alias| {
+                // Match upstream ip back to vm via wg_ip.
+                c["vms"].as_object().map(|vms| vms.iter().any(|(_, v)| v["wg_ip"].as_str() == Some(&upstream_ip) && v["ssh_alias"].as_str() == Some(alias))).unwrap_or(false)
+            }).cloned().unwrap_or_default();
+        let host_port = host_ports_by_vm.get(&vm).map(|s| s.contains(&port)).unwrap_or(false);
+        if private_seen.insert((t.host.clone(), port)) {
+            private_dns.push(DnsEntry {
+                dns: t.host.clone(),
+                container: t.service.unwrap_or_else(|| "?".into()),
+                port, vm, host_port,
+            });
+        }
+    }
+    // Fill in any container-declared DNS not present in the caddy catalog (drift).
     for (_, svc) in c["services"].as_object().unwrap_or(&serde_json::Map::new()) {
         let vm_alias = vm_alias_map.get(svc["vm"].as_str().unwrap_or("")).cloned().unwrap_or_default();
         for (_, ct) in svc["containers"].as_object().unwrap_or(&serde_json::Map::new()) {
             let dns = ct["dns"].as_str().unwrap_or("").to_string();
             let port = ct["port"].as_u64().unwrap_or(0) as u16;
             if dns.is_empty() || port == 0 { continue; }
+            if !private_seen.insert((dns.clone(), port)) { continue; }
             let host_port = host_ports_by_vm.get(&vm_alias).map(|s| s.contains(&port)).unwrap_or(false);
             private_dns.push(DnsEntry {
                 dns, container: ct["container_name"].as_str().unwrap_or("?").to_string(),

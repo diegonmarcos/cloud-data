@@ -41,13 +41,13 @@ async fn main() -> Result<()> {
     println!("=== cloud-url-health (fast E2E) ===");
 
     let cfg = config::load()?;
-    let caddy_domains = public_checks::load_caddy_domains();
+    let public_targets = public_checks::load_public_targets();
     let private_targets = private_checks::load_private_targets();
     let bearer = reports_common::context::load_bearer_token();
 
     println!(
         "Targets: {} public, {} private  | bearer={}",
-        caddy_domains.len(),
+        public_targets.len(),
         private_targets.len(),
         if bearer.is_some() { "present" } else { "absent" },
     );
@@ -56,7 +56,7 @@ async fn main() -> Result<()> {
 
     let (public_results, private_results, email_result) = tokio::join!(
         public_checks::run(
-            caddy_domains,
+            public_targets,
             bearer.as_deref(),
             cfg.concurrency.public,
             &cfg.timeouts,
@@ -144,12 +144,14 @@ fn build_vars(r: &Report) -> HashMap<String, String> {
 
 fn render_public_table(rows: &[public_checks::PublicResult]) -> String {
     let mut out = String::new();
-    out.push_str("| Domain | Status | Latency | OK | Error |\n");
-    out.push_str("|---|---|---|---|---|\n");
+    out.push_str("| URL | Upstream | Category | Status | Latency | OK | Error |\n");
+    out.push_str("|---|---|---|---|---|---|---|\n");
     for r in rows {
         out.push_str(&format!(
-            "| {} | {} | {}ms | {} | {} |\n",
-            r.domain,
+            "| {} | {} | {} | {} | {}ms | {} | {} |\n",
+            r.url,
+            r.upstream,
+            r.category,
             r.status.map(|s| s.to_string()).unwrap_or_else(|| "-".into()),
             r.latency_ms,
             if r.ok { "✅" } else { "❌" },
@@ -161,13 +163,14 @@ fn render_public_table(rows: &[public_checks::PublicResult]) -> String {
 
 fn render_private_table(rows: &[private_checks::PrivateResult]) -> String {
     let mut out = String::new();
-    out.push_str("| Service | Upstream | Probe | Status | Latency | OK | Error |\n");
-    out.push_str("|---|---|---|---|---|---|---|\n");
+    out.push_str("| Service | Upstream | Source | Probe | Status | Latency | OK | Error |\n");
+    out.push_str("|---|---|---|---|---|---|---|---|\n");
     for r in rows {
         out.push_str(&format!(
-            "| {} | {} | {} | {} | {}ms | {} | {} |\n",
+            "| {} | {} | {} | {} | {} | {}ms | {} | {} |\n",
             r.service,
             r.upstream,
+            r.source,
             r.probe,
             r.status.map(|s| s.to_string()).unwrap_or_else(|| "-".into()),
             r.latency_ms,

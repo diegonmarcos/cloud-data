@@ -552,4 +552,12 @@ pub struct ReportData {
     pub global_firewall: GlobalFirewall,
     pub mail_health: Option<MailHealthData>,
     pub matomo_sites: Vec<MatomoSite>,
+    /// Appendix: consolidated output from `cloud-health-full-2` when it ran
+    /// earlier in the same build pipeline. Empty when Daily runs standalone.
+    #[serde(default)]
+    pub appendix_md: String,
+    #[serde(default)]
+    pub appendix_stack: Option<serde_json::Value>,
+    #[serde(default)]
+    pub appendix_full: Option<serde_json::Value>,
 }

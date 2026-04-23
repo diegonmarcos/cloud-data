@@ -1,4 +1,4 @@
-use crate::types::*;
+use super::types::*;
 use std::collections::HashMap;
 
 /// Format a section of checks with icons, duration, severity

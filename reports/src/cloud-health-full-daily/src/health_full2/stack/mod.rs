@@ -1,7 +1,6 @@
 //! Stack report — topology / resources / databases / storage / security sections.
-//! Absorbed from former cloud-stack-report crate (2026-04-20).
-//! Runs as a submodule of cloud-health-full-2; appends its rendered content to
-//! the main cloud_health_full.md output.
+//! Absorbed from former cloud-stack-report crate (2026-04-20), now part of
+//! `cloud-health-full-daily::health_full2`.
 
 pub mod checks;
 pub mod collectors;
@@ -12,9 +11,9 @@ pub mod types;
 
 use anyhow::Result;
 
-/// Run the stack pipeline. Returns the rendered markdown (to append to main report).
+/// Run the stack pipeline. Returns `(rendered_markdown, live_data_json)`.
 /// Also writes `cloud_stack.json` to cwd (dist/) for programmatic access.
-pub async fn run() -> Result<String> {
+pub async fn run() -> Result<(String, serde_json::Value)> {
     eprintln!("[stack] collecting topology + live data");
     let ctx = parsers::load_context()?;
     eprintln!(
@@ -27,8 +26,8 @@ pub async fn run() -> Result<String> {
     let live = collectors::collect_all(&ctx).await;
     let vars = sections::build_all_vars(&ctx, &live);
     let md = template::render_string(&vars)?;
-    let json = serde_json::to_string_pretty(&live)?;
-    std::fs::write("cloud_stack.json", &json)?;
+    let json_value = serde_json::to_value(&live)?;
+    std::fs::write("cloud_stack.json", serde_json::to_string_pretty(&json_value)?)?;
     eprintln!("[stack] Wrote cloud_stack.json");
-    Ok(md)
+    Ok((md, json_value))
 }

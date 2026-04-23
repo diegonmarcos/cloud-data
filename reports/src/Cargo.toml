@@ -2,12 +2,15 @@
 members = [
   "reports-common",
   "cloud-health-full-daily",
-  "cloud-health-full-2",
-  "cloud-mail-health-full",
   "cloud-sec-network-report",
   "cloud-sec-data-report",
   "cloud-url-health-report",
 ]
+# Note: `cloud-health-full-2` and `cloud-mail-health-full` were absorbed into
+# `cloud-health-full-daily` on 2026-04-23 and removed from the tree.
+# Their code now lives at:
+#   cloud-health-full-daily/src/health_full2/
+#   cloud-health-full-daily/src/mail_full/
 resolver = "2"
 
 [profile.release]

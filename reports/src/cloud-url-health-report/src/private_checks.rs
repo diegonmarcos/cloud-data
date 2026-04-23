@@ -1,10 +1,18 @@
-//! Probe private/internal upstreams. Protocol choice (HTTP vs TCP vs Skip)
-//! is data-driven — reads `.protocol` + `.public` from each container spec in
-//! the consolidated JSON, falls back to a port heuristic for the 23/83
-//! containers that omit `.protocol`.
+//! Probe private/internal upstreams.
+//!
+//! SOURCES OF TRUTH (declarative, data-driven — Fire Rule #3):
+//!   1. `build-caddy.json` → `private_A1_app_canonical` + `private_B0_db`
+//!      → every Hickory-served `.app` / `.db` hostname with its upstream.
+//!   2. `_cloud-data-consolidated.json` → `vms.*.public_ports[]`
+//!      → raw VM ports (SSH, mail, L4 passthrough) that Caddy does NOT route.
+//!
+//! Protocol (HTTP/HTTPS/TCP/Skip) is resolved from:
+//!   - `tls` field in the caddy catalog (`on_demand`/`internal`/`public` → https)
+//!   - `proto` hint + well-known-port heuristic for VM public_ports
 
 use crate::config::Timeouts;
 use futures::stream::{self, StreamExt};
+use reports_common::caddy::{self, CaddyTarget};
 use reports_common::context::find_cloud_data_file;
 use reports_common::probe::{self, Protocol};
 use serde::Serialize;
@@ -15,7 +23,9 @@ use std::time::Duration;
 pub struct PrivateTarget {
     pub service: String,
     pub upstream: String,
-    /// Protocol resolved from cloud-data spec at load time.
+    /// Source category (e.g. `private_A1_app_canonical`, `vm.public_ports`).
+    pub source: String,
+    /// Protocol resolved at load time.
     #[serde(skip)]
     pub protocol: Protocol,
 }
@@ -24,6 +34,7 @@ pub struct PrivateTarget {
 pub struct PrivateResult {
     pub service: String,
     pub upstream: String,
+    pub source: String,
     pub status: Option<u16>,
     pub latency_ms: u64,
     pub ok: bool,
@@ -31,107 +42,106 @@ pub struct PrivateResult {
     pub error: Option<String>,
 }
 
+/// Decide probe protocol for a caddy catalog entry.
+/// - `.db` catalog → always TCP (databases don't speak HTTP on their port).
+/// - `.app` with tls=on_demand/internal → HTTP on upstream port (Caddy does TLS).
+/// - `.app` with tls=public → HTTPS.
+/// Port-based fallback kicks in when upstream is malformed.
+fn protocol_for_caddy_target(t: &CaddyTarget, port: u16) -> Protocol {
+    if t.zone == "db" || t.category == "private_B0_db" {
+        return Protocol::Tcp;
+    }
+    if t.kind == "catalog" {
+        return Protocol::Tcp;
+    }
+    // For .app canonical hosts, the UPSTREAM is plain HTTP (Caddy terminates TLS).
+    // Fall back to port heuristic if the port is a known TCP-only service.
+    probe::protocol_for_port(port, None)
+}
+
+fn split_upstream(s: &str) -> Option<(String, u16)> {
+    let stripped = s
+        .strip_prefix("http://")
+        .or_else(|| s.strip_prefix("https://"))
+        .unwrap_or(s);
+    let mut parts = stripped.rsplitn(2, ':');
+    let port_s = parts.next()?;
+    let host = parts.next()?;
+    let port: u16 = port_s.trim_end_matches('/').parse().ok()?;
+    if host.is_empty() || port == 0 {
+        return None;
+    }
+    Some((host.to_string(), port))
+}
+
+/// Load private probe targets — caddy catalog (primary) + VM public_ports (raw).
 pub fn load_private_targets() -> Vec<PrivateTarget> {
-    let path = match find_cloud_data_file("_cloud-data-consolidated.json") {
-        Some(p) => p,
-        None => return Vec::new(),
-    };
-    let raw = match std::fs::read_to_string(&path) {
-        Ok(s) => s,
-        Err(_) => return Vec::new(),
-    };
-    let c: Value = match serde_json::from_str(&raw) {
-        Ok(v) => v,
-        Err(_) => return Vec::new(),
-    };
+    let mut out: Vec<PrivateTarget> = Vec::new();
 
-    let mut vm_wg: std::collections::HashMap<String, String> = std::collections::HashMap::new();
-    let mut vm_alias: std::collections::HashMap<String, String> = std::collections::HashMap::new();
-    if let Some(vms) = c["vms"].as_object() {
-        for (id, vm) in vms {
-            if let Some(ip) = vm["wg_ip"].as_str() {
-                if !ip.is_empty() {
-                    vm_wg.insert(id.clone(), ip.to_string());
-                }
-            }
-            if let Some(a) = vm["ssh_alias"].as_str() {
-                vm_alias.insert(id.clone(), a.to_string());
-            }
+    // ── 1. Caddy catalog: every `.app` + `.db` Hickory hostname ─────────────
+    for t in caddy::load_private_app_targets()
+        .into_iter()
+        .chain(caddy::load_private_db_targets().into_iter())
+    {
+        let Some((_ip, port)) = split_upstream(&t.upstream) else {
+            continue; // skip `embedded` sqlite entries
+        };
+        let proto = protocol_for_caddy_target(&t, port);
+        if proto == Protocol::Skip {
+            continue;
         }
+        out.push(PrivateTarget {
+            service: t.host.clone(),
+            upstream: t.upstream.clone(),
+            source: t.category.clone(),
+            protocol: proto,
+        });
     }
 
-    let mut out = Vec::new();
-    if let Some(services) = c["services"].as_object() {
-        for (name, svc) in services {
-            let vm_id = svc["vm"].as_str().unwrap_or("").to_string();
-            let wg_ip = match vm_wg.get(&vm_id) {
-                Some(ip) => ip.clone(),
-                None => continue,
-            };
-
-            if let Some(containers) = svc["containers"].as_object() {
-                for (cname, ct) in containers {
-                    let port = match ct["port"].as_u64() {
-                        Some(p) if p > 0 => p as u16,
-                        _ => continue,
-                    };
-                    let proto = probe::protocol_for_container(ct, port);
-                    if proto == Protocol::Skip {
-                        continue; // public:false — docker bridge only
+    // ── 2. VM public_ports (raw) — SSH, mail, L4 passthrough ────────────────
+    if let Some(path) = find_cloud_data_file("_cloud-data-consolidated.json") {
+        if let Ok(raw) = std::fs::read_to_string(&path) {
+            if let Ok(c) = serde_json::from_str::<Value>(&raw) {
+                if let Some(vms) = c["vms"].as_object() {
+                    for (vm_id, vm) in vms {
+                        let wg_ip = match vm["wg_ip"].as_str() {
+                            Some(ip) if !ip.is_empty() && ip != "?" => ip,
+                            _ => continue,
+                        };
+                        let alias = vm["ssh_alias"].as_str().unwrap_or(vm_id);
+                        if let Some(ports) = vm["public_ports"].as_array() {
+                            for p in ports {
+                                let port = p["port"].as_u64().unwrap_or(0);
+                                if port == 0 {
+                                    continue;
+                                }
+                                let port = port as u16;
+                                let desc = p["desc"].as_str().unwrap_or("");
+                                let proto_hint = p["proto"].as_str();
+                                let proto = probe::protocol_for_public_port(port, proto_hint);
+                                if proto == Protocol::Skip {
+                                    continue;
+                                }
+                                let name = if desc.is_empty() {
+                                    format!("vm:{}/{}", alias, port)
+                                } else {
+                                    format!("vm:{}/{}", alias, desc)
+                                };
+                                out.push(PrivateTarget {
+                                    service: name,
+                                    upstream: format!("{}:{}", wg_ip, port),
+                                    source: "vm.public_ports".to_string(),
+                                    protocol: proto,
+                                });
+                            }
+                        }
                     }
-                    let target_name = if containers.len() == 1 {
-                        name.clone()
-                    } else {
-                        format!("{}/{}", name, cname)
-                    };
-                    out.push(PrivateTarget {
-                        service: target_name,
-                        upstream: format!("{}:{}", wg_ip, port),
-                        protocol: proto,
-                    });
-                }
-            }
-        }
-    }
-
-    // VM-level public_ports — read proto hint from each entry.
-    if let Some(vms) = c["vms"].as_object() {
-        for (vm_id, vm) in vms {
-            let ip = match vm_wg.get(vm_id) {
-                Some(ip) => ip.clone(),
-                None => continue,
-            };
-            let alias = vm_alias
-                .get(vm_id)
-                .cloned()
-                .unwrap_or_else(|| vm_id.clone());
-            if let Some(ports) = vm["public_ports"].as_array() {
-                for p in ports {
-                    let port = p["port"].as_u64().unwrap_or(0);
-                    if port == 0 {
-                        continue;
-                    }
-                    let port = port as u16;
-                    let desc = p["desc"].as_str().unwrap_or("");
-                    let proto_hint = p["proto"].as_str();
-                    let proto = probe::protocol_for_public_port(port, proto_hint);
-                    if proto == Protocol::Skip {
-                        continue;
-                    }
-                    out.push(PrivateTarget {
-                        service: format!(
-                            "vm:{}/{}",
-                            alias,
-                            if desc.is_empty() { port.to_string() } else { desc.to_string() }
-                        ),
-                        upstream: format!("{}:{}", ip, port),
-                        protocol: proto,
-                    });
                 }
             }
         }
     }
 
+    // Dedup by (service, upstream).
     out.sort_by(|a, b| a.service.cmp(&b.service).then(a.upstream.cmp(&b.upstream)));
     out.dedup_by(|a, b| a.service == b.service && a.upstream == b.upstream);
     out
@@ -157,6 +167,7 @@ pub async fn run(
                 .map(|t| PrivateResult {
                     service: t.service,
                     upstream: t.upstream,
+                    source: t.source,
                     status: None,
                     latency_ms: 0,
                     ok: false,
@@ -174,7 +185,8 @@ pub async fn run(
             let client = client.clone();
             let bearer = bearer.clone();
             async move {
-                let (ip, port) = split_upstream(&t.upstream);
+                let (ip, port) = split_upstream(&t.upstream)
+                    .unwrap_or_else(|| (String::new(), 0));
                 let res = probe::probe_endpoint(
                     &ip,
                     port,
@@ -187,6 +199,7 @@ pub async fn run(
                 PrivateResult {
                     service: t.service,
                     upstream: t.upstream,
+                    source: t.source,
                     status: res.status,
                     latency_ms: res.latency_ms,
                     ok: res.ok,
@@ -200,16 +213,24 @@ pub async fn run(
         .await
 }
 
-fn split_upstream(s: &str) -> (String, u16) {
-    let stripped = s
-        .strip_prefix("http://")
-        .or_else(|| s.strip_prefix("https://"))
-        .unwrap_or(s);
-    let mut parts = stripped.rsplitn(2, ':');
-    let port_s = parts.next().unwrap_or("0");
-    let host = parts.next().unwrap_or(stripped);
-    (
-        host.to_string(),
-        port_s.trim_end_matches('/').parse().unwrap_or(0),
-    )
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn loader_returns_caddy_and_vm_ports() {
+        let targets = load_private_targets();
+        if targets.is_empty() {
+            eprintln!("cloud-data unavailable — skipping");
+            return;
+        }
+        let has_app = targets
+            .iter()
+            .any(|t| t.source.starts_with("private_A"));
+        let has_db = targets.iter().any(|t| t.source == "private_B0_db");
+        let has_vm = targets.iter().any(|t| t.source == "vm.public_ports");
+        assert!(has_app, "expected at least one private_A* target");
+        assert!(has_db, "expected at least one private_B0_db target");
+        assert!(has_vm, "expected at least one vm.public_ports target");
+    }
 }

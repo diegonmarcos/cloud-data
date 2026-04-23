@@ -4,11 +4,15 @@
 //! Usage: cloud-health-daily-mail (from cloud-health-daily-mail/)
 //!   Outputs: dist/cloud_health_daily.html
 
+mod appendix;
 mod collect;
 mod context;
 mod diagrams;
 mod html;
+mod health_full2;
 mod mail;
+mod mail_full;
+mod md;
 mod mermaid;
 mod ssh;
 mod types;
@@ -65,17 +69,30 @@ async fn main() -> Result<()> {
         .map(|vm| ssh::collect_vm(vm, &ctx.databases.databases))
         .collect();
 
-    // Build endpoint checks: monitoring-targets + ALL services with domains (deduplicated)
+    // Build endpoint checks: monitoring-targets + build-caddy.json (public) +
+    // service `.domain` declarations — deduplicated by URL.
     let mut all_endpoints: Vec<EndpointCheck> = ctx.monitoring.endpoint_checks.clone();
-    let existing_services: HashSet<String> = all_endpoints.iter().map(|e| e.service.clone()).collect();
+    let mut seen_urls: HashSet<String> = all_endpoints.iter().map(|e| e.url.clone()).collect();
+
+    // Caddy-declared public URLs (source of truth).
+    for t in reports_common::caddy::load_public_targets() {
+        if seen_urls.insert(t.url.clone()) {
+            let service = t.service.clone().unwrap_or_else(|| t.host.clone());
+            all_endpoints.push(EndpointCheck { service, url: t.url });
+        }
+    }
+
+    // Fallback: service.domain declarations not yet in Caddy (drift).
     for svc in &ctx.services {
-        if !svc.enabled || svc.domain.is_empty() || existing_services.contains(&svc.name) { continue; }
+        if !svc.enabled || svc.domain.is_empty() { continue; }
         let url = if svc.domain.starts_with("http") {
             svc.domain.clone()
         } else {
-            format!("https://{}", svc.domain)
+            format!("https://{}/", svc.domain)
         };
-        all_endpoints.push(EndpointCheck { service: svc.name.clone(), url });
+        if seen_urls.insert(url.clone()) {
+            all_endpoints.push(EndpointCheck { service: svc.name.clone(), url });
+        }
     }
 
     let ep_futures: Vec<_> = all_endpoints.iter()
@@ -93,8 +110,28 @@ async fn main() -> Result<()> {
         .map(|d| collect::check_cert(d))
         .collect();
 
-    // Run everything in parallel (mail health checks run alongside SSH+API collection)
-    let (vms, endpoints, certs, dns, gha_runs, gha_workflows, (ghcr_packages, ghcr_total, github_disk_kb), dags, cloud_buckets, repos, cloud_costs, umami_sites, matomo_sites, mut mail_health) = tokio::join!(
+    // Run everything in parallel (mail health checks run alongside SSH+API collection).
+    // Also spawn the absorbed `health_full2` + `mail_full` submodules here so their
+    // SSH / DNS / HTTP probes multiplex with Daily's own collectors — the whole point
+    // of consolidating into one binary.
+    let (
+        vms,
+        endpoints,
+        certs,
+        dns,
+        gha_runs,
+        gha_workflows,
+        (ghcr_packages, ghcr_total, github_disk_kb),
+        dags,
+        cloud_buckets,
+        repos,
+        cloud_costs,
+        umami_sites,
+        matomo_sites,
+        mut mail_health,
+        full2_report,
+        mail_full_report,
+    ) = tokio::join!(
         futures::future::join_all(vm_futures),
         futures::future::join_all(ep_futures),
         futures::future::join_all(cert_futures),
@@ -118,6 +155,8 @@ async fn main() -> Result<()> {
         collect::fetch_umami_analytics(),
         collect::fetch_matomo_analytics(),
         mail::collect_mail_network(),
+        health_full2::run(),
+        mail_full::run(),
     );
 
     // Fill mail health with SSH-collected data (synergy: reuses VM data already collected)
@@ -387,6 +426,22 @@ async fn main() -> Result<()> {
         all_entries
     };
 
+    // 6.5 Assemble Z-Appendix from in-process submodule results.
+    // Both submodules have already written their .md + .json to cwd, but we
+    // also pass their returned markdown/JSON directly into the appendix so we
+    // don't re-read from disk.
+    let apx = appendix::from_reports(
+        full2_report.as_ref().ok(),
+        mail_full_report.as_ref().ok(),
+    );
+    if let Err(ref e) = full2_report { eprintln!("[health_full2] failed: {}", e); }
+    if let Err(ref e) = mail_full_report { eprintln!("[mail_full] failed: {}", e); }
+    if !apx.is_empty() {
+        println!("Appendix loaded: {}", apx.summary());
+    } else {
+        println!("Appendix: empty (submodules returned no results)");
+    }
+
     // 7. Build report data
     let report = ReportData {
         date,
@@ -426,27 +481,46 @@ async fn main() -> Result<()> {
         global_firewall: ctx.global_firewall.clone(),
         mail_health: Some(mail_health),
         matomo_sites,
+        appendix_md: apx.legacy_md(),
+        appendix_stack: apx.stack.clone(),
+        appendix_full: apx.full.clone(),
     };
 
     // 8. Render HTML (email + web)
     let html_email = html::render(&report, html::OutputMode::Email);
     let html_web = html::render(&report, html::OutputMode::Web);
 
+    // 8b. Render Markdown (template-driven; parity with other report crates).
+    let md_out = match md::render(&report) {
+        Ok(s) => Some(s),
+        Err(e) => {
+            eprintln!("[md] render failed: {}", e);
+            None
+        }
+    };
+
     // 9. Write outputs — engine invokes binary with cwd=dist/
     let output_path = std::path::PathBuf::from("cloud_health_daily.html");
     std::fs::write(&output_path, &html_email)?;
     std::fs::write("cloud_health_daily_web.html", &html_web)?;
+    if let Some(ref md_s) = md_out {
+        std::fs::write(md::output_path(), md_s)?;
+    }
 
     // 10. Write JSON (for debugging / programmatic access)
     let json = serde_json::to_string_pretty(&report)?;
     std::fs::write("cloud_health_daily.json", &json)?;
 
     println!(
-        "\n=== DONE in {:.1}s === HTML: {} ({} bytes email, {} bytes web)",
+        "\n=== DONE in {:.1}s === HTML: {} ({} bytes email, {} bytes web){}",
         start.elapsed().as_secs_f64(),
         output_path.display(),
         html_email.len(),
         html_web.len(),
+        md_out
+            .as_ref()
+            .map(|s| format!(", MD: {} bytes", s.len()))
+            .unwrap_or_default(),
     );
 
     Ok(())

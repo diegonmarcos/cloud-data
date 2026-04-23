@@ -399,6 +399,9 @@ td,th{{font-family:{FONT}}}
     render_system_info(&mut h, data);
     render_report_metadata(&mut h, data);
 
+    // ── Appendix — full 11-layer diagnostic (from cloud-health-full-2) ─
+    render_appendix(&mut h, data);
+
     // ── Footer ──────────────────────────────────────────────────
     write!(h, r#"<tr><td style="text-align:center;padding:16px;color:{C_DIM};font-size:11px;font-family:{FONT};">
 C3 Daily Ops Report &mdash; {date} {time}<br>
@@ -3291,4 +3294,33 @@ fn render_topo_i_provider_map(h: &mut String, data: &ReportData) {
     h.push_str("</tr>\n");
 
     h.push_str("</table></td></tr>\n");
+}
+
+// ── Appendix (full 11-layer diagnostic from cloud-health-full-2) ────
+
+fn render_appendix(h: &mut String, data: &ReportData) {
+    if data.appendix_md.trim().is_empty() {
+        return;
+    }
+    section_title(h, "Z", "Appendix — Full 11-Layer Diagnostic");
+    // HTML-escape the markdown so the raw monospace text is embedded verbatim.
+    let escaped = data
+        .appendix_md
+        .replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;");
+    write!(
+        h,
+        r#"<tr><td style="padding:8px 12px;">
+<details style="background:{BG_CARD};border:1px solid {BG_HEAD};border-radius:8px;padding:8px 12px;">
+<summary style="cursor:pointer;color:{C_OK};font-family:{FONT};font-weight:bold;">Expand full 11-layer diagnostic ({lines} lines, {bytes} bytes)</summary>
+<pre style="color:{C_TEXT};font-family:{FONT};font-size:11px;white-space:pre-wrap;margin:8px 0;max-height:800px;overflow:auto;">{body}</pre>
+</details>
+</td></tr>
+"#,
+        lines = data.appendix_md.lines().count(),
+        bytes = data.appendix_md.len(),
+        body = escaped,
+    )
+    .unwrap();
 }
