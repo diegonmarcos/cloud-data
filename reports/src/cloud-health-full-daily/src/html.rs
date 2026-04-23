@@ -3296,31 +3296,164 @@ fn render_topo_i_provider_map(h: &mut String, data: &ReportData) {
     h.push_str("</table></td></tr>\n");
 }
 
-// ── Appendix (full 11-layer diagnostic from cloud-health-full-2) ────
+// ── Appendix — consolidated Z.N subsections ─────────────────────────
+//
+// NO SIMPLIFICATION, NO SHRINKING. Every section from cloud_health_full.md +
+// cloud_mail_full.md is rendered as its own Z.N block with the FULL body
+// preserved verbatim inside a <pre>. Nothing is collapsed.
+
+fn escape_html(s: &str) -> String {
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+}
+
+fn z_anchor(number: &str) -> String {
+    number.replace('.', "-").to_ascii_lowercase()
+}
+
+#[derive(Debug, Clone)]
+struct AppendixSectionParsed {
+    number: String,
+    title: String,
+    source: String,
+    body: String,
+}
+
+/// Reverse of `appendix::to_markdown()`. Splits on `## Z.` markers.
+/// Produced format:
+///     \n## Z.N — Title\n\n_Source: `origin`_\n\n<body>\n---\n
+fn parse_appendix_back(md: &str) -> Vec<AppendixSectionParsed> {
+    let mut out: Vec<AppendixSectionParsed> = Vec::new();
+    let marker = "## Z.";
+    let mut rest = md;
+    if let Some(pos) = rest.find(marker) {
+        rest = &rest[pos..];
+    } else {
+        return out;
+    }
+    while !rest.is_empty() {
+        let after_current = rest.get(marker.len()..).unwrap_or("");
+        let next_rel = after_current.find(&format!("\n{}", marker));
+        let (chunk, remaining) = match next_rel {
+            Some(off) => {
+                let end = marker.len() + off;
+                (&rest[..end], &rest[end + 1..])
+            }
+            None => (rest, ""),
+        };
+        if let Some(parsed) = parse_one_section(chunk) {
+            out.push(parsed);
+        }
+        rest = remaining;
+    }
+    out
+}
+
+fn parse_one_section(chunk: &str) -> Option<AppendixSectionParsed> {
+    let mut lines = chunk.lines();
+    let header = lines.next()?;
+    let header = header.trim_start_matches("## ");
+    let (number, title) = match header.find(" — ") {
+        Some(i) => (header[..i].to_string(), header[i + 5..].to_string()),
+        None => (header.to_string(), String::new()),
+    };
+
+    let mut source = String::new();
+    let mut body_lines: Vec<&str> = Vec::new();
+    let mut saw_source = false;
+    for line in lines {
+        if !saw_source {
+            if line.trim().is_empty() {
+                continue;
+            }
+            if let Some(rest) = line.strip_prefix("_Source: `") {
+                if let Some(src) = rest.strip_suffix("`_") {
+                    source = src.to_string();
+                    saw_source = true;
+                    continue;
+                }
+            }
+            body_lines.push(line);
+            saw_source = true;
+            continue;
+        }
+        body_lines.push(line);
+    }
+
+    while let Some(last) = body_lines.last() {
+        if last.trim() == "---" || last.trim().is_empty() {
+            body_lines.pop();
+        } else {
+            break;
+        }
+    }
+    while let Some(first) = body_lines.first() {
+        if first.trim().is_empty() {
+            body_lines.remove(0);
+        } else {
+            break;
+        }
+    }
+
+    let body = body_lines.join("\n");
+    Some(AppendixSectionParsed {
+        number,
+        title,
+        source,
+        body,
+    })
+}
 
 fn render_appendix(h: &mut String, data: &ReportData) {
     if data.appendix_md.trim().is_empty() {
         return;
     }
-    section_title(h, "Z", "Appendix — Full 11-Layer Diagnostic");
-    // HTML-escape the markdown so the raw monospace text is embedded verbatim.
-    let escaped = data
-        .appendix_md
-        .replace('&', "&amp;")
-        .replace('<', "&lt;")
-        .replace('>', "&gt;");
+    let sections = parse_appendix_back(&data.appendix_md);
+
+    section_title(h, "Z", "Appendix — Consolidated Sub-Reports");
+
+    // Index row listing every Z.N subsection as anchored links.
     write!(
         h,
         r#"<tr><td style="padding:8px 12px;">
-<details style="background:{BG_CARD};border:1px solid {BG_HEAD};border-radius:8px;padding:8px 12px;">
-<summary style="cursor:pointer;color:{C_OK};font-family:{FONT};font-weight:bold;">Expand full 11-layer diagnostic ({lines} lines, {bytes} bytes)</summary>
-<pre style="color:{C_TEXT};font-family:{FONT};font-size:11px;white-space:pre-wrap;margin:8px 0;max-height:800px;overflow:auto;">{body}</pre>
-</details>
-</td></tr>
-"#,
-        lines = data.appendix_md.lines().count(),
-        bytes = data.appendix_md.len(),
-        body = escaped,
+<div style="background:{BG_CARD};border:1px solid {BG_HEAD};border-radius:8px;padding:10px 14px;">
+<p style="color:{C_TEXT};font-family:{FONT};font-size:12px;margin:0 0 6px 0;">
+<strong style="color:{C_OK};">{n} consolidated subsections</strong> — parsed from
+<code style="color:{C_WARN};">cloud_health_full.md</code> + <code style="color:{C_WARN};">cloud_mail_full.md</code>. Every section preserved verbatim.
+</p>
+<ul style="color:{C_DIM};font-family:{FONT};font-size:11px;margin:0;padding-left:20px;columns:2;">"#,
+        n = sections.len(),
     )
     .unwrap();
+    for s in &sections {
+        write!(
+            h,
+            r##"<li><a href="#{anchor}" style="color:{C_OK};">{num} — {title}</a></li>"##,
+            anchor = z_anchor(&s.number),
+            num = escape_html(&s.number),
+            title = escape_html(&s.title),
+        )
+        .unwrap();
+    }
+    write!(h, "</ul></div></td></tr>\n").unwrap();
+
+    // Render each Z.N as its own block — NOT collapsed.
+    for s in &sections {
+        write!(
+            h,
+            r#"<tr><td id="{anchor}" style="padding:14px 12px 4px 12px;">
+<h3 style="color:{C_OK};font-family:{FONT};font-size:14px;margin:12px 0 4px 0;border-left:3px solid {C_OK};padding-left:8px;">{num} — {title}</h3>
+<p style="color:{C_DIM};font-family:{FONT};font-size:10px;margin:0 0 6px 8px;">source: <code>{source}</code></p>
+<pre style="color:{C_TEXT};font-family:{FONT};font-size:10.5px;line-height:1.35;white-space:pre;margin:0 0 4px 0;padding:10px;background:{BG_CARD};border:1px solid {BG_HEAD};border-radius:6px;overflow-x:auto;">{body}</pre>
+</td></tr>
+"#,
+            anchor = z_anchor(&s.number),
+            num = escape_html(&s.number),
+            title = escape_html(&s.title),
+            source = escape_html(&s.source),
+            body = escape_html(&s.body),
+        )
+        .unwrap();
+    }
 }
