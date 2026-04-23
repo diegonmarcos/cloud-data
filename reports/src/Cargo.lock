@@ -330,6 +330,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "cloud-mail-health-full"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "futures",
+ "md5",
+ "reports-common",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tokio",
+ "trust-dns-resolver",
+]
+
+[[package]]
 name = "cloud-sec-data"
 version = "0.1.0"
 dependencies = [

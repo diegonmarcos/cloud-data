@@ -158,6 +158,9 @@ pub async fn run() -> Result<FullReport> {
     };
 
     // Render 11-layer markdown, then append stack output.
+    // We DO NOT write cloud_health_full.md / cloud_health_full.json /
+    // cloud_stack.json to disk any more — this submodule's output is
+    // consolidated into cloud_health_daily.* by the parent binary.
     let vars = output::build_template_vars(&results);
     let mut combined_md = template::render_string(&vars)?;
     let stack_value = match stack::run().await {
@@ -172,21 +175,14 @@ pub async fn run() -> Result<FullReport> {
         }
     };
 
-    std::fs::write(template::output_path(), &combined_md)?;
-    println!("Wrote {}", template::output_path());
-
-    let json = serde_json::to_string_pretty(&results)?;
-    std::fs::write("cloud_health_full.json", &json)?;
-
     println!(
-        "\n=== DONE in {:.1}s === {}/{} passed, {} critical, {} warnings",
+        "\n=== health_full2 done in {:.1}s === {}/{} passed, {} critical, {} warnings (in-memory, no disk write)",
         total_ms as f64 / 1000.0,
         passed_count,
         total_count,
         critical_count,
         warning_count,
     );
-    println!("-> cloud_health_full.json + cloud_health_full.md");
 
     Ok(FullReport {
         markdown: combined_md,

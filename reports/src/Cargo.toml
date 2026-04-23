@@ -1,16 +1,25 @@
 [workspace]
 members = [
-  "reports-common",
+  # MASTER — monster consolidated check
   "cloud-health-full-daily",
-  "cloud-sec-network-report",
+  # DERIVES — focused, produce their own outputs alongside the master
+  "cloud-mail-health-full",
   "cloud-sec-data-report",
+  "cloud-sec-network-report",
   "cloud-url-health-report",
+  # SHARED
+  "reports-common",
 ]
-# Note: `cloud-health-full-2` and `cloud-mail-health-full` were absorbed into
-# `cloud-health-full-daily` on 2026-04-23 and removed from the tree.
-# Their code now lives at:
-#   cloud-health-full-daily/src/health_full2/
-#   cloud-health-full-daily/src/mail_full/
+# Architecture (2026-04-23):
+#   cloud-health-full-daily  = master. Absorbs cloud-health-full-2 + its stack
+#                              sub-engine (now lives under src/health_full2/) AND
+#                              runs the mail_full engine in-process (src/mail_full/)
+#                              for its Z-appendix. Writes ONLY cloud_health_daily.*
+#   cloud-mail-health-full   = derive. Same mail logic, standalone binary.
+#                              Writes cloud_mail_full.{md,json}.
+#   cloud-url-health-report  = derive. Fast E2E URL probe.
+#   cloud-sec-data-report    = derive. Security data scan.
+#   cloud-sec-network-report = derive. Security network scan.
 resolver = "2"
 
 [profile.release]

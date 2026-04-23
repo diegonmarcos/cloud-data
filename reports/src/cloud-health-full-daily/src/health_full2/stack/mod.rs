@@ -12,7 +12,7 @@ pub mod types;
 use anyhow::Result;
 
 /// Run the stack pipeline. Returns `(rendered_markdown, live_data_json)`.
-/// Also writes `cloud_stack.json` to cwd (dist/) for programmatic access.
+/// In-memory only — parent daily binary owns the consolidated artefact.
 pub async fn run() -> Result<(String, serde_json::Value)> {
     eprintln!("[stack] collecting topology + live data");
     let ctx = parsers::load_context()?;
@@ -27,7 +27,5 @@ pub async fn run() -> Result<(String, serde_json::Value)> {
     let vars = sections::build_all_vars(&ctx, &live);
     let md = template::render_string(&vars)?;
     let json_value = serde_json::to_value(&live)?;
-    std::fs::write("cloud_stack.json", serde_json::to_string_pretty(&json_value)?)?;
-    eprintln!("[stack] Wrote cloud_stack.json");
     Ok((md, json_value))
 }
