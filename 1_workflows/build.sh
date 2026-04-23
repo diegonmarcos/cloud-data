@@ -78,10 +78,26 @@ deploy() {
         log "Deployed actions → .github/actions/"
     fi
 
-    # gitconfig → .gitconfig
+    # Gitconfig → include in .git/config + reconcile shadow keys.
+    # Unset any local keys owned by dist/gitconfig so they cannot shadow
+    # the declared config (last-wins makes post-include entries win).
     if [ -f "$DIST_DIR/gitconfig" ]; then
-        cp "$DIST_DIR/gitconfig" "$REPO_ROOT/.gitconfig"
-        log "Deployed gitconfig → .gitconfig"
+        _gc_section=""
+        while IFS= read -r line; do
+            case "$line" in
+                \[*\])
+                    _gc_section=$(printf '%s' "$line" | sed 's/^\[\([^]]*\)\]$/\1/' | tr '[:upper:]' '[:lower:]')
+                    ;;
+                *=*)
+                    [ -z "$_gc_section" ] && continue
+                    _gc_key=$(printf '%s' "$line" | sed -n 's/^[[:space:]]*\([a-zA-Z][a-zA-Z0-9]*\)[[:space:]]*=.*/\1/p' | tr '[:upper:]' '[:lower:]')
+                    [ -n "$_gc_key" ] && git -C "$REPO_ROOT" config --local --unset "${_gc_section}.${_gc_key}" 2>/dev/null || true
+                    ;;
+            esac
+        done < "$DIST_DIR/gitconfig"
+        unset _gc_section _gc_key
+        git -C "$REPO_ROOT" config --local include.path ../1_workflows/dist/gitconfig 2>/dev/null || true
+        log "Deployed gitconfig (included in .git/config)"
     fi
 
     # modules/gitmodules → .gitmodules
