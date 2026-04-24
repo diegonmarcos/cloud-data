@@ -14,6 +14,8 @@ pub async fn ssh_exec(vm_alias: &str, command: &str, timeout_secs: u64) -> Resul
         tokio::process::Command::new("ssh")
             .args([
                 "-o", "ConnectTimeout=5",
+                "-o", "ServerAliveInterval=15",
+                "-o", "ServerAliveCountMax=2",
                 "-o", "BatchMode=yes",
                 "-o", "ControlMaster=auto",
                 "-o", "ControlPath=/tmp/cloud-health-mux-%h",
@@ -49,7 +51,7 @@ pub async fn rsync_health(vm_alias: &str) -> Option<VmBatchData> {
             .args([
                 "-az",
                 "-e",
-                "ssh -o ConnectTimeout=5 -o ControlMaster=auto -o ControlPath=/tmp/cloud-health-mux-%h -o ControlPersist=30 -o BatchMode=yes",
+                "ssh -o ConnectTimeout=5 -o ServerAliveInterval=15 -o ServerAliveCountMax=2 -o ControlMaster=auto -o ControlPath=/tmp/cloud-health-mux-%h -o ControlPersist=30 -o BatchMode=yes",
                 &format!("{}:/opt/health/latest.json", vm_alias),
                 &cache_file,
             ])
@@ -144,6 +146,8 @@ pub async fn ssh_echo_test(vm_alias: &str) -> bool {
         tokio::process::Command::new("ssh")
             .args([
                 "-o", "ConnectTimeout=5",
+                "-o", "ServerAliveInterval=15",
+                "-o", "ServerAliveCountMax=2",
                 "-o", "BatchMode=yes",
                 "-o", "ControlMaster=auto",
                 "-o", "ControlPath=/tmp/cloud-health-mux-%h",

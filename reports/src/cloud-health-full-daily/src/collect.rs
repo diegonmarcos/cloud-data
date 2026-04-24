@@ -637,6 +637,8 @@ SELECT COUNT(*) FROM matomo_log_link_visit_action;
         tokio::process::Command::new("ssh")
             .args([
                 "-o", "ConnectTimeout=5",
+                "-o", "ServerAliveInterval=15",
+                "-o", "ServerAliveCountMax=2",
                 "-o", "BatchMode=yes",
                 "-o", "StrictHostKeyChecking=no",
                 "-o", "LogLevel=ERROR",

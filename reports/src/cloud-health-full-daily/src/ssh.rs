@@ -23,7 +23,10 @@ async fn ssh_exec(alias: &str, user: &str, ip: &str, command: &str) -> Result<St
     }
     cmd.args([
         "-o", "StrictHostKeyChecking=no",
+        "-o", "BatchMode=yes",
         "-o", "ConnectTimeout=5",
+        "-o", "ServerAliveInterval=15",
+        "-o", "ServerAliveCountMax=2",
         "-o", "UserKnownHostsFile=/dev/null",
         "-o", "LogLevel=ERROR",
         "-o", "ControlMaster=auto",

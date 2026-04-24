@@ -7,11 +7,15 @@ use tokio::time::timeout;
 #[allow(dead_code)]
 const SSH_TIMEOUT: Duration = Duration::from_secs(10);
 
-/// SSH args with mux support
+/// SSH args with mux support + fail-fast keepalive (≤30s dead-conn abort).
 fn ssh_args(alias: &str, cmd: &str) -> Vec<String> {
     vec![
         "-o".into(),
-        "ConnectTimeout=10".into(),
+        "ConnectTimeout=5".into(),
+        "-o".into(),
+        "ServerAliveInterval=15".into(),
+        "-o".into(),
+        "ServerAliveCountMax=2".into(),
         "-o".into(),
         "BatchMode=yes".into(),
         "-o".into(),
@@ -122,6 +126,8 @@ async fn dropbear_alive(vm_alias: &str) -> bool {
         tokio::process::Command::new("ssh")
             .args([
                 "-o", "ConnectTimeout=5",
+                "-o", "ServerAliveInterval=15",
+                "-o", "ServerAliveCountMax=2",
                 "-o", "BatchMode=yes",
                 "-o", "ControlPath=none",
                 "-p", "2200",

@@ -217,7 +217,9 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
         let mux = mux_dir.to_string();
         async move {
             let _ = tokio::process::Command::new("ssh")
-                .args(["-o", "BatchMode=yes", "-o", "ConnectTimeout=15",
+                .args(["-o", "BatchMode=yes", "-o", "ConnectTimeout=5",
+                       "-o", "ServerAliveInterval=15",
+                       "-o", "ServerAliveCountMax=2",
                        "-o", &format!("ControlPath={}/%r@%h:%p", mux),
                        "-o", "ControlMaster=yes", "-o", "ControlPersist=120",
                        "-fNM", &alias])
@@ -247,7 +249,7 @@ async fn collect_vms(ctx: &Context) -> (Vec<VmLiveData>, u64) {
             };
 
             // Live SSH: system stats + docker ps -a + docker stats (via pre-warmed mux)
-            let ssh_opts = format!("-o ConnectTimeout=30 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes", mux);
+            let ssh_opts = format!("-o ConnectTimeout=5 -o ServerAliveInterval=15 -o ServerAliveCountMax=2 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes", mux);
             // Find docker CLI: PATH → nix profile → derive from dockerd systemd unit
             let cmd = r#"DOCKER=$(command -v docker 2>/dev/null);[ -z "$DOCKER" ] && for p in /run/current-system/sw/bin/docker /nix/var/nix/profiles/default/bin/docker; do [ -x "$p" ] && DOCKER="$p" && break; done;[ -z "$DOCKER" ] && { DD=$(grep -oP 'ExecStart=\K\S+' /etc/systemd/system/docker.service 2>/dev/null | head -1);[ -n "$DD" ] && D="${DD%/*}/docker";[ -x "$D" ] && DOCKER="$D"; };echo "MEM:$(free -m | awk '/Mem/{printf "%d %d %d", $3, $2, ($2>0?$3*100/$2:0)}')";echo "SWAP:$(free -m | awk '/Swap/{printf "%dM/%dM", $3, $2}')";echo "DISK:$(df -h / | awk 'NR==2{printf "%s %s %s", $3, $2, $5}')";echo "LOAD:$(cut -d' ' -f1-3 /proc/loadavg)";echo "UPTIME:$(awk '{printf "%dd %dh", $1/86400, ($1%86400)/3600}' /proc/uptime)";[ -n "$DOCKER" ] && $DOCKER ps -a --format '{{.Names}}|{{.Status}}' 2>/dev/null | sed 's/^/CTR:/';[ -n "$DOCKER" ] && $DOCKER stats --no-stream --format '{{.Name}}|{{.CPUPerc}}|{{.MemUsage}}' 2>/dev/null | sed 's/^/STATS:/'"#;
 
@@ -520,7 +522,7 @@ async fn collect_databases(ctx: &Context) -> (Vec<DbHealthResult>, u64) {
 
             let batch_cmd = batch_parts.join("; ");
             let ssh_opts = format!(
-                "-o ConnectTimeout=30 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes",
+                "-o ConnectTimeout=5 -o ServerAliveInterval=15 -o ServerAliveCountMax=2 -o ControlPath={}/%r@%h:%p -o ControlMaster=auto -o BatchMode=yes",
                 mux
             );
             let mut ssh_args: Vec<String> = ssh_opts.split_whitespace().map(|s| s.to_string()).collect();
