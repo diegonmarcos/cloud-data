@@ -1,0 +1,129 @@
+{
+  "_generated": "2026-04-25T10:48:46.360Z",
+  "_source": "cloud-data-topology.json via /cloud-data/backup-targets",
+  "targets": [
+    {
+      "service": "etherpad",
+      "vm": "oci-apps",
+      "volumes": [],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "grist",
+      "vm": "oci-apps",
+      "volumes": [
+        "grist_data"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "hedgedoc",
+      "vm": "oci-apps",
+      "volumes": [],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "mattermost-bots",
+      "vm": "oci-apps",
+      "volumes": [
+        "mattermost_data",
+        "mattermost_postgres"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "photoprism",
+      "vm": "oci-apps",
+      "volumes": [
+        "photoprism_originals",
+        "photoprism_storage"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "stalwart",
+      "vm": "oci-mail",
+      "volumes": [
+        "stalwart_data"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "vaultwarden",
+      "vm": "gcp-proxy",
+      "volumes": [
+        "vaultwarden_data"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "crawlee-cloud",
+      "vm": "oci-apps",
+      "volumes": [],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "quant-lab-light",
+      "vm": "oci-apps",
+      "volumes": [],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "authelia",
+      "vm": "gcp-proxy",
+      "volumes": [],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "matomo",
+      "vm": "oci-analytics",
+      "volumes": [
+        "matomo_data"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "nocodb",
+      "vm": "oci-apps",
+      "volumes": [
+        "nocodb_data"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "ntfy",
+      "vm": "gcp-proxy",
+      "volumes": [],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "umami",
+      "vm": "oci-analytics",
+      "volumes": [],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "gitea",
+      "vm": "oci-apps",
+      "volumes": [
+        "gitea_data"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    }
+  ]
+}
