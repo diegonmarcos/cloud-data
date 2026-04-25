@@ -3,10 +3,12 @@ name: "Ship → Reports image"
 on:
   push:
     paths:
-      - "reports/*/src/**"
-      - "reports/*/Cargo.toml"
+      # Layout is reports/src/<crate>/... — single src/ at top, crates beneath.
+      - "reports/src/**"
       - "reports/Cargo.toml"
       - "reports/Dockerfile"
+      - "reports/entrypoint.sh"
+      - "reports/build-deps.json"
     branches: [main]
   workflow_dispatch:
 
