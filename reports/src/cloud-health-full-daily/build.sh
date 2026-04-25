@@ -8,7 +8,8 @@ send_html() {
     echo "═══ Sending report via SMTP ═══"
     # Engine writes to the SHARED reports/dist/, not per-crate dist/.
     # ROOT = reports/src/cloud-health-full-daily — REPORTS_DIST is 2 up.
-    sh "$ROOT/src/send.sh" "$ROOT/../../dist/cloud_health_daily.html"
+    # Invoke via bash explicitly: send.sh uses ${BASH_SOURCE[0]} (bash-only).
+    bash "$ROOT/src/send.sh" "$ROOT/../../dist/cloud_health_daily.html"
 }
 
 case "${1:-all}" in
