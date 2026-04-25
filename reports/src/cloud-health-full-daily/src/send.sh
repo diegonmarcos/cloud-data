@@ -18,7 +18,11 @@ if [ ! -f "$HTML_FILE" ]; then
   exit 1
 fi
 
-# Build MIME message (headers + HTML body)
+# Build MIME message (headers + base64-encoded HTML body).
+# Maddy (and RFC 5321) enforces max line length 998 octets in DATA. The
+# generated HTML is minified into very long lines, so a raw 7bit transfer
+# fails with "smtp: too long a line in input stream". base64 encoding with
+# 76-col linewrap (`-w 76` GNU coreutils) keeps every body line legal.
 MIME_FILE=$(mktemp)
 trap 'rm -f "$MIME_FILE"' EXIT
 
@@ -28,10 +32,11 @@ To: me@diegonmarcos.com
 Subject: C3 Daily Ops Report - $DATE
 MIME-Version: 1.0
 Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: base64
 
 EOHEADERS
 
-cat "$HTML_FILE" >> "$MIME_FILE"
+base64 -w 76 < "$HTML_FILE" >> "$MIME_FILE"
 
 # Send via Maddy SMTP :587
 curl -s --url "smtp://10.0.0.3:587" \
