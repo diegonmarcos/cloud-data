@@ -39,14 +39,15 @@ RUN mkdir -p /usr/local/share/yara-rules/community && \
     curl -sL https://urlhaus.abuse.ch/downloads/urlhaus.rules \
       -o /usr/local/share/yara-rules/community/urlhaus.yar || true
 
-# Copy binaries
-COPY --from=builder /build/target/release/health-reporter /usr/local/bin/health-reporter
-COPY --from=builder /build/target/release/cloud-health-full /usr/local/bin/
-COPY --from=builder /build/target/release/cloud-mail-full /usr/local/bin/
-COPY --from=builder /build/target/release/cloud-url-health /usr/local/bin/
-COPY --from=builder /build/target/release/cloud-sec-network /usr/local/bin/
-COPY --from=builder /build/target/release/cloud-sec-data /usr/local/bin/
-COPY --from=builder /build/target/release/cloud-health-daily-mail /usr/local/bin/
+# Copy binaries (names match Cargo workspace members in reports/src/Cargo.toml)
+# Master: cloud-health-full-daily
+# Derives: cloud-mail-health-full, cloud-url-health-report,
+#          cloud-sec-network-report, cloud-sec-data-report
+COPY --from=builder /build/target/release/cloud-health-full-daily /usr/local/bin/
+COPY --from=builder /build/target/release/cloud-mail-health-full /usr/local/bin/
+COPY --from=builder /build/target/release/cloud-url-health-report /usr/local/bin/
+COPY --from=builder /build/target/release/cloud-sec-network-report /usr/local/bin/
+COPY --from=builder /build/target/release/cloud-sec-data-report /usr/local/bin/
 
 # Bundle YARA rules (custom + infra)
 COPY src/cloud-sec-data-report/yara-rules/ /usr/local/share/yara-rules/
