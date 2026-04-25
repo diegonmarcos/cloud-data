@@ -15,6 +15,14 @@ use std::path::PathBuf;
 use std::process::Stdio;
 use std::time::{Duration, Instant};
 use tokio::process::Command;
+use tokio::time::timeout;
+
+/// Hard per-command deadlines for git subprocess calls in the tree scan.
+/// Without these, `git grep` on a large repo with a wide combined regex can
+/// spin indefinitely — blocking the whole sec-data report. Fire Rule #4:
+/// tested in `tests::scan_tree_respects_ls_files_deadline`.
+const GIT_LS_FILES_TIMEOUT: Duration = Duration::from_secs(10);
+const GIT_GREP_TIMEOUT: Duration = Duration::from_secs(30);
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct RepoScanConfig {
@@ -284,17 +292,24 @@ async fn scan_tree(
     let _ = visibility; // escalation applied by caller
     let mut findings = Vec::new();
 
-    // List all tracked files once.
-    let out = match Command::new("git")
+    // List all tracked files once. Deadline-bound; a hung git process must
+    // not block the whole sec-data report.
+    let ls_fut = Command::new("git")
         .arg("-C").arg(repo)
         .args(["ls-files", "-z"])
         .stdout(Stdio::piped())
-        .output()
-        .await
-    {
-        Ok(o) if o.status.success() => o.stdout,
-        Ok(_) => return findings,
-        Err(_) => return findings,
+        .output();
+    let out = match timeout(GIT_LS_FILES_TIMEOUT, ls_fut).await {
+        Ok(Ok(o)) if o.status.success() => o.stdout,
+        Ok(Ok(_)) | Ok(Err(_)) => return findings,
+        Err(_) => {
+            findings.push((
+                "repo-scan.timeout".into(),
+                Severity::Warning,
+                format!("git ls-files exceeded {}s deadline", GIT_LS_FILES_TIMEOUT.as_secs()),
+            ));
+            return findings;
+        }
     };
     let mut files: Vec<String> = out.split(|&b| b == 0)
         .filter(|s| !s.is_empty())
@@ -303,10 +318,10 @@ async fn scan_tree(
 
     // Also grab untracked + ignored worktree files whose name contains "secrets"
     // (catches *.secrets.yaml.new, secrets.yaml.bak, etc. that aren't in index).
-    if let Ok(o) = Command::new("git").arg("-C").arg(repo)
+    let ls_untracked_fut = Command::new("git").arg("-C").arg(repo)
         .args(["ls-files", "-o", "-z"])
-        .stdout(Stdio::piped()).output().await
-    {
+        .stdout(Stdio::piped()).output();
+    if let Ok(Ok(o)) = timeout(GIT_LS_FILES_TIMEOUT, ls_untracked_fut).await {
         for s in o.stdout.split(|&b| b == 0) {
             if s.is_empty() { continue; }
             if let Ok(p) = std::str::from_utf8(s) {
@@ -355,14 +370,30 @@ async fn scan_tree(
         }
     }
 
-    // 3. Content scan via `git grep -nIE <combined>`
-    let grep = Command::new("git")
+    // 3. Content scan via `git grep -nIE <combined>`.
+    // Deadline-bound — on large repos with a big combined regex this can
+    // spin for minutes; we cap it at GIT_GREP_TIMEOUT and record a warning.
+    let grep_fut = Command::new("git")
         .arg("-C").arg(repo)
         .args(["grep", "-nIE", "--no-color", combined_content, "HEAD"])
         .stdout(Stdio::piped())
         .stderr(Stdio::null())
-        .output()
-        .await;
+        .output();
+    let grep = match timeout(GIT_GREP_TIMEOUT, grep_fut).await {
+        Ok(inner) => inner,
+        Err(_) => {
+            findings.push((
+                "repo-scan.timeout".into(),
+                Severity::Warning,
+                format!(
+                    "git grep exceeded {}s deadline for {} — content scan skipped",
+                    GIT_GREP_TIMEOUT.as_secs(),
+                    repo.display(),
+                ),
+            ));
+            return findings;
+        }
+    };
     if let Ok(o) = grep {
         let stdout = String::from_utf8_lossy(&o.stdout);
         for line in stdout.lines() {
@@ -500,4 +531,50 @@ async fn scan_history(
     }
 
     findings
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Fire Rule #4: pin the deadline constants so a future refactor can't
+    /// silently remove them and re-introduce the indefinite-hang class of
+    /// bug that blocked the sec-data pipeline at "[repo-scan] config
+    /// loaded" for 10+ minutes before this fix.
+    #[test]
+    fn repo_scan_git_calls_have_bounded_deadlines() {
+        assert!(GIT_LS_FILES_TIMEOUT.as_secs() >= 1);
+        assert!(GIT_LS_FILES_TIMEOUT.as_secs() <= 30);
+        assert!(GIT_GREP_TIMEOUT.as_secs() >= 1);
+        assert!(GIT_GREP_TIMEOUT.as_secs() <= 60);
+    }
+
+    /// A git grep wrapped in our timeout must return within the declared
+    /// deadline. This guards against the deadline ever being bypassed by a
+    /// refactor that drops the `timeout(...)` wrapper.
+    #[tokio::test]
+    async fn grep_respects_deadline_guard() {
+        let repo = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+        if !repo.join(".git").exists()
+            && !repo.parent().map(|p| p.join(".git").exists()).unwrap_or(false)
+        {
+            eprintln!("skip: not inside a git repo");
+            return;
+        }
+        let start = Instant::now();
+        let grep_fut = Command::new("git")
+            .arg("-C")
+            .arg(repo)
+            .args(["grep", "-nIE", "--no-color", "__no_such_token_xyzzy__", "HEAD"])
+            .stdout(Stdio::piped())
+            .stderr(Stdio::null())
+            .output();
+        let _ = timeout(Duration::from_secs(5), grep_fut).await;
+        let elapsed = start.elapsed();
+        assert!(
+            elapsed < Duration::from_secs(7),
+            "git grep exceeded deadline guard: {}s",
+            elapsed.as_secs()
+        );
+    }
 }

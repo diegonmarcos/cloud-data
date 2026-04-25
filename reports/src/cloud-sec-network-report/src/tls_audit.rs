@@ -1,9 +1,15 @@
 use crate::context::NetworkContext;
 use crate::types::TlsCertResult;
+use futures::stream::{self, StreamExt};
 use reports_common::capabilities::RuntimeCapabilities;
 use reports_common::types::{Check, Severity};
 use std::collections::HashSet;
 use std::time::Instant;
+
+/// Concurrency cap for openssl s_client subprocesses. openssl is CPU-light
+/// but each spawn forks a process; capping at 16 keeps fork-rate sane while
+/// landing 50-domain audits in seconds rather than minutes.
+const TLS_AUDIT_PARALLEL: usize = 16;
 
 /// Dual-path TLS audit: external (public domain:443) + internal (WG upstream:port) when available
 pub async fn audit_all_certs(
@@ -29,32 +35,39 @@ pub async fn audit_all_certs(
         if caps.wg_up { " + internal" } else { "" }
     );
 
-    // ── External: public domain:443 (always) ──
-    for route in &routes {
-        let t = Instant::now();
-        let (result, check) = audit_single_cert(&route.domain, &format!("{}:443", route.domain), "ext").await;
-        let mut c = check;
-        c.duration_ms = t.elapsed().as_millis() as u64;
-        checks.push(c);
+    // ── External: public domain:443 (always). Parallel audit, ≤ TLS_AUDIT_PARALLEL.
+    let ext_results: Vec<(TlsCertResult, Check)> = stream::iter(routes.iter().cloned())
+        .map(|route| async move {
+            let t = Instant::now();
+            let (result, check) = audit_single_cert(&route.domain, &format!("{}:443", route.domain), "ext").await;
+            let mut c = check;
+            c.duration_ms = t.elapsed().as_millis() as u64;
+            (result, c)
+        })
+        .buffer_unordered(TLS_AUDIT_PARALLEL)
+        .collect()
+        .await;
+    for (result, check) in ext_results {
+        checks.push(check);
         results.push(result);
     }
 
-    // ── Internal: WG upstream (when WG is up) ──
+    // ── Internal: WG upstream (when WG is up). Parallel audit, ≤ TLS_AUDIT_PARALLEL.
     if caps.wg_up {
-        for route in &routes {
-            if route.upstream.is_empty() {
-                continue;
-            }
-            let t = Instant::now();
-            // upstream is like "10.0.0.6:8081" — connect directly via WG
-            let (result, check) = audit_single_cert_internal(
-                &route.domain,
-                &route.upstream,
-            )
+        let internal_routes: Vec<_> = routes.iter().filter(|r| !r.upstream.is_empty()).cloned().collect();
+        let int_results: Vec<(TlsCertResult, Check)> = stream::iter(internal_routes.into_iter())
+            .map(|route| async move {
+                let t = Instant::now();
+                let (result, check) = audit_single_cert_internal(&route.domain, &route.upstream).await;
+                let mut c = check;
+                c.duration_ms = t.elapsed().as_millis() as u64;
+                (result, c)
+            })
+            .buffer_unordered(TLS_AUDIT_PARALLEL)
+            .collect()
             .await;
-            let mut c = check;
-            c.duration_ms = t.elapsed().as_millis() as u64;
-            checks.push(c);
+        for (result, check) in int_results {
+            checks.push(check);
             results.push(result);
         }
     }
@@ -62,10 +75,14 @@ pub async fn audit_all_certs(
     (checks, results)
 }
 
-/// Audit TLS cert via public internet
+/// Audit TLS cert via public internet — deadline-bound at 8s per domain.
 async fn audit_single_cert(domain: &str, connect: &str, prefix: &str) -> (TlsCertResult, Check) {
-    // Run openssl s_client
-    let output = tokio::process::Command::new("openssl")
+    use std::time::Duration;
+    use tokio::time::timeout;
+    // openssl s_client against a non-responsive peer can hang indefinitely
+    // (system default ~120s, sometimes never). Bound it explicitly so one
+    // bad domain can't block the sequential cert-audit loop.
+    let cmd_fut = tokio::process::Command::new("openssl")
         .args([
             "s_client",
             "-connect", connect,
@@ -74,8 +91,14 @@ async fn audit_single_cert(domain: &str, connect: &str, prefix: &str) -> (TlsCer
         .stdin(std::process::Stdio::null())
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped())
-        .output()
-        .await;
+        .output();
+    let output = match timeout(Duration::from_secs(8), cmd_fut).await {
+        Ok(inner) => inner,
+        Err(_) => Err(std::io::Error::new(
+            std::io::ErrorKind::TimedOut,
+            "openssl s_client exceeded 8s deadline",
+        )),
+    };
 
     let cert_text = match &output {
         Ok(out) => String::from_utf8_lossy(&out.stdout).to_string(),
@@ -138,10 +161,12 @@ async fn audit_single_cert(domain: &str, connect: &str, prefix: &str) -> (TlsCer
     (result, check)
 }
 
-/// Audit TLS on the internal upstream (WG path) — may be plain HTTP or TLS
+/// Audit TLS on the internal upstream (WG path) — may be plain HTTP or TLS.
+/// Deadline-bound at 6s per upstream.
 async fn audit_single_cert_internal(domain: &str, upstream: &str) -> (TlsCertResult, Check) {
-    // Try TLS connection to the upstream directly
-    let output = tokio::process::Command::new("openssl")
+    use std::time::Duration;
+    use tokio::time::timeout;
+    let cmd_fut = tokio::process::Command::new("openssl")
         .args([
             "s_client",
             "-connect", upstream,
@@ -150,8 +175,14 @@ async fn audit_single_cert_internal(domain: &str, upstream: &str) -> (TlsCertRes
         .stdin(std::process::Stdio::null())
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped())
-        .output()
-        .await;
+        .output();
+    let output = match timeout(Duration::from_secs(6), cmd_fut).await {
+        Ok(inner) => inner,
+        Err(_) => Err(std::io::Error::new(
+            std::io::ErrorKind::TimedOut,
+            "openssl s_client (internal) exceeded 6s deadline",
+        )),
+    };
 
     let is_tls = output.as_ref().map(|o| {
         let combined = format!("{}\n{}", String::from_utf8_lossy(&o.stdout), String::from_utf8_lossy(&o.stderr));

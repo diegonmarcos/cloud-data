@@ -24,5 +24,9 @@ resolver = "2"
 
 [profile.release]
 opt-level = 3
-lto = true
+# lto = true was here. It forced a full re-link of all 5 binaries every time
+# reports-common changed (~15 min on warm cache, ~3 min on warm cache after
+# Step 1 of the perf plan). Disabled 2026-04-25 — incremental rebuild now
+# completes in <30s for any reports-common change.
+codegen-units = 16
 strip = true

@@ -74,14 +74,77 @@ cmd_list() {
 
 cmd_all() {
     action="${1:-all}"  # all | build
-    for c in $(list_crate_dirs); do
+    MASTER="cloud-health-full-daily"
+
+    # ── Phase 0: ONE workspace cargo build ───────────────────────────
+    # Avoids the serialised "Blocking waiting for file lock on package
+    # cache" we hit when 5 crates' build.sh each call cargo concurrently.
+    # One workspace invocation builds all binaries in parallel inside cargo
+    # (no lock contention) and is incremental on warm cache.
+    if [ -f /opt/reports/entrypoint.sh ]; then
+        echo "── Docker image — binaries pre-built ──"
+    else
         echo ""
         echo "══════════════════════════════════════════"
-        echo "  $c ($action)"
+        echo "  workspace cargo build (single invocation)"
         echo "══════════════════════════════════════════"
-        sh "$SRC_DIR/$c/build.sh" "$action"
+        cargo build --release --manifest-path "$SRC_DIR/Cargo.toml" 2>&1 || {
+            echo "FAIL: workspace build failed"; exit 1;
+        }
+    fi
+
+    # ── Phase 0b: per-crate symlink + template setup (NO cargo) ───────
+    # Each crate's build.sh skips cargo when binary already exists at
+    # $CARGO_TARGET_DIR/release/<bin> (just fixes symlinks + templates).
+    for c in $(list_crate_dirs); do
+        sh "$SRC_DIR/$c/build.sh" build >/dev/null 2>&1 || true
     done
+
+    if [ "$action" = "build" ]; then
+        return 0
+    fi
+
+    # ── Phase 1: run MASTER sequentially (in-process consolidates submodules) ─
+    if [ -d "$SRC_DIR/$MASTER" ]; then
+        echo ""
+        echo "══════════════════════════════════════════"
+        echo "  $MASTER (run) — master"
+        echo "══════════════════════════════════════════"
+        sh "$SRC_DIR/$MASTER/build.sh" run
+    fi
+
+    # ── Phase 2: run DERIVES in PARALLEL ────────────────────────────────
+    # Each derive owns a distinct output file. No cargo invocations now,
+    # just binary execution.
+    echo ""
+    echo "══════════════════════════════════════════"
+    echo "  derives (parallel fan-out)"
+    echo "══════════════════════════════════════════"
+    pids=""
+    logs_dir="$DIST_DIR/.run-logs"
+    mkdir -p "$logs_dir"
+    for c in $(list_crate_dirs); do
+        [ "$c" = "$MASTER" ] && continue
+        log="$logs_dir/$c.log"
+        ( sh "$SRC_DIR/$c/build.sh" run >"$log" 2>&1 ) &
+        pids="$pids $!:$c"
+    done
+    rc=0
+    for entry in $pids; do
+        pid="${entry%%:*}"
+        crate="${entry#*:}"
+        if wait "$pid"; then
+            echo "✓ $crate"
+            tail -3 "$logs_dir/$crate.log" | sed "s/^/    /"
+        else
+            echo "✗ $crate (exit $?)"
+            tail -10 "$logs_dir/$crate.log" | sed "s/^/    /"
+            rc=1
+        fi
+    done
+
     generate_manifest
+    return $rc
 }
 
 cmd_one() {

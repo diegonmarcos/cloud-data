@@ -9,3 +9,4 @@ pub mod email_e2e;
 pub mod probe;
 pub mod caddy;
 pub mod fleet;
+pub mod perf;
