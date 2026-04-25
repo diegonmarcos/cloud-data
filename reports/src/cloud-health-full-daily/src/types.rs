@@ -14,12 +14,17 @@ pub struct MonitoringTargets {
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct EndpointCheck {
+    /// Display name. cloud-data renamed this from `service` → `name` on
+    /// 2026-04-25 in cloud-data-monitoring-targets.json. Accept both via
+    /// serde alias so the report stays compatible with both schemas.
+    #[serde(alias = "name")]
     pub service: String,
     pub url: String,
 }
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct TlsCheck {
+    #[serde(alias = "name")]
     pub service: String,
     pub domain: String,
 }
