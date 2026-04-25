@@ -21,7 +21,8 @@ case "${1:-}" in
     echo ""
     echo "Commands:"
     echo "  all            Run all 5 reports (master + 4 derives)"
-    echo "  daily          Master: cloud-health-full-daily (consolidated monster)"
+    echo "  daily          Master: cloud-health-full-daily (build only — NO email)"
+    echo "  daily-mail     Master: cloud-health-full-daily — build + send via SMTP"
     echo "  mail           Derive: cloud-mail-health-full"
     echo "  url            Derive: cloud-url-health-report (fast)"
     echo "  sec-network    Derive: cloud-sec-network-report"
@@ -32,7 +33,7 @@ case "${1:-}" in
   bash|sh)
     # Interactive shell — setup env but don't dispatch
     ;;
-  all|daily|mail|url|sec-network|sec-data)
+  all|daily|daily-mail|mail|url|sec-network|sec-data)
     # Handled below after setup
     ;;
   *)
@@ -125,6 +126,7 @@ CMD="$1"; shift
 case "$CMD" in
   all)           exec bash "$REPORTS_DIR/build.sh" all ;;
   daily)         exec bash "$REPORTS_DIR/build.sh" health-full-daily ;;
+  daily-mail)    exec bash "$REPORTS_DIR/src/cloud-health-full-daily/build.sh" ship ;;
   mail)          exec bash "$REPORTS_DIR/build.sh" mail-health-full ;;
   url)           exec bash "$REPORTS_DIR/build.sh" url-health ;;
   sec-network)   exec bash "$REPORTS_DIR/build.sh" sec-network ;;

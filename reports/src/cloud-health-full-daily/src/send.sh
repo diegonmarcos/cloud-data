@@ -7,7 +7,9 @@
 set -eu
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HTML_FILE="${1:-$SCRIPT_DIR/../dist/cloud_health_daily.html}"
+# Reports engine writes to the SHARED reports/dist/, not per-crate dist/.
+# SCRIPT_DIR = reports/src/cloud-health-full-daily/src/  →  reports/ is 3 up.
+HTML_FILE="${1:-$SCRIPT_DIR/../../../dist/cloud_health_daily.html}"
 DATE=$(date '+%Y-%m-%d')
 
 if [ ! -f "$HTML_FILE" ]; then
