@@ -23,10 +23,35 @@ pub struct EndpointCheck {
 }
 
 #[derive(Debug, Deserialize, Clone)]
+#[serde(from = "TlsCheckInput")]
 pub struct TlsCheck {
-    #[serde(alias = "name")]
     pub service: String,
     pub domain: String,
+}
+
+/// cloud-data-monitoring-targets.json shipped two shapes for tls_checks:
+///   v1: [{ "service": "X", "domain": "x.example.com" }]
+///   v2: [{ "name":    "X", "domain": "x.example.com" }]   (alias for v1)
+///   v3: ["x.example.com", ...]                            (bare domains, 2026-04-25)
+/// This deserializer accepts all three so the binary survives schema drift.
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum TlsCheckInput {
+    Full {
+        #[serde(alias = "name")]
+        service: String,
+        domain: String,
+    },
+    BareDomain(String),
+}
+
+impl From<TlsCheckInput> for TlsCheck {
+    fn from(i: TlsCheckInput) -> Self {
+        match i {
+            TlsCheckInput::Full { service, domain } => TlsCheck { service, domain },
+            TlsCheckInput::BareDomain(d) => TlsCheck { service: d.clone(), domain: d },
+        }
+    }
 }
 
 #[derive(Debug, Deserialize, Clone)]
