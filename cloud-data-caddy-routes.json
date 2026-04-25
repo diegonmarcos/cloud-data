@@ -3,24 +3,9 @@
     "description": "Caddy route definitions -- consumed by flake.nix to generate Caddyfile",
     "format_version": 1
   },
-  "_generated": "2026-04-25T10:48:44.466Z",
+  "_generated": "2026-04-25T12:04:59.116Z",
   "_source": "build.json proxy fields via /cloud-data/caddy-routes",
   "l4_routes": [
-    {
-      "port": 2993,
-      "upstream": "130.110.251.193:2993",
-      "comment": "IMAPS (Stalwart) -- TLS passthrough to stalwart"
-    },
-    {
-      "port": 2465,
-      "upstream": "130.110.251.193:2465",
-      "comment": "SMTPS (Stalwart) -- TLS passthrough to stalwart"
-    },
-    {
-      "port": 2587,
-      "upstream": "130.110.251.193:2587",
-      "comment": "SMTP Submission (Stalwart) -- TLS passthrough to stalwart"
-    },
     {
       "port": 993,
       "upstream": "130.110.251.193:993",
@@ -35,6 +20,21 @@
       "port": 587,
       "upstream": "130.110.251.193:587",
       "comment": "SMTP Submission -- TLS passthrough to maddy"
+    },
+    {
+      "port": 2993,
+      "upstream": "130.110.251.193:2993",
+      "comment": "IMAPS (Stalwart) -- TLS passthrough to stalwart"
+    },
+    {
+      "port": 2465,
+      "upstream": "130.110.251.193:2465",
+      "comment": "SMTPS (Stalwart) -- TLS passthrough to stalwart"
+    },
+    {
+      "port": 2587,
+      "upstream": "130.110.251.193:2587",
+      "comment": "SMTP Submission (Stalwart) -- TLS passthrough to stalwart"
     }
   ],
   "routes": [
@@ -47,6 +47,10 @@
       "domain": "sheets.diegonmarcos.com",
       "upstream": "grist.app:3011",
       "comment": "Grist spreadsheet/database (sheets.diegonmarcos.com)"
+    },
+    {
+      "domain": "mail-puller.diegonmarcos.com",
+      "comment": "Rust sidecar — IMAP-IDLE pulls from external providers (Gmail, Outlook/Live, …) and dual-delivers into Maddy + Stalwart via SMTP submission. Declarative source list in src/sources.json; OAuth2 creds via sops."
     },
     {
       "domain": "chat.diegonmarcos.com",
@@ -67,8 +71,13 @@
     {
       "domain": "webmail.diegonmarcos.com",
       "upstream": "snappymail.app:8888",
-      "landing_page": "mymail",
       "comment": "SnappyMail webmail client (mail.diegonmarcos.com/webmail)"
+    },
+    {
+      "domain": "mail.diegonmarcos.com",
+      "upstream": "maddy.app:993",
+      "tls_skip_verify": true,
+      "comment": "Maddy Mail Server (mail.diegonmarcos.com)"
     },
     {
       "domain": "smtp.diegonmarcos.com",
@@ -78,9 +87,7 @@
     },
     {
       "domain": "mail-stalwart.diegonmarcos.com",
-      "upstream": "stalwart.app:2443",
       "auth": "none",
-      "landing_page": "mymail",
       "tls_skip_verify": true,
       "comment": "Stalwart Mail Server — shadow mode (mail-stalwart.diegonmarcos.com)"
     },
@@ -89,6 +96,11 @@
       "upstream": "vaultwarden.app:8880",
       "auth": "none",
       "comment": "Bitwarden password manager"
+    },
+    {
+      "domain": "fincept-api.diegonmarcos.com",
+      "upstream": "fincept-api.app:8340",
+      "comment": "Fincept Terminal backend — REST + WebSocket over DataHub, 35 data connectors, 7 analytics, 17 brokers, 6 investor personas, MCP tools"
     },
     {
       "domain": "auth.diegonmarcos.com",
@@ -103,17 +115,6 @@
       "domain": "workflows.diegonmarcos.com",
       "upstream": "dagu.app:8070",
       "comment": "Dagu - Lightweight DAG-based workflow scheduler"
-    },
-    {
-      "domain": "db.diegonmarcos.com",
-      "comment": "NocoDB database spreadsheet (nocodb.diegonmarcos.com)"
-    },
-    {
-      "domain": "mail.diegonmarcos.com",
-      "upstream": "maddy.app:993",
-      "landing_page": "mymail",
-      "tls_skip_verify": true,
-      "comment": "Maddy Mail Server (mail.diegonmarcos.com)"
     },
     {
       "domain": "db.diegonmarcos.com",
@@ -153,11 +154,6 @@
         {
           "base_path": "/grafana",
           "comment": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
-        },
-        {
-          "base_path": "/windmill",
-          "upstream": "windmill-app.app:8000",
-          "comment": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
         },
         {
           "base_path": "/gitea",
@@ -248,6 +244,10 @@
       "parent_domain": "mcp.diegonmarcos.com",
       "endpoints": [
         {
+          "base_path": "/g-personal",
+          "upstream": "g-personal-mcp.app:3106"
+        },
+        {
           "base_path": "/g-workspace",
           "upstream": "g-workspace-mcp.app:3104"
         },
@@ -285,7 +285,6 @@
     "analytics": {
       "domain": "analytics.diegonmarcos.com",
       "comment": "Matomo (public tracking + protected admin) + Umami (path-based)",
-      "matomo_upstream": "matomo.app:8084",
       "umami_upstream": "umami.app:3006",
       "public_tracking_paths": [
         "/matomo.js",

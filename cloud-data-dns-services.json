@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-04-25T10:48:43.987Z",
+  "_generated": "2026-04-25T12:04:58.634Z",
   "_source": "cloud-data-topology.json via /cloud-data/dns-services",
   "suffix": "app",
   "services": {
@@ -14,6 +14,14 @@
     "filebrowser": {
       "ip": "10.0.0.6",
       "desc": "FileBrowser web file manager (NEW - not deployed yet)"
+    },
+    "google-personal-mcp": {
+      "ip": "10.0.0.6",
+      "desc": "Google Personal Account MCP server — Gmail (IMAP/SMTP via App Password) for personal Google accounts, multi-account"
+    },
+    "g-personal-mcp": {
+      "ip": "10.0.0.6",
+      "desc": "Google Personal Account MCP server — Gmail (IMAP/SMTP via App Password) for personal Google accounts, multi-account"
     },
     "google-workspace-mcp": {
       "ip": "10.0.0.6",
@@ -34,6 +42,10 @@
     "mail-mcp": {
       "ip": "10.0.0.6",
       "desc": "Mail MCP server — IMAP/SMTP/Admin via Stalwart REST API"
+    },
+    "mail-puller": {
+      "ip": "10.0.0.3",
+      "desc": "Rust sidecar — IMAP-IDLE pulls from external providers (Gmail, Outlook/Live, …) and dual-delivers into Maddy + Stalwart via SMTP submission. Declarative source list in src/sources.json; OAuth2 creds via sops."
     },
     "mattermost-bots": {
       "ip": "10.0.0.6",
@@ -67,6 +79,10 @@
       "ip": "10.0.0.3",
       "desc": "SnappyMail webmail client (mail.diegonmarcos.com/webmail)"
     },
+    "maddy": {
+      "ip": "10.0.0.3",
+      "desc": "Maddy Mail Server (mail.diegonmarcos.com)"
+    },
     "smtp-proxy": {
       "ip": "10.0.0.3",
       "desc": "HTTP-to-SMTP bridge for CF Email Routing (smtp.diegonmarcos.com)"
@@ -87,13 +103,13 @@
       "ip": "10.0.0.6",
       "desc": "Self-hosted Crawlee Cloud — Apify-compatible scraping platform (API + Runner + Dashboard + Scheduler)"
     },
-    "quant-lab-full": {
+    "fincept-server": {
       "ip": "10.0.0.6",
-      "desc": "Full quant stack: Jupyter + Analytics + ML + Risk + NautilusTrader + Postgres"
+      "desc": "Fincept Terminal backend — REST + WebSocket over DataHub, 35 data connectors, 7 analytics, 17 brokers, 6 investor personas, MCP tools"
     },
-    "quant-lab-light": {
+    "fincept-api": {
       "ip": "10.0.0.6",
-      "desc": "Lightweight quant research: Jupyter + NautilusTrader + Postgres"
+      "desc": "Fincept Terminal backend — REST + WebSocket over DataHub, 35 data connectors, 7 analytics, 17 brokers, 6 investor personas, MCP tools"
     },
     "ollama": {
       "ip": "10.0.0.8",
@@ -131,10 +147,6 @@
       "ip": "10.0.0.6",
       "desc": "Central Syslog Collector + SIEM API"
     },
-    "alerts-api": {
-      "ip": "10.0.0.4",
-      "desc": "Security Alert Aggregation API"
-    },
     "c3-infra-api": {
       "ip": "10.0.0.6",
       "desc": "C3 REST API — Cloud Control Center Fastify API"
@@ -167,13 +179,13 @@
       "ip": "10.0.0.4",
       "desc": "Dagu - Lightweight DAG-based workflow scheduler"
     },
+    "dbgate": {
+      "ip": "10.0.0.6",
+      "desc": "DBGate - Universal database manager for all cloud databases"
+    },
     "dozzle": {
       "ip": "10.0.0.4",
       "desc": "Dozzle - Real-time Docker log viewer"
-    },
-    "fluent-bit": {
-      "ip": "10.0.0.4",
-      "desc": "Log processor and forwarder"
     },
     "lgtm": {
       "ip": "10.0.0.6",
@@ -184,12 +196,12 @@
       "desc": "LGTM observability stack (Grafana, Loki, Tempo, Mimir) (NEW - not deployed yet)"
     },
     "matomo": {
-      "ip": "10.0.0.4",
-      "desc": "Matomo hybrid analytics (oci-analytics)"
-    },
-    "nocodb": {
       "ip": "10.0.0.6",
-      "desc": "NocoDB database spreadsheet (nocodb.diegonmarcos.com)"
+      "desc": "Matomo hybrid analytics (oci-apps)"
+    },
+    "news-gdelt": {
+      "ip": "10.0.0.6",
+      "desc": "GDELT News Aggregator — Fastify API with SQLite cache"
     },
     "ntfy": {
       "ip": "10.0.0.6",
@@ -199,21 +211,13 @@
       "ip": "10.0.0.4",
       "desc": "Alert forwarding to central sauron"
     },
-    "syslog-forwarder": {
-      "ip": "10.0.0.3",
-      "desc": ""
-    },
     "umami": {
-      "ip": "10.0.0.4",
+      "ip": "10.0.0.6",
       "desc": "Umami Analytics - lightweight privacy-focused web analytics"
     },
-    "windmill": {
+    "cloud-builder-x": {
       "ip": "10.0.0.6",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
-    },
-    "windmill-app": {
-      "ip": "10.0.0.6",
-      "desc": "Windmill workflow orchestration (windmill.diegonmarcos.com)"
+      "desc": "CI/CD builder images — deployed to oci-apps, source in unix repo"
     },
     "backup-borg": {
       "ip": "10.0.0.6",
@@ -223,10 +227,6 @@
       "ip": "10.0.0.6",
       "desc": "Database Backups SSH Server (bup)"
     },
-    "backup-gitea": {
-      "ip": "10.0.0.6",
-      "desc": "Self-hosted Gitea for git backups and mirroring"
-    },
     "gitea": {
       "ip": "10.0.0.6",
       "desc": "Self-hosted Git service"
@@ -235,29 +235,9 @@
       "ip": "10.0.0.6",
       "desc": "SurrealDB Hybrid Knowledge Graph - Infrastructure topology + vector search"
     },
-    "postlite": {
-      "ip": "10.0.0.1",
-      "desc": "SQLite REST API (WireGuard only)"
-    },
     "redis": {
       "ip": "10.0.0.1",
       "desc": "In-memory data store"
-    },
-    "maddy": {
-      "ip": "10.0.0.3",
-      "desc": "Maddy Mail Server (mail.diegonmarcos.com)"
-    },
-    "dbgate": {
-      "ip": "10.0.0.6",
-      "desc": "DBGate - Universal database manager for all cloud databases"
-    },
-    "news-gdelt": {
-      "ip": "10.0.0.6",
-      "desc": "GDELT News Aggregator — Fastify API with SQLite cache"
-    },
-    "cloud-builder-x": {
-      "ip": "10.0.0.6",
-      "desc": "CI/CD builder images — deployed to oci-apps, source in unix repo"
     }
   },
   "vms": {

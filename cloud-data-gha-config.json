@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-04-25T10:48:49.935Z",
+  "_generated": "2026-04-25T12:05:04.592Z",
   "_source": "config.json + build.json via /cloud-data/gha-config",
   "vms": {
     "oci-mail": {
@@ -44,6 +44,11 @@
       "vm": "oci-apps",
       "has_docker": true
     },
+    "google-personal-mcp": {
+      "dir": "aa-sui_google-personal-mcp",
+      "vm": "oci-apps",
+      "has_docker": true
+    },
     "google-workspace-mcp": {
       "dir": "aa-sui_google-workspace-mcp",
       "vm": "oci-apps",
@@ -62,6 +67,11 @@
     "mail-mcp": {
       "dir": "aa-sui_mail-mcp",
       "vm": "oci-apps",
+      "has_docker": true
+    },
+    "mail-puller": {
+      "dir": "aa-sui_mail-puller",
+      "vm": "oci-mail",
       "has_docker": true
     },
     "mattermost-bots": {
@@ -99,6 +109,11 @@
       "vm": "oci-mail",
       "has_docker": true
     },
+    "maddy": {
+      "dir": "aa-sui_tools-maddy",
+      "vm": "oci-mail",
+      "has_docker": true
+    },
     "smtp-proxy": {
       "dir": "aa-sui_tools-smtp-proxy",
       "vm": "oci-mail",
@@ -119,8 +134,8 @@
       "vm": "oci-apps",
       "has_docker": true
     },
-    "quant-lab-light": {
-      "dir": "ac-fin_quant-lab-light",
+    "fincept-server": {
+      "dir": "ac-fin_fincept-server",
       "vm": "oci-apps",
       "has_docker": true
     },
@@ -204,13 +219,13 @@
       "vm": "oci-analytics",
       "has_docker": true
     },
-    "dozzle": {
-      "dir": "bc-obs_dozzle",
-      "vm": "oci-analytics",
+    "dbgate": {
+      "dir": "bc-obs_dbgate",
+      "vm": "oci-apps",
       "has_docker": true
     },
-    "fluent-bit": {
-      "dir": "bc-obs_fluent-bit",
+    "dozzle": {
+      "dir": "bc-obs_dozzle",
       "vm": "oci-analytics",
       "has_docker": true
     },
@@ -221,7 +236,12 @@
     },
     "matomo": {
       "dir": "bc-obs_matomo",
-      "vm": "oci-analytics",
+      "vm": "oci-apps",
+      "has_docker": true
+    },
+    "news-gdelt": {
+      "dir": "bc-obs_news-gdelt",
+      "vm": "oci-apps",
       "has_docker": true
     },
     "ntfy": {
@@ -234,18 +254,13 @@
       "vm": "oci-analytics",
       "has_docker": true
     },
-    "syslog-forwarder": {
-      "dir": "bc-obs_syslog-forwarder",
-      "vm": "oci-mail",
-      "has_docker": true
-    },
     "umami": {
       "dir": "bc-obs_umami",
-      "vm": "oci-analytics",
+      "vm": "oci-apps",
       "has_docker": true
     },
-    "windmill": {
-      "dir": "bc-obs_windmill",
+    "cloud-builder-x": {
+      "dir": "bd-cloud-builder-x",
       "vm": "oci-apps",
       "has_docker": true
     },
@@ -256,11 +271,6 @@
     },
     "backup-bup": {
       "dir": "ca-dat_backup-bup",
-      "vm": "oci-apps",
-      "has_docker": true
-    },
-    "backup-gitea": {
-      "dir": "ca-dat_backup-gitea",
       "vm": "oci-apps",
       "has_docker": true
     },
@@ -277,26 +287,6 @@
     "redis": {
       "dir": "ca-dat_redis",
       "vm": "gcp-proxy",
-      "has_docker": true
-    },
-    "maddy": {
-      "dir": "aa-sui_tools-maddy",
-      "vm": "oci-mail",
-      "has_docker": true
-    },
-    "dbgate": {
-      "dir": "bc-obs_dbgate",
-      "vm": "oci-apps",
-      "has_docker": true
-    },
-    "news-gdelt": {
-      "dir": "bc-obs_news-gdelt",
-      "vm": "oci-apps",
-      "has_docker": true
-    },
-    "cloud-builder-x": {
-      "dir": "bd-cloud-builder-x",
-      "vm": "oci-apps",
       "has_docker": true
     }
   }
