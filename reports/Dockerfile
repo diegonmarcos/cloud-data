@@ -46,8 +46,8 @@ RUN mkdir -p /usr/local/share/yara-rules/community && \
 COPY --from=builder /build/target/release/cloud-health-full-daily /usr/local/bin/
 COPY --from=builder /build/target/release/cloud-mail-health-full /usr/local/bin/
 COPY --from=builder /build/target/release/cloud-url-health-report /usr/local/bin/
-COPY --from=builder /build/target/release/cloud-sec-network-report /usr/local/bin/
-COPY --from=builder /build/target/release/cloud-sec-data-report /usr/local/bin/
+COPY --from=builder /build/target/release/cloud-sec-network /usr/local/bin/
+COPY --from=builder /build/target/release/cloud-sec-data /usr/local/bin/
 
 # Bundle YARA rules (custom + infra)
 COPY src/cloud-sec-data-report/yara-rules/ /usr/local/share/yara-rules/
