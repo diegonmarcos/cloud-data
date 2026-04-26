@@ -1,0 +1,68 @@
+{
+  "_comment": "Declarative news-gdelt endpoint registry. Adds an endpoint = adds an entry here. The topic list comes from /news/topics itself (data-driven via q_values_from); when DEFAULT_TOPICS in gdelt.ts changes, the snapshot follows automatically on next run.",
+  "_source": "/home/diego/git/cloud-data/news-gdelt/src/endpoints.json",
+  "_run_order": "Endpoints are fetched in declared order. `topics` MUST come before `articles/timeline/tone` because the latter three reference dist/topics.json via q_values_from to enumerate topic values.",
+  "service": "news-gdelt",
+  "base_url": "https://api.diegonmarcos.com",
+  "defaults": {
+    "timeout_seconds": 30
+  },
+  "auth": {
+    "default": "none",
+    "_note": "GDELT data is public. The api hub default auth (Authelia 2FA / bearer) will gate it once exposed publicly through Caddy; the snapshotter respects whatever auth the spec declares."
+  },
+  "endpoints": [
+    {
+      "name": "health",
+      "method": "GET",
+      "path": "/health",
+      "auth": "none",
+      "timeout_seconds": 5,
+      "description": "Liveness probe — {status, cachedTopics, totalArticles, lastFetch, uptime}"
+    },
+    {
+      "name": "topics",
+      "method": "GET",
+      "path": "/news/topics",
+      "auth": "none",
+      "timeout_seconds": 5,
+      "description": "Topic registry — 8 topics from gdelt.ts DEFAULT_TOPICS. Used as q_values source for articles/timeline/tone."
+    },
+    {
+      "name": "articles",
+      "method": "GET",
+      "path": "/news/articles?q={q}&limit=50",
+      "auth": "none",
+      "timeout_seconds": 30,
+      "q_values_from": {
+        "file": "topics.json",
+        "jq": ".topics[].topic"
+      },
+      "description": "GDELT articles slice for each topic — limit=50. Cold-fetch ~10s per topic (live call to api.gdeltproject.org)."
+    },
+    {
+      "name": "timeline",
+      "method": "GET",
+      "path": "/news/timeline?q={q}",
+      "auth": "none",
+      "timeout_seconds": 30,
+      "q_values_from": {
+        "file": "topics.json",
+        "jq": ".topics[].topic"
+      },
+      "description": "Article timeline (volume by date) per topic. Cold-fetch ~10s per topic."
+    },
+    {
+      "name": "tone",
+      "method": "GET",
+      "path": "/news/tone?q={q}",
+      "auth": "none",
+      "timeout_seconds": 30,
+      "q_values_from": {
+        "file": "topics.json",
+        "jq": ".topics[].topic"
+      },
+      "description": "Tone analysis (avg/min/max sentiment) per topic. Cold-fetch ~10s per topic."
+    }
+  ]
+}
