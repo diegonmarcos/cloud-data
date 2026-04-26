@@ -1,0 +1,51 @@
+{
+  "_comment": "Declarative fin-api endpoint registry. Consumed by build.sh — adds an endpoint = adds an entry here, NEVER edit build.sh.",
+  "_source": "/home/diego/git/cloud-data/fin-api/src/endpoints.json",
+  "service": "fin-api",
+  "base_url": "https://api.diegonmarcos.com/fin-api",
+  "auth": {
+    "default": "bearer",
+    "bearer_token_file": "vault/A0_keys/providers/authelia/signed-bearer_jwt/tokens/fin-api.json",
+    "bearer_token_field": "access_token"
+  },
+  "endpoints": [
+    {
+      "name": "health",
+      "method": "GET",
+      "path": "/health",
+      "auth": "none",
+      "description": "Liveness probe — public, returns {status, version}"
+    },
+    {
+      "name": "info",
+      "method": "GET",
+      "path": "/api/v1/info",
+      "description": "Build info + DataHub counts {version, personas, mcp_tools, hub_topics}"
+    },
+    {
+      "name": "personas",
+      "method": "GET",
+      "path": "/api/v1/personas",
+      "description": "Investor persona registry (buffett, graham, klarman, lynch, marks, munger)"
+    },
+    {
+      "name": "topics",
+      "method": "GET",
+      "path": "/api/v1/topics",
+      "description": "DataHub topic list (live pub/sub topics)"
+    },
+    {
+      "name": "mcp_tools",
+      "method": "GET",
+      "path": "/api/v1/mcp/tools",
+      "description": "MCP tool registry with input_schema (economics_data, factor_backtest, financial_news, market_data, symbol_search)"
+    }
+  ],
+  "_parameterized_endpoints_not_snapshotted": [
+    "POST /api/v1/personas/:id/score      (per-persona scoring; needs body)",
+    "POST /api/v1/topics/:topic/publish   (DataHub publish; needs topic + body)",
+    "GET  /api/v1/topics/:topic/peek      (per-topic peek; needs topic)",
+    "POST /api/v1/mcp/tools/:name/call    (per-tool invocation; needs body)",
+    "GET  /api/v1/ws                      (WebSocket — out of scope for snapshot)"
+  ]
+}
