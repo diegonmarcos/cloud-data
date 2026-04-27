@@ -1,0 +1,16 @@
+[
+  {
+    "id": "DJ1xgM2A9cKH",
+    "time": 1776387676,
+    "expires": 1778979676,
+    "event": "message",
+    "topic": "ops_backups",
+    "title": "Daily DB Backup OK (8 dumps)",
+    "message": "-e DB backup → OCI S3: 8 dumps (652.0K)\nBucket: cloud-backups-db\nDagu: http://10.0.0.3:8070",
+    "priority": 2,
+    "tags": [
+      "floppy_disk",
+      "white_check_mark"
+    ]
+  }
+]

@@ -60,7 +60,7 @@ slugify() { echo "$1" | tr ' ' '_' | tr -cd '[:alnum:]_-'; }
 
 # ── fetch one URL with given output name + timeout (single helper) ─────
 fetch_one() {
-    local name="$1" url="$2" method="$3" auth="$4" timeout="$5"
+    local name="$1" url="$2" method="$3" auth="$4" timeout="$5" body_format="${6:-json}"
     local out="$DIST/${name}.json" meta="$DIST/${name}.meta"
     TOTAL=$((TOTAL+1))
 
@@ -77,11 +77,22 @@ fetch_one() {
         --max-time "$timeout" \
         "$url" || echo "000")
 
+    # ── normalise NDJSON → JSON array (so the standard jq tester applies) ─
+    # ntfy and other streaming endpoints return one JSON object per line.
+    # Spec opts in via "body_format":"ndjson"; engine slurps with jq -s.
+    if [ "$body_format" = "ndjson" ] && [ -s "$out" ]; then
+        if jq -s . "$out" > "${out}.tmp" 2>/dev/null; then
+            mv "${out}.tmp" "$out"
+        else
+            rm -f "${out}.tmp"
+        fi
+    fi
+
     # ── tester: 2xx + valid JSON (FIRE rule 5) ─────────────────────────
     if [[ "$http_code" =~ ^2 ]] && jq empty "$out" 2>/dev/null; then
         log_ok "$name → HTTP $http_code  ($(wc -c <"$out" | tr -d ' ')b, $(jq -c 'if type=="array" then length elif type=="object" then (keys|length) else 1 end' "$out" 2>/dev/null) items/keys)"
-        printf '{"name":"%s","url":"%s","http_code":%s,"fetched_at":"%s","timeout_s":%s}\n' \
-            "$name" "$url" "$http_code" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$timeout" > "$meta"
+        printf '{"name":"%s","url":"%s","http_code":%s,"fetched_at":"%s","timeout_s":%s,"body_format":"%s"}\n' \
+            "$name" "$url" "$http_code" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$timeout" "$body_format" > "$meta"
         OK=$((OK+1))
     else
         log_error "$name → HTTP $http_code  ($url)  body=$(head -c 200 "$out" 2>/dev/null | tr '\n' ' ')"
@@ -89,12 +100,21 @@ fetch_one() {
     fi
 }
 
-# ── resolve q_values_from: read prior dist file via jq path ────────────
+# ── resolve q_values_from: read source-of-truth file via jq path ───────
+# Looks up `file` in dist/ first (lets one fetch feed the next, e.g.
+# news-gdelt fetches /topics then expands per-topic), then falls through
+# to src/ (lets an upstream-not-running service declare its topic list
+# locally — the truly declarative pattern when no API exposes it).
 resolve_q_values_from() {
     local file="$1" jqp="$2"
-    local path="$DIST/$file"
-    [ -f "$path" ] || { log_warn "q_values_from file missing: $path — skipping expansion"; return 1; }
-    jq -r "$jqp" "$path"
+    for prefix in "$DIST" "$SCRIPT_DIR/src" "$SCRIPT_DIR"; do
+        if [ -f "$prefix/$file" ]; then
+            jq -r "$jqp" "$prefix/$file"
+            return 0
+        fi
+    done
+    log_warn "q_values_from file not found in dist/ or src/: $file — skipping expansion"
+    return 1
 }
 
 # ── fetch loop ─────────────────────────────────────────────────────────
@@ -105,6 +125,7 @@ while IFS= read -r endpoint; do
     path=$(jq -r '.path'                      <<<"$endpoint")
     auth=$(jq -r ".auth // \"$DEFAULT_AUTH\"" <<<"$endpoint")
     timeout=$(jq -r ".timeout_seconds // $DEFAULT_TIMEOUT" <<<"$endpoint")
+    body_format=$(jq -r '.body_format // "json"' <<<"$endpoint")
 
     # Either explicit q_values list, or q_values_from { file, jq } reference
     q_values=$(jq -r '.q_values // empty | if type=="array" then .[] else empty end' <<<"$endpoint")
@@ -118,7 +139,7 @@ while IFS= read -r endpoint; do
 
     if [ -z "$q_values" ]; then
         # Single fetch — no expansion
-        fetch_one "$name" "${BASE_URL}${path}" "$method" "$auth" "$timeout"
+        fetch_one "$name" "${BASE_URL}${path}" "$method" "$auth" "$timeout" "$body_format"
     else
         # Expanded fetch — one request per q value, output dist/<name>__<slug>.json
         while IFS= read -r qv; do
@@ -126,7 +147,7 @@ while IFS= read -r endpoint; do
             slug=$(slugify "$qv")
             qv_enc=$(jq -rn --arg v "$qv" '$v|@uri')
             expanded_path="${path//\{q\}/$qv_enc}"
-            fetch_one "${name}__${slug}" "${BASE_URL}${expanded_path}" "$method" "$auth" "$timeout"
+            fetch_one "${name}__${slug}" "${BASE_URL}${expanded_path}" "$method" "$auth" "$timeout" "$body_format"
         done <<< "$q_values"
     fi
 done < <(jq -c '.endpoints[]' "$SPEC")

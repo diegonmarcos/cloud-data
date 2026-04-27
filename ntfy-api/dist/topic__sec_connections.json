@@ -1,0 +1,16 @@
+[
+  {
+    "id": "erYakVQmkUel",
+    "time": 1776495655,
+    "expires": 1779087655,
+    "event": "message",
+    "topic": "sec_connections",
+    "title": "Daily Connection Report",
+    "message": "-e Daily Connection Report (Apr 18):\n\ngcp-proxy (10.0.0.1):\n  SSH accepted: 0\n0 | failed: 0\n0\n  Sudo events: 0\n0\n  Active TCP: 29 | Docker listeners: 0\n0\n  Recent logins:\n\n\noci-mail (10.0.0.3):\n  SSH accepted: 0\n0 | failed: 0\n0\n  Sudo events: 0\n0\n  Active TCP: 1 | Docker listeners: 0\n0\n  Recent logins:\n\n\noci-analytics (10.0.0.4):\n  SSH accepted: 0\n0 | failed: 0\n0\n  Sudo events: 0\n0\n  Active TCP: 2 | Docker listeners: 0\n0\n  Recent logins:\n\n\noci-apps (10.0.0.6):\n  SSH accepted: 0\n0 | failed: 0\n0\n  Sudo events: 0\n0\n  Active TCP: 70 | Docker listeners: 0\n0\n  Recent logins:\n\n\nInspect:\n  ssh <user>@<ip> 'journalctl -u ssh --since yesterday'\n  ssh <user>@<ip> 'last -20'\n  ssh <user>@<ip> 'ss -tunap'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 2,
+    "tags": [
+      "key",
+      "shield"
+    ]
+  }
+]

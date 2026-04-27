@@ -1,0 +1,1653 @@
+[
+  {
+    "id": "tQGeJyR0ci3J",
+    "time": 1776371704,
+    "expires": 1778963704,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "Y8WZWCmFULc5",
+    "time": 1776372004,
+    "expires": 1778964004,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "KEJAErc3Snkb",
+    "time": 1776372304,
+    "expires": 1778964304,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "Ewi54J0GudHz",
+    "time": 1776372604,
+    "expires": 1778964604,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "3f7uh0YhqwNo",
+    "time": 1776372904,
+    "expires": 1778964904,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "x4umWC4F6F86",
+    "time": 1776373204,
+    "expires": 1778965204,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "PtMNvGMgSMHu",
+    "time": 1776373504,
+    "expires": 1778965504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "5loJbdMC5SWT",
+    "time": 1776373806,
+    "expires": 1778965806,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "mDgtMFUAQAqa",
+    "time": 1776374104,
+    "expires": 1778966104,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "U2fmj8OArEjh",
+    "time": 1776374405,
+    "expires": 1778966405,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "bTA9cizqcbsG",
+    "time": 1776374705,
+    "expires": 1778966705,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "BvcnAyftZhnY",
+    "time": 1776375004,
+    "expires": 1778967004,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "TGwVeRRwOZAG",
+    "time": 1776375304,
+    "expires": 1778967304,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "uplBrhRmuOwL",
+    "time": 1776375604,
+    "expires": 1778967604,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "Gac2rsSdvZkB",
+    "time": 1776375906,
+    "expires": 1778967906,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "x79LkJux5O4V",
+    "time": 1776376206,
+    "expires": 1778968206,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "5fNM18eoAsEP",
+    "time": 1776376504,
+    "expires": 1778968504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "nc07QgGxzllw",
+    "time": 1776376805,
+    "expires": 1778968805,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "4jGGFqzKJMM6",
+    "time": 1776377105,
+    "expires": 1778969105,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "ekGH0ttx4oDB",
+    "time": 1776377404,
+    "expires": 1778969404,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "3KmYLyclXGcP",
+    "time": 1776377705,
+    "expires": 1778969705,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "pZKoeV2p6YJu",
+    "time": 1776378015,
+    "expires": 1778970015,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "lKA4v4erEozu",
+    "time": 1776378307,
+    "expires": 1778970307,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "mQRMr6YkvC8m",
+    "time": 1776378608,
+    "expires": 1778970608,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "ZcvOawB1RK96",
+    "time": 1776378911,
+    "expires": 1778970911,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "ehs2zNPVVGWP",
+    "time": 1776379208,
+    "expires": 1778971208,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "99N9SMIdG7Ob",
+    "time": 1776379512,
+    "expires": 1778971512,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "6AkPOrDT3OiK",
+    "time": 1776379813,
+    "expires": 1778971813,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "OIOklt6UicMa",
+    "time": 1776380113,
+    "expires": 1778972113,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "qtLZ4JtT0vam",
+    "time": 1776380419,
+    "expires": 1778972419,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "yaY2svz7gWnw",
+    "time": 1776380715,
+    "expires": 1778972715,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "TITQbwW0TNvq",
+    "time": 1776381015,
+    "expires": 1778973015,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "y8uEv5CNx8Zp",
+    "time": 1776381319,
+    "expires": 1778973319,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "UmUniGLX7XsS",
+    "time": 1776381620,
+    "expires": 1778973620,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - oci-mail (10.0.0.3) port 22 UNREACHABLE\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "IYMJXMvj0nqP",
+    "time": 1776381925,
+    "expires": 1778973925,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "HJnFQ0UXFTHj",
+    "time": 1776382227,
+    "expires": 1778974227,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "2vdKAHnsDUYm",
+    "time": 1776382514,
+    "expires": 1778974514,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "1rgBwpNWnsOd",
+    "time": 1776382811,
+    "expires": 1778974811,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "ddNA7ZaGjtEV",
+    "time": 1776383124,
+    "expires": 1778975124,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "ZdtHC6D7XJ3f",
+    "time": 1776383421,
+    "expires": 1778975421,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "Olv2gZ21lGSC",
+    "time": 1776383725,
+    "expires": 1778975725,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "DQD8UEHyYZd7",
+    "time": 1776384026,
+    "expires": 1778976026,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "wPxnJ7KQcDzw",
+    "time": 1776384323,
+    "expires": 1778976323,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "CgLqOXIwMokJ",
+    "time": 1776384622,
+    "expires": 1778976622,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "SSF55GmVYqs5",
+    "time": 1776384914,
+    "expires": 1778976914,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "koAxSgomtzZn",
+    "time": 1776385214,
+    "expires": 1778977214,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "Ve5qlwCCdf72",
+    "time": 1776385519,
+    "expires": 1778977519,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "xdROOB36xVt3",
+    "time": 1776385810,
+    "expires": 1778977810,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "Gmg6Yf5eOQMB",
+    "time": 1776386104,
+    "expires": 1778978104,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "W11I7rv40kTK",
+    "time": 1776386405,
+    "expires": 1778978405,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "XBgphXuLI0oc",
+    "time": 1776386705,
+    "expires": 1778978705,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "pJ6kR8tY96ML",
+    "time": 1776387004,
+    "expires": 1778979004,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "83V8vJX3G20c",
+    "time": 1776387304,
+    "expires": 1778979304,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "iP9DbiLpqHDj",
+    "time": 1776387606,
+    "expires": 1778979606,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "8TjRxwPQnWyg",
+    "time": 1776387905,
+    "expires": 1778979905,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "KjhngzVo4W2L",
+    "time": 1776388205,
+    "expires": 1778980205,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "OWZlcTN9xam1",
+    "time": 1776388505,
+    "expires": 1778980505,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "YpwZLhnLF2lb",
+    "time": 1776388804,
+    "expires": 1778980804,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "TI8EHK1YINR5",
+    "time": 1776389105,
+    "expires": 1778981105,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "j7bDjqTlrD21",
+    "time": 1776389404,
+    "expires": 1778981404,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "kWkyg1dDU41U",
+    "time": 1776389704,
+    "expires": 1778981704,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "SQYjYBemNGCq",
+    "time": 1776390004,
+    "expires": 1778982004,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "1D3r8qlJZwx7",
+    "time": 1776390304,
+    "expires": 1778982304,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "D4dsSPZTnHdG",
+    "time": 1776390604,
+    "expires": 1778982604,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "7JKfLBHOSRk1",
+    "time": 1776390904,
+    "expires": 1778982904,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "sulW6VhBj8r4",
+    "time": 1776391204,
+    "expires": 1778983204,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "but26mNFhqVa",
+    "time": 1776391504,
+    "expires": 1778983504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "cdHaUB6OfUlF",
+    "time": 1776391804,
+    "expires": 1778983804,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "CaiR57mOXL69",
+    "time": 1776392104,
+    "expires": 1778984104,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "fjtHgdhlcYQI",
+    "time": 1776392405,
+    "expires": 1778984405,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "ksETxemfuGvz",
+    "time": 1776392704,
+    "expires": 1778984704,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "WekgRRs9Bv2D",
+    "time": 1776393004,
+    "expires": 1778985004,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "W8i9CQZnskWL",
+    "time": 1776393304,
+    "expires": 1778985304,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "GAxfyppUa0wZ",
+    "time": 1776393604,
+    "expires": 1778985604,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "ayyQMkSYiJoO",
+    "time": 1776393904,
+    "expires": 1778985904,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "XeJFnidYMKJe",
+    "time": 1776394204,
+    "expires": 1778986204,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "2vxgxvrpfiDR",
+    "time": 1776394504,
+    "expires": 1778986504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "aJCCYS8zhLrI",
+    "time": 1776394804,
+    "expires": 1778986804,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "NTI626tWzhV6",
+    "time": 1776395104,
+    "expires": 1778987104,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "Rrc9jQMuSw1j",
+    "time": 1776395404,
+    "expires": 1778987404,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "IFJeh8yRMhHK",
+    "time": 1776395704,
+    "expires": 1778987704,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "9RDnX9H1v9ji",
+    "time": 1776396004,
+    "expires": 1778988004,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "5ZUUUEx1QZTN",
+    "time": 1776396304,
+    "expires": 1778988304,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "4xrhUFsrKsXI",
+    "time": 1776396604,
+    "expires": 1778988604,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "JuX7ZWKMcxhr",
+    "time": 1776396904,
+    "expires": 1778988904,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "oNJjlJQJMiOb",
+    "time": 1776397204,
+    "expires": 1778989204,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "juSQtLTv1VUn",
+    "time": 1776397504,
+    "expires": 1778989504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "3NY6PawooSNc",
+    "time": 1776397804,
+    "expires": 1778989804,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "IDoqtGfmj11x",
+    "time": 1776398104,
+    "expires": 1778990104,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "UBf8oeNOoFaf",
+    "time": 1776398704,
+    "expires": 1778990704,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "vLMDahxgHdPz",
+    "time": 1776399005,
+    "expires": 1778991005,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "AjKTuZr1lecY",
+    "time": 1776399304,
+    "expires": 1778991304,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "7wAhGmMsvVVY",
+    "time": 1776399604,
+    "expires": 1778991604,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "mqcdsao7U1xc",
+    "time": 1776399904,
+    "expires": 1778991904,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "3OFjx0pyaCGR",
+    "time": 1776400204,
+    "expires": 1778992204,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "y0vHWO6mEG7C",
+    "time": 1776400504,
+    "expires": 1778992504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "01IdUs1PG5ZL",
+    "time": 1776400804,
+    "expires": 1778992804,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "BG5oa6zqe2DH",
+    "time": 1776401104,
+    "expires": 1778993104,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "mHSrQai9QUpu",
+    "time": 1776401404,
+    "expires": 1778993404,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "KmfHp3A352l6",
+    "time": 1776401704,
+    "expires": 1778993704,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "VkNFJxO2NHxp",
+    "time": 1776402316,
+    "expires": 1778994316,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "bzDU37KasPKt",
+    "time": 1776402604,
+    "expires": 1778994604,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "fFukd7JqHWUY",
+    "time": 1776402904,
+    "expires": 1778994904,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "mbm7LAbQWp5a",
+    "time": 1776403204,
+    "expires": 1778995204,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "t6ferismw5Mb",
+    "time": 1776403504,
+    "expires": 1778995504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "aI3TAWq2wMxm",
+    "time": 1776403804,
+    "expires": 1778995804,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "RN4yf1wxbT9S",
+    "time": 1776404104,
+    "expires": 1778996104,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "sGlisKTGVH8A",
+    "time": 1776404404,
+    "expires": 1778996404,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "I33XtZMWsArr",
+    "time": 1776404704,
+    "expires": 1778996704,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "kT5S6nTd3Naa",
+    "time": 1776405004,
+    "expires": 1778997004,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "9A0hxyOyhiii",
+    "time": 1776405304,
+    "expires": 1778997304,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "zVYCLnfbZAyp",
+    "time": 1776405904,
+    "expires": 1778997904,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "fbiJfFKl3yKA",
+    "time": 1776406204,
+    "expires": 1778998204,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "u9H0bpVw2xAx",
+    "time": 1776406504,
+    "expires": 1778998504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "YLeyuYe1xQSP",
+    "time": 1776406805,
+    "expires": 1778998805,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "NoRXeaKlAr4k",
+    "time": 1776407104,
+    "expires": 1778999104,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "LygTp1HCteBz",
+    "time": 1776407404,
+    "expires": 1778999404,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "YdksXoty87Mg",
+    "time": 1776412806,
+    "expires": 1779004806,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "LXNWyWNZToUN",
+    "time": 1776413704,
+    "expires": 1779005704,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "UV9aaBnnatNM",
+    "time": 1776417308,
+    "expires": 1779009308,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "o4JyEOsaltoA",
+    "time": 1776417604,
+    "expires": 1779009604,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "h5Y4pwDvWxLL",
+    "time": 1776418505,
+    "expires": 1779010505,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "4fCG3sbbToUX",
+    "time": 1776421211,
+    "expires": 1779013211,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "4ppigvIeqJx4",
+    "time": 1776423904,
+    "expires": 1779015904,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "GYtaUpyfkDgr",
+    "time": 1776430206,
+    "expires": 1779022206,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "suAmLnUMeCqo",
+    "time": 1776430504,
+    "expires": 1779022504,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "vtXU92gfk5oy",
+    "time": 1776435315,
+    "expires": 1779027315,
+    "event": "message",
+    "topic": "health_mesh",
+    "title": "Mesh Health FAILED",
+    "message": "Unreachable peers:\n  - gcp-t4 (10.0.0.8) port 22 UNREACHABLE\n\nAction:\n  ssh <vm> 'wg show'\n  ssh <vm> 'systemctl status wg-quick@wg0'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  }
+]

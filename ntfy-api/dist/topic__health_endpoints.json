@@ -1,0 +1,54 @@
+[
+  {
+    "id": "vDxJOSPFFqhQ",
+    "time": 1776412805,
+    "expires": 1779004805,
+    "event": "message",
+    "topic": "health_endpoints",
+    "title": "Service Endpoint DOWN",
+    "message": "DOWN endpoints:\n  - null (https://ide.diegonmarcos.com/) -> HTTP 000000\n  - null (https://pad.diegonmarcos.com/) -> HTTP 000000\n  - null (https://files.diegonmarcos.com/health) -> HTTP 000000\n  - null (https://sheets.diegonmarcos.com/) -> HTTP 000000\n  - null (https://doc.diegonmarcos.com/) -> HTTP 000000\n  - null (https://photos.diegonmarcos.com/api/v1/status) -> HTTP 000000\n  - null (https://cal.diegonmarcos.com/.web/) -> HTTP 000000\n  - null (https://mail.diegonmarcos.com/) -> HTTP 000000\n  - null (https://vault.diegonmarcos.com/alive) -> HTTP 000000\n  - null (https://api.diegonmarcos.com/c3-api/health) -> HTTP 000000\n  - null (https://api.diegonmarcos.com/services/health) -> HTTP 000000\n  - null (https://workflows.diegonmarcos.com/) -> HTTP 000000\n  - null (https://db.diegonmarcos.com/) -> HTTP 000000\n  - null (https://rss.diegonmarcos.com/) -> HTTP 000000\n\nAction:\n  curl -v https://<domain>\n  ssh gcp-proxy 'docker logs caddy --tail 20'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "FgeqPmjiv1yE",
+    "time": 1776413104,
+    "expires": 1779005104,
+    "event": "message",
+    "topic": "health_endpoints",
+    "title": "Service Endpoint DOWN",
+    "message": "DOWN endpoints:\n  - null (https://ide.diegonmarcos.com/) -> HTTP 000000\n  - null (https://pad.diegonmarcos.com/) -> HTTP 000000\n  - null (https://files.diegonmarcos.com/health) -> HTTP 000000\n  - null (https://sheets.diegonmarcos.com/) -> HTTP 000000\n  - null (https://doc.diegonmarcos.com/) -> HTTP 000000\n  - null (https://photos.diegonmarcos.com/api/v1/status) -> HTTP 000000\n  - null (https://cal.diegonmarcos.com/.web/) -> HTTP 000000\n  - null (https://mail.diegonmarcos.com/) -> HTTP 000000\n  - null (https://vault.diegonmarcos.com/alive) -> HTTP 000000\n  - null (https://api.diegonmarcos.com/c3-api/health) -> HTTP 000000\n  - null (https://api.diegonmarcos.com/services/health) -> HTTP 000000\n  - null (https://workflows.diegonmarcos.com/) -> HTTP 000000\n  - null (https://db.diegonmarcos.com/) -> HTTP 000000\n  - null (https://rss.diegonmarcos.com/) -> HTTP 000000\n\nAction:\n  curl -v https://<domain>\n  ssh gcp-proxy 'docker logs caddy --tail 20'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "f0bK8qMAXCOc",
+    "time": 1776413401,
+    "expires": 1779005401,
+    "event": "message",
+    "topic": "health_endpoints",
+    "title": "Service Endpoint DOWN",
+    "message": "DOWN endpoints:\n  - null (https://pad.diegonmarcos.com/) -> HTTP 000000\n  - null (https://files.diegonmarcos.com/health) -> HTTP 000000\n  - null (https://sheets.diegonmarcos.com/) -> HTTP 000000\n  - null (https://doc.diegonmarcos.com/) -> HTTP 000000\n  - null (https://photos.diegonmarcos.com/api/v1/status) -> HTTP 000000\n  - null (https://cal.diegonmarcos.com/.web/) -> HTTP 000000\n  - null (https://mail.diegonmarcos.com/) -> HTTP 000000\n  - null (https://vault.diegonmarcos.com/alive) -> HTTP 000000\n  - null (https://api.diegonmarcos.com/c3-api/health) -> HTTP 000000\n  - null (https://api.diegonmarcos.com/services/health) -> HTTP 000000\n  - null (https://workflows.diegonmarcos.com/) -> HTTP 000000\n  - null (https://db.diegonmarcos.com/) -> HTTP 000000\n  - null (https://rss.diegonmarcos.com/) -> HTTP 000000\n\nAction:\n  curl -v https://<domain>\n  ssh gcp-proxy 'docker logs caddy --tail 20'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  },
+  {
+    "id": "otsDvVQ2rS2h",
+    "time": 1776419401,
+    "expires": 1779011401,
+    "event": "message",
+    "topic": "health_endpoints",
+    "title": "Service Endpoint DOWN",
+    "message": "DOWN endpoints:\n  - null (https://ide.diegonmarcos.com/) -> HTTP 000000\n  - null (https://pad.diegonmarcos.com/) -> HTTP 000000\n  - null (https://files.diegonmarcos.com/health) -> HTTP 000000\n  - null (https://sheets.diegonmarcos.com/) -> HTTP 000000\n  - null (https://doc.diegonmarcos.com/) -> HTTP 000000\n  - null (https://photos.diegonmarcos.com/api/v1/status) -> HTTP 000000\n  - null (https://cal.diegonmarcos.com/.web/) -> HTTP 000000\n  - null (https://mail.diegonmarcos.com/) -> HTTP 000000\n  - null (https://vault.diegonmarcos.com/alive) -> HTTP 000000\n  - null (https://api.diegonmarcos.com/c3-api/health) -> HTTP 000000\n  - null (https://api.diegonmarcos.com/services/health) -> HTTP 000000\n  - null (https://workflows.diegonmarcos.com/) -> HTTP 000000\n  - null (https://db.diegonmarcos.com/) -> HTTP 000000\n  - null (https://rss.diegonmarcos.com/) -> HTTP 000000\n\nAction:\n  curl -v https://<domain>\n  ssh gcp-proxy 'docker logs caddy --tail 20'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 5,
+    "tags": [
+      "rotating_light"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "mHj2JEcjOIwv",
+    "time": 1777165212,
+    "expires": 1779757212,
+    "event": "message",
+    "topic": "sec_yara",
+    "title": "Sauron Scanner(s) Down",
+    "message": "-e YARA scanner status: 1/4 running\n\nMissing:\n  - gcp-proxy (10.0.0.1): sauron-lite NOT running\n  - oci-mail (10.0.0.3): sauron-lite NOT running\n  - oci-apps (10.0.0.6): sauron-lite NOT running\n\nAction:\n  ssh <user>@<ip> 'docker ps -a | grep sauron'\n  ssh <user>@<ip> 'cd /opt/containers/sauron && docker compose up -d'\n\nDagu: http://10.0.0.3:8070",
+    "priority": 4,
+    "tags": [
+      "warning",
+      "eye"
+    ]
+  }
+]

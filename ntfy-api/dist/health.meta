@@ -1,0 +1,1 @@
+{"name":"health","url":"http://127.0.0.1:8090/v1/health","http_code":200,"fetched_at":"2026-04-27T12:26:18Z","timeout_s":10,"body_format":"json"}

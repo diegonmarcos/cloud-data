@@ -1,0 +1,15 @@
+[
+  {
+    "id": "4JO0SB0z8VGX",
+    "time": 1777132834,
+    "expires": 1779724834,
+    "event": "message",
+    "topic": "ops_reports",
+    "title": "Daily Ops Summary",
+    "message": "-e Daily Ops Summary:\n\ngcp-proxy (10.0.0.1):\n  Uptime: up 3 weeks, 3 days, 18 hours, 40 minutes\n  Containers: 14 | Disk: 76% | Mem: 59%\n\noci-mail (10.0.0.3):\n  Uptime: up 3 weeks, 3 days, 22 hours, 8 minutes\n  Containers: 6 | Disk: 83% | Mem: 74%\n\noci-analytics (10.0.0.4):\n  Uptime: up 2 weeks, 4 days, 4 hours, 20 minutes\n  Containers: 3 | Disk: 77% | Mem: 63%\n\noci-apps (10.0.0.6):\n  Uptime: N/A\n  Containers: 45 | Disk: 71% | Mem: 19%\n\nDagu: http://10.0.0.3:8070",
+    "priority": 2,
+    "tags": [
+      "chart_with_upwards_trend"
+    ]
+  }
+]

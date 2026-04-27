@@ -1,0 +1,1 @@
+{"name":"topic__deploy_ship","url":"http://127.0.0.1:8090/deploy_ship/json?poll=1","http_code":200,"fetched_at":"2026-04-27T12:26:29Z","timeout_s":8,"body_format":"ndjson"}

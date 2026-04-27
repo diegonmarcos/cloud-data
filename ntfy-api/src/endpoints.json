@@ -1,0 +1,59 @@
+{
+  "_comment": "Declarative ntfy endpoint registry. Adds an endpoint = adds an entry here. The topic list comes from src/topics.json (declarative source-of-truth, mirrors topic-scanner.py CONFIGURED_TOPICS until a future refactor unifies them).",
+  "_source": "/home/diego/git/cloud-data/ntfy-api/src/endpoints.json",
+  "_upstream_status": "Public ntfy at https://rss.diegonmarcos.com (auth=ntfy-3tier per build.json). Internal port: ntfy.app:8090. Per-topic message reads (/<topic>/json?poll=1) are anonymous-readable per ntfy's auth-default-access:read-write. Admin endpoints require bearer.",
+  "service": "ntfy",
+  "base_url": "https://rss.diegonmarcos.com",
+  "defaults": {
+    "timeout_seconds": 10
+  },
+  "auth": {
+    "default": "bearer",
+    "bearer_token_file": "vault/A0_keys/providers/ntfy/admin-token.json",
+    "bearer_token_field": "access_token",
+    "_note": "ntfy uses its OWN bearer tokens (tk_xxx), distinct from Authelia OIDC bearers. Token obtained via: curl -u admin:$NTFY_ADMIN_PASSWORD -X POST http://oci-apps:8090/v1/account/token. The whole rss.diegonmarcos.com domain is gated by Authelia (auth=ntfy-3tier in the service build.json) AND ntfy itself, so the snapshot pattern is to bypass Caddy via SSH tunnel: BASE_URL=http://127.0.0.1:8090 ./build.sh after `ssh -fN -L 8090:127.0.0.1:8090 oci-apps`."
+  },
+  "endpoints": [
+    {
+      "name": "health",
+      "method": "GET",
+      "path": "/v1/health",
+      "auth": "none",
+      "description": "Liveness probe — public"
+    },
+    {
+      "name": "stats",
+      "method": "GET",
+      "path": "/v1/stats",
+      "auth": "none",
+      "description": "Server stats (messages, attachments, visitors)"
+    },
+    {
+      "name": "account",
+      "method": "GET",
+      "path": "/v1/account",
+      "auth": "bearer",
+      "description": "Current account info — requires bearer; may be 401 anonymous"
+    },
+    {
+      "name": "users",
+      "method": "GET",
+      "path": "/v1/users",
+      "auth": "bearer",
+      "description": "User registry — requires admin bearer"
+    },
+    {
+      "name": "topic",
+      "method": "GET",
+      "path": "/{q}/json?poll=1",
+      "auth": "none",
+      "timeout_seconds": 8,
+      "body_format": "ndjson",
+      "q_values_from": {
+        "file": "topics.json",
+        "jq": ".topics[]"
+      },
+      "description": "Per-topic message snapshot (poll mode = non-blocking, returns current cached messages then closes; ntfy returns NDJSON, engine slurps to JSON array)"
+    }
+  ]
+}
