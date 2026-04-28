@@ -148,11 +148,25 @@ cmd_decrypt() {
   # Write consolidated
   echo "$CONSOLIDATED" | jq '.' > "$DIST_DIR/cloud-secrets.json.secrets"
 
-  # Symlink env var names schema from cloud-data
-  local ENV_VARS_JSON="$CLOUD_DATA_DIR/cloud-data-secrets-env-var-names.json"
-  if [ -f "$ENV_VARS_JSON" ]; then
-    ln -sf "$ENV_VARS_JSON" "$DIST_DIR/cloud-data-secrets-env-var-names.json"
-    echo "Linked: dist/cloud-data-secrets-env-var-names.json"
+  # Env-var-names schema: derived by 2_configs/src/engines/cloud-data-config-derive.ts
+  # into build-secrets.json (.services_env_vars slice) per external-consumers.json.
+  # Priority chain: synced copy in repo → cloud repo dist → legacy fallback.
+  local BUILD_SECRETS=""
+  for _p in \
+      "$SCRIPT_DIR/build-secrets.json" \
+      "$CLOUD_DATA_DIR/../cloud/2_configs/dist/build-secrets.json" \
+      "$HOME/git/cloud/2_configs/dist/build-secrets.json" \
+      "$CLOUD_DATA_DIR/cloud-data-secrets-env-var-names.json"; do
+    if [ -f "$_p" ]; then BUILD_SECRETS="$_p"; break; fi
+  done
+  if [ -n "$BUILD_SECRETS" ]; then
+    # Extract .services_env_vars slice (or pass through if legacy file).
+    if jq -e '.services_env_vars' "$BUILD_SECRETS" >/dev/null 2>&1; then
+      jq '.services_env_vars' "$BUILD_SECRETS" > "$DIST_DIR/cloud-data-secrets-env-var-names.json"
+    else
+      cp -f "$BUILD_SECRETS" "$DIST_DIR/cloud-data-secrets-env-var-names.json"
+    fi
+    echo "Wrote: dist/cloud-data-secrets-env-var-names.json (from $(basename "$BUILD_SECRETS"))"
   fi
 
   # Generate manifest.json
