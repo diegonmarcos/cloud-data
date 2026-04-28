@@ -55,3 +55,4 @@ reports/*/dist/*.md.tpl
 reports/*/dist/yara-rules
 reports/*/dist/cache
 reports/dist/
+reports/build-reports.json
