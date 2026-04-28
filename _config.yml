@@ -5,3 +5,9 @@ exclude:
   - secrets/dist
   - "**/dist"
   - engines
+  # Cross-repo symlinks (target lives in ../../cloud/) — GitHub Pages
+  # runner only checks out cloud-data, so these are broken there and
+  # Jekyll's realpath check aborts the build. Excluded → Jekyll skips
+  # them. The data is still available in the cloud repo for consumers
+  # that have it side-by-side.
+  - reports/build-reports.json
