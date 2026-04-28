@@ -148,17 +148,23 @@ fn workflows_config() -> (Vec<String>, usize) {
         ],
         20usize,
     );
-    let path = match find_cloud_data_file("cloud-data-workflows.json") {
-        Some(p) => p,
-        None => return legacy,
-    };
-    let bytes = match std::fs::read(&path) {
-        Ok(b) => b,
-        Err(_) => return legacy,
-    };
-    let v: serde_json::Value = match serde_json::from_slice(&bytes) {
-        Ok(v) => v,
-        Err(_) => return legacy,
+    // Migrated to build-reports.json:.workflows. Falls back to legacy
+    // cloud-data-workflows.json (now in z_archive) for back-compat.
+    let v: serde_json::Value = if let Some(section) = reports_common::context::load_build_reports_section("workflows") {
+        section
+    } else {
+        let path = match find_cloud_data_file("cloud-data-workflows.json") {
+            Some(p) => p,
+            None => return legacy,
+        };
+        let bytes = match std::fs::read(&path) {
+            Ok(b) => b,
+            Err(_) => return legacy,
+        };
+        match serde_json::from_slice::<serde_json::Value>(&bytes) {
+            Ok(v) => v,
+            Err(_) => return legacy,
+        }
     };
     let repos: Vec<String> = v["github"]["repos"]
         .as_array()

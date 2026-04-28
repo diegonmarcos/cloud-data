@@ -57,11 +57,35 @@ pub fn load_consolidated() -> Result<Value> {
     Ok(serde_json::from_str(&raw)?)
 }
 
-/// Load topology JSON (optional)
-pub fn load_topology() -> Option<Value> {
-    find_cloud_data_file("cloud-data-topology.json")
+/// Load build-reports.json — single derived file (engine: cloud/2_configs/
+/// src/engines/cloud-data-config-derive.ts/deriveBuildReports). Replaces
+/// every legacy cloud-data-*.json read. Sections: endpoint_checks,
+/// tls_checks, dns_checks, vms, services, dns_services, databases,
+/// topology, url_health, workflows, repo_scan, sec_scan. Symlinked into
+/// cloud-data/ via a relative path so consumers walking up land on the
+/// live engine output, not stale snapshots.
+pub fn load_build_reports() -> Option<Value> {
+    find_cloud_data_file("build-reports.json")
         .and_then(|p| std::fs::read_to_string(p).ok())
         .and_then(|s| serde_json::from_str(&s).ok())
+}
+
+/// Load a named section from build-reports.json. Returns None if the file
+/// is missing OR the section isn't present.
+pub fn load_build_reports_section(section: &str) -> Option<Value> {
+    load_build_reports().and_then(|br| br.get(section).cloned())
+}
+
+/// Load topology JSON (optional). Migrated to build-reports.json:.topology;
+/// falls back to legacy cloud-data-topology.json (now in z_archive) for
+/// back-compat during the migration window.
+pub fn load_topology() -> Option<Value> {
+    load_build_reports_section("topology")
+        .or_else(|| {
+            find_cloud_data_file("cloud-data-topology.json")
+                .and_then(|p| std::fs::read_to_string(p).ok())
+                .and_then(|s| serde_json::from_str(&s).ok())
+        })
 }
 
 /// Load caddy routes JSON (optional)
@@ -71,11 +95,15 @@ pub fn load_caddy_routes() -> Option<Value> {
         .and_then(|s| serde_json::from_str(&s).ok())
 }
 
-/// Load DNS services JSON (optional)
+/// Load DNS services JSON (optional). Migrated to
+/// build-reports.json:.dns_services with legacy fallback.
 pub fn load_dns_services() -> Option<Value> {
-    find_cloud_data_file("cloud-data-dns-services.json")
-        .and_then(|p| std::fs::read_to_string(p).ok())
-        .and_then(|s| serde_json::from_str(&s).ok())
+    load_build_reports_section("dns_services")
+        .or_else(|| {
+            find_cloud_data_file("cloud-data-dns-services.json")
+                .and_then(|p| std::fs::read_to_string(p).ok())
+                .and_then(|s| serde_json::from_str(&s).ok())
+        })
 }
 
 /// Load bearer token from vault

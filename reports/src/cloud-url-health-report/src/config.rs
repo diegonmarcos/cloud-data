@@ -35,8 +35,22 @@ pub struct Targets {
 }
 
 pub fn load() -> Result<UrlHealthConfig> {
+    // Migrated to build-reports.json:.url_health (single derived file at
+    // cloud/2_configs/dist/, symlinked into cloud-data/). Falls back to
+    // legacy cloud-data-url-health.json for back-compat during migration.
+    if let Some(section) = reports_common::context::load_build_reports_section("url_health") {
+        let cfg: UrlHealthConfig = serde_json::from_value(section)
+            .context("parsing build-reports.json:.url_health")?;
+        eprintln!(
+            "[url-health] config loaded from build-reports.json:.url_health (public={}, private={}, email_timeout={}s)",
+            cfg.concurrency.public,
+            cfg.concurrency.private,
+            cfg.email.timeout_secs,
+        );
+        return Ok(cfg);
+    }
     let path = find_cloud_data_file("cloud-data-url-health.json")
-        .context("cloud-data-url-health.json not found (walked up from cwd)")?;
+        .context("neither build-reports.json:.url_health nor cloud-data-url-health.json found")?;
     let bytes = std::fs::read(&path)
         .with_context(|| format!("reading {}", path.display()))?;
     let cfg: UrlHealthConfig = serde_json::from_slice(&bytes)

@@ -14,9 +14,9 @@ pub fn load_context() -> Result<Context> {
         .with_context(|| format!("reading {}", cons_path.display()))?;
     let c: Value = serde_json::from_str(&raw)?;
 
-    let topology = find_cloud_data_file("cloud-data-topology.json")
-        .and_then(|p| std::fs::read_to_string(p).ok())
-        .and_then(|s| serde_json::from_str::<Value>(&s).ok());
+    // Migrated to build-reports.json:.topology (single derived file).
+    // Legacy cloud-data-topology.json fallback during migration window.
+    let topology = reports_common::context::load_topology();
 
     let caddy_routes_json = find_cloud_data_file("build-caddy.json")
         .and_then(|p| std::fs::read_to_string(p).ok())

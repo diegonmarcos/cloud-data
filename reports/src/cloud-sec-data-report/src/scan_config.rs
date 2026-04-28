@@ -74,10 +74,15 @@ pub struct Targets {
     pub skip_db_patterns: Vec<String>,
 }
 
-/// Load cloud-data-sec-scan.json from the cloud-data repo root.
+/// Load sec-scan config — migrated to build-reports.json:.sec_scan;
+/// legacy cloud-data-sec-scan.json fallback during migration window.
 pub fn load() -> Result<ScanConfig> {
+    if let Some(section) = reports_common::context::load_build_reports_section("sec_scan") {
+        return serde_json::from_value(section)
+            .context("parsing build-reports.json:.sec_scan");
+    }
     let path = find_cloud_data_file("cloud-data-sec-scan.json")
-        .context("cloud-data-sec-scan.json not found (walked up from cwd)")?;
+        .context("neither build-reports.json:.sec_scan nor cloud-data-sec-scan.json found")?;
     let bytes =
         std::fs::read(&path).with_context(|| format!("reading {}", path.display()))?;
     let cfg: ScanConfig = serde_json::from_slice(&bytes)

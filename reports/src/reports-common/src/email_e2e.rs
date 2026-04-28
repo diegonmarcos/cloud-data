@@ -35,10 +35,16 @@ pub struct EmailE2EConfig {
     pub subject_prefix: String,
 }
 
-/// Load `email` block from cloud-data-url-health.json — single source of truth.
+/// Load `email` block — migrated to build-reports.json:.url_health.email;
+/// legacy cloud-data-url-health.json fallback during migration window.
 pub fn load_config() -> anyhow::Result<EmailE2EConfig> {
+    if let Some(uh) = crate::context::load_build_reports_section("url_health") {
+        if let Some(email_block) = uh.get("email").cloned() {
+            return Ok(serde_json::from_value(email_block)?);
+        }
+    }
     let path = find_cloud_data_file("cloud-data-url-health.json")
-        .ok_or_else(|| anyhow::anyhow!("cloud-data-url-health.json not found"))?;
+        .ok_or_else(|| anyhow::anyhow!("neither build-reports.json:.url_health.email nor cloud-data-url-health.json found"))?;
     let raw = std::fs::read(&path)?;
     let v: serde_json::Value = serde_json::from_slice(&raw)?;
     let email_block = v.get("email").cloned()

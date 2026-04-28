@@ -119,11 +119,18 @@ pub fn load_context() -> Result<Context> {
     }
     private_dns.sort_by(|a, b| a.vm.cmp(&b.vm).then(a.dns.cmp(&b.dns)));
 
-    // Databases from cloud-data-databases.json (authoritative source — 18 declared DBs)
+    // Databases — migrated to build-reports.json:.databases (single derived file).
+    // Legacy cloud-data-databases.json fallback during migration window.
     let mut databases: Vec<DbEntry> = Vec::new();
-    if let Some(db_path) = find_cloud_data_file("cloud-data-databases.json") {
-      if let Ok(db_raw) = std::fs::read_to_string(&db_path) {
-        if let Ok(db_json) = serde_json::from_str::<Value>(&db_raw) {
+    let db_value: Option<Value> = reports_common::context::load_build_reports_section("databases")
+        .map(|v| serde_json::json!({"databases": v}))
+        .or_else(|| {
+            find_cloud_data_file("cloud-data-databases.json")
+                .and_then(|p| std::fs::read_to_string(p).ok())
+                .and_then(|s| serde_json::from_str::<Value>(&s).ok())
+        });
+    if let Some(db_json) = db_value {
+        {
             for db in db_json["databases"].as_array().unwrap_or(&vec![]) {
                 let container = db["container"].as_str().unwrap_or("?").to_string();
                 let db_type = db["type"].as_str().unwrap_or("?").to_string();
@@ -146,7 +153,6 @@ pub fn load_context() -> Result<Context> {
                 });
             }
         }
-      }
     }
     databases.sort_by(|a, b| a.vm.cmp(&b.vm).then(a.service.cmp(&b.service)));
 

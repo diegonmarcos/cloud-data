@@ -69,8 +69,13 @@ pub struct Pattern {
 }
 
 pub fn load_config() -> Result<RepoScanConfig> {
+    // Migrated to build-reports.json:.repo_scan; legacy fallback retained.
+    if let Some(section) = reports_common::context::load_build_reports_section("repo_scan") {
+        return serde_json::from_value(section)
+            .context("parsing build-reports.json:.repo_scan");
+    }
     let path = find_cloud_data_file("cloud-data-repo-scan.json")
-        .context("cloud-data-repo-scan.json not found")?;
+        .context("neither build-reports.json:.repo_scan nor cloud-data-repo-scan.json found")?;
     let bytes = std::fs::read(&path)
         .with_context(|| format!("reading {}", path.display()))?;
     let cfg: RepoScanConfig = serde_json::from_slice(&bytes)

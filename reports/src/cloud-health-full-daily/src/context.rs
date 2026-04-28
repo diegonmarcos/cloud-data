@@ -20,7 +20,15 @@ pub struct Context {
 }
 
 pub fn load_context() -> Result<Context> {
-    let monitoring: MonitoringTargets = match find_cloud_data_file("cloud-data-monitoring-targets.json") {
+    // Migration to the new pattern: build-reports.json is the engine-derived
+    // single source for endpoints/tls/dns/vms (cloud/2_configs/dist + relative
+    // symlink in cloud-data/). Legacy cloud-data-monitoring-targets.json was
+    // routed to z_archive/ and shipped stale entries (windmill, postlite,
+    // quant-lab-*, plus URL pollution). Try the new file first; fall back to
+    // the legacy name only if the engine hasn't been run with the new deriver.
+    let monitoring: MonitoringTargets = match find_cloud_data_file("build-reports.json")
+        .or_else(|| find_cloud_data_file("cloud-data-monitoring-targets.json"))
+    {
         Some(p) => serde_json::from_str(&std::fs::read_to_string(p)?)?,
         None => MonitoringTargets {
             endpoint_checks: vec![],
@@ -34,9 +42,14 @@ pub fn load_context() -> Result<Context> {
         },
     };
 
-    let databases: DatabasesJson = match find_cloud_data_file("cloud-data-databases.json") {
-        Some(p) => serde_json::from_str(&std::fs::read_to_string(p)?)?,
-        None => DatabasesJson { databases: vec![] },
+    // Migrated to build-reports.json:.databases (single derived file).
+    // Falls through to legacy cloud-data-databases.json for back-compat.
+    let databases: DatabasesJson = if let Some(arr) = reports_common::context::load_build_reports_section("databases") {
+        DatabasesJson { databases: serde_json::from_value(arr).unwrap_or_default() }
+    } else if let Some(p) = find_cloud_data_file("cloud-data-databases.json") {
+        serde_json::from_str(&std::fs::read_to_string(p)?)?
+    } else {
+        DatabasesJson { databases: vec![] }
     };
 
     let consolidated_path = find_cloud_data_file("_cloud-data-consolidated.json");
