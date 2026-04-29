@@ -53,7 +53,13 @@ CONSOLIDATED=""
 for cand in /root/git/cloud/2_configs/dist/_cloud-data-consolidated.json \
             /root/git/cloud-data/_cloud-data-consolidated.json \
             /home/diego/git/cloud/2_configs/dist/_cloud-data-consolidated.json; do
-  [ -f "$cand" ] && CONSOLIDATED="$cand" && break
+  if [ -f "$cand" ]; then
+    CONSOLIDATED="$cand"
+    echo "[setup]   probe HIT: $cand"
+    break
+  else
+    echo "[setup]   probe miss: $cand"
+  fi
 done
 
 if [ -n "$CONSOLIDATED" ] && command -v jq >/dev/null 2>&1; then

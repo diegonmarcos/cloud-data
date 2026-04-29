@@ -59,6 +59,12 @@ jobs:
           ssh-keyscan github.com >> "$HOME/.ssh/known_hosts" 2>/dev/null || true
           ln -sfn "$GITHUB_WORKSPACE/cloud-data" "$HOME/git/cloud-data"
           ln -sfn "$GITHUB_WORKSPACE/cloud"      "$HOME/git/cloud"
+          # Sanity-check the cloud/ sparse-checkout (failures here are silent
+          # in actions/checkout — confirm the data files actually arrived).
+          echo "::group::cloud/2_configs/dist/ sanity check"
+          ls -la "$HOME/git/cloud/2_configs/dist/" 2>&1 | head -10 || \
+            echo "::error::cloud/2_configs/dist/ empty or missing — sparse-checkout failed"
+          echo "::endgroup::"
           # SOPS age key — entrypoint reads from this mount.
           mkdir -p "$HOME/.config/sops/age"
           printf '%s' "$SOPS_AGE_KEY" > "$HOME/.config/sops/age/keys.txt"
