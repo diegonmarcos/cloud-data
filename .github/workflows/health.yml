@@ -64,8 +64,12 @@ jobs:
           # Sanity-check the cloud/ sparse-checkout (failures here are silent
           # in actions/checkout — confirm the data files actually arrived).
           echo "::group::cloud/2_configs/dist/ sanity check"
-          ls -la "$HOME/git/cloud/2_configs/dist/" 2>&1 | head -10 || \
-            echo "::error::cloud/2_configs/dist/ empty or missing — sparse-checkout failed"
+          if [ -f "$HOME/git/cloud/2_configs/dist/_cloud-data-consolidated.json" ]; then
+            echo "OK: _cloud-data-consolidated.json present ($(stat -c%s "$HOME/git/cloud/2_configs/dist/_cloud-data-consolidated.json") bytes)"
+          else
+            echo "::error::_cloud-data-consolidated.json missing — sparse-checkout failed"
+            ls -la "$HOME/git/cloud/2_configs/dist/" 2>&1 || true
+          fi
           echo "::endgroup::"
           # SOPS age key — entrypoint reads from this mount.
           mkdir -p "$HOME/.config/sops/age"

@@ -62,6 +62,12 @@ for cand in /root/git/cloud/2_configs/dist/_cloud-data-consolidated.json \
   fi
 done
 
+if [ -z "$CONSOLIDATED" ]; then
+  echo "[setup]   skip SSH-config derive: CONSOLIDATED unset"
+fi
+if ! command -v jq >/dev/null 2>&1; then
+  echo "[setup]   skip SSH-config derive: jq not in PATH (got: $(command -v jq 2>&1 || echo none))"
+fi
 if [ -n "$CONSOLIDATED" ] && command -v jq >/dev/null 2>&1; then
   echo "[setup] SSH config: deriving from $CONSOLIDATED"
   : > ~/.ssh/config.d.tmp
