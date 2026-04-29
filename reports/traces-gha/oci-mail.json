@@ -3841,5 +3841,57 @@
         "duration_s": 0
       }
     ]
+  },
+  {
+    "vm": "oci-mail",
+    "run_id": "25134123036",
+    "run_url": "https://github.com/diegonmarcos/cloud/actions/runs/25134123036",
+    "sha": "ca7256d0e8b24b2d86fe319e595aacf50d415f7f",
+    "trigger": "push",
+    "ts": "2026-04-29T21:16:28Z",
+    "duration_s": 151,
+    "total": 6,
+    "ok": 3,
+    "fail": 0,
+    "skip": 3,
+    "status": "success",
+    "services": [
+      {
+        "name": "cypht",
+        "dir": "aa-sui_cypht",
+        "status": "ok",
+        "duration_s": 99
+      },
+      {
+        "name": "mail-puller",
+        "dir": "aa-sui_mail-puller",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "snappymail",
+        "dir": "aa-sui_snappymail",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "maddy",
+        "dir": "aa-sui_tools-maddy",
+        "status": "ok",
+        "duration_s": 57
+      },
+      {
+        "name": "smtp-proxy",
+        "dir": "aa-sui_tools-smtp-proxy",
+        "status": "skip",
+        "duration_s": 0
+      },
+      {
+        "name": "stalwart",
+        "dir": "aa-sui_tools-stalwart",
+        "status": "ok",
+        "duration_s": 142
+      }
+    ]
   }
 ]
