@@ -41,7 +41,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev m
     (cd /tmp/pikchr-src && make pikchr) && \
     install -m 0755 /tmp/pikchr-src/pikchr "$DEST" && \
     rm -rf /tmp/pikchr-src /tmp/pikchr.tar.gz /tmp/build-deps.json && \
-    apt-get purge -y gcc libc6-dev make jq && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+    apt-get purge -y gcc libc6-dev make && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+    # NOTE: jq is intentionally NOT purged here — entrypoint.sh needs it at
+    # runtime to derive ~/.ssh/config from cloud-data JSON. Earlier builds
+    # purged jq alongside the pikchr build deps, leaving the final image
+    # without jq even though stage-1 had installed it.
 
 # Fetch community YARA rules at build time
 RUN mkdir -p /usr/local/share/yara-rules/community && \
