@@ -36,13 +36,15 @@ jobs:
 
       # Reports binaries read _cloud-data-consolidated.json + build-reports.json
       # from cloud/2_configs/dist/. Sparse-checkout that directory only.
+      # Cone mode is the default (and the only mode that reliably populates a
+      # subdirectory) — non-cone mode treats the pattern as gitignore syntax,
+      # which silently empties the dir when the pattern doesn't match files.
       - uses: actions/checkout@v4
         with:
           repository: diegonmarcos/cloud
           path: cloud
           sparse-checkout: |
             2_configs/dist
-          sparse-checkout-cone-mode: false
 
       - name: Run reports
         env:
