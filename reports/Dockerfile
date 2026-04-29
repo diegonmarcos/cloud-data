@@ -8,10 +8,15 @@ COPY src/ /build/
 RUN cargo build --release
 
 FROM debian:bookworm-slim
+# WireGuard stack: wireguard-tools provides wg/wg-quick; iproute2 provides ip
+# (wg-quick shells out to it); iptables is required by wg-quick when AllowedIPs
+# routes are split. resolvconf keeps wg-quick from clobbering /etc/resolv.conf.
+# jq is needed by entrypoint.sh to derive ~/.ssh/config from cloud-data JSON.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates openssh-client curl dnsutils iputils-ping netcat-openbsd \
-    openssl yara rsync \
+    openssl yara rsync jq \
     graphviz plantuml \
+    wireguard-tools iproute2 iptables resolvconf \
     && rm -rf /var/lib/apt/lists/*
 
 # Install D2 (architecture diagrams) — binary release

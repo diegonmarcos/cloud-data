@@ -6,6 +6,13 @@ services:
       network: host
     container_name: cloud-data-reports
     network_mode: host
+    # WireGuard requires NET_ADMIN to manage the wg0 interface and /dev/net/tun
+    # to create the userspace tunnel. Without these wg-quick fails silently and
+    # every downstream check (10.0.0.0/24 SSH, Hickory DNS, mail probes) breaks.
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME}/.ssh:/root/.ssh
@@ -15,6 +22,10 @@ services:
       - ${HOME}/git/vault/A0_keys:/home/diego/git/vault/A0_keys:ro
       - /nix/store:/nix/store:ro
       - ${HOME}/git/cloud-data:/root/git/cloud-data
+      # Reports binaries fall back to ~/git/cloud/2_configs/dist for
+      # _cloud-data-consolidated.json + build-reports.json (per
+      # reports-common/src/context.rs::find_cloud_data_file). Mount RO.
+      - ${HOME}/git/cloud:/root/git/cloud:ro
     environment:
       - GITHUB_TOKEN
       - GITHUB_ACTOR

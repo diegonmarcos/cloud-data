@@ -31,26 +31,44 @@ jobs:
       GITHUB_ACTOR: ${{ github.actor }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: cloud-data
+
+      # Reports binaries read _cloud-data-consolidated.json + build-reports.json
+      # from cloud/2_configs/dist/. Sparse-checkout that directory only.
+      - uses: actions/checkout@v4
+        with:
+          repository: diegonmarcos/cloud
+          path: cloud
+          sparse-checkout: |
+            2_configs/dist
+          sparse-checkout-cone-mode: false
 
       - name: Run reports
+        env:
+          REPORT: ${{ github.event.inputs.report || 'all' }}
         run: |
+          set -euo pipefail
           echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
           docker pull ghcr.io/diegonmarcos/cloud-data-reports:latest
-          mkdir -p ~/.ssh && chmod 700 ~/.ssh
-          echo "$OCI_SSH_KEY" > ~/.ssh/id_deploy && chmod 600 ~/.ssh/id_deploy
-          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null || true
-          mkdir -p ~/.config/sops/age
-          echo "$SOPS_AGE_KEY" > ~/.config/sops/age/keys.txt
-          REPORT="${{ github.event.inputs.report || 'all' }}"
-          # docker-compose.yml mounts $HOME/git/cloud-data → /root/git/cloud-data.
-          # On GHA runners the checkout lives at $GITHUB_WORKSPACE, not $HOME/git/cloud-data.
-          # Symlink so the compose volume binds to the real checkout.
-          mkdir -p "$HOME/git"
-          [ -e "$HOME/git/cloud-data" ] || ln -sfn "$GITHUB_WORKSPACE" "$HOME/git/cloud-data"
-          cd reports
+          # docker-compose.yml mounts $HOME/git/{cloud-data,cloud} → /root/git/{cloud-data,cloud}.
+          # On GHA the two checkouts live under $GITHUB_WORKSPACE/{cloud-data,cloud}.
+          # Symlink so compose volumes bind to the real checkouts.
+          mkdir -p "$HOME/git" "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+          ssh-keyscan github.com >> "$HOME/.ssh/known_hosts" 2>/dev/null || true
+          ln -sfn "$GITHUB_WORKSPACE/cloud-data" "$HOME/git/cloud-data"
+          ln -sfn "$GITHUB_WORKSPACE/cloud"      "$HOME/git/cloud"
+          # SOPS age key — entrypoint reads from this mount.
+          mkdir -p "$HOME/.config/sops/age"
+          printf '%s' "$SOPS_AGE_KEY" > "$HOME/.config/sops/age/keys.txt"
+          # Per-VM SSH keys are passed through env vars; entrypoint materialises
+          # them and emits ~/.ssh/config from _cloud-data-consolidated.json.
+          cd cloud-data/reports
           docker compose run --rm reports "$REPORT"
 
       - name: Commit and push reports
+        working-directory: cloud-data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
